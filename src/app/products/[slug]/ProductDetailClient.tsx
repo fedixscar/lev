@@ -23,6 +23,7 @@ import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -91,19 +92,38 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   ).slice(0, 3);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+      {/* Specific Transparent Fluid Wave flowing in the background */}
+      <AmbientWaveBackdrop expression={waveExpression} opacity={0.32} />
+
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main className="flex-1 pt-28 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumbs */}
-          <nav className="text-xs text-[#756B6D] mb-8 flex items-center gap-2">
-            <Link href="/" className="hover:text-[#541B28]">Accueil</Link>
-            <span>/</span>
-            <Link href="/shop" className="hover:text-[#541B28]">Boutique</Link>
-            <span>/</span>
-            <span className="text-[#541B28] font-semibold">{product.name}</span>
-          </nav>
+          {/* Breadcrumbs & Active Transparent Wave Indicator */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
+            <nav className="text-xs text-[#756B6D] flex items-center gap-2">
+              <Link href="/" className="hover:text-[#541B28]">Accueil</Link>
+              <span>/</span>
+              <Link href="/shop" className="hover:text-[#541B28]">Boutique</Link>
+              <span>/</span>
+              <span className="text-[#541B28] font-semibold">{product.name}</span>
+            </nav>
+
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/85 backdrop-blur-md border border-[#541B28]/20 text-[11px] text-[#541B28] shadow-sm self-start sm:self-auto">
+              <WaveMonogram size="xs" variant={waveExpression === "soft" ? "burgundy" : "gold"} />
+              <span>
+                Onde en Fond :{" "}
+                <strong className="font-bold">
+                  {waveExpression === "soft"
+                    ? "Onde Soyeuse Diaphane"
+                    : waveExpression === "intense"
+                    ? "Onde Sombre & Boisée"
+                    : "Vague Signature Solaire"}
+                </strong>
+              </span>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
             {/* Left: Product Images Gallery */}
@@ -164,7 +184,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
 
               {/* Price & Stock */}
-              <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="text-xs text-[#756B6D] block">Prix Flacon</span>
                   <span className="font-serif text-2xl text-[#541B28] font-bold">
@@ -198,8 +218,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                       className={cn(
                         "p-3 rounded-xl border text-center transition-all cursor-pointer",
                         selectedSize === fmt.size
-                          ? "bg-[#541B28]/8 border-[#541B28] text-[#23181A] shadow-sm"
-                          : "bg-white border-[#541B28]/15 text-[#5A4B4E] hover:border-[#541B28]"
+                          ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-sm backdrop-blur-sm"
+                          : "bg-white/80 backdrop-blur-sm border-[#541B28]/15 text-[#5A4B4E] hover:border-[#541B28]"
                       )}
                     >
                       <span className="font-serif text-base font-bold block">{fmt.size}</span>
@@ -214,7 +234,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 <div className="flex gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-white hover:bg-[#FAF7F2] text-[#541B28] border border-[#541B28]/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
+                    className="flex-1 py-3.5 px-6 rounded-xl bg-white/90 hover:bg-white text-[#541B28] border border-[#541B28]/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#541B28]" />
                     <span>Ajouter au Panier</span>
@@ -231,7 +251,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
 
               {/* Trust Badges */}
-              <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 space-y-2 text-xs text-[#5A4B4E] shadow-sm">
+              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2 text-xs text-[#5A4B4E] shadow-sm">
                 <div className="flex items-center gap-2 text-[#23181A]">
                   <Truck className="w-4 h-4 text-[#541B28]" />
                   <span>Livraison express en Tunisie sous 24h &bull; 48h (Offerte dès 200 TND)</span>

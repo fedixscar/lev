@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/products/ProductCard";
 import { COLLECTIONS, PRODUCTS } from "@/lib/catalogue";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function CollectionsPage() {
@@ -20,10 +21,13 @@ export default function CollectionsPage() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+      {/* Dynamic Transparent Ambient Wave matching the selected collection */}
+      <AmbientWaveBackdrop expression={activeCollection.waveExpression} opacity={0.3} />
+
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main className="flex-1 pt-28 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-12">
