@@ -19,6 +19,7 @@ import { Footer } from "@/components/navigation/Footer";
 import { SignatureWave } from "@/components/brand/SignatureWave";
 import { WaveExperiencePavilion } from "@/components/brand/WaveExperiencePavilion";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { HeroFragranceStage } from "@/components/brand/HeroFragranceStage";
 import { BestSellerPodium } from "@/components/products/BestSellerPodium";
 import { PRODUCTS } from "@/lib/catalogue";
 
@@ -100,37 +101,9 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Product Visual Centerpiece */}
+              {/* Interactive Haute Parfumerie Flacon Stage */}
               <div className="lg:col-span-5 relative flex items-center justify-center">
-                <div className="relative w-80 sm:w-96 aspect-[3/4] rounded-3xl overflow-hidden border border-[#541B28]/20 bg-white shadow-[0_25px_60px_rgba(84,27,40,0.12)] group">
-                  <Image
-                    src="/brand/bottle-and-cylinder.jpg"
-                    alt="Lévania Parfums Flacon et Écrin Cylindrique"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
-                  />
-
-                  {/* Gradient overlays for cinematic depth */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/70 via-transparent to-black/20 opacity-60" />
-
-                  {/* Floating Luxury Tag */}
-                  <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-[#541B28]/20 text-center shadow-lg">
-                    <div className="flex items-center justify-center gap-1.5 mb-1">
-                      <WaveMonogram size="xs" variant="burgundy" />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold">
-                        Création Signature
-                      </span>
-                    </div>
-                    <h3 className="font-serif text-2xl text-burgundy-gradient font-light mt-0.5">
-                      Onde d&apos;Or &bull; Extrait Absolu
-                    </h3>
-                    <p className="text-[11px] text-[#756B6D] italic mt-0.5">
-                      Flacon verre lourd, bouchon noir ébène & cylindre vert olive doré
-                    </p>
-                  </div>
-                </div>
+                <HeroFragranceStage />
               </div>
             </div>
           </div>

@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Crown, Sparkles, ShoppingBag, ArrowRight } from "lucide-react";
 import { Product } from "@/types";
-import { formatTND } from "@/lib/utils";
+import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { ProductCard } from "./ProductCard";
 
 interface BestSellerPodiumProps {
@@ -23,13 +24,18 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
   const second = products.find((p) => p.bestsellerRank === 2) || products[1];
   const third = products.find((p) => p.bestsellerRank === 3) || products[2];
 
+  // Selected formats for podium
+  const [firstFormat, setFirstFormat] = useState<"50ml" | "100ml">("100ml");
+  const [secondFormat, setSecondFormat] = useState<"50ml" | "100ml">("50ml");
+  const [thirdFormat, setThirdFormat] = useState<"50ml" | "100ml">("50ml");
+
   // Remaining 7 bestsellers
   const otherBestsellers = products.filter(
     (p) => p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10
   );
 
-  const handleQuickAdd = (p: Product) => {
-    const fmt = p.formats[0];
+  const handleQuickAdd = (p: Product, size: "50ml" | "100ml") => {
+    const fmt = p.formats.find((f) => f.size === size) || p.formats[0];
     addItem({
       productId: p.id,
       productName: p.name,
@@ -40,7 +46,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
       unitPriceMillimes: fmt.priceMillimes,
       quantity: 1,
     });
-    showToast("Flacon ajouté", `${p.name} (${fmt.size})`, "luxury");
+    showToast("Flacon réservé", `${p.name} (${fmt.size}) — ${formatTND(fmt.priceTND)}`, "luxury");
   };
 
   return (
@@ -72,7 +78,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
                 2
               </div>
 
-              <div className="relative w-48 h-56 my-4 overflow-hidden rounded-2xl border border-[#541B28]/10 bg-[#FAF7F2]">
+              <div className="relative w-48 h-56 my-3 overflow-hidden rounded-2xl border border-[#541B28]/10 bg-[#FAF7F2]">
                 <Image
                   src={second.images.main}
                   alt={second.name}
@@ -81,26 +87,57 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
                 />
               </div>
 
-              <span className="text-[10px] uppercase tracking-widest text-[#852538] font-bold">
-                {second.collection}
-              </span>
-              <h3 className="font-serif text-xl text-[#23181A] mt-1 font-medium">{second.name}</h3>
-              <p className="text-xs text-[#756B6D] mt-1 italic">{second.fragranceFamily}</p>
-              <div className="text-sm text-[#541B28] font-serif font-bold mt-3">
-                {formatTND(second.formats[0].priceTND)}
+              <div className="flex items-center gap-1.5 mb-1">
+                <WaveMonogram size="xs" variant="gold" />
+                <span className="text-[10px] uppercase tracking-widest text-[#852538] font-bold">
+                  {second.collection}
+                </span>
+              </div>
+              <h3 className="font-serif text-xl text-[#23181A] font-medium">{second.name}</h3>
+              <p className="text-xs text-[#756B6D] mt-0.5 italic">{second.fragranceFamily}</p>
+
+              {/* Notes Chips */}
+              <div className="flex flex-wrap justify-center gap-1 mt-2">
+                {second.topNotes.slice(0, 2).map((n, i) => (
+                  <span key={i} className="text-[9px] px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#5A4B4E] border border-[#541B28]/10">
+                    {n}
+                  </span>
+                ))}
               </div>
 
-              <div className="flex gap-2 w-full mt-4">
+              {/* Format Toggle & Price */}
+              <div className="flex items-center justify-between w-full mt-3 pt-3 border-t border-[#541B28]/10">
+                <div className="flex bg-[#FAF7F2] p-0.5 rounded-lg border border-[#541B28]/15">
+                  {(["50ml", "100ml"] as const).map((sz) => (
+                    <button
+                      key={sz}
+                      onClick={() => setSecondFormat(sz)}
+                      className={cn(
+                        "px-2 py-0.5 rounded-md text-[10px] font-semibold transition-colors",
+                        secondFormat === sz ? "bg-[#541B28] text-white" : "text-[#756B6D]"
+                      )}
+                    >
+                      {sz}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="text-sm text-[#541B28] font-serif font-bold">
+                  {formatTND(second.formats.find((f) => f.size === secondFormat)?.priceTND || second.formats[0].priceTND)}
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full mt-3">
                 <Link
                   href={`/products/${second.slug}`}
-                  className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                  className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors text-center"
                 >
                   Découvrir
                 </Link>
                 <button
-                  onClick={() => handleQuickAdd(second)}
+                  onClick={() => handleQuickAdd(second, secondFormat)}
                   className="p-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white transition-colors shadow-sm"
-                  aria-label="Ajouter"
+                  aria-label="Ajouter au panier"
                 >
                   <ShoppingBag className="w-4 h-4" />
                 </button>
@@ -111,12 +148,15 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
           {/* Rank 1 (Center — Elevated Pedestal) */}
           {first && (
             <div className="order-1 md:order-2 relative rounded-3xl bg-white border-2 border-[#541B28] p-8 flex flex-col items-center text-center shadow-2xl shadow-[#541B28]/15 md:-translate-y-6 group">
-              <div className="absolute -top-6 px-4 py-1.5 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
-                <Crown className="w-4 h-4 text-[#C7A66A]" />
+              {/* Glowing Pedestal Base Contour */}
+              <div className="absolute -bottom-3 left-8 right-8 h-6 bg-gradient-to-r from-transparent via-[#C7A66A]/50 to-transparent blur-md rounded-full pointer-events-none" />
+
+              <div className="absolute -top-6 px-4 py-1.5 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-xl border border-[#C7A66A]/40">
+                <WaveMonogram size="xs" variant="gold" />
                 <span>N°1 Absolu &bull; Onde d&apos;Or</span>
               </div>
 
-              <div className="relative w-56 h-64 my-4 overflow-hidden rounded-2xl border border-[#541B28]/20 bg-[#FAF7F2] shadow-inner">
+              <div className="relative w-56 h-64 my-3 overflow-hidden rounded-2xl border border-[#541B28]/20 bg-[#FAF7F2] shadow-inner">
                 <Image
                   src={first.images.main}
                   alt={first.name}
@@ -129,22 +169,55 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
               <span className="text-xs uppercase tracking-widest text-[#852538] font-bold">
                 {first.collection}
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-[#541B28] font-semibold mt-1">{first.name}</h3>
-              <p className="text-xs text-[#756B6D] mt-1 max-w-xs">{first.subtitle}</p>
-              <div className="text-xl text-[#541B28] font-serif font-bold mt-4">
-                Dès {formatTND(first.formats[0].priceTND)}
+              <h3 className="font-serif text-2xl sm:text-3xl text-[#541B28] font-semibold mt-0.5">{first.name}</h3>
+              <p className="text-xs text-[#756B6D] mt-0.5 max-w-xs">{first.subtitle}</p>
+
+              {/* Notes Chips */}
+              <div className="flex flex-wrap justify-center gap-1.5 mt-2">
+                {first.topNotes.slice(0, 2).map((n, i) => (
+                  <span key={i} className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#FAF7F2] text-[#4A3B3E] border border-[#541B28]/15 font-medium">
+                    {n}
+                  </span>
+                ))}
+                {first.baseNotes.slice(0, 1).map((n, i) => (
+                  <span key={i} className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#541B28]/10 text-[#541B28] border border-[#541B28]/25 font-bold">
+                    {n}
+                  </span>
+                ))}
               </div>
 
-              <div className="flex gap-2 w-full mt-5">
+              {/* Format Toggle & Price */}
+              <div className="flex items-center justify-between w-full mt-4 pt-4 border-t border-[#541B28]/15">
+                <div className="flex bg-[#FAF7F2] p-1 rounded-xl border border-[#541B28]/20">
+                  {(["50ml", "100ml"] as const).map((sz) => (
+                    <button
+                      key={sz}
+                      onClick={() => setFirstFormat(sz)}
+                      className={cn(
+                        "px-3 py-1 rounded-lg text-xs font-bold transition-all",
+                        firstFormat === sz ? "bg-[#541B28] text-white shadow-sm" : "text-[#756B6D]"
+                      )}
+                    >
+                      {sz}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="text-xl text-[#541B28] font-serif font-bold">
+                  {formatTND(first.formats.find((f) => f.size === firstFormat)?.priceTND || first.formats[0].priceTND)}
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full mt-4">
                 <Link
                   href={`/products/${first.slug}`}
                   className="flex-[2] py-3 text-xs rounded-xl bg-[#541B28] text-white font-bold tracking-wider uppercase hover:bg-[#66182C] transition-colors flex items-center justify-center gap-1.5 shadow-lg shadow-[#541B28]/20"
                 >
-                  <span>Explorer le N°1</span>
+                  <span>Commander le N°1</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
                 <button
-                  onClick={() => handleQuickAdd(first)}
+                  onClick={() => handleQuickAdd(first, firstFormat)}
                   className="p-3 rounded-xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-white border border-[#541B28]/30 transition-colors"
                   aria-label="Ajouter au panier"
                 >
@@ -161,7 +234,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
                 3
               </div>
 
-              <div className="relative w-48 h-56 my-4 overflow-hidden rounded-2xl border border-[#541B28]/10 bg-[#FAF7F2]">
+              <div className="relative w-48 h-56 my-3 overflow-hidden rounded-2xl border border-[#541B28]/10 bg-[#FAF7F2]">
                 <Image
                   src={third.images.main}
                   alt={third.name}
@@ -170,26 +243,57 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
                 />
               </div>
 
-              <span className="text-[10px] uppercase tracking-widest text-[#852538] font-bold">
-                {third.collection}
-              </span>
-              <h3 className="font-serif text-xl text-[#23181A] mt-1 font-medium">{third.name}</h3>
-              <p className="text-xs text-[#756B6D] mt-1 italic">{third.fragranceFamily}</p>
-              <div className="text-sm text-[#541B28] font-serif font-bold mt-3">
-                {formatTND(third.formats[0].priceTND)}
+              <div className="flex items-center gap-1.5 mb-1">
+                <WaveMonogram size="xs" variant="gold" />
+                <span className="text-[10px] uppercase tracking-widest text-[#852538] font-bold">
+                  {third.collection}
+                </span>
+              </div>
+              <h3 className="font-serif text-xl text-[#23181A] font-medium">{third.name}</h3>
+              <p className="text-xs text-[#756B6D] mt-0.5 italic">{third.fragranceFamily}</p>
+
+              {/* Notes Chips */}
+              <div className="flex flex-wrap justify-center gap-1 mt-2">
+                {third.topNotes.slice(0, 2).map((n, i) => (
+                  <span key={i} className="text-[9px] px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#5A4B4E] border border-[#541B28]/10">
+                    {n}
+                  </span>
+                ))}
               </div>
 
-              <div className="flex gap-2 w-full mt-4">
+              {/* Format Toggle & Price */}
+              <div className="flex items-center justify-between w-full mt-3 pt-3 border-t border-[#541B28]/10">
+                <div className="flex bg-[#FAF7F2] p-0.5 rounded-lg border border-[#541B28]/15">
+                  {(["50ml", "100ml"] as const).map((sz) => (
+                    <button
+                      key={sz}
+                      onClick={() => setThirdFormat(sz)}
+                      className={cn(
+                        "px-2 py-0.5 rounded-md text-[10px] font-semibold transition-colors",
+                        thirdFormat === sz ? "bg-[#541B28] text-white" : "text-[#756B6D]"
+                      )}
+                    >
+                      {sz}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="text-sm text-[#541B28] font-serif font-bold">
+                  {formatTND(third.formats.find((f) => f.size === thirdFormat)?.priceTND || third.formats[0].priceTND)}
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full mt-3">
                 <Link
                   href={`/products/${third.slug}`}
-                  className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                  className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors text-center"
                 >
                   Découvrir
                 </Link>
                 <button
-                  onClick={() => handleQuickAdd(third)}
+                  onClick={() => handleQuickAdd(third, thirdFormat)}
                   className="p-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white transition-colors shadow-sm"
-                  aria-label="Ajouter"
+                  aria-label="Ajouter au panier"
                 >
                   <ShoppingBag className="w-4 h-4" />
                 </button>

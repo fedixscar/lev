@@ -154,9 +154,33 @@ export function WaveCanvas({
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!interactive) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    pointerRef.current.x = e.clientX - rect.left;
-    pointerRef.current.y = e.clientY - rect.top;
-    pointerRef.current.rippleIntensity = 2.0; // Strong ripple splash
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+    pointerRef.current.x = clickX;
+    pointerRef.current.y = clickY;
+    pointerRef.current.rippleIntensity = 2.5; // Strong splash ripple
+
+    // Atomizer burst effect: 14 radiant micro-droplets on click
+    const palette = getPalette(expression);
+    for (let i = 0; i < 14; i++) {
+      const angle = (Math.PI * 2 * i) / 14 + (Math.random() - 0.5) * 0.4;
+      const speed = 1.0 + Math.random() * 2.2;
+      particlesRef.current.push({
+        x: clickX,
+        y: clickY,
+        radius: 1.2 + Math.random() * 2.0,
+        speedY: Math.abs(Math.sin(angle)) * speed + 0.6,
+        speedX: Math.cos(angle) * speed,
+        opacity: 0.95,
+        phase: Math.random() * Math.PI * 2,
+        color: palette.particleColors[Math.floor(Math.random() * palette.particleColors.length)],
+      });
+    }
+
+    if (particlesRef.current.length > 70) {
+      particlesRef.current = particlesRef.current.slice(-50);
+    }
+
     if (onWaveClick) onWaveClick();
   };
 
@@ -308,6 +332,15 @@ export function WaveCanvas({
       ctx.strokeStyle = palette.crestHighlight;
       ctx.lineWidth = expression === "intense" ? 2.5 : 1.8;
       ctx.stroke();
+
+      // Sweeping Champagne Caustic Shimmer along the wave
+      const beamX = ((time * 75) % (width * 1.5)) - width * 0.25;
+      const beamGrad = ctx.createRadialGradient(beamX, baseY, 2, beamX, baseY, 140);
+      beamGrad.addColorStop(0, "rgba(255, 255, 255, 0.4)");
+      beamGrad.addColorStop(0.4, "rgba(223, 198, 139, 0.18)");
+      beamGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = beamGrad;
+      ctx.fillRect(0, 0, width, height);
 
       // Reset shadow for subsequent draw calls
       ctx.shadowBlur = 0;

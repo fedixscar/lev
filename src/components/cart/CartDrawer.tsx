@@ -6,6 +6,7 @@ import Link from "next/link";
 import { X, Plus, Minus, Trash2, ArrowRight, Sparkles, Tag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
 export function CartDrawer() {
   const {
@@ -53,7 +54,8 @@ export function CartDrawer() {
         <div className="w-screen max-w-md bg-[#FAF7F2] border-l border-[#541B28]/20 shadow-2xl flex flex-col text-[#23181A]">
           {/* Header */}
           <div className="p-6 border-b border-[#541B28]/15 flex items-center justify-between bg-white/90 backdrop-blur-md">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
+              <WaveMonogram size="xs" variant="burgundy" />
               <span className="font-serif text-2xl text-[#541B28] font-normal">
                 Votre Panier
               </span>
@@ -68,6 +70,29 @@ export function CartDrawer() {
             >
               <X className="w-5 h-5" />
             </button>
+          </div>
+
+          {/* Free Shipping & Wave Meter */}
+          <div className="px-6 py-3 bg-[#F3ECE1]/70 border-b border-[#541B28]/10 text-xs text-[#5A4B4E]">
+            {subtotalTND >= 200 ? (
+              <div className="flex items-center gap-2 text-[#434B36] font-semibold">
+                <Sparkles className="w-4 h-4 text-[#C7A66A]" />
+                <span>Livraison Express Offerte partout en Tunisie !</span>
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center justify-between mb-1.5 text-[11px]">
+                  <span>Plus que <strong className="text-[#541B28]">{formatTND(200 - subtotalTND)}</strong> pour la livraison offerte</span>
+                  <span className="font-mono text-[#541B28] font-bold">{Math.min(100, Math.round((subtotalTND / 200) * 100))}%</span>
+                </div>
+                <div className="w-full h-1.5 bg-[#FAF7F2] rounded-full overflow-hidden border border-[#541B28]/10">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#541B28] via-[#C7A66A] to-[#852538] transition-all duration-500 rounded-full"
+                    style={{ width: `${Math.min(100, (subtotalTND / 200) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Items list */}
