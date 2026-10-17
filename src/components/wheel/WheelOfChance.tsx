@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
-import { Sparkles, Trophy, Flame, Crown, ShieldAlert, Copy, Check, ArrowRight } from "lucide-react";
+import { Sparkles, Trophy, Flame, Crown, ShieldAlert, Copy, Check } from "lucide-react";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WheelSpinRecord } from "@/types";
@@ -17,16 +17,16 @@ export function WheelOfChance() {
   const [animating, setAnimating] = useState(false);
   const [copiedCoupon, setCopiedCoupon] = useState(false);
 
-  // Wheel slices labels for visual presentation
+  // Wheel slices labels for visual presentation in authentic brand colors
   const slices = [
-    { label: "Points Fidélité", color: "#343B2B" },
-    { label: "Coupon -10%", color: "#20271E" },
-    { label: "Échantillon Luxe", color: "#542B32" },
-    { label: "Bon d'Achat", color: "#343B2B" },
-    { label: "Coupon -20%", color: "#20271E" },
+    { label: "Points Fidélité", color: "#541B28" },
+    { label: "Coupon -10%", color: "#7A263B" },
+    { label: "Échantillon Luxe", color: "#434B36" },
+    { label: "Bon d'Achat", color: "#66182C" },
+    { label: "Coupon -20%", color: "#7A263B" },
     { label: "Flacon Offert", color: "#C7A66A" },
-    { label: "Coffret Cadeau", color: "#542B32" },
-    { label: "Double XP", color: "#20271E" },
+    { label: "Coffret Cadeau", color: "#541B28" },
+    { label: "Double XP", color: "#434B36" },
   ];
 
   const handleLaunchSpin = async () => {
@@ -62,7 +62,7 @@ export function WheelOfChance() {
             particleCount: result.tier === "Admin Wave" ? 250 : result.tier === "Royal Wave" ? 150 : 80,
             spread: 90,
             origin: { y: 0.6 },
-            colors: ["#C7A66A", "#F6F1E8", "#542B32", "#343B2B"],
+            colors: ["#541B28", "#C7A66A", "#7A263B", "#FAF7F2"],
           });
         } catch {
           // ignore confetti if canvas unsupported
@@ -87,34 +87,34 @@ export function WheelOfChance() {
     showToast("Code copié", code, "success");
   };
 
-  // Tier styling theme
+  // Tier styling theme adapted for ivory, burgundy and gold
   const tierTheme = {
     "Normal Wave": {
       name: "Normal Wave (1–100 Luck)",
-      border: "border-ivory/40",
-      accent: "text-[#F6F1E8]",
-      bg: "from-[#20271E] to-[#171715]",
+      border: "border-[#541B28]/20 shadow-sm",
+      accent: "text-[#541B28]",
+      bg: "bg-white",
       icon: Sparkles,
     },
     "Fire Wave": {
       name: "Fire Wave (101–1,000 Luck)",
-      border: "border-[#542B32] shadow-[0_0_30px_rgba(84,43,50,0.5)]",
-      accent: "text-amber-400",
-      bg: "from-[#542B32]/40 via-[#20271E] to-[#171715]",
+      border: "border-[#852538] shadow-[0_0_25px_rgba(133,37,56,0.15)]",
+      accent: "text-[#852538]",
+      bg: "bg-gradient-to-r from-white via-rose-50/50 to-white",
       icon: Flame,
     },
     "Royal Wave": {
       name: "Royal Wave (1,001–7,776 Luck)",
-      border: "border-[#C7A66A] shadow-[0_0_40px_rgba(199,166,106,0.4)]",
-      accent: "text-gold-gradient",
-      bg: "from-[#C7A66A]/20 via-[#20271E] to-[#171715]",
+      border: "border-[#C7A66A] shadow-[0_0_35px_rgba(199,166,106,0.25)]",
+      accent: "text-[#541B28]",
+      bg: "bg-gradient-to-r from-white via-amber-50/50 to-white",
       icon: Crown,
     },
     "Admin Wave": {
       name: "Admin Wave — Le Trésor Absolu (7,777 Luck)",
-      border: "border-amber-300 shadow-[0_0_60px_rgba(255,215,0,0.6)]",
-      accent: "text-amber-300",
-      bg: "from-amber-900/40 via-[#343B2B] to-[#171715]",
+      border: "border-[#DFC68B] shadow-[0_0_50px_rgba(223,198,139,0.35)]",
+      accent: "text-[#DFC68B]",
+      bg: "bg-gradient-to-r from-[#3B121C] via-[#541B28] to-[#3B121C] text-[#FAF7F2]",
       icon: ShieldAlert,
     },
   };
@@ -127,43 +127,43 @@ export function WheelOfChance() {
       {/* Tier Status Banner */}
       <div
         className={cn(
-          "mb-12 p-6 rounded-3xl bg-gradient-to-r border backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700",
+          "mb-12 p-6 rounded-3xl border backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 shadow-sm",
           currentTheme.bg,
           currentTheme.border
         )}
       >
         <div className="flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-black/40 border border-[#C7A66A]/30 flex items-center justify-center text-[#C7A66A] shadow-inner shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-[#541B28] border border-[#C7A66A]/40 flex items-center justify-center text-[#DFC68B] shadow-md shrink-0">
             <TierIcon className="w-8 h-8 animate-pulse" />
           </div>
           <div>
-            <div className="text-xs uppercase tracking-widest text-[#C7A66A] font-semibold">
+            <div className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
               Votre Vague Active
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl text-[#F6F1E8]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold">
               {currentTier ? currentTier : "Vague Inactive (0 Luck)"}
             </h2>
-            <p className="text-xs text-[#89877F] mt-1">
-              Solde Actuel: <strong className="text-[#C7A66A] text-sm">{luckBalance} Luck</strong> &bull; Cap Max: 7,777
+            <p className="text-xs opacity-80 mt-1">
+              Solde Actuel: <strong className="text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> &bull; Cap Max: 7,777
             </p>
           </div>
         </div>
 
         {/* Tier Milestones Progress */}
         <div className="w-full md:w-auto flex flex-col gap-2 min-w-[280px]">
-          <div className="flex justify-between text-[11px] text-[#89877F]">
+          <div className="flex justify-between text-[11px] text-[#756B6D] font-medium">
             <span>Normal (1)</span>
             <span>Fire (101)</span>
             <span>Royal (1001)</span>
             <span>Admin (7777)</span>
           </div>
-          <div className="w-full h-2.5 bg-black/60 rounded-full overflow-hidden p-0.5 border border-[#C7A66A]/20">
+          <div className="w-full h-2.5 bg-[#FAF7F2] rounded-full overflow-hidden p-0.5 border border-[#541B28]/20">
             <div
-              className="h-full bg-gradient-to-r from-[#343B2B] via-[#C7A66A] to-[#E3D1A9] rounded-full transition-all duration-1000"
+              className="h-full bg-gradient-to-r from-[#541B28] via-[#852538] to-[#C7A66A] rounded-full transition-all duration-1000"
               style={{ width: `${Math.min(100, (luckBalance / 7777) * 100)}%` }}
             />
           </div>
-          <div className="text-right text-[10px] text-[#C7A66A]">
+          <div className="text-right text-[10px] text-[#541B28] font-bold">
             {luckBalance >= 7777 ? "Palier Exceptionnel Atteint !" : `Plus que ${7777 - luckBalance} Luck pour l'Admin Wave`}
           </div>
         </div>
@@ -172,12 +172,12 @@ export function WheelOfChance() {
       {/* The Wheel Centerpiece */}
       <div className="flex flex-col items-center justify-center my-8">
         <div className="relative w-80 h-80 sm:w-96 sm:h-96">
-          {/* Wheel Outer Gold Flange */}
-          <div className="absolute inset-0 rounded-full border-4 border-[#C7A66A]/40 shadow-[0_0_50px_rgba(0,0,0,0.8)] p-2 bg-[#20271E]" />
+          {/* Wheel Outer Border */}
+          <div className="absolute inset-0 rounded-full border-4 border-[#541B28]/30 shadow-2xl p-2 bg-white" />
 
           {/* Indicator Arrow at Top */}
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center">
-            <div className="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[24px] border-t-[#C7A66A] filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+            <div className="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[24px] border-t-[#541B28] filter drop-shadow-[0_2px_8px_rgba(84,27,40,0.4)]" />
           </div>
 
           {/* Rotating Wheel Disk */}
@@ -201,13 +201,13 @@ export function WheelOfChance() {
                     <path
                       d={`M50,50 L${x1},${y1} A50,50 0 0,1 ${x2},${y2} Z`}
                       fill={slice.color}
-                      stroke="#C7A66A"
-                      strokeWidth="0.5"
+                      stroke="#FAF7F2"
+                      strokeWidth="0.8"
                     />
                     <text
                       x="50"
                       y="16"
-                      fill="#F6F1E8"
+                      fill="#FAF7F2"
                       fontSize="3.8"
                       fontFamily="serif"
                       fontWeight="bold"
@@ -231,15 +231,15 @@ export function WheelOfChance() {
               className={cn(
                 "pointer-events-auto w-24 h-24 rounded-full border-2 border-[#C7A66A] shadow-2xl flex flex-col items-center justify-center transition-all duration-300",
                 luckBalance >= 1
-                  ? "bg-gradient-to-b from-[#C7A66A] to-[#9E7D42] text-[#171715] hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_25px_rgba(199,166,106,0.6)]"
-                  : "bg-[#20271E] text-[#89877F] border-neutral-700 cursor-not-allowed"
+                  ? "bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_25px_rgba(84,27,40,0.5)]"
+                  : "bg-white text-[#756B6D] border-[#541B28]/20 cursor-not-allowed"
               )}
             >
-              <Sparkles className="w-5 h-5 mb-0.5" />
+              <Sparkles className="w-5 h-5 mb-0.5 text-[#DFC68B]" />
               <span className="font-serif text-xs font-bold uppercase tracking-wider">
                 {animating ? "Destin..." : "LANCER"}
               </span>
-              <span className="text-[9px] opacity-80">
+              <span className="text-[9px] opacity-90 text-[#DFC68B]">
                 {luckBalance >= 1 ? `${luckBalance} Luck` : "0 Luck"}
               </span>
             </button>
@@ -247,10 +247,10 @@ export function WheelOfChance() {
         </div>
 
         {/* Spin action explanation */}
-        <p className="text-xs text-[#89877F] mt-8 text-center max-w-md">
+        <p className="text-xs text-[#756B6D] mt-8 text-center max-w-md leading-relaxed">
           {luckBalance >= 1 ? (
             <>
-              Chaque lancer consomme l&apos;intégralité de vos <strong className="text-[#C7A66A]">{luckBalance} Luck</strong>.
+              Chaque lancer consomme l&apos;intégralité de vos <strong className="text-[#541B28] font-bold">{luckBalance} Luck</strong>.
               Le palier actuel garantit la table de récompenses <strong>{currentTier}</strong>.
             </>
           ) : (
@@ -263,40 +263,40 @@ export function WheelOfChance() {
 
       {/* Result Modal */}
       {activeResult && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-          <div className="max-w-md w-full rounded-3xl bg-[#171715] border-2 border-[#C7A66A] p-8 text-center shadow-2xl shadow-[#C7A66A]/30 relative animate-in zoom-in-95">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-b from-[#C7A66A] to-[#9E7D42] text-[#171715] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#C7A66A]/30">
-              <Trophy className="w-10 h-10" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
+          <div className="max-w-md w-full rounded-3xl bg-white border-2 border-[#541B28] p-8 text-center shadow-2xl relative animate-in zoom-in-95">
+            <div className="w-20 h-20 rounded-full bg-[#541B28] text-[#FAF7F2] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#541B28]/25">
+              <Trophy className="w-10 h-10 text-[#DFC68B]" />
             </div>
 
-            <div className="text-xs uppercase tracking-widest text-[#C7A66A] font-semibold">
+            <div className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
               Révélation {activeResult.tier}
             </div>
 
-            <h3 className="font-serif text-2xl sm:text-3xl text-gold-gradient font-light mt-1 mb-2">
+            <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light mt-1 mb-2">
               {activeResult.rewardLabel}
             </h3>
 
-            <p className="text-xs text-[#89877F] mb-6">
+            <p className="text-xs text-[#5A4B4E] mb-6">
               Votre chance de {activeResult.luckConsumed} Luck a été honorée par la Maison Lévania.
             </p>
 
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
-              <div className="p-4 rounded-xl bg-[#20271E] border border-[#C7A66A]/30 mb-6">
-                <span className="text-[10px] text-[#89877F] uppercase tracking-wider block mb-1">
+              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 mb-6">
+                <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
                   Code Privilège Généré
                 </span>
-                <div className="flex items-center justify-between gap-2 bg-[#171715] p-2.5 rounded-lg border border-[#C7A66A]/40">
-                  <span className="font-mono text-sm font-bold text-[#C7A66A] tracking-wider">
+                <div className="flex items-center justify-between gap-2 bg-white p-2.5 rounded-lg border border-[#541B28]/20">
+                  <span className="font-mono text-sm font-bold text-[#541B28] tracking-wider">
                     {activeResult.couponCodeGenerated}
                   </span>
                   <button
                     onClick={() => copyCouponCode(activeResult.couponCodeGenerated!)}
-                    className="p-1.5 rounded-md hover:bg-white/10 text-[#C7A66A] transition-colors"
+                    className="p-1.5 rounded-md hover:bg-[#FAF7F2] text-[#541B28] transition-colors"
                     title="Copier"
                   >
-                    {copiedCoupon ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    {copiedCoupon ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
@@ -304,7 +304,7 @@ export function WheelOfChance() {
 
             <button
               onClick={() => setActiveResult(null)}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] font-semibold text-xs tracking-wider uppercase shadow-lg hover:opacity-95 transition-opacity"
+              className="w-full py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-semibold text-xs tracking-wider uppercase shadow-md transition-colors"
             >
               Célébrer & Continuer
             </button>
@@ -314,26 +314,26 @@ export function WheelOfChance() {
 
       {/* Spin History Ledger */}
       {spinHistory.length > 0 && (
-        <div className="mt-16 pt-8 border-t border-[#C7A66A]/15">
-          <h3 className="font-serif text-xl text-[#F6F1E8] mb-4">
+        <div className="mt-16 pt-8 border-t border-[#541B28]/15">
+          <h3 className="font-serif text-xl text-[#23181A] font-semibold mb-4">
             Historique de Vos Tirages du Destin
           </h3>
           <div className="space-y-2">
             {spinHistory.slice(0, 5).map((spin) => (
               <div
                 key={spin.id}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-[#20271E]/40 border border-[#C7A66A]/10 text-xs text-[#E9DFCE]"
+                className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-[#541B28]/10 text-xs text-[#23181A] shadow-sm"
               >
                 <div>
-                  <span className="font-serif text-sm text-[#F6F1E8] block">
+                  <span className="font-serif text-sm text-[#23181A] font-medium block">
                     {spin.rewardLabel}
                   </span>
-                  <span className="text-[10px] text-[#89877F]">
+                  <span className="text-[10px] text-[#756B6D]">
                     {new Date(spin.timestamp).toLocaleDateString("fr-FR")} &bull; Vague: {spin.tier} ({spin.luckConsumed} Luck)
                   </span>
                 </div>
                 {spin.couponCodeGenerated && (
-                  <span className="font-mono text-[11px] text-[#C7A66A] bg-[#171715] px-2 py-1 rounded border border-[#C7A66A]/20">
+                  <span className="font-mono text-[11px] text-[#541B28] font-bold bg-[#FAF7F2] px-2 py-1 rounded border border-[#541B28]/20">
                     {spin.couponCodeGenerated}
                   </span>
                 )}

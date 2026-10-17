@@ -19,24 +19,24 @@ export function LevaniaLogo({
   href = "/",
 }: LevaniaLogoProps) {
   const sizeMap = {
-    sm: { emblem: 32, text: "text-lg", sub: "text-[9px] tracking-[0.3em]" },
-    md: { emblem: 44, text: "text-2xl", sub: "text-[10px] tracking-[0.35em]" },
-    lg: { emblem: 64, text: "text-3xl", sub: "text-xs tracking-[0.4em]" },
-    xl: { emblem: 96, text: "text-5xl", sub: "text-sm tracking-[0.45em]" },
+    sm: { emblem: 34, text: "text-lg", sub: "text-[9px] tracking-[0.35em]" },
+    md: { emblem: 46, text: "text-2xl", sub: "text-[10px] tracking-[0.4em]" },
+    lg: { emblem: 68, text: "text-3xl", sub: "text-xs tracking-[0.45em]" },
+    xl: { emblem: 104, text: "text-5xl", sub: "text-sm tracking-[0.5em]" },
   };
 
   const config = sizeMap[size];
 
   const content = (
-    <div className={cn("inline-flex items-center gap-3 group transition-transform duration-300", className)}>
+    <div className={cn("inline-flex items-center gap-3.5 group transition-transform duration-300", className)}>
       {variant !== "wordmark-only" && (
         <div
-          className="relative rounded-full overflow-hidden border border-[#C7A66A]/30 p-0.5 shadow-md shadow-black/40 group-hover:border-[#C7A66A] group-hover:shadow-[0_0_15px_rgba(199,166,106,0.3)] transition-all duration-300 bg-[#20271E]"
+          className="relative rounded-full overflow-hidden border border-[#541B28]/20 p-0.5 shadow-sm shadow-[#541B28]/10 group-hover:border-[#541B28] group-hover:shadow-[0_0_15px_rgba(84,27,40,0.15)] transition-all duration-300 bg-white"
           style={{ width: config.emblem, height: config.emblem }}
         >
           <Image
             src="/brand/logo-emblem.jpg"
-            alt="Lévania Parfums Sceau"
+            alt="Lévania Parfums Sceau Officiel"
             width={config.emblem}
             height={config.emblem}
             className="w-full h-full object-cover rounded-full"
@@ -49,20 +49,24 @@ export function LevaniaLogo({
         <div className="flex flex-col text-left">
           <span
             className={cn(
-              "font-serif font-light text-gold-gradient leading-tight tracking-[0.18em] uppercase group-hover:brightness-110 transition-all",
+              "font-serif font-normal text-[#541B28] leading-tight tracking-[0.2em] uppercase group-hover:text-[#7A263B] transition-colors",
               config.text
             )}
           >
             LÉVANIA
           </span>
-          <span
-            className={cn(
-              "font-sans font-medium text-[#C7A66A] opacity-90 uppercase mt-0.5",
-              config.sub
-            )}
-          >
-            PARFUMS
-          </span>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span className="w-3 h-[0.5px] bg-[#C7A66A]" />
+            <span
+              className={cn(
+                "font-sans font-semibold text-[#852538] uppercase",
+                config.sub
+              )}
+            >
+              PARFUMS
+            </span>
+            <span className="w-3 h-[0.5px] bg-[#C7A66A]" />
+          </div>
         </div>
       )}
     </div>
@@ -70,7 +74,7 @@ export function LevaniaLogo({
 
   if (href) {
     return (
-      <Link href={href} className="focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C7A66A]">
+      <Link href={href} className="focus:outline-none focus-visible:ring-1 focus-visible:ring-[#541B28]">
         {content}
       </Link>
     );

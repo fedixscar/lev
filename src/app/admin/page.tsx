@@ -2,11 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { PRODUCTS } from "@/lib/catalogue";
-import { formatTND, formatMillimes } from "@/lib/utils";
+import { formatTND } from "@/lib/utils";
 import { useNotification } from "@/context/NotificationContext";
 import {
   ShieldCheck,
@@ -14,14 +13,10 @@ import {
   Package,
   ShoppingBag,
   Users,
-  AlertTriangle,
   QrCode,
   Flame,
   Check,
   X,
-  Search,
-  Filter,
-  DollarSign,
   Plus,
 } from "lucide-react";
 
@@ -30,7 +25,7 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<"overview" | "products" | "orders" | "resellers" | "qr" | "luck">("overview");
 
   // Mock Admin State
-  const [productList, setProductList] = useState(PRODUCTS);
+  const [productList] = useState(PRODUCTS);
   const [orders, setOrders] = useState([
     {
       id: "ord-101",
@@ -117,29 +112,29 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#171715] text-[#F6F1E8]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
       <Navbar />
 
       <main className="flex-1 pt-28 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-[#C7A66A]/20">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-[#541B28]/15">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-300 text-xs font-semibold mb-2">
-                <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-2 shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />
                 <span>Panneau de Contrôle &bull; Direction Générale</span>
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl text-gold-gradient font-light">
+              <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
                 Administration Centrale Lévania Parfums
               </h1>
-              <p className="text-xs text-[#89877F] mt-1">
+              <p className="text-xs text-[#756B6D] mt-1">
                 Supervision des ventes, gestion des stocks, validation des commissions revendeurs et configuration des Vagues.
               </p>
             </div>
           </div>
 
           {/* Nav Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-white/5 no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#541B28]/10 no-scrollbar">
             {[
               { id: "overview", label: "Vue Générale", icon: TrendingUp },
               { id: "products", label: "Produits & Podium", icon: Package },
@@ -153,10 +148,10 @@ export default function AdminDashboardPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all whitespace-nowrap ${
+                  className={`px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all whitespace-nowrap shadow-sm ${
                     activeTab === tab.id
-                      ? "bg-[#C7A66A] text-[#171715] shadow-lg shadow-[#C7A66A]/20"
-                      : "bg-[#20271E] text-[#89877F] hover:text-[#F6F1E8] border border-white/5"
+                      ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25"
+                      : "bg-white text-[#5A4B4E] hover:text-[#541B28] border border-[#541B28]/15"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -171,52 +166,52 @@ export default function AdminDashboardPage() {
             <div className="space-y-8 animate-in fade-in">
               {/* Top Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="p-6 rounded-3xl bg-[#20271E]/60 border border-[#C7A66A]/20 backdrop-blur-xl">
-                  <span className="text-[10px] uppercase tracking-widest text-[#89877F] font-semibold block mb-1">
+                <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
+                  <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block mb-1">
                     Chiffre d&apos;Affaires Brut (Mois)
                   </span>
-                  <div className="font-serif text-3xl text-gold-gradient font-bold">
+                  <div className="font-serif text-3xl text-burgundy-gradient font-bold">
                     18 420.000 TND
                   </div>
-                  <span className="text-xs text-emerald-400 mt-1 block">+18.5% vs mois dernier</span>
+                  <span className="text-xs text-[#434B36] font-bold mt-1 block">+18.5% vs mois dernier</span>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-[#20271E]/60 border border-[#C7A66A]/20 backdrop-blur-xl">
-                  <span className="text-[10px] uppercase tracking-widest text-[#89877F] font-semibold block mb-1">
+                <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
+                  <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block mb-1">
                     Commandes Confirmées
                   </span>
-                  <div className="font-serif text-3xl text-[#F6F1E8] font-bold">
+                  <div className="font-serif text-3xl text-[#23181A] font-bold">
                     68 Commandes
                   </div>
-                  <span className="text-xs text-[#89877F] mt-1 block">Panier moyen : 270.880 TND</span>
+                  <span className="text-xs text-[#756B6D] mt-1 block">Panier moyen : 270.880 TND</span>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-[#20271E]/60 border border-[#C7A66A]/20 backdrop-blur-xl">
-                  <span className="text-[10px] uppercase tracking-widest text-[#89877F] font-semibold block mb-1">
+                <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
+                  <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block mb-1">
                     Commissions Revendeurs En Attente
                   </span>
-                  <div className="font-serif text-3xl text-amber-400 font-bold">
+                  <div className="font-serif text-3xl text-[#541B28] font-bold">
                     140.000 TND
                   </div>
-                  <span className="text-xs text-[#89877F] mt-1 block">14 ventes soumises</span>
+                  <span className="text-xs text-[#756B6D] mt-1 block">14 ventes soumises</span>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-[#20271E]/60 border border-rose-500/30 backdrop-blur-xl bg-rose-950/20">
-                  <span className="text-[10px] uppercase tracking-widest text-rose-300 font-semibold block mb-1">
+                <div className="p-6 rounded-3xl bg-rose-50/60 border border-rose-300 text-rose-900 shadow-sm">
+                  <span className="text-[10px] uppercase tracking-widest text-rose-800 font-bold block mb-1">
                     Alertes Stock Critique
                   </span>
-                  <div className="font-serif text-3xl text-rose-400 font-bold">
+                  <div className="font-serif text-3xl text-rose-700 font-bold">
                     2 Flacons &lt; 15 ex.
                   </div>
-                  <span className="text-xs text-rose-300 mt-1 block">Oud Impérial & Cuir d&apos;Orient</span>
+                  <span className="text-xs text-rose-800 mt-1 block font-medium">Oud Impérial & Cuir d&apos;Orient</span>
                 </div>
               </div>
 
               {/* Recent Orders quick table */}
-              <div className="rounded-3xl bg-[#20271E]/40 border border-[#C7A66A]/20 p-6 backdrop-blur-xl">
-                <div className="flex items-center justify-between mb-6 pb-3 border-b border-white/5">
-                  <h3 className="font-serif text-xl text-[#F6F1E8]">Flux Récent des Commandes Clients</h3>
-                  <button onClick={() => setActiveTab("orders")} className="text-xs text-[#C7A66A] hover:underline">
+              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#541B28]/10">
+                  <h3 className="font-serif text-xl text-[#23181A] font-semibold">Flux Récent des Commandes Clients</h3>
+                  <button onClick={() => setActiveTab("orders")} className="text-xs text-[#541B28] font-bold hover:underline">
                     Gérer toutes les commandes &rarr;
                   </button>
                 </div>
@@ -224,7 +219,7 @@ export default function AdminDashboardPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left">
                     <thead>
-                      <tr className="text-[#89877F] uppercase tracking-wider border-b border-white/5 pb-2">
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
                         <th className="pb-3">Réf</th>
                         <th className="pb-3">Client</th>
                         <th className="pb-3">Ville</th>
@@ -233,18 +228,18 @@ export default function AdminDashboardPage() {
                         <th className="pb-3">Statut</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[#541B28]/5">
                       {orders.map((ord) => (
-                        <tr key={ord.id} className="hover:bg-white/5">
-                          <td className="py-3 font-mono font-bold text-[#C7A66A]">{ord.number}</td>
-                          <td className="py-3 text-[#F6F1E8] font-medium">{ord.customer}</td>
-                          <td className="py-3 text-[#89877F]">{ord.city}</td>
-                          <td className="py-3 text-[#E9DFCE]">{ord.items}</td>
-                          <td className="py-3 font-serif text-[#C7A66A] font-semibold">
+                        <tr key={ord.id} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
+                          <td className="py-3 text-[#23181A] font-medium">{ord.customer}</td>
+                          <td className="py-3 text-[#756B6D]">{ord.city}</td>
+                          <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
+                          <td className="py-3 font-serif text-[#541B28] font-bold">
                             {formatTND(ord.totalTND)}
                           </td>
                           <td className="py-3">
-                            <span className="px-2.5 py-0.5 rounded-full bg-[#343B2B] text-emerald-300 border border-[#C7A66A]/30 text-[10px]">
+                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
                               {ord.status}
                             </span>
                           </td>
@@ -261,20 +256,20 @@ export default function AdminDashboardPage() {
           {activeTab === "products" && (
             <div className="space-y-6 animate-in fade-in">
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-2xl text-[#F6F1E8]">Catalogue & Podium Bestsellers</h3>
+                <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Catalogue & Podium Bestsellers</h3>
                 <button
                   onClick={() => showToast("Formulaire de création", "Module d'ajout flacon prêt", "info")}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 text-[#DFC68B]" />
                   <span>Nouveau Flacon</span>
                 </button>
               </div>
 
-              <div className="rounded-3xl bg-[#20271E]/40 border border-[#C7A66A]/20 p-6 backdrop-blur-xl overflow-x-auto">
+              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
                 <table className="w-full text-xs text-left">
                   <thead>
-                    <tr className="text-[#89877F] uppercase tracking-wider border-b border-white/5 pb-2">
+                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
                       <th className="pb-3">Visuel</th>
                       <th className="pb-3">Nom & Collection</th>
                       <th className="pb-3">Famille</th>
@@ -283,33 +278,33 @@ export default function AdminDashboardPage() {
                       <th className="pb-3">Rang Podium</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-[#541B28]/5">
                     {productList.map((prod) => (
-                      <tr key={prod.id} className="hover:bg-white/5">
+                      <tr key={prod.id} className="hover:bg-[#FAF7F2]">
                         <td className="py-3">
-                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-black/40 border border-white/10">
+                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15">
                             <Image src={prod.images.main} alt={prod.name} fill className="object-cover" />
                           </div>
                         </td>
                         <td className="py-3">
-                          <span className="font-serif text-sm text-[#F6F1E8] font-medium block">
+                          <span className="font-serif text-sm text-[#23181A] font-semibold block">
                             {prod.name}
                           </span>
-                          <span className="text-[10px] text-[#C7A66A]">{prod.collection}</span>
+                          <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
                         </td>
-                        <td className="py-3 text-[#E9DFCE]">{prod.fragranceFamily}</td>
-                        <td className="py-3 font-serif text-[#C7A66A]">
+                        <td className="py-3 text-[#5A4B4E]">{prod.fragranceFamily}</td>
+                        <td className="py-3 font-serif text-[#541B28] font-bold">
                           {formatTND(prod.formats[0].priceTND)} / {formatTND(prod.formats[1]?.priceTND || 0)}
                         </td>
                         <td className="py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
-                            prod.formats[0].stock < 15 ? "bg-rose-950 text-rose-300 border border-rose-500/40" : "bg-emerald-950 text-emerald-300"
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            prod.formats[0].stock < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                           }`}>
                             {prod.formats[0].stock} ex.
                           </span>
                         </td>
                         <td className="py-3">
-                          <span className="px-2.5 py-1 rounded-full bg-[#171715] border border-[#C7A66A]/30 text-[#C7A66A] font-bold">
+                          <span className="px-2.5 py-1 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold">
                             #{prod.bestsellerRank || "—"}
                           </span>
                         </td>
@@ -324,11 +319,11 @@ export default function AdminDashboardPage() {
           {/* TAB 3: ORDERS MANAGEMENT */}
           {activeTab === "orders" && (
             <div className="space-y-6 animate-in fade-in">
-              <h3 className="font-serif text-2xl text-[#F6F1E8]">Gestion des Expéditions & Commandes</h3>
-              <div className="rounded-3xl bg-[#20271E]/40 border border-[#C7A66A]/20 p-6 backdrop-blur-xl overflow-x-auto">
+              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Gestion des Expéditions & Commandes</h3>
+              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
                 <table className="w-full text-xs text-left">
                   <thead>
-                    <tr className="text-[#89877F] uppercase tracking-wider border-b border-white/5 pb-2">
+                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
                       <th className="pb-3">N° Commande</th>
                       <th className="pb-3">Client & Contact</th>
                       <th className="pb-3">Articles</th>
@@ -338,19 +333,19 @@ export default function AdminDashboardPage() {
                       <th className="pb-3">Action Statut</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-[#541B28]/5">
                     {orders.map((ord) => (
-                      <tr key={ord.id} className="hover:bg-white/5">
-                        <td className="py-3 font-mono font-bold text-[#C7A66A]">{ord.number}</td>
+                      <tr key={ord.id} className="hover:bg-[#FAF7F2]">
+                        <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
                         <td className="py-3">
-                          <span className="text-[#F6F1E8] font-medium block">{ord.customer}</span>
-                          <span className="text-[10px] text-[#89877F]">{ord.phone} &bull; {ord.city}</span>
+                          <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
+                          <span className="text-[10px] text-[#756B6D]">{ord.phone} &bull; {ord.city}</span>
                         </td>
-                        <td className="py-3 text-[#E9DFCE]">{ord.items}</td>
-                        <td className="py-3 text-[#89877F]">{ord.paymentMethod}</td>
-                        <td className="py-3 font-serif text-[#C7A66A] font-semibold">{formatTND(ord.totalTND)}</td>
+                        <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
+                        <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>
+                        <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(ord.totalTND)}</td>
                         <td className="py-3">
-                          <span className="px-2.5 py-0.5 rounded-full bg-[#343B2B] text-emerald-300 text-[10px]">
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
                             {ord.status}
                           </span>
                         </td>
@@ -358,7 +353,7 @@ export default function AdminDashboardPage() {
                           <select
                             value={ord.status}
                             onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
-                            className="bg-[#171715] border border-[#C7A66A]/30 rounded-lg px-2 py-1 text-xs text-[#F6F1E8]"
+                            className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1 text-xs text-[#23181A] font-medium"
                           >
                             <option value="En Attente">En Attente</option>
                             <option value="Confirmée">Confirmée</option>
@@ -379,15 +374,15 @@ export default function AdminDashboardPage() {
           {/* TAB 4: RESELLERS VALIDATION */}
           {activeTab === "resellers" && (
             <div className="space-y-6 animate-in fade-in">
-              <h3 className="font-serif text-2xl text-[#F6F1E8]">Validation des Ventes & Commissions Revendeurs</h3>
-              <p className="text-xs text-[#89877F]">
+              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Validation des Ventes & Commissions Revendeurs</h3>
+              <p className="text-xs text-[#756B6D]">
                 Règle: Les commissions ne sont payables qu&apos;après validation administrative de la preuve d&apos;achat et contrôle d&apos;absence de doublon.
               </p>
 
-              <div className="rounded-3xl bg-[#20271E]/40 border border-[#C7A66A]/20 p-6 backdrop-blur-xl overflow-x-auto">
+              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
                 <table className="w-full text-xs text-left">
                   <thead>
-                    <tr className="text-[#89877F] uppercase tracking-wider border-b border-white/5 pb-2">
+                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
                       <th className="pb-3">Revendeur</th>
                       <th className="pb-3">Rang</th>
                       <th className="pb-3">Réf Commande</th>
@@ -397,25 +392,25 @@ export default function AdminDashboardPage() {
                       <th className="pb-3">Décision</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-[#541B28]/5">
                     {resellerSales.map((sale) => (
-                      <tr key={sale.id} className="hover:bg-white/5">
-                        <td className="py-3 text-[#F6F1E8] font-medium">{sale.resellerName}</td>
+                      <tr key={sale.id} className="hover:bg-[#FAF7F2]">
+                        <td className="py-3 text-[#23181A] font-semibold">{sale.resellerName}</td>
                         <td className="py-3">
-                          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 text-[10px]">
+                          <span className="px-2 py-0.5 rounded bg-[#FAF7F2] text-[#434B36] border border-[#434B36]/30 text-[10px] font-bold">
                             {sale.rank}
                           </span>
                         </td>
-                        <td className="py-3 font-mono text-[#C7A66A]">{sale.orderRef}</td>
-                        <td className="py-3 text-[#E9DFCE]">{sale.product}</td>
-                        <td className="py-3 font-serif text-[#C7A66A] font-semibold">{formatTND(sale.commissionTND)}</td>
+                        <td className="py-3 font-mono text-[#541B28] font-bold">{sale.orderRef}</td>
+                        <td className="py-3 text-[#5A4B4E]">{sale.product}</td>
+                        <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(sale.commissionTND)}</td>
                         <td className="py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] ${
+                          <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
                             sale.status === "Approuvée"
-                              ? "bg-emerald-950 text-emerald-300"
+                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                               : sale.status === "Rejetée"
-                              ? "bg-rose-950 text-rose-300"
-                              : "bg-amber-950 text-amber-300"
+                              ? "bg-rose-50 text-rose-800 border border-rose-200"
+                              : "bg-amber-50 text-amber-800 border border-amber-200"
                           }`}>
                             {sale.status}
                           </span>
@@ -425,21 +420,21 @@ export default function AdminDashboardPage() {
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleApproveResellerSale(sale.id)}
-                                className="p-1 rounded bg-emerald-900/60 hover:bg-emerald-600 text-emerald-200"
+                                className="p-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800"
                                 title="Approuver la commission"
                               >
                                 <Check className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleRejectResellerSale(sale.id)}
-                                className="p-1 rounded bg-rose-900/60 hover:bg-rose-600 text-rose-200"
+                                className="p-1 rounded bg-rose-100 hover:bg-rose-200 text-rose-800"
                                 title="Rejeter"
                               >
                                 <X className="w-4 h-4" />
                               </button>
                             </div>
                           ) : (
-                            <span className="text-[10px] text-[#89877F]">Traité</span>
+                            <span className="text-[10px] text-[#756B6D]">Traité</span>
                           )}
                         </td>
                       </tr>
@@ -453,21 +448,21 @@ export default function AdminDashboardPage() {
           {/* TAB 5: LUCK & WHEEL CONFIG */}
           {activeTab === "luck" && (
             <div className="space-y-6 animate-in fade-in">
-              <h3 className="font-serif text-2xl text-[#F6F1E8]">Configuration des Vagues de la Roue du Destin</h3>
+              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Configuration des Vagues de la Roue du Destin</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { tier: "Normal Wave", range: "1 à 100 Luck", topReward: "50 à 100 Points Fidélité / Échantillon 5ml", bg: "bg-[#20271E]" },
-                  { tier: "Fire Wave", range: "101 à 1,000 Luck", topReward: "Coupon -20% / Bon 30 TND / Coffret 3 Échantillons", bg: "bg-[#542B32]/30" },
-                  { tier: "Royal Wave", range: "1,001 à 7,776 Luck", topReward: "Flacon 50ml Offert / Bon 80 TND Royal / Coupon -35%", bg: "bg-[#343B2B]/40" },
-                  { tier: "Admin Wave", range: "7,777 Luck (Cap)", topReward: "Trésor Lévania : 2 Flacons 100ml + Coffret Cylindrique Doré", bg: "bg-amber-950/40" },
+                  { tier: "Normal Wave", range: "1 à 100 Luck", topReward: "50 à 100 Points Fidélité / Échantillon 5ml", bg: "bg-white" },
+                  { tier: "Fire Wave", range: "101 à 1,000 Luck", topReward: "Coupon -20% / Bon 30 TND / Coffret 3 Échantillons", bg: "bg-rose-50/40" },
+                  { tier: "Royal Wave", range: "1,001 à 7,776 Luck", topReward: "Flacon 50ml Offert / Bon 80 TND Royal / Coupon -35%", bg: "bg-amber-50/40" },
+                  { tier: "Admin Wave", range: "7,777 Luck (Cap)", topReward: "Trésor Lévania : 2 Flacons 100ml + Coffret Cylindrique Doré", bg: "bg-gradient-to-r from-[#3B121C] to-[#541B28] text-[#FAF7F2]" },
                 ].map((t, idx) => (
-                  <div key={idx} className={`p-6 rounded-3xl border border-[#C7A66A]/20 ${t.bg}`}>
-                    <span className="text-xs uppercase tracking-widest text-[#C7A66A] font-bold block mb-1">
+                  <div key={idx} className={`p-6 rounded-3xl border border-[#541B28]/20 shadow-sm ${t.bg}`}>
+                    <span className="text-xs uppercase tracking-widest font-bold block mb-1">
                       {t.tier}
                     </span>
-                    <h4 className="font-serif text-xl text-[#F6F1E8] mb-2">{t.range}</h4>
-                    <p className="text-xs text-[#89877F] mb-4">Lot phare : <strong className="text-[#E9DFCE]">{t.topReward}</strong></p>
-                    <span className="text-[10px] text-emerald-400">Poids probabiliste verrouillé côté serveur</span>
+                    <h4 className="font-serif text-xl font-semibold mb-2">{t.range}</h4>
+                    <p className="text-xs opacity-80 mb-4">Lot phare : <strong>{t.topReward}</strong></p>
+                    <span className="text-[10px] font-bold text-emerald-600">Poids probabiliste verrouillé côté serveur</span>
                   </div>
                 ))}
               </div>
@@ -477,19 +472,19 @@ export default function AdminDashboardPage() {
           {/* TAB 6: QR CODE MANAGER */}
           {activeTab === "qr" && (
             <div className="space-y-6 animate-in fade-in">
-              <h3 className="font-serif text-2xl text-[#F6F1E8]">Gestion des QR Codes de Traçabilité Flacons</h3>
-              <p className="text-xs text-[#89877F]">
+              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Gestion des QR Codes de Traçabilité Flacons</h3>
+              <p className="text-xs text-[#756B6D]">
                 Générez des jetons cryptographiques uniques pour chaque flacon scellé et associez-les au lot de mise en bouteille.
               </p>
 
-              <div className="p-6 rounded-3xl bg-[#20271E]/60 border border-[#C7A66A]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <h4 className="font-serif text-lg text-[#F6F1E8]">Générer un Nouveau Lot de QR Codes</h4>
-                  <p className="text-xs text-[#89877F]">Création par paquet de 50 jetons avec export planche imprimable.</p>
+                  <h4 className="font-serif text-lg text-[#23181A] font-semibold">Générer un Nouveau Lot de QR Codes</h4>
+                  <p className="text-xs text-[#756B6D]">Création par paquet de 50 jetons avec export planche imprimable.</p>
                 </div>
                 <button
                   onClick={() => showToast("Lot de 50 QR Codes généré", "Export PDF prêt pour l'atelier", "success")}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-bold uppercase tracking-wider hover:opacity-95"
+                  className="px-6 py-2.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
                 >
                   Générer le Lot
                 </button>

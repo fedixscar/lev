@@ -161,10 +161,10 @@ export function ComposeBox() {
               className={cn(
                 "w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all",
                 currentStep === s.step
-                  ? "bg-[#C7A66A] text-[#171715] shadow-lg shadow-[#C7A66A]/30 scale-110"
+                  ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25 scale-110"
                   : currentStep > s.step
-                  ? "bg-[#343B2B] text-[#C7A66A] border border-[#C7A66A]/40"
-                  : "bg-[#20271E] text-[#89877F] border border-neutral-700"
+                  ? "bg-[#FAF7F2] text-[#541B28] border border-[#541B28]/40"
+                  : "bg-[#F3ECE1] text-[#756B6D] border border-[#541B28]/15"
               )}
             >
               {currentStep > s.step ? <Check className="w-4 h-4" /> : s.step}
@@ -172,7 +172,7 @@ export function ComposeBox() {
             <span
               className={cn(
                 "text-[11px] mt-1.5 transition-colors",
-                currentStep === s.step ? "text-[#C7A66A] font-semibold" : "text-[#89877F]"
+                currentStep === s.step ? "text-[#541B28] font-bold" : "text-[#756B6D]"
               )}
             >
               {s.label}
@@ -186,11 +186,11 @@ export function ComposeBox() {
         <div className="lg:col-span-2 space-y-6">
           {/* STEP 1: Select Box Format */}
           {currentStep === 1 && (
-            <div className="rounded-3xl bg-[#171715]/90 border border-[#C7A66A]/20 p-6 sm:p-8 backdrop-blur-xl">
-              <h2 className="font-serif text-2xl text-gold-gradient font-light mb-2">
+            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 shadow-xl">
+              <h2 className="font-serif text-2xl text-burgundy-gradient font-light mb-2">
                 1. Choisissez Votre Format d&apos;Écrin
               </h2>
-              <p className="text-xs text-[#89877F] mb-6">
+              <p className="text-xs text-[#5A4B4E] mb-6 leading-relaxed">
                 Nos boîtes cylindriques et coffrets rigides sont réalisés artisanalement en carton recyclé noble et finitions dorées.
               </p>
 
@@ -202,23 +202,23 @@ export function ComposeBox() {
                     className={cn(
                       "p-5 rounded-2xl border transition-all cursor-pointer flex gap-5 items-center",
                       selectedBox.id === b.id
-                        ? "bg-[#C7A66A]/10 border-[#C7A66A] shadow-xl"
-                        : "bg-[#20271E]/40 border-[#C7A66A]/15 hover:border-[#C7A66A]/40"
+                        ? "bg-[#541B28]/8 border-[#541B28] shadow-md"
+                        : "bg-[#FAF7F2] border-[#541B28]/15 hover:border-[#541B28]"
                     )}
                   >
-                    <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-black/40 shrink-0 border border-[#C7A66A]/20">
+                    <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-white shrink-0 border border-[#541B28]/15 shadow-sm">
                       <Image src={b.image} alt={b.name} fill className="object-cover" />
                     </div>
 
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-serif text-lg text-[#F6F1E8]">{b.name}</h4>
-                        <span className="text-xs text-[#C7A66A] font-serif font-medium">
+                        <h4 className="font-serif text-lg text-[#23181A] font-semibold">{b.name}</h4>
+                        <span className="text-xs text-[#541B28] font-serif font-bold">
                           +{formatTND(b.priceTND)}
                         </span>
                       </div>
-                      <p className="text-xs text-[#89877F] mt-1">{b.description}</p>
-                      <span className="inline-block mt-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#C7A66A]/15 text-[#C7A66A]">
+                      <p className="text-xs text-[#756B6D] mt-1">{b.description}</p>
+                      <span className="inline-block mt-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold">
                         Accueille jusqu&apos;à {b.capacity} parfum(s)
                       </span>
                     </div>
@@ -227,8 +227,8 @@ export function ComposeBox() {
                       className={cn(
                         "w-6 h-6 rounded-full border flex items-center justify-center shrink-0 ml-2",
                         selectedBox.id === b.id
-                          ? "border-[#C7A66A] bg-[#C7A66A] text-[#171715]"
-                          : "border-neutral-700"
+                          ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2]"
+                          : "border-[#756B6D]/30"
                       )}
                     >
                       {selectedBox.id === b.id && <Check className="w-3.5 h-3.5" />}
@@ -240,10 +240,10 @@ export function ComposeBox() {
               <div className="mt-8 flex justify-end">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:opacity-95"
+                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors shadow-md"
                 >
                   <span>Étape suivante: Flacons</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
                 </button>
               </div>
             </div>
@@ -251,20 +251,19 @@ export function ComposeBox() {
 
           {/* STEP 2: Choose Perfumes */}
           {currentStep === 2 && (
-            <div className="rounded-3xl bg-[#171715]/90 border border-[#C7A66A]/20 p-6 sm:p-8 backdrop-blur-xl">
+            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 shadow-xl">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="font-serif text-2xl text-gold-gradient font-light">
+                <h2 className="font-serif text-2xl text-burgundy-gradient font-light">
                   2. Choisissez Vos Fragrances ({selectedPerfumes.length}/{selectedBox.capacity})
                 </h2>
               </div>
-              <p className="text-xs text-[#89877F] mb-6">
+              <p className="text-xs text-[#5A4B4E] mb-6 leading-relaxed">
                 Sélectionnez jusqu&apos;à {selectedBox.capacity} parfum(s) pour composer votre harmonie.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[480px] overflow-y-auto pr-2">
                 {PRODUCTS.map((prod) => {
                   const isSelected = selectedPerfumes.some((p) => p.product.id === prod.id);
-                  const selectedEntry = selectedPerfumes.find((p) => p.product.id === prod.id);
 
                   return (
                     <div
@@ -272,41 +271,41 @@ export function ComposeBox() {
                       className={cn(
                         "p-3.5 rounded-xl border transition-all flex flex-col justify-between",
                         isSelected
-                          ? "bg-[#C7A66A]/15 border-[#C7A66A]"
-                          : "bg-[#20271E]/40 border-[#C7A66A]/10 hover:border-[#C7A66A]/30"
+                          ? "bg-[#541B28]/8 border-[#541B28] shadow-sm"
+                          : "bg-[#FAF7F2] border-[#541B28]/15 hover:border-[#541B28]"
                       )}
                     >
                       <div className="flex gap-3">
-                        <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-black/40 shrink-0 border border-white/5">
+                        <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-white shrink-0 border border-[#541B28]/15 shadow-sm">
                           <Image src={prod.images.main} alt={prod.name} fill className="object-cover" />
                         </div>
                         <div className="flex-1">
-                          <span className="text-[9px] uppercase tracking-wider text-[#C7A66A]">
+                          <span className="text-[9px] uppercase tracking-wider text-[#541B28] font-bold">
                             {prod.collection}
                           </span>
-                          <h4 className="font-serif text-base text-[#F6F1E8] leading-tight mt-0.5">
+                          <h4 className="font-serif text-base text-[#23181A] leading-tight mt-0.5 font-semibold">
                             {prod.name}
                           </h4>
-                          <span className="text-xs text-[#C7A66A] font-serif block mt-1">
+                          <span className="text-xs text-[#541B28] font-serif font-bold block mt-1">
                             {formatTND(prod.formats[0].priceTND)}
                           </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5">
+                      <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#541B28]/10">
                         <button
                           onClick={() => togglePerfume(prod, "50ml")}
                           className={cn(
-                            "px-3 py-1 rounded text-xs transition-colors",
+                            "px-3 py-1 rounded text-xs transition-colors font-medium",
                             isSelected
-                              ? "bg-rose-900/60 text-rose-200 border border-rose-600/40"
-                              : "bg-[#343B2B] text-[#C7A66A] hover:bg-[#C7A66A] hover:text-[#171715]"
+                              ? "bg-rose-900/10 text-[#541B28] border border-[#541B28]/40"
+                              : "bg-[#541B28] text-[#FAF7F2] hover:bg-[#66182C]"
                           )}
                         >
                           {isSelected ? "Retirer" : "Sélectionner (50ml)"}
                         </button>
                         {isSelected && (
-                          <span className="text-xs text-[#C7A66A] flex items-center gap-1 font-medium">
+                          <span className="text-xs text-[#541B28] flex items-center gap-1 font-bold">
                             <Check className="w-3.5 h-3.5" />
                             <span>Inclus</span>
                           </span>
@@ -320,7 +319,7 @@ export function ComposeBox() {
               <div className="mt-8 flex justify-between">
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="px-4 py-2 rounded-xl border border-[#C7A66A]/30 text-xs text-[#89877F] hover:text-[#F6F1E8] flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Retour</span>
@@ -328,10 +327,10 @@ export function ComposeBox() {
                 <button
                   onClick={() => setCurrentStep(3)}
                   disabled={selectedPerfumes.length === 0}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:opacity-95 disabled:opacity-40"
+                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors disabled:opacity-40 shadow-md"
                 >
                   <span>Étape suivante: Finitions</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
                 </button>
               </div>
             </div>
@@ -339,17 +338,17 @@ export function ComposeBox() {
 
           {/* STEP 3: Accessories & Personalized Message */}
           {currentStep === 3 && (
-            <div className="rounded-3xl bg-[#171715]/90 border border-[#C7A66A]/20 p-6 sm:p-8 backdrop-blur-xl">
-              <h2 className="font-serif text-2xl text-gold-gradient font-light mb-2">
+            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 shadow-xl">
+              <h2 className="font-serif text-2xl text-burgundy-gradient font-light mb-2">
                 3. Finitions Décoratives & Dédicace
               </h2>
-              <p className="text-xs text-[#89877F] mb-6">
+              <p className="text-xs text-[#5A4B4E] mb-6 leading-relaxed">
                 Chaque détail transforme votre coffret en une œuvre d&apos;art mémorable.
               </p>
 
               {/* Accessories Selection */}
               <div className="space-y-3 mb-6">
-                <h4 className="text-xs uppercase tracking-widest text-[#C7A66A] font-semibold">
+                <h4 className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
                   Accessoires d&apos;Élégance
                 </h4>
                 {ACCESSORIES.map((acc) => {
@@ -361,8 +360,8 @@ export function ComposeBox() {
                       className={cn(
                         "p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-colors",
                         isChecked
-                          ? "bg-[#C7A66A]/10 border-[#C7A66A]"
-                          : "bg-[#20271E]/40 border-[#C7A66A]/10 hover:border-[#C7A66A]/30"
+                          ? "bg-[#541B28]/8 border-[#541B28]"
+                          : "bg-[#FAF7F2] border-[#541B28]/15 hover:border-[#541B28]"
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -370,23 +369,23 @@ export function ComposeBox() {
                           className={cn(
                             "w-5 h-5 rounded border flex items-center justify-center text-xs",
                             isChecked
-                              ? "bg-[#C7A66A] border-[#C7A66A] text-[#171715]"
-                              : "border-neutral-700"
+                              ? "bg-[#541B28] border-[#541B28] text-[#FAF7F2]"
+                              : "border-[#756B6D]/30"
                           )}
                         >
                           {isChecked && <Check className="w-3.5 h-3.5" />}
                         </div>
-                        <span className="text-xs text-[#F6F1E8]">{acc.name}</span>
+                        <span className="text-xs text-[#23181A] font-medium">{acc.name}</span>
                       </div>
-                      <span className="text-xs text-[#C7A66A]">+{formatTND(acc.priceTND)}</span>
+                      <span className="text-xs text-[#541B28] font-bold">+{formatTND(acc.priceTND)}</span>
                     </div>
                   );
                 })}
               </div>
 
               {/* Personalized handwritten note */}
-              <div className="space-y-3 pt-4 border-t border-white/5">
-                <h4 className="text-xs uppercase tracking-widest text-[#C7A66A] font-semibold">
+              <div className="space-y-3 pt-4 border-t border-[#541B28]/10">
+                <h4 className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
                   Message Calligraphié Offert
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -395,21 +394,21 @@ export function ComposeBox() {
                     placeholder="Nom du destinataire (ex: Yasmine)"
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
-                    className="bg-[#20271E] border border-[#C7A66A]/20 rounded-xl px-4 py-2.5 text-xs text-[#F6F1E8] placeholder:text-[#89877F] focus:outline-none focus:border-[#C7A66A]"
+                    className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
                   />
                   <input
                     type="text"
                     placeholder="Votre mot tendre (ex: Pour célébrer ton éclat...)"
                     value={customMessage}
                     onChange={(e) => setCustomMessage(e.target.value)}
-                    className="bg-[#20271E] border border-[#C7A66A]/20 rounded-xl px-4 py-2.5 text-xs text-[#F6F1E8] placeholder:text-[#89877F] focus:outline-none focus:border-[#C7A66A]"
+                    className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
                   />
                 </div>
 
                 {customMessage && (
-                  <div className="p-4 rounded-xl bg-[#20271E]/80 border border-[#C7A66A]/30 text-center font-serif italic text-sm text-[#F6F1E8] shadow-inner mt-2">
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/25 text-center font-serif italic text-sm text-[#23181A] shadow-inner mt-2">
                     &laquo; Pour {recipientName || "Vous"} : {customMessage} &raquo;
-                    <span className="block text-[10px] uppercase font-sans text-[#C7A66A] tracking-widest mt-1">
+                    <span className="block text-[10px] uppercase font-sans text-[#541B28] tracking-widest mt-1 font-bold">
                       Imprimé sur papier parchemin doré Lévania
                     </span>
                   </div>
@@ -419,17 +418,17 @@ export function ComposeBox() {
               <div className="mt-8 flex justify-between">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-4 py-2 rounded-xl border border-[#C7A66A]/30 text-xs text-[#89877F] hover:text-[#F6F1E8] flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Retour</span>
                 </button>
                 <button
                   onClick={() => setCurrentStep(4)}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:opacity-95"
+                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors shadow-md"
                 >
                   <span>Voir l&apos;Aperçu Final</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
                 </button>
               </div>
             </div>
@@ -437,25 +436,25 @@ export function ComposeBox() {
 
           {/* STEP 4: Final Preview & Add to Cart */}
           {currentStep === 4 && (
-            <div className="rounded-3xl bg-[#171715]/90 border border-[#C7A66A]/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
-              <h2 className="font-serif text-3xl text-gold-gradient font-light mb-2">
+            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 shadow-xl">
+              <h2 className="font-serif text-3xl text-burgundy-gradient font-light mb-2">
                 4. Aperçu de Votre Création Sur-Mesure
               </h2>
-              <p className="text-xs text-[#89877F] mb-6">
+              <p className="text-xs text-[#5A4B4E] mb-6 leading-relaxed">
                 Votre coffret est prêt à être confectionné avec le plus grand soin par nos artisans.
               </p>
 
-              <div className="p-6 rounded-2xl bg-[#20271E]/60 border border-[#C7A66A]/20 space-y-4">
+              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="relative w-24 h-28 rounded-xl overflow-hidden bg-black/40 border border-[#C7A66A]/30 shrink-0">
+                  <div className="relative w-24 h-28 rounded-xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-sm">
                     <Image src={selectedBox.image} alt={selectedBox.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl text-[#F6F1E8]">{selectedBox.name}</h3>
-                    <p className="text-xs text-[#89877F]">{selectedBox.description}</p>
+                    <h3 className="font-serif text-xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
+                    <p className="text-xs text-[#756B6D]">{selectedBox.description}</p>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {selectedPerfumes.map((p, i) => (
-                        <span key={i} className="text-xs px-2.5 py-1 rounded bg-[#C7A66A]/20 text-[#C7A66A] font-medium border border-[#C7A66A]/30">
+                        <span key={i} className="text-xs px-2.5 py-1 rounded bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
                           {p.product.name} ({p.size})
                         </span>
                       ))}
@@ -464,7 +463,7 @@ export function ComposeBox() {
                 </div>
 
                 {customMessage && (
-                  <div className="p-3 rounded-xl bg-black/40 border border-[#C7A66A]/20 text-center font-serif italic text-xs text-[#E9DFCE]">
+                  <div className="p-3 rounded-xl bg-white border border-[#541B28]/15 text-center font-serif italic text-xs text-[#23181A]">
                     &laquo; Pour {recipientName || "Vous"} : {customMessage} &raquo;
                   </div>
                 )}
@@ -473,16 +472,16 @@ export function ComposeBox() {
               <div className="mt-8 flex justify-between items-center">
                 <button
                   onClick={() => setCurrentStep(3)}
-                  className="px-4 py-2 rounded-xl border border-[#C7A66A]/30 text-xs text-[#89877F] hover:text-[#F6F1E8] flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Modifier</span>
                 </button>
                 <button
                   onClick={handleAddBoxToCart}
-                  className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#C7A66A] via-[#E3D1A9] to-[#C7A66A] text-[#171715] text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#C7A66A]/20 hover:opacity-95"
+                  className="px-8 py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#541B28]/25 transition-all"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 text-[#DFC68B]" />
                   <span>Ajouter au Panier ({formatTND(totalPriceTND)})</span>
                 </button>
               </div>
@@ -491,26 +490,26 @@ export function ComposeBox() {
         </div>
 
         {/* Right Col: Live Summary & Price Breakdown */}
-        <div className="rounded-3xl bg-[#20271E]/80 border border-[#C7A66A]/20 p-6 backdrop-blur-xl h-fit sticky top-28 space-y-5">
-          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#C7A66A] font-semibold pb-3 border-b border-white/5">
+        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 shadow-xl h-fit sticky top-28 space-y-5">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#541B28] font-bold pb-3 border-b border-[#541B28]/15">
             <Gift className="w-4 h-4" />
             <span>Récapitulatif Coffret</span>
           </div>
 
-          <div className="space-y-3 text-xs text-[#E9DFCE]/80">
+          <div className="space-y-3 text-xs text-[#5A4B4E]">
             <div className="flex justify-between items-center">
               <span>{selectedBox.name}</span>
-              <span className="text-[#F6F1E8]">{formatTND(boxBasePrice)}</span>
+              <span className="text-[#23181A] font-medium">{formatTND(boxBasePrice)}</span>
             </div>
 
             {selectedPerfumes.map((p, idx) => {
               const fmt = p.product.formats.find((f) => f.size === p.size) || p.product.formats[0];
               return (
-                <div key={idx} className="flex justify-between items-center pl-2 border-l border-[#C7A66A]/30">
-                  <span className="text-[#C7A66A]">
+                <div key={idx} className="flex justify-between items-center pl-2 border-l-2 border-[#541B28]">
+                  <span className="text-[#541B28] font-medium">
                     {p.product.name} ({p.size})
                   </span>
-                  <span className="text-[#F6F1E8]">{formatTND(fmt.priceTND)}</span>
+                  <span className="text-[#23181A] font-semibold">{formatTND(fmt.priceTND)}</span>
                 </div>
               );
             })}
@@ -519,24 +518,24 @@ export function ComposeBox() {
               const acc = ACCESSORIES.find((a) => a.id === accId);
               if (!acc) return null;
               return (
-                <div key={accId} className="flex justify-between items-center pl-2 border-l border-white/10 text-[#89877F]">
+                <div key={accId} className="flex justify-between items-center pl-2 border-l-2 border-[#C7A66A] text-[#756B6D]">
                   <span>{acc.name}</span>
-                  <span className="text-[#F6F1E8]">+{formatTND(acc.priceTND)}</span>
+                  <span className="text-[#23181A]">+{formatTND(acc.priceTND)}</span>
                 </div>
               );
             })}
 
-            <div className="pt-3 border-t border-[#C7A66A]/20 flex justify-between items-baseline text-base font-serif text-[#F6F1E8]">
+            <div className="pt-3 border-t border-[#541B28]/20 flex justify-between items-baseline text-base font-serif text-[#23181A]">
               <span>Total du Coffret</span>
-              <span className="text-[#C7A66A] font-semibold text-xl">
+              <span className="text-[#541B28] font-bold text-xl">
                 {formatTND(totalPriceTND)}
               </span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#171715] border border-[#C7A66A]/20 text-[11px] text-[#89877F] space-y-1">
-            <div className="flex items-center gap-1.5 text-[#C7A66A]">
-              <Sparkles className="w-3.5 h-3.5" />
+          <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 text-[11px] text-[#756B6D] space-y-1">
+            <div className="flex items-center gap-1.5 text-[#541B28] font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-[#C7A66A]" />
               <span>Garantie Haute Parfumerie</span>
             </div>
             <p>Emballage soigné, livraison assurée sous 24h à 48h partout en Tunisie.</p>

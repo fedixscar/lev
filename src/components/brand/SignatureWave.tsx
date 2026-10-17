@@ -18,28 +18,28 @@ export function SignatureWave({
 }: SignatureWaveProps) {
   const waveId = useId().replace(/:/g, "");
 
-  // Palettes per expression
+  // Palettes tailored to the authentic Ivory & Imperial Burgundy seal
   const palettes = {
     signature: {
-      gradientStart: "#343B2B", // Deep Olive
+      gradientStart: "#541B28", // Imperial Burgundy (from Logo)
       gradientMid: "#C7A66A",   // Champagne Gold
-      gradientEnd: "#542B32",   // Burgundy
-      glow: "rgba(199, 166, 106, 0.25)",
+      gradientEnd: "#852538",   // Rich Wine
+      glow: "rgba(84, 27, 40, 0.15)",
       particles: "#C7A66A",
     },
     soft: {
-      gradientStart: "#E9DFCE", // Cream
-      gradientMid: "#F6F1E8",   // Warm Ivory
-      gradientEnd: "#D8A8B0",   // Muted Rose
-      glow: "rgba(246, 241, 232, 0.35)",
-      particles: "#F6F1E8",
+      gradientStart: "#EAE1D2", // Cream
+      gradientMid: "#C7A66A",   // Champagne Gold
+      gradientEnd: "#D8A8B0",   // Soft Rosewater
+      glow: "rgba(199, 166, 106, 0.2)",
+      particles: "#C7A66A",
     },
     intense: {
-      gradientStart: "#171715", // Charcoal / Black
-      gradientMid: "#20271E",   // Dark Forest
+      gradientStart: "#3B121C", // Dark Velvet Wine
+      gradientMid: "#541B28",   // Burgundy
       gradientEnd: "#9E7D42",   // Metallic Gold
-      glow: "rgba(84, 43, 50, 0.35)",
-      particles: "#C7A66A",
+      glow: "rgba(59, 18, 28, 0.25)",
+      particles: "#541B28",
     },
   };
 

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
-import { Sparkles, Package, ShieldCheck, Check, ShoppingBag, Eye } from "lucide-react";
+import { Package, ShieldCheck, Check, ShoppingBag } from "lucide-react";
 import { formatTND } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -23,7 +23,7 @@ interface MysteryBoxTier {
 const MYSTERY_BOXES: MysteryBoxTier[] = [
   {
     id: "mystery-bronze",
-    name: "Mystery Box &bull; Initiation Olfactive",
+    name: "Mystery Box \u2022 Initiation Olfactive",
     priceTND: 150.0,
     guaranteedMinValueTND: 195.0,
     description: "Un élixir 50ml garanti au hasard parmi nos bestsellers + 2 échantillons découverte 5ml scellés dans l'écrin cylindrique.",
@@ -33,7 +33,7 @@ const MYSTERY_BOXES: MysteryBoxTier[] = [
   },
   {
     id: "mystery-gold",
-    name: "Mystery Box &bull; Or Impérial",
+    name: "Mystery Box \u2022 Or Impérial",
     priceTND: 250.0,
     guaranteedMinValueTND: 350.0,
     description: "Au minimum un grand flacon 100ml de la Collection Signature ou Sombre & Boisée + un accessoire précieux (Ruban, Écrin double).",
@@ -43,7 +43,7 @@ const MYSTERY_BOXES: MysteryBoxTier[] = [
   },
   {
     id: "mystery-royal",
-    name: "Mystery Box &bull; Grand Sceau Royal",
+    name: "Mystery Box \u2022 Grand Sceau Royal",
     priceTND: 420.0,
     guaranteedMinValueTND: 580.0,
     description: "Le sommet de la surprise de luxe : 2 Flacons garantis (1x 100ml + 1x 50ml) + ensemble d'échantillons complet de la maison.",
@@ -72,34 +72,34 @@ export default function MysteryBoxPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#171715] text-[#F6F1E8]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
       <Navbar />
 
       <main className="flex-1 pt-28 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C7A66A]/15 border border-[#C7A66A]/30 text-xs text-[#C7A66A] uppercase tracking-widest font-semibold mb-3">
-              <Package className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-xs text-[#541B28] uppercase tracking-widest font-bold mb-3">
+              <Package className="w-3.5 h-3.5 text-[#541B28]" />
               <span>Surprise de Prestige & Transparence</span>
             </div>
-            <h1 className="font-serif text-3xl sm:text-5xl text-gold-gradient font-light mt-1 mb-3">
+            <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mt-1 mb-3">
               Les Mystery Boxes Lévania
             </h1>
-            <p className="text-xs sm:text-sm text-[#89877F]">
+            <p className="text-xs sm:text-sm text-[#5A4B4E] leading-relaxed">
               Le frisson du hasard allié à la rigueur de la haute parfumerie. Chaque boîte garantit une valeur marchande strictement supérieure au prix d&apos;achat.
             </p>
           </div>
 
           {/* Ethics & Guarantee Notice */}
-          <div className="p-4 rounded-2xl bg-[#20271E]/60 border border-[#C7A66A]/20 mb-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm mb-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
-              <span className="text-[#E9DFCE]">
+              <ShieldCheck className="w-5 h-5 text-[#434B36] shrink-0" />
+              <span className="text-[#23181A]">
                 <strong>Transparence Totale :</strong> Aucun produit périmé ni générique. Exclusivement des flacons officiels Lévania neufs et scellés.
               </span>
             </div>
-            <span className="text-[#C7A66A] font-medium shrink-0">Valeur Minimum Garantie</span>
+            <span className="text-[#541B28] font-bold shrink-0">Valeur Minimum Garantie</span>
           </div>
 
           {/* Mystery Box Cards Grid */}
@@ -107,29 +107,29 @@ export default function MysteryBoxPage() {
             {MYSTERY_BOXES.map((box) => (
               <div
                 key={box.id}
-                className="rounded-3xl bg-[#171715]/90 border border-[#C7A66A]/20 p-6 flex flex-col justify-between hover:border-[#C7A66A]/50 transition-all shadow-xl group"
+                className="rounded-3xl bg-white border border-[#541B28]/20 p-6 flex flex-col justify-between hover:border-[#541B28] transition-all shadow-sm hover:shadow-xl group"
               >
                 <div>
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 border border-[#C7A66A]/20 mb-5">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-[#541B28]/15 shadow-sm mb-5">
                     <Image src={box.image} alt={box.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <span className="absolute top-3 right-3 text-[10px] px-2.5 py-1 rounded-full bg-[#20271E]/90 text-emerald-300 border border-emerald-500/40">
+                    <span className="absolute top-3 right-3 text-[10px] px-2.5 py-1 rounded-full bg-white/95 text-[#541B28] border border-[#541B28]/25 font-bold shadow-sm">
                       Reste {box.stockRemaining} ex.
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-xl sm:text-2xl text-[#F6F1E8] group-hover:text-gold-gradient transition-colors">
+                  <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] group-hover:text-[#541B28] transition-colors font-semibold">
                     {box.name}
                   </h3>
-                  <p className="text-xs text-[#89877F] mt-2 leading-relaxed">{box.description}</p>
+                  <p className="text-xs text-[#756B6D] mt-2 leading-relaxed">{box.description}</p>
 
-                  <div className="mt-5 p-3 rounded-xl bg-[#20271E]/60 border border-[#C7A66A]/10">
-                    <span className="text-[10px] uppercase tracking-wider text-[#C7A66A] font-semibold block mb-2">
+                  <div className="mt-5 p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/10">
+                    <span className="text-[10px] uppercase tracking-wider text-[#541B28] font-bold block mb-2">
                       Contenus Possibles :
                     </span>
-                    <ul className="space-y-1 text-xs text-[#E9DFCE]/80">
+                    <ul className="space-y-1.5 text-xs text-[#5A4B4E]">
                       {box.possibleContents.map((c, i) => (
                         <li key={i} className="flex items-start gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#C7A66A] shrink-0 mt-0.5" />
+                          <Check className="w-3.5 h-3.5 text-[#541B28] shrink-0 mt-0.5" />
                           <span>{c}</span>
                         </li>
                       ))}
@@ -137,17 +137,17 @@ export default function MysteryBoxPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#C7A66A]/15">
+                <div className="mt-6 pt-4 border-t border-[#541B28]/15">
                   <div className="flex items-baseline justify-between mb-4">
                     <div>
-                      <span className="text-[11px] text-[#89877F] block">Prix du Coffret</span>
-                      <span className="font-serif text-2xl text-[#C7A66A] font-semibold">
+                      <span className="text-[11px] text-[#756B6D] block">Prix du Coffret</span>
+                      <span className="font-serif text-2xl text-[#541B28] font-bold">
                         {formatTND(box.priceTND)}
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-[#89877F] block">Valeur Garantie Min.</span>
-                      <span className="text-xs text-emerald-400 font-medium">
+                      <span className="text-[10px] text-[#756B6D] block">Valeur Garantie Min.</span>
+                      <span className="text-xs text-[#434B36] font-bold">
                         {formatTND(box.guaranteedMinValueTND)}
                       </span>
                     </div>
@@ -155,9 +155,9 @@ export default function MysteryBoxPage() {
 
                   <button
                     onClick={() => handleAddMysteryBox(box)}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#9E7D42] text-[#171715] text-xs font-bold uppercase tracking-wider hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center justify-center gap-2"
                   >
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingBag className="w-4 h-4 text-[#DFC68B]" />
                     <span>Tenter la Surprise</span>
                   </button>
                 </div>

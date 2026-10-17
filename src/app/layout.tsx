@@ -40,9 +40,9 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${cormorant.variable} ${inter.variable} h-full antialiased dark`}
+      className={`${cormorant.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#171715] text-[#F6F1E8] font-sans selection:bg-[#C7A66A] selection:text-[#171715]">
+      <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#23181A] font-sans selection:bg-[#541B28] selection:text-[#FAF7F2]">
         <AppProviders>
           {children}
           <AiConciergeModal />
