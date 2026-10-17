@@ -17,6 +17,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useLoyalty } from "@/context/LoyaltyContext";
@@ -229,6 +230,11 @@ export function Navbar() {
             </div>
           </div>
         </div>
+
+        {/* Dynamic Gold Wave Accent Line when scrolled */}
+        {isScrolled && (
+          <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#C7A66A]/80 to-transparent pointer-events-none" />
+        )}
       </header>
 
       {/* Cart Drawer */}
@@ -328,8 +334,11 @@ export function Navbar() {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-[#541B28]/10 text-xs text-[#756B6D] text-center">
-              LÉVANIA PARFUMS &bull; Haute Parfumerie Tunisienne
+            <div className="pt-6 border-t border-[#541B28]/10 flex flex-col items-center gap-2">
+              <WaveMonogram size="sm" variant="gold" withSeal={false} />
+              <div className="text-[11px] text-[#756B6D] text-center tracking-wider">
+                LÉVANIA PARFUMS &bull; Haute Parfumerie Tunisienne
+              </div>
             </div>
           </div>
         </div>

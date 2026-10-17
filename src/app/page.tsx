@@ -17,6 +17,7 @@ import {
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { SignatureWave } from "@/components/brand/SignatureWave";
+import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveExperiencePavilion } from "@/components/brand/WaveExperiencePavilion";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { HeroFragranceStage } from "@/components/brand/HeroFragranceStage";
@@ -227,9 +228,17 @@ export default function HomePage() {
         {/* ========================================================
             6. WHEEL OF CHANCE & LUCK TEASER
             ======================================================== */}
-        <section className="py-20 bg-gradient-to-r from-[#3B121C] via-[#541B28] to-[#3B121C] text-[#FAF7F2] border-t border-[#C7A66A]/30 relative shadow-inner">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-20 bg-gradient-to-r from-[#3B121C] via-[#541B28] to-[#3B121C] text-[#FAF7F2] border-t border-[#C7A66A]/30 relative shadow-inner overflow-hidden">
+          {/* Ambient Liquid Wave Atmosphere in Section 6 */}
+          <div className="absolute inset-0 opacity-25 pointer-events-none">
+            <WaveCanvas expression="intense" interactive={false} height="100%" />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-12">
+              <div className="flex justify-center mb-3">
+                <WaveMonogram size="md" variant="gold" withSeal />
+              </div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C7A66A]/20 border border-[#C7A66A]/40 text-xs text-[#DFC68B] uppercase tracking-widest font-semibold mb-3">
                 <Flame className="w-3.5 h-3.5 text-[#DFC68B]" />
                 <span>Gamification & Récompenses</span>

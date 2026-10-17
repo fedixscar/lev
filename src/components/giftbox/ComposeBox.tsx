@@ -8,6 +8,8 @@ import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { WaveCanvas } from "@/components/brand/WaveCanvas";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
 interface BoxType {
   id: string;
@@ -105,6 +107,25 @@ export function ComposeBox() {
   }, 0);
 
   const totalPriceTND = boxBasePrice + perfumesPrice + accessoriesPrice;
+
+  const boxWaveExpression: "signature" | "soft" | "intense" = React.useMemo(() => {
+    if (selectedPerfumes.length === 0) return "signature";
+    const softCount = selectedPerfumes.filter(
+      (p) =>
+        p.product.collectionSlug === "soyeuse" ||
+        p.product.fragranceFamily === "Floral" ||
+        p.product.fragranceFamily === "Citrus"
+    ).length;
+    const intenseCount = selectedPerfumes.filter(
+      (p) =>
+        p.product.collectionSlug === "intense" ||
+        p.product.fragranceFamily === "Woody" ||
+        p.product.fragranceFamily === "Amber"
+    ).length;
+    if (softCount > intenseCount) return "soft";
+    if (intenseCount > softCount) return "intense";
+    return "signature";
+  }, [selectedPerfumes]);
 
   const handleAddBoxToCart = () => {
     if (selectedPerfumes.length === 0) {
@@ -444,17 +465,24 @@ export function ComposeBox() {
                 Votre coffret est prêt à être confectionné avec le plus grand soin par nos artisans.
               </p>
 
-              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4">
+              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4 relative overflow-hidden">
+                <div className="absolute top-4 right-4 opacity-20 pointer-events-none">
+                  <WaveMonogram size="lg" variant="gold" withSeal={false} />
+                </div>
+
                 <div className="flex items-center gap-4">
                   <div className="relative w-24 h-28 rounded-xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-sm">
                     <Image src={selectedBox.image} alt={selectedBox.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
-                    <p className="text-xs text-[#756B6D]">{selectedBox.description}</p>
-                    <div className="flex flex-wrap gap-1 mt-2">
+                    <div className="flex items-center gap-2">
+                      <WaveMonogram size="sm" variant="burgundy" withSeal />
+                      <h3 className="font-serif text-xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
+                    </div>
+                    <p className="text-xs text-[#756B6D] mt-1">{selectedBox.description}</p>
+                    <div className="flex flex-wrap gap-1 mt-2.5">
                       {selectedPerfumes.map((p, i) => (
-                        <span key={i} className="text-xs px-2.5 py-1 rounded bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
+                        <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
                           {p.product.name} ({p.size})
                         </span>
                       ))}
@@ -463,8 +491,11 @@ export function ComposeBox() {
                 </div>
 
                 {customMessage && (
-                  <div className="p-3 rounded-xl bg-white border border-[#541B28]/15 text-center font-serif italic text-xs text-[#23181A]">
+                  <div className="p-4 rounded-xl bg-white border border-[#541B28]/20 text-center font-serif italic text-sm text-[#23181A] shadow-inner">
                     &laquo; Pour {recipientName || "Vous"} : {customMessage} &raquo;
+                    <span className="block text-[10px] uppercase font-sans text-[#541B28] tracking-widest mt-1 font-bold">
+                      Scellé au cachet de cire monogrammé Lévania
+                    </span>
                   </div>
                 )}
               </div>
@@ -491,9 +522,12 @@ export function ComposeBox() {
 
         {/* Right Col: Live Summary & Price Breakdown */}
         <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 shadow-xl h-fit sticky top-28 space-y-5">
-          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#541B28] font-bold pb-3 border-b border-[#541B28]/15">
-            <Gift className="w-4 h-4" />
-            <span>Récapitulatif Coffret</span>
+          <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/15">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#541B28] font-bold">
+              <Gift className="w-4 h-4" />
+              <span>Récapitulatif Coffret</span>
+            </div>
+            <WaveMonogram size="sm" variant="gold" withSeal={false} />
           </div>
 
           <div className="space-y-3 text-xs text-[#5A4B4E]">
@@ -530,6 +564,29 @@ export function ComposeBox() {
               <span className="text-[#541B28] font-bold text-xl">
                 {formatTND(totalPriceTND)}
               </span>
+            </div>
+          </div>
+
+          {/* Sillage Ondulatoire du Coffret */}
+          <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-2">
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-[#541B28] font-bold">
+              <span>Onde du Coffret</span>
+              <span className="text-[#434B36]">
+                {boxWaveExpression === "soft"
+                  ? "Harmonie Soyeuse"
+                  : boxWaveExpression === "intense"
+                  ? "Harmonie Sombre"
+                  : "Harmonie Signature"}
+              </span>
+            </div>
+
+            <div className="h-16 rounded-xl overflow-hidden bg-white/80 border border-[#541B28]/10 relative">
+              <WaveCanvas
+                expression={boxWaveExpression}
+                interactive={false}
+                height="100%"
+                className="w-full h-full"
+              />
             </div>
           </div>
 

@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { ArrowRight, Sparkles, Check } from "lucide-react";
 
 export function Footer() {
@@ -163,8 +165,55 @@ export function Footer() {
           </div>
         </div>
 
+        {/* The 3 Wave Olfactory Pillars */}
+        <div className="py-8 my-8 border-y border-[#C7A66A]/20 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <WaveMonogram size="md" variant="gold" withSeal />
+            <div>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#DFC68B] font-bold block">
+                La Signature Ondulatoire Lévania
+              </span>
+              <p className="text-xs text-[#E5D7D9] max-w-sm">
+                Trois expressions liquides sculptées par nos maîtres parfumeurs.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3 w-full md:w-auto text-center">
+            <Link
+              href="/collections#signature"
+              className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
+            >
+              <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
+                Onde Signature
+              </span>
+              <span className="text-[9px] text-[#C4B2B6] block">Or &bull; Olive &bull; Bourgogne</span>
+            </Link>
+
+            <Link
+              href="/collections#soyeuse"
+              className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
+            >
+              <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
+                Onde Soyeuse
+              </span>
+              <span className="text-[9px] text-[#C4B2B6] block">Ivoire &bull; Fleur &bull; Néroli</span>
+            </Link>
+
+            <Link
+              href="/collections#intense"
+              className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
+            >
+              <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
+                Onde Sombre
+              </span>
+              <span className="text-[9px] text-[#C4B2B6] block">Ébène &bull; Oud &bull; Ambre</span>
+            </Link>
+          </div>
+        </div>
+
         {/* Bottom copyright and legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
           <div>
             &copy; 2026 LÉVANIA PARFUMS. Tous droits réservés. Haute Parfumerie.
           </div>

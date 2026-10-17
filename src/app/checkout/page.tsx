@@ -20,6 +20,8 @@ import {
   ArrowRight,
   Lock,
 } from "lucide-react";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { WaveCanvas } from "@/components/brand/WaveCanvas";
 
 const GOVERNORATES = [
   "Tunis", "Ariana", "Ben Arous", "Manouba", "Nabeul", "Zaghouan", "Bizerte",
@@ -102,13 +104,17 @@ export default function CheckoutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Confirmed Order Screen */}
           {confirmedOrder ? (
-            <div className="max-w-2xl mx-auto py-12 px-6 rounded-3xl bg-white border-2 border-[#541B28] text-center shadow-2xl animate-in zoom-in-95">
-              <div className="w-20 h-20 rounded-full bg-[#541B28] text-[#FAF7F2] flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#541B28]/25">
-                <CheckCircle2 className="w-10 h-10 text-[#DFC68B]" />
+            <div className="max-w-2xl mx-auto py-12 px-6 rounded-3xl bg-white border-2 border-[#541B28] text-center shadow-2xl animate-in zoom-in-95 relative overflow-hidden">
+              <div className="flex justify-center mb-4">
+                <WaveMonogram size="lg" variant="gold" withSeal />
+              </div>
+
+              <div className="h-14 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15 mb-6 max-w-sm mx-auto">
+                <WaveCanvas expression="signature" interactive={false} height="100%" />
               </div>
 
               <span className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
-                Haute Parfumerie Lévania
+                Haute Parfumerie Lévania &bull; Sillage Garanti
               </span>
 
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light mt-1 mb-3">
@@ -332,9 +338,12 @@ export default function CheckoutPage() {
 
                   {/* Right: Order Items & Price Summary (5 cols) */}
                   <div className="lg:col-span-5 rounded-3xl bg-white border border-[#541B28]/20 p-6 shadow-xl h-fit space-y-6">
-                    <h3 className="font-serif text-xl text-[#23181A] font-semibold pb-3 border-b border-[#541B28]/10">
-                      Articles Commandés ({items.length})
-                    </h3>
+                    <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/10">
+                      <h3 className="font-serif text-xl text-[#23181A] font-semibold">
+                        Articles Commandés ({items.length})
+                      </h3>
+                      <WaveMonogram size="sm" variant="gold" withSeal={false} />
+                    </div>
 
                     <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
                       {items.map((item) => (
