@@ -21,6 +21,8 @@ import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { WaveCanvas } from "@/components/brand/WaveCanvas";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -37,6 +39,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const activeFormat =
     product.formats.find((f) => f.size === selectedSize) || product.formats[0];
+
+  const waveExpression =
+    product.collectionSlug === "soyeuse"
+      ? "soft"
+      : product.collectionSlug === "intense"
+      ? "intense"
+      : "signature";
 
   const galleryImages = [
     product.images.main,
@@ -235,6 +244,52 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   <Sparkles className="w-4 h-4 text-[#541B28]" />
                   <span>Rapporte +{Math.floor(activeFormat.priceTND / 10)} Luck pour la Roue du Destin</span>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Wave Olfactory Diffusion Section */}
+          <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 mb-16 shadow-lg relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-[#541B28]/10">
+              <div className="flex items-center gap-3">
+                <WaveMonogram
+                  size="sm"
+                  variant={waveExpression === "soft" ? "burgundy" : "gold"}
+                  withSeal
+                />
+                <div>
+                  <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block">
+                    Signature Ondulatoire du Flacon
+                  </span>
+                  <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">
+                    {waveExpression === "soft"
+                      ? "Onde Soyeuse Diaphane &bull; Voile Intime"
+                      : waveExpression === "intense"
+                      ? "Onde Sombre & Boisée &bull; Sillage Monumental"
+                      : "Vague Signature &bull; Noblesse Méditerranéenne"}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold shadow-sm">
+                  Diffusion 14h &bull; Rayonnement 2.5m
+                </span>
+              </div>
+            </div>
+
+            {/* Interactive Wave Canvas for this fragrance */}
+            <div className="h-32 sm:h-44 rounded-2xl overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-white to-[#FAF7F2] border border-[#541B28]/10 relative">
+              <WaveCanvas
+                expression={waveExpression}
+                interactive={true}
+                height="100%"
+                className="w-full h-full"
+              />
+              <div className="absolute bottom-3 left-4 pointer-events-none">
+                <span className="text-[9px] uppercase tracking-widest text-[#756B6D] font-mono bg-white/90 px-2.5 py-1 rounded-full backdrop-blur-sm border border-[#541B28]/15 shadow-sm">
+                  &sim; Touchez ou survolez pour diffuser l&apos;onde olfactive
+                </span>
               </div>
             </div>
           </div>

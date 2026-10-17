@@ -8,6 +8,7 @@ import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
 interface ProductCardProps {
   product: Product;
@@ -126,8 +127,12 @@ export function ProductCard({ product, className, priority = false }: ProductCar
       {/* Product Information */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.2em] text-[#852538] font-bold mb-1">
-            {product.collection}
+          <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-[#852538] font-bold mb-1">
+            <span>{product.collection}</span>
+            <WaveMonogram
+              size="xs"
+              variant={product.collectionSlug === "soyeuse" ? "burgundy" : "gold"}
+            />
           </div>
           <Link href={`/products/${product.slug}`}>
             <h3 className="font-serif text-xl text-[#23181A] group-hover:text-[#541B28] transition-colors font-medium">

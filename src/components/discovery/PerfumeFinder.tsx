@@ -10,6 +10,7 @@ import { formatTND } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { SignatureWave } from "@/components/brand/SignatureWave";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
 interface QuestionStep {
   id: string;
@@ -205,7 +206,7 @@ export function PerfumeFinder() {
         <div className="animate-in fade-in slide-in-from-bottom-6">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-xs text-[#541B28] uppercase tracking-widest font-bold mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#C7A66A]" />
+              <WaveMonogram size="xs" variant="gold" />
               <span>Vos 4 Correspondances Maîtresses</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light">

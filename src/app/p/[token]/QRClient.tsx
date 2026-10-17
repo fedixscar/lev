@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { SignatureWave } from "@/components/brand/SignatureWave";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { PRODUCTS } from "@/lib/catalogue";
 import {
   ShieldCheck,
@@ -32,8 +33,8 @@ export function QRClient({ token }: QRClientProps) {
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           {/* Certificate Badge */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-3 shadow-sm">
-              <ShieldCheck className="w-4 h-4 text-[#541B28]" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-3 shadow-sm">
+              <WaveMonogram size="xs" variant="gold" />
               <span>Flacon Authentifié & Scellé Lévania</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">

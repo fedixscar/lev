@@ -17,6 +17,8 @@ import {
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { SignatureWave } from "@/components/brand/SignatureWave";
+import { WaveExperiencePavilion } from "@/components/brand/WaveExperiencePavilion";
+import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { BestSellerPodium } from "@/components/products/BestSellerPodium";
 import { PRODUCTS } from "@/lib/catalogue";
 
@@ -115,9 +117,12 @@ export default function HomePage() {
 
                   {/* Floating Luxury Tag */}
                   <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-[#541B28]/20 text-center shadow-lg">
-                    <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold block">
-                      Création Signature
-                    </span>
+                    <div className="flex items-center justify-center gap-1.5 mb-1">
+                      <WaveMonogram size="xs" variant="burgundy" />
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold">
+                        Création Signature
+                      </span>
+                    </div>
                     <h3 className="font-serif text-2xl text-burgundy-gradient font-light mt-0.5">
                       Onde d&apos;Or &bull; Extrait Absolu
                     </h3>
@@ -138,73 +143,9 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================
-            2. THE CONCEPT: THE WAVE (Signature, Soft, Intense)
+            2. THE CONCEPT: THE WAVE (Signature, Soft, Intense Pavilion)
             ======================================================== */}
-        <section className="py-20 bg-[#F3ECE1]/60 border-y border-[#541B28]/10 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#541B28] font-bold">
-                L&apos;Identité Fondatrice
-              </span>
-              <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mt-2 mb-4">
-                La Vague Lévania &bull; L&apos;Onde des Sens
-              </h2>
-              <p className="text-sm text-[#5A4B4E] leading-relaxed">
-                Le parfum n&apos;est pas une formule figée : c&apos;est un fluide vivant en perpétuelle diffusion. Nos trois expressions de la Vague traduisent la diversité de vos émotions olfactives.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Signature Wave */}
-              <div className="p-8 rounded-3xl bg-white border border-[#541B28]/20 hover:border-[#541B28] transition-all group shadow-sm hover:shadow-xl">
-                <div className="w-12 h-12 rounded-2xl bg-[#541B28] border border-[#C7A66A]/40 flex items-center justify-center text-[#DFC68B] mb-6 shadow-md">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <h3 className="font-serif text-2xl text-[#23181A] group-hover:text-[#541B28] transition-colors">
-                  Vague Signature
-                </h3>
-                <span className="text-[11px] uppercase tracking-wider text-[#541B28] font-semibold block mt-1 mb-3">
-                  Vert Olive &bull; Or Champagne &bull; Bordeaux
-                </span>
-                <p className="text-xs text-[#5A4B4E] leading-relaxed">
-                  L&apos;harmonie classique de la maison. Ambre solaire, bois d&apos;olivier centenaire et vanille noble. Une présence royale et équilibrée.
-                </p>
-              </div>
-
-              {/* Soft Wave */}
-              <div className="p-8 rounded-3xl bg-white border border-[#541B28]/20 hover:border-[#541B28] transition-all group shadow-sm hover:shadow-xl">
-                <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 flex items-center justify-center text-[#541B28] mb-6 shadow-md">
-                  <Layers className="w-6 h-6" />
-                </div>
-                <h3 className="font-serif text-2xl text-[#23181A] group-hover:text-[#541B28] transition-colors">
-                  Onde Soyeuse
-                </h3>
-                <span className="text-[11px] uppercase tracking-wider text-[#852538] font-semibold block mt-1 mb-3">
-                  Ivoire &bull; Crème &bull; Néroli de Nabeul
-                </span>
-                <p className="text-xs text-[#5A4B4E] leading-relaxed">
-                  Courbes délicates, fraîcheur florale lumineuse et voiles poudrés intimes. Une sensation de soie glissant sur la peau nue.
-                </p>
-              </div>
-
-              {/* Intense Wave */}
-              <div className="p-8 rounded-3xl bg-[#3B121C] text-[#FAF7F2] border border-[#C7A66A]/30 transition-all group shadow-xl">
-                <div className="w-12 h-12 rounded-2xl bg-[#541B28] border border-[#C7A66A]/40 flex items-center justify-center text-[#DFC68B] mb-6 shadow-md">
-                  <Flame className="w-6 h-6" />
-                </div>
-                <h3 className="font-serif text-2xl text-[#FAF7F2] group-hover:text-[#DFC68B] transition-colors">
-                  Onde Sombre & Boisée
-                </h3>
-                <span className="text-[11px] uppercase tracking-wider text-[#DFC68B] font-semibold block mt-1 mb-3">
-                  Noir Ébène &bull; Oud &bull; Cuir d&apos;Orient
-                </span>
-                <p className="text-xs text-[#D5C4C7] leading-relaxed">
-                  Contraste dramatique, encens fumé et sillage tellurique puissant. Sculpté pour les connaisseurs de sillages audacieux et magnétiques.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <WaveExperiencePavilion />
 
         {/* ========================================================
             3. BEST-SELLER PODIUM (Top 3 elevated + 7 bestsellers)
