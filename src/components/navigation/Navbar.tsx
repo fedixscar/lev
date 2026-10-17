@@ -5,15 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ShoppingBag,
-  Sparkles,
   Menu,
   X,
   Compass,
   Gift,
   Flame,
   ShieldCheck,
-  UserCheck,
   Briefcase,
+  User,
+  LogOut,
   ChevronDown,
 } from "lucide-react";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
@@ -26,12 +26,12 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 export function Navbar() {
   const pathname = usePathname();
   const { totalItemsCount, setIsCartOpen } = useCart();
-  const { role, user, loginAs } = useAuth();
-  const { luckBalance, currentTier } = useLoyalty();
+  const { role, user, isAuthenticated, signOut } = useAuth();
+  const { currentTier } = useLoyalty();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [personaMenuOpen, setPersonaMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,9 +41,10 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on page transition
+  // Close menus on page transition
   useEffect(() => {
     setMobileMenuOpen(false);
+    setUserMenuOpen(false);
   }, [pathname]);
 
   const navLinks = [
@@ -116,91 +117,101 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Right Controls: Persona Switcher & Cart */}
+            {/* Right Controls: User Profile & Cart */}
             <div className="flex items-center gap-3">
-              {/* Persona Switcher Pill */}
-              <div className="relative">
-                <button
-                  onClick={() => setPersonaMenuOpen(!personaMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] hover:border-[#541B28] transition-colors shadow-sm"
-                  title="Changer d'espace (Client / Admin / Revendeur)"
-                >
-                  {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />}
-                  {role === "reseller" && <Briefcase className="w-3.5 h-3.5 text-[#434B36]" />}
-                  {role === "customer" && <UserCheck className="w-3.5 h-3.5 text-[#541B28]" />}
-                  <span className="hidden sm:inline font-semibold capitalize">
-                    {role === "customer" ? "Client" : role === "reseller" ? "Revendeur" : "Admin"}
-                  </span>
-                  <ChevronDown className="w-3 h-3 text-[#756B6D]" />
-                </button>
+              {/* Authentication Button or User Menu */}
+              {isAuthenticated && user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] hover:border-[#541B28] transition-colors shadow-sm"
+                  >
+                    {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />}
+                    {role === "reseller" && <Briefcase className="w-3.5 h-3.5 text-[#434B36]" />}
+                    {role === "customer" && <User className="w-3.5 h-3.5 text-[#541B28]" />}
 
-                {personaMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#541B28]/20 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2">
-                    <div className="text-[10px] uppercase tracking-wider text-[#756B6D] px-2 py-1 font-semibold">
-                      Changer d&apos;espace de test
+                    <span className="hidden sm:inline font-semibold">
+                      {user.name.split(" ")[0]}
+                    </span>
+
+                    {role !== "customer" && (
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#541B28]/10 text-[#541B28] font-bold uppercase">
+                        {role === "admin" ? "DG" : "Master"}
+                      </span>
+                    )}
+
+                    <ChevronDown className="w-3 h-3 text-[#756B6D]" />
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#541B28]/20 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2">
+                      <div className="px-3 py-2 border-b border-[#541B28]/10">
+                        <p className="text-xs font-semibold text-[#23181A] truncate">{user.name}</p>
+                        <p className="text-[10px] text-[#756B6D] truncate">{user.email}</p>
+                      </div>
+
+                      <div className="py-1">
+                        {role === "admin" && (
+                          <Link
+                            href="/admin"
+                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                          >
+                            <ShieldCheck className="w-4 h-4 text-[#541B28]" />
+                            <span>Administration Centrale</span>
+                          </Link>
+                        )}
+
+                        {role === "reseller" && (
+                          <Link
+                            href="/reseller"
+                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#434B36] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                          >
+                            <Briefcase className="w-4 h-4 text-[#434B36]" />
+                            <span>Portail Revendeur</span>
+                          </Link>
+                        )}
+
+                        <Link
+                          href="/account"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] hover:bg-[#FAF7F2] font-medium transition-colors"
+                        >
+                          <User className="w-4 h-4 text-[#756B6D]" />
+                          <span>Mon Espace Client</span>
+                        </Link>
+
+                        <Link
+                          href="/account/luck"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] hover:bg-[#FAF7F2] font-medium transition-colors"
+                        >
+                          <Flame className="w-4 h-4 text-[#541B28]" />
+                          <span>La Roue du Destin</span>
+                        </Link>
+                      </div>
+
+                      <div className="pt-1 border-t border-[#541B28]/10">
+                        <button
+                          onClick={() => {
+                            signOut();
+                            setUserMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-rose-700 hover:bg-rose-50 font-medium transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>Se Déconnecter</span>
+                        </button>
+                      </div>
                     </div>
-
-                    <button
-                      onClick={() => {
-                        loginAs("customer");
-                        setPersonaMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full flex items-center justify-between p-2 rounded-xl text-xs text-left transition-colors",
-                        role === "customer"
-                          ? "bg-[#541B28]/10 text-[#541B28] font-bold"
-                          : "text-[#23181A] hover:bg-[#FAF7F2]"
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        <UserCheck className="w-3.5 h-3.5 text-[#541B28]" />
-                        <span>Espace Client (Elyes)</span>
-                      </div>
-                      <span className="text-[10px] text-[#541B28] font-bold">{luckBalance} Luck</span>
-                    </button>
-
-                    <Link
-                      href="/reseller"
-                      onClick={() => {
-                        loginAs("reseller");
-                        setPersonaMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full flex items-center justify-between p-2 rounded-xl text-xs text-left transition-colors",
-                        role === "reseller"
-                          ? "bg-[#541B28]/10 text-[#541B28] font-bold"
-                          : "text-[#23181A] hover:bg-[#FAF7F2]"
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Briefcase className="w-3.5 h-3.5 text-[#434B36]" />
-                        <span>Espace Revendeur</span>
-                      </div>
-                      <span className="text-[10px] text-[#434B36] font-bold">Master</span>
-                    </Link>
-
-                    <Link
-                      href="/admin"
-                      onClick={() => {
-                        loginAs("admin");
-                        setPersonaMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full flex items-center justify-between p-2 rounded-xl text-xs text-left transition-colors",
-                        role === "admin"
-                          ? "bg-[#541B28]/10 text-[#541B28] font-bold"
-                          : "text-[#23181A] hover:bg-[#FAF7F2]"
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />
-                        <span>Administration Centrale</span>
-                      </div>
-                      <span className="text-[10px] text-[#541B28] font-bold">DG</span>
-                    </Link>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-bold hover:bg-[#FAF7F2] transition-colors shadow-sm"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Connexion</span>
+                </Link>
+              )}
 
               {/* Cart Button */}
               <button
@@ -260,24 +271,60 @@ export function Navbar() {
                 ))}
               </div>
 
+              {/* User Account / Auth Section in Mobile Menu */}
               <div className="mt-8 pt-6 border-t border-[#541B28]/15 space-y-3">
-                <p className="text-xs text-[#756B6D] uppercase tracking-widest font-semibold">
-                  Accès Espaces Dédiés
-                </p>
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#541B28]/20 text-[#541B28] text-xs font-semibold shadow-sm"
-                >
-                  <ShieldCheck className="w-4 h-4 text-[#541B28]" />
-                  <span>Panneau d&apos;Administration</span>
-                </Link>
-                <Link
-                  href="/reseller"
-                  className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#434B36]/20 text-[#434B36] text-xs font-semibold shadow-sm"
-                >
-                  <Briefcase className="w-4 h-4 text-[#434B36]" />
-                  <span>Portail Revendeur (Rangs & Ventes)</span>
-                </Link>
+                {isAuthenticated && user ? (
+                  <>
+                    <div className="p-3 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm">
+                      <p className="text-xs font-semibold text-[#23181A]">{user.name}</p>
+                      <p className="text-[10px] text-[#756B6D]">{user.email}</p>
+                    </div>
+
+                    {role === "admin" && (
+                      <Link
+                        href="/admin"
+                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#541B28]/20 text-[#541B28] text-xs font-semibold shadow-sm"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-[#541B28]" />
+                        <span>Panneau d&apos;Administration</span>
+                      </Link>
+                    )}
+
+                    {role === "reseller" && (
+                      <Link
+                        href="/reseller"
+                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#434B36]/20 text-[#434B36] text-xs font-semibold shadow-sm"
+                      >
+                        <Briefcase className="w-4 h-4 text-[#434B36]" />
+                        <span>Portail Revendeur</span>
+                      </Link>
+                    )}
+
+                    <Link
+                      href="/account"
+                      className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#541B28]/15 text-[#23181A] text-xs font-medium shadow-sm"
+                    >
+                      <User className="w-4 h-4 text-[#756B6D]" />
+                      <span>Mon Compte Client</span>
+                    </Link>
+
+                    <button
+                      onClick={() => signOut()}
+                      className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-medium"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Se Déconnecter</span>
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#541B28] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-md"
+                  >
+                    <User className="w-4 h-4 text-[#DFC68B]" />
+                    <span>Se Connecter / S&apos;inscrire</span>
+                  </Link>
+                )}
               </div>
             </div>
 

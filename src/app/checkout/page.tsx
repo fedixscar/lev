@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
+import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -33,16 +34,27 @@ export default function CheckoutPage() {
   const { awardLuck, awardLoyaltyPoints } = useLoyalty();
   const { showToast } = useNotification();
 
-  // Form states
-  const [fullName, setFullName] = useState("Elyes Ben Amor");
-  const [email, setEmail] = useState("elyes.benamor@gmail.com");
-  const [phone, setPhone] = useState("+216 98 123 456");
-  const [address, setAddress] = useState("Avenue Habib Bourguiba, Résidence Les Palmiers");
-  const [city, setCity] = useState("La Marsa");
+  const { user } = useAuth();
+
+  // Form states - dynamic and clean
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
   const [governorate, setGovernorate] = useState("Tunis");
-  const [postalCode, setPostalCode] = useState("2070");
+  const [postalCode, setPostalCode] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "card">("cod");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync with authenticated user profile
+  useEffect(() => {
+    if (user) {
+      if (!fullName && user.name) setFullName(user.name);
+      if (!email && user.email) setEmail(user.email);
+      if (!phone && user.phone) setPhone(user.phone);
+    }
+  }, [user]);
 
   // Confirmed Order State
   const [confirmedOrder, setConfirmedOrder] = useState<{
@@ -176,6 +188,7 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             required
+                            placeholder="Ex: Sarah Ben Salem"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
@@ -188,6 +201,7 @@ export default function CheckoutPage() {
                           <input
                             type="tel"
                             required
+                            placeholder="+216 98 000 000"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
@@ -200,6 +214,7 @@ export default function CheckoutPage() {
                           <input
                             type="email"
                             required
+                            placeholder="votre.email@domaine.tn"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
@@ -222,6 +237,7 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             required
+                            placeholder="Numéro, rue, bâtiment, étage..."
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
@@ -248,6 +264,7 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             required
+                            placeholder="Ex: La Marsa, Ennasr, Sousse..."
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
                             className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"

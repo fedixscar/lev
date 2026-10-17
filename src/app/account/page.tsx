@@ -49,7 +49,13 @@ export default function AccountPage() {
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light mt-1">
                 Bienvenue, {user?.name || "Cher Connaisseur"}
               </h1>
-              <p className="text-xs text-[#756B6D] mt-1">{user?.email || "elyes.benamor@gmail.com"}</p>
+              <p className="text-xs text-[#756B6D] mt-1">
+                {user?.email ? user.email : (
+                  <Link href="/login?redirect=/account" className="text-[#541B28] font-semibold underline underline-offset-2 hover:opacity-80">
+                    Connectez-vous pour synchroniser vos flacons et points &rarr;
+                  </Link>
+                )}
+              </p>
             </div>
 
             <div className="flex gap-2">
@@ -119,7 +125,9 @@ export default function AccountPage() {
               <div className="font-serif text-3xl text-[#434B36] font-bold">
                 3 Filleuls
               </div>
-              <span className="text-xs text-[#756B6D] block mt-1">Code : LEVANIA-ELYES-77</span>
+              <span className="text-xs text-[#756B6D] block mt-1">
+                Code : {user ? `LEVANIA-${user.name.split(" ")[0].toUpperCase()}-77` : "LEVANIA-VIP-2026"}
+              </span>
               <Link href="/account/loyalty" className="text-[11px] text-[#541B28] font-bold hover:underline mt-3 inline-block">
                 Partager mon lien &rarr;
               </Link>

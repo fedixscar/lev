@@ -9,9 +9,10 @@ import {
   Sparkles,
   Gift,
   Flame,
-  Star,
   ChevronDown,
   Layers,
+  ShieldCheck,
+  Award,
 } from "lucide-react";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
@@ -340,68 +341,55 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================
-            7. VERIFIED CUSTOMER REVIEWS
+            7. MAISON ENGAGEMENTS & SAVOIR-FAIRE
             ======================================================== */}
-        <section className="py-20 bg-[#FAF7F2]">
+        <section className="py-20 bg-[#FAF7F2] border-t border-[#541B28]/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <span className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
-                Témoignages Vérifiés
+                Excellence & Savoir-Faire
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-[#23181A] font-light mt-1">
-                L&apos;Émotion de Nos Clients
+                Les Engagements de la Maison Lévania
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  name: "Sonia Mansour",
-                  city: "La Marsa, Tunis",
-                  product: "Onde d'Or (100ml)",
-                  review:
-                    "Un parfum majestueux. Le safran et l'ambre créent un sillage que tout le monde remarque dès que j'entre dans une pièce. Le packaging cylindrique est somptueux.",
-                  rating: 5,
-                },
-                {
-                  name: "Karim Ben Salem",
-                  city: "Sousse",
-                  product: "Sillage d'Olivier (50ml)",
-                  review:
-                    "La subtilité du bois d'olivier et de la cardamome est incroyable. Rien à voir avec les parfums génériques de synthèse. Une vraie haute parfumerie tunisienne.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Meriem Cherif",
-                  city: "Sfax",
-                  product: "Coffret Sur-Mesure",
-                  review:
-                    "J'ai composé un coffret cadeau pour le mariage de ma sœur avec Néroli Flottant et le ruban bordeaux. Livraison reçue en 24h, présentation irréprochable.",
-                  rating: 5,
-                },
-              ].map((rev, i) => (
-                <div
-                  key={i}
-                  className="p-6 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex gap-1 text-[#C7A66A] mb-3">
-                      {[...Array(rev.rating)].map((_, s) => (
-                        <Star key={s} className="w-4 h-4 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-xs text-[#5A4B4E] italic leading-relaxed">
-                      &laquo; {rev.review} &raquo;
-                    </p>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-[#541B28]/10">
-                    <h4 className="font-serif text-sm text-[#23181A] font-semibold">{rev.name}</h4>
-                    <span className="text-[10px] text-[#756B6D] block">
-                      {rev.city} &bull; Achat vérifié ({rev.product})
-                    </span>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="p-8 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm text-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-6 h-6" />
                 </div>
-              ))}
+                <h3 className="font-serif text-lg text-[#23181A] font-semibold mb-2">
+                  Matières Premières Rares
+                </h3>
+                <p className="text-xs text-[#5A4B4E] leading-relaxed">
+                  Sélection rigoureuse des absolus et huiles précieuses. Néroli pur du Cap Bon, ambre gris et essences de bois d&apos;olivier centenaire.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm text-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto mb-4">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="font-serif text-lg text-[#23181A] font-semibold mb-2">
+                  Traçabilité QR Certifiée
+                </h3>
+                <p className="text-xs text-[#5A4B4E] leading-relaxed">
+                  Chaque flacon Lévania porte son sceau doré et un QR code unique certifiant son authenticité, son lot de macération et son détenteur officiel.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm text-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto mb-4">
+                  <Award className="w-6 h-6" />
+                </div>
+                <h3 className="font-serif text-lg text-[#23181A] font-semibold mb-2">
+                  Écrins Haute Parfumerie
+                </h3>
+                <p className="text-xs text-[#5A4B4E] leading-relaxed">
+                  Packaging cylindrique exclusif paré d&apos;or champagne, de bordeaux et de vert olive, conçu pour magnifier et protéger la tenue de chaque création.
+                </p>
+              </div>
             </div>
           </div>
         </section>

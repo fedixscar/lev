@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -17,7 +18,7 @@ import {
 } from "lucide-react";
 
 export default function ResellerDashboardPage() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const { showToast } = useNotification();
 
   const [activeTab, setActiveTab] = useState<"overview" | "submit" | "sales" | "objectives" | "chat">("overview");
@@ -139,6 +140,56 @@ export default function ResellerDashboardPage() {
     { name: "Diamond", commission: "9 TND / vente", color: "text-sky-700", bg: "bg-sky-50" },
     { name: "Master", commission: "10 TND / vente", color: "text-[#541B28]", bg: "bg-[#FAF7F2]" },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2]">
+        <div className="text-center space-y-4">
+          <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs uppercase tracking-widest text-[#541B28] font-bold">Vérification de l&apos;accréditation revendeur...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || (user.role !== "reseller" && user.role !== "admin")) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A]">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4 py-28">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-[#541B28]/20 p-8 text-center shadow-xl">
+            <div className="w-16 h-16 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto mb-4 border border-[#541B28]/20">
+              <Briefcase className="w-8 h-8 text-[#541B28]" />
+            </div>
+            <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block mb-1">
+              Portail Partenaires
+            </span>
+            <h1 className="font-serif text-2xl text-burgundy-gradient font-light mb-3">
+              Espace Revendeurs Agréés
+            </h1>
+            <p className="text-xs text-[#5A4B4E] leading-relaxed mb-6">
+              Cet espace est strictement réservé aux partenaires revendeurs de la maison LÉVANIA PARFUMS. Connectez-vous avec vos identifiants pour accéder à votre tableau de bord des commissions.
+            </p>
+            <div className="space-y-3">
+              <Link
+                href="/login?redirect=/reseller"
+                className="w-full inline-flex justify-center items-center gap-2 py-3 px-6 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-lg"
+              >
+                <span>S&apos;identifier en tant que Revendeur</span>
+              </Link>
+              <Link
+                href="/"
+                className="block text-xs text-[#756B6D] hover:text-[#541B28] transition-colors"
+              >
+                Retourner à la boutique publique
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">

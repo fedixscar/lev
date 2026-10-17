@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
-import { ArrowRight, Sparkles, Check, ShieldCheck, Briefcase } from "lucide-react";
+import { ArrowRight, Sparkles, Check } from "lucide-react";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -132,36 +132,34 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Portals & Pro Access */}
+          {/* Maison & Conciergerie */}
           <div className="space-y-3">
             <h4 className="text-xs font-serif uppercase tracking-widest text-[#DFC68B] font-semibold">
-              Espaces Professionnels
+              Maison & Conciergerie
             </h4>
-            <ul className="space-y-2.5 text-xs text-[#D5C4C7]">
-              <li>
+            <div className="space-y-2.5 text-xs text-[#D5C4C7]">
+              <div>
+                <span className="text-[#FAF7F2] font-medium block">Atelier de Création</span>
+                <span className="text-[11px] text-[#D5C4C7]">Nabeul, Cap Bon &bull; Tunisie</span>
+              </div>
+              <div>
+                <span className="text-[#FAF7F2] font-medium block">Showroom Privé</span>
+                <span className="text-[11px] text-[#D5C4C7]">Les Berges du Lac, Tunis</span>
+              </div>
+              <div className="pt-1">
+                <span className="text-[#DFC68B] font-medium block">Conciergerie Téléphonique</span>
+                <span className="text-[#FAF7F2] font-semibold text-xs">+216 71 800 900</span>
+                <span className="text-[10px] text-[#D5C4C7] block mt-0.5">Lun &ndash; Sam : 09h00 &ndash; 19h30</span>
+              </div>
+              <div className="pt-2">
                 <Link
-                  href="/admin"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#3B121C] border border-[#C7A66A]/30 text-[#FAF7F2] hover:border-[#C7A66A] transition-colors"
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 text-[11px] text-[#DFC68B] hover:text-[#FAF7F2] transition-colors underline underline-offset-4"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#DFC68B]" />
-                  <span>Administration Centrale</span>
+                  <span>Accès Espace Privilège</span>
                 </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reseller"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#3B121C] border border-[#C7A66A]/30 text-[#FAF7F2] hover:border-[#C7A66A] transition-colors"
-                >
-                  <Briefcase className="w-3.5 h-3.5 text-[#DFC68B]" />
-                  <span>Réseau Revendeurs (6 Rangs)</span>
-                </Link>
-              </li>
-              <li className="pt-2 text-[11px] text-[#D5C4C7]">
-                Service Clientèle:
-                <br />
-                <span className="text-[#FAF7F2] font-semibold">+216 71 800 900</span> (Tunisie)
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
 
