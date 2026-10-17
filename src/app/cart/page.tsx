@@ -8,6 +8,7 @@ import { Footer } from "@/components/navigation/Footer";
 import { useCart } from "@/context/CartContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
 import { Trash2, Plus, Minus, ArrowRight, Sparkles, Tag, ShoppingBag } from "lucide-react";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 
 export default function CartPage() {
   const {
@@ -36,10 +37,11 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+      <AmbientWaveBackdrop expression="signature" opacity={0.22} />
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main className="flex-1 pt-28 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mb-8">
             Votre Panier Lévania

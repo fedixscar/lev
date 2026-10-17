@@ -24,6 +24,10 @@ import { useNotification } from "@/context/NotificationContext";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
+import { AtomizerSpray } from "@/components/brand/AtomizerSpray";
+import { NoteAccordModal } from "@/components/discovery/NoteAccordModal";
+import { AuthenticityCertificateModal } from "@/components/products/AuthenticityCertificateModal";
+import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -37,6 +41,9 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedSize, setSelectedSize] = useState<"50ml" | "100ml">("50ml");
   const [selectedImage, setSelectedImage] = useState<string>(product.images.main);
   const [quantity] = useState(1);
+  const [selectedNote, setSelectedNote] = useState<string | null>(null);
+  const [selectedLayer, setSelectedLayer] = useState<"tête" | "cœur" | "fond" | null>(null);
+  const [isCertOpen, setIsCertOpen] = useState(false);
 
   const activeFormat =
     product.formats.find((f) => f.size === selectedSize) || product.formats[0];
@@ -141,6 +148,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 <span className="absolute top-4 left-4 text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-white/95 border border-[#541B28]/25 text-[#541B28] shadow-sm backdrop-blur-md">
                   {product.collection}
                 </span>
+
+                {/* Interactive Atomizer Vaporizer Action */}
+                <div className="absolute bottom-4 right-4 z-20">
+                  <AtomizerSpray productName={product.name} />
+                </div>
               </div>
 
               {/* Thumbnails */}
@@ -251,17 +263,29 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
 
               {/* Trust Badges */}
-              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2 text-xs text-[#5A4B4E] shadow-sm">
+              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2.5 text-xs text-[#5A4B4E] shadow-sm">
                 <div className="flex items-center gap-2 text-[#23181A]">
-                  <Truck className="w-4 h-4 text-[#541B28]" />
+                  <Truck className="w-4 h-4 text-[#541B28] shrink-0" />
                   <span>Livraison express en Tunisie sous 24h &bull; 48h (Offerte dès 200 TND)</span>
                 </div>
+                
+                {/* Interactive Certificate Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setIsCertOpen(true)}
+                  className="w-full flex items-center justify-between text-left p-1.5 -mx-1.5 rounded-xl hover:bg-[#541B28]/5 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2 text-[#23181A]">
+                    <QrCode className="w-4 h-4 text-[#541B28] shrink-0" />
+                    <span>Flacon certifié avec QR Code de traçabilité officiel Lévania</span>
+                  </div>
+                  <span className="text-[11px] font-bold text-[#541B28] underline underline-offset-2 group-hover:text-[#66182C] shrink-0">
+                    Consulter
+                  </span>
+                </button>
+
                 <div className="flex items-center gap-2 text-[#23181A]">
-                  <QrCode className="w-4 h-4 text-[#541B28]" />
-                  <span>Flacon certifié avec QR Code de traçabilité officiel Lévania</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#23181A]">
-                  <Sparkles className="w-4 h-4 text-[#541B28]" />
+                  <Sparkles className="w-4 h-4 text-[#541B28] shrink-0" />
                   <span>Rapporte +{Math.floor(activeFormat.priceTND / 10)} Luck pour la Roue du Destin</span>
                 </div>
               </div>
@@ -316,9 +340,17 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
           {/* Fragrance Pyramid Section */}
           <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-12 mb-20 shadow-xl">
-            <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light mb-8 text-center">
-              La Pyramide Olfactive
-            </h3>
+            <div className="text-center max-w-xl mx-auto mb-8">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold block mb-1">
+                Architecture Harmonique
+              </span>
+              <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light">
+                La Pyramide Olfactive
+              </h3>
+              <p className="text-xs text-[#756B6D] mt-2">
+                Touchez ou cliquez sur une note pour révéler son terroir d&apos;origine, sa méthode de distillation et son rayonnement.
+              </p>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Top Notes */}
@@ -327,11 +359,21 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   Notes de Tête (Première Impression)
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Éveil</h4>
-                <div className="flex flex-wrap justify-center gap-1.5">
+                <div className="flex flex-wrap justify-center gap-2">
                   {product.topNotes.map((n, i) => (
-                    <span key={i} className="text-xs px-3 py-1 rounded-full bg-white border border-[#541B28]/15 text-[#23181A]">
-                      {n}
-                    </span>
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setSelectedNote(n);
+                        setSelectedLayer("tête");
+                      }}
+                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      title="Découvrir l'accord"
+                    >
+                      <span>{n}</span>
+                      <Sparkles className="w-2.5 h-2.5 text-[#C7A66A] opacity-60 group-hover/tag:opacity-100 transition-opacity" />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -342,11 +384,21 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   Notes de Cœur (Signature Centrale)
                 </span>
                 <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">L&apos;Âme du Sillage</h4>
-                <div className="flex flex-wrap justify-center gap-1.5">
+                <div className="flex flex-wrap justify-center gap-2">
                   {product.heartNotes.map((n, i) => (
-                    <span key={i} className="text-xs px-3 py-1 rounded-full bg-white border border-[#541B28]/20 text-[#541B28] font-bold">
-                      {n}
-                    </span>
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setSelectedNote(n);
+                        setSelectedLayer("cœur");
+                      }}
+                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/25 text-[#541B28] font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
+                      title="Découvrir l'accord"
+                    >
+                      <span>{n}</span>
+                      <Sparkles className="w-2.5 h-2.5 text-[#DFC68B] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -357,11 +409,21 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   Notes de Fond (Tenue Inoubliable)
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Empreinte</h4>
-                <div className="flex flex-wrap justify-center gap-1.5">
+                <div className="flex flex-wrap justify-center gap-2">
                   {product.baseNotes.map((n, i) => (
-                    <span key={i} className="text-xs px-3 py-1 rounded-full bg-white border border-[#541B28]/15 text-[#23181A]">
-                      {n}
-                    </span>
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setSelectedNote(n);
+                        setSelectedLayer("fond");
+                      }}
+                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      title="Découvrir l'accord"
+                    >
+                      <span>{n}</span>
+                      <Sparkles className="w-2.5 h-2.5 text-[#C7A66A] opacity-60 group-hover/tag:opacity-100 transition-opacity" />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -383,6 +445,27 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           )}
         </div>
       </main>
+
+      {/* Interactive Sensory Modals & Sticky Purchase Bar */}
+      <NoteAccordModal
+        note={selectedNote}
+        layer={selectedLayer}
+        onClose={() => setSelectedNote(null)}
+      />
+
+      <AuthenticityCertificateModal
+        product={product}
+        isOpen={isCertOpen}
+        onClose={() => setIsCertOpen(false)}
+      />
+
+      <StickyPurchaseBar
+        product={product}
+        selectedSize={selectedSize}
+        onSelectSize={setSelectedSize}
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
+      />
 
       <Footer />
     </div>

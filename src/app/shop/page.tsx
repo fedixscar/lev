@@ -8,6 +8,7 @@ import { PRODUCTS } from "@/lib/catalogue";
 import { Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { cn } from "@/lib/utils";
 
 type WaveFilter = "all" | "signature" | "soyeuse" | "intense";
@@ -87,10 +88,13 @@ export default function ShopPage() {
   const activeWaveTab = WAVE_TABS.find((t) => t.id === selectedWave) || WAVE_TABS[0];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+      {/* Dynamic Ambient Fluid Wave flowing in the background matching selected wave filter */}
+      <AmbientWaveBackdrop expression={activeWaveTab.canvasExpr} opacity={0.28} />
+
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main className="flex-1 pt-28 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-8">
