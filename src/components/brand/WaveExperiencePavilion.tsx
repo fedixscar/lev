@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { WaveCanvas, WaveExpression } from "./WaveCanvas";
 import { WaveMonogram } from "./WaveMonogram";
-import { Sparkles, ArrowRight, Layers, Flame, Compass, Wind, Sliders } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Sparkles, ArrowRight, Layers, Flame, Compass, Wind } from "lucide-react";
+import { formatTND, cn } from "@/lib/utils";
 
 interface WaveFeatureData {
   title: string;
@@ -25,13 +25,13 @@ interface WaveFeatureData {
 
 const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   signature: {
-    title: "Vague Signature",
+    title: "L'Onde Signature",
     tagline: "L'Équilibre Souverain &bull; Noblesse Méditerranéenne",
-    paletteLabel: "Vert Olive &bull; Or Champagne &bull; Bordeaux Impérial",
+    paletteLabel: "Vert Olive &bull; Or Champagne &bull; Bourgogne Impérial",
     description:
       "L'expression originelle de la Maison Lévania. Une onde fluide et généreuse où le bois d'olivier centenaire s'enlace au safran pur et à l'ambre solaire. Ni trop dense, ni éphémère : elle signe une présence royale et inoubliable.",
     notes: ["Safran de Méditerranée", "Bois d'Olivier", "Ambre Solaire", "Vanille Bourbon"],
-    sillage: "Rayonnant &bull; 2 à 3 mètres de diffusion contrôlée",
+    sillage: "Rayonnant &bull; 2.5 mètres de diffusion contrôlée",
     longevity: "Tenue Haute Concentration (14h+)",
     bestSellers: [
       {
@@ -39,14 +39,14 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
         slug: "onde-d-or",
         format: "100ml Extrait",
         price: 295,
-        image: "/brand/bottle-black-cap.jpg",
+        image: "/brand/bottle-and-cylinder.jpg",
       },
       {
         name: "Sillage d'Olivier",
         slug: "sillage-d-olivier",
         format: "100ml Extrait",
         price: 295,
-        image: "/brand/bottle-black-cap.jpg",
+        image: "/brand/bottle-and-cylinder.jpg",
       },
     ],
     collectionSlug: "signature",
@@ -55,7 +55,7 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
     themeColor: "#C7A66A",
   },
   soft: {
-    title: "Onde Soyeuse",
+    title: "L'Onde Soyeuse",
     tagline: "La Caresse Diaphane &bull; Lumière & Voile Intime",
     paletteLabel: "Ivoire Impérial &bull; Crème de Riz &bull; Rose Poudrée",
     description:
@@ -69,7 +69,7 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
         slug: "neroli-flottant",
         format: "50ml Eau Noble",
         price: 175,
-        image: "/brand/bottle-black-cap.jpg",
+        image: "/brand/bottle-and-cylinder.jpg",
       },
       {
         name: "Écrin Duo Soyeux",
@@ -85,7 +85,7 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
     themeColor: "#852538",
   },
   intense: {
-    title: "Onde Sombre & Boisée",
+    title: "L'Onde Sombre & Boisée",
     tagline: "Le Sillage Tellurique &bull; Mystère & Puissance Orientale",
     paletteLabel: "Noir Ébène &bull; Oud Impérial &bull; Or Métallique",
     description:
@@ -99,14 +99,14 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
         slug: "rose-d-hiver",
         format: "100ml Extrait Pur",
         price: 295,
-        image: "/brand/bottle-black-cap.jpg",
+        image: "/brand/bottle-and-cylinder.jpg",
       },
       {
         name: "Mystic Noir Extrait",
         slug: "sillage-d-olivier",
         format: "100ml Extrait Pur",
         price: 310,
-        image: "/brand/bottle-black-cap.jpg",
+        image: "/brand/bottle-and-cylinder.jpg",
       },
     ],
     collectionSlug: "intense",
@@ -118,18 +118,7 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
 
 export function WaveExperiencePavilion() {
   const [activeExpression, setActiveExpression] = useState<WaveExpression>("signature");
-  const [intensityMode, setIntensityMode] = useState<"gentle" | "normal" | "dramatic">("normal");
-  const [particlesEnabled, setParticlesEnabled] = useState(true);
-
   const activeData = WAVE_EXPRESSIONS_DATA[activeExpression];
-
-  const intensityMultipliers = {
-    gentle: { speed: 0.7, amp: 0.7, label: "Délicate" },
-    normal: { speed: 1.0, amp: 1.0, label: "Équilibrée" },
-    dramatic: { speed: 1.4, amp: 1.35, label: "Majestueuse" },
-  };
-
-  const currentMult = intensityMultipliers[intensityMode];
 
   return (
     <section className="py-24 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden border-y border-[#541B28]/15">
@@ -151,14 +140,14 @@ export function WaveExperiencePavilion() {
 
           <p className="text-sm text-[#5A4B4E] leading-relaxed mt-3">
             Le parfum n&apos;est pas une formule inerte : c&apos;est un fluide vivant en perpétuelle diffusion.
-            Explorez nos <strong>trois expressions sculpturales</strong> en interagissant avec l&apos;onde ci-dessous.
+            Explorez nos <strong>trois expressions sculpturales</strong> sculptées par nos maîtres parfumeurs.
           </p>
         </div>
 
         {/* ========================================================
-            EXPRESSION SELECTOR TABS
+            3 TACTILE HAUTE PARFUMERIE PORTALS
             ======================================================== */}
-        <div className="flex justify-center gap-3 sm:gap-4 mb-8 flex-wrap">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 max-w-4xl mx-auto">
           {(["signature", "soft", "intense"] as WaveExpression[]).map((expr) => {
             const data = WAVE_EXPRESSIONS_DATA[expr];
             const isActive = activeExpression === expr;
@@ -168,18 +157,64 @@ export function WaveExperiencePavilion() {
                 key={expr}
                 onClick={() => setActiveExpression(expr)}
                 className={cn(
-                  "px-6 py-3 rounded-full text-xs uppercase tracking-wider font-bold transition-all duration-300 flex items-center gap-2.5 shadow-sm border",
+                  "p-5 rounded-2xl border text-left transition-all duration-500 cursor-pointer flex flex-col justify-between group",
                   isActive
                     ? expr === "soft"
-                      ? "bg-white text-[#541B28] border-[#541B28] shadow-md scale-105"
-                      : "bg-[#541B28] text-[#FAF7F2] border-[#C7A66A] shadow-md scale-105"
-                    : "bg-white/80 text-[#756B6D] hover:text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]/40"
+                      ? "bg-white border-[#541B28] shadow-xl ring-1 ring-[#541B28]/30 scale-[1.02]"
+                      : "bg-[#3B121C] text-[#FAF7F2] border-[#C7A66A] shadow-xl ring-1 ring-[#C7A66A]/40 scale-[1.02]"
+                    : "bg-white/70 hover:bg-white text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]/30 shadow-sm"
                 )}
               >
-                {expr === "signature" && <Sparkles className="w-3.5 h-3.5 text-[#DFC68B]" />}
-                {expr === "soft" && <Layers className="w-3.5 h-3.5 text-[#852538]" />}
-                {expr === "intense" && <Flame className="w-3.5 h-3.5 text-[#DFC68B]" />}
-                <span>{data.title}</span>
+                <div className="flex items-center justify-between mb-3">
+                  <WaveMonogram
+                    size="sm"
+                    variant={
+                      isActive
+                        ? expr === "soft"
+                          ? "burgundy"
+                          : "gold"
+                        : "olive"
+                    }
+                    withSeal
+                  />
+                  <span
+                    className={cn(
+                      "text-[9px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full border",
+                      isActive
+                        ? "bg-[#C7A66A]/20 border-[#C7A66A]/40 text-[#DFC68B]"
+                        : "bg-black/5 border-black/10 text-[#756B6D]"
+                    )}
+                  >
+                    {expr === "signature" ? "Signature" : expr === "soft" ? "Soyeuse" : "Sombre"}
+                  </span>
+                </div>
+
+                <div>
+                  <h3
+                    className={cn(
+                      "font-serif text-lg font-semibold transition-colors",
+                      isActive
+                        ? expr === "soft"
+                          ? "text-[#541B28]"
+                          : "text-[#FAF7F2]"
+                        : "text-[#23181A] group-hover:text-[#541B28]"
+                    )}
+                  >
+                    {data.title}
+                  </h3>
+                  <p
+                    className={cn(
+                      "text-[11px] mt-1 leading-snug line-clamp-2",
+                      isActive
+                        ? expr === "soft"
+                          ? "text-[#5A4B4E]"
+                          : "text-[#D5C4C7]"
+                        : "text-[#756B6D]"
+                    )}
+                  >
+                    {data.paletteLabel}
+                  </p>
+                </div>
               </button>
             );
           })}
@@ -197,13 +232,13 @@ export function WaveExperiencePavilion() {
           )}
         >
           {/* Top Canvas Viewport */}
-          <div className="relative h-72 sm:h-96 w-full overflow-hidden border-b border-[#C7A66A]/20">
+          <div className="relative h-64 sm:h-80 w-full overflow-hidden border-b border-[#C7A66A]/20">
             {/* Live Harmonic Canvas Wave */}
             <WaveCanvas
               expression={activeExpression}
-              speedMultiplier={currentMult.speed}
-              amplitudeMultiplier={currentMult.amp}
-              showParticles={particlesEnabled}
+              speedMultiplier={1.0}
+              amplitudeMultiplier={1.0}
+              showParticles={true}
               interactive={true}
               height="100%"
               className="w-full h-full"
@@ -226,48 +261,18 @@ export function WaveExperiencePavilion() {
               </div>
             </div>
 
-            {/* In-Canvas Floating Controls */}
-            <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
-              {/* Intensity Picker */}
-              <div
+            {/* Top-Right Concentration Badge */}
+            <div className="absolute top-5 right-5 z-20">
+              <span
                 className={cn(
-                  "px-3 py-1.5 rounded-2xl backdrop-blur-md border text-[11px] font-semibold flex items-center gap-2",
+                  "px-3 py-1.5 rounded-2xl backdrop-blur-md border text-[10px] font-serif uppercase tracking-widest font-bold",
                   activeExpression === "soft"
-                    ? "bg-white/90 border-[#541B28]/20 text-[#23181A]"
-                    : "bg-[#23181A]/80 border-[#C7A66A]/30 text-[#FAF7F2]"
+                    ? "bg-white/90 border-[#541B28]/20 text-[#541B28]"
+                    : "bg-[#23181A]/80 border-[#C7A66A]/40 text-[#DFC68B]"
                 )}
               >
-                <Sliders className="w-3.5 h-3.5 text-[#C7A66A]" />
-                <span className="hidden sm:inline">Intensité :</span>
-                {(["gentle", "normal", "dramatic"] as const).map((lvl) => (
-                  <button
-                    key={lvl}
-                    onClick={() => setIntensityMode(lvl)}
-                    className={cn(
-                      "px-2 py-0.5 rounded-md text-[10px] transition-colors",
-                      intensityMode === lvl
-                        ? "bg-[#C7A66A] text-[#2A0B12] font-bold"
-                        : "opacity-60 hover:opacity-100"
-                    )}
-                  >
-                    {intensityMultipliers[lvl].label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Particle Toggle */}
-              <button
-                onClick={() => setParticlesEnabled(!particlesEnabled)}
-                title="Activer / Désactiver la brume d'essence"
-                className={cn(
-                  "p-2 rounded-2xl backdrop-blur-md border text-xs transition-colors",
-                  particlesEnabled
-                    ? "bg-[#C7A66A]/30 border-[#C7A66A] text-[#DFC68B]"
-                    : "bg-black/30 border-white/20 text-white/50"
-                )}
-              >
-                <Wind className="w-4 h-4" />
-              </button>
+                Extrait de Parfum &bull; 28% Concentré
+              </span>
             </div>
 
             {/* Bottom Interaction Guide */}
@@ -280,7 +285,7 @@ export function WaveExperiencePavilion() {
                     : "bg-black/50 border-[#C7A66A]/30 text-[#DFC68B]"
                 )}
               >
-                &sim; Touchez ou survolez la vague pour diffuser des ondes liquides
+                &sim; Touchez ou survolez pour diffuser l&apos;onde olfactive
               </span>
             </div>
           </div>
@@ -288,7 +293,7 @@ export function WaveExperiencePavilion() {
           {/* Bottom Pavilion Content Grid */}
           <div className="p-8 sm:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-              {/* Left Column: Story & Pyramid (7 cols) */}
+              {/* Left Column: Story & Accords (7 cols) */}
               <div className="lg:col-span-7 space-y-6">
                 <div>
                   <span
@@ -384,7 +389,7 @@ export function WaveExperiencePavilion() {
                     href={`/collections`}
                     className="text-xs hover:underline flex items-center gap-1 font-semibold"
                   >
-                    <span>Voir collection</span>
+                    <span>Voir les 3 collections</span>
                     <ArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
@@ -401,7 +406,7 @@ export function WaveExperiencePavilion() {
                           : "bg-white/5 border-[#C7A66A]/20 hover:border-[#C7A66A] hover:bg-white/10"
                       )}
                     >
-                      <div className="w-14 h-14 rounded-xl overflow-hidden relative shrink-0 border border-black/10 bg-[#FAF7F2]">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden relative shrink-0 border border-black/10 bg-[#FAF7F2]">
                         <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -410,7 +415,7 @@ export function WaveExperiencePavilion() {
                         </h4>
                         <span className="text-[11px] opacity-70 block">{item.format}</span>
                         <span className="font-serif text-sm font-bold text-[#C7A66A] mt-0.5 block">
-                          {item.price.toFixed(3)} TND
+                          {formatTND(item.price)}
                         </span>
                       </div>
                       <div className="w-8 h-8 rounded-full border border-[#C7A66A]/40 flex items-center justify-center shrink-0 group-hover:bg-[#C7A66A] group-hover:text-[#2A0B12] transition-colors">
