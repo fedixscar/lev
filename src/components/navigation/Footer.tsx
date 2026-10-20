@@ -5,7 +5,8 @@ import Link from "next/link";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
-import { ArrowRight, Sparkles, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -82,8 +83,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/discover" className="hover:text-[#DFC68B] transition-colors flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#DFC68B]" />
+                <Link href="/discover" className="hover:text-[#DFC68B] transition-colors flex items-center gap-1.5">
+                  <GoldStarLozenge size={10} className="text-[#DFC68B]" />
                   <span>Diagnostic Parfum IA</span>
                 </Link>
               </li>
@@ -127,8 +128,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/p/sample-token" className="hover:text-[#DFC68B] transition-colors">
-                  Certificat Flacon QR
+                <Link href="/p/cert-2026-or" className="hover:text-[#DFC68B] transition-colors">
+                  Certificat d&apos;Authenticité QR
                 </Link>
               </li>
             </ul>

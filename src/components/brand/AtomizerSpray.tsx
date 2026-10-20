@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Sparkles, Wind } from "lucide-react";
+import { Wind } from "lucide-react";
+import { LuxuryAtomizer } from "@/components/ui/LuxuryIcons";
 import { useNotification } from "@/context/NotificationContext";
 
 interface AtomizerSprayProps {
@@ -202,7 +203,7 @@ export function AtomizerSpray({ productName, onSpray, className = "" }: Atomizer
         onClick={triggerSpray}
         disabled={isSpraying}
         aria-label="Vaporiser l'élixir pour révéler le sillage"
-        className={`group relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full backdrop-blur-md border transition-all cursor-pointer shadow-lg select-none ${
+        className={`group relative inline-flex items-center gap-3 px-5 sm:px-6 py-3 rounded-full backdrop-blur-md border transition-all cursor-pointer shadow-lg select-none ${
           isSpraying
             ? "bg-[#541B28] border-[#DFC68B] text-[#DFC68B] scale-95 shadow-[#541B28]/40"
             : "bg-white/95 hover:bg-white border-[#541B28]/25 text-[#541B28] hover:scale-105 hover:border-[#541B28] hover:shadow-xl"
@@ -211,14 +212,14 @@ export function AtomizerSpray({ productName, onSpray, className = "" }: Atomizer
         {isSpraying ? (
           <Wind className="w-4 h-4 text-[#DFC68B] animate-spin" />
         ) : (
-          <Sparkles className="w-4 h-4 text-[#C7A66A] group-hover:rotate-12 transition-transform" />
+          <LuxuryAtomizer className="w-4 h-4 text-[#C7A66A] group-hover:scale-110 transition-transform" />
         )}
 
-        <span className="text-xs uppercase tracking-widest font-bold">
-          {isSpraying ? "Vaporisation en cours..." : "Vaporiser l'Élixir"}
+        <span className="font-cinzel text-[11px] uppercase tracking-luxury font-bold">
+          {isSpraying ? "Vaporisation..." : "Vaporiser l'Élixir"}
         </span>
 
-        <span className="w-2 h-2 rounded-full bg-[#C7A66A] animate-ping" />
+        <span className="w-1.5 h-1.5 rounded-full bg-[#C7A66A] animate-ping" />
       </button>
     </div>
   );

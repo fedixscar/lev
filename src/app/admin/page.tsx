@@ -5,10 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
-import { PRODUCTS } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts, saveProduct, deleteProduct, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { formatTND } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/context/NotificationContext";
+import { Product } from "@/types";
+import { ProductFormModal } from "@/components/admin/ProductFormModal";
+import { DeleteProductModal } from "@/components/admin/DeleteProductModal";
 import {
   ShieldCheck,
   TrendingUp,
@@ -20,6 +23,8 @@ import {
   Check,
   X,
   Plus,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -27,92 +32,159 @@ export default function AdminDashboardPage() {
   const { showToast } = useNotification();
   const [activeTab, setActiveTab] = useState<"overview" | "products" | "orders" | "resellers" | "qr" | "luck">("overview");
 
-  // Mock Admin State
-  const [productList] = useState(PRODUCTS);
-  const [orders, setOrders] = useState([
-    {
-      id: "ord-101",
-      number: "LEV-2026-9482",
-      customer: "Nour Trabelsi",
-      phone: "+216 98 123 456",
-      city: "La Marsa, Tunis",
-      items: "Onde d'Or (100ml)",
-      totalTND: 295.0,
-      paymentMethod: "Paiement Livraison (COD)",
-      status: "Livré",
-      date: "14/02/2026",
-    },
-    {
-      id: "ord-102",
-      number: "LEV-2026-9501",
-      customer: "Sarra Trabelsi",
-      phone: "+216 22 555 777",
-      city: "Sousse",
-      items: "Duo Prestige (Onde d'Or + Sillage d'Olivier)",
-      totalTND: 440.0,
-      paymentMethod: "Carte Bancaire",
-      status: "En Préparation",
-      date: "15/02/2026",
-    },
-    {
-      id: "ord-103",
-      number: "LEV-2026-9504",
-      customer: "Mohamed Dridi",
-      phone: "+216 50 111 222",
-      city: "Bizerte",
-      items: "Néroli Flottant (50ml)",
-      totalTND: 175.0,
-      paymentMethod: "Paiement Livraison (COD)",
-      status: "En Attente",
-      date: "16/02/2026",
-    },
-  ]);
+  // Dynamic Store & Catalogue State
+  const [productList, setProductList] = useState<Product[]>([]);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
-  const [resellerSales, setResellerSales] = useState([
-    {
-      id: "sale-1",
-      resellerName: "Amira Khemir",
-      rank: "Master",
-      orderRef: "LEV-2026-9501",
-      product: "Onde d'Or (100ml)",
-      amountTND: 295.0,
-      commissionTND: 10.0, // Master rank rule
-      status: "En Attente",
-      date: "15/02/2026",
-    },
-    {
-      id: "sale-2",
-      resellerName: "Walid Mansour",
-      rank: "Bronze",
-      orderRef: "LEV-2026-9482",
-      product: "Sillage d'Olivier (50ml)",
-      amountTND: 180.0,
-      commissionTND: 6.0,
-      status: "Approuvée",
-      date: "14/02/2026",
-    },
-  ]);
+  const [orders, setOrders] = useState<Array<{
+    id: string;
+    number: string;
+    customer: string;
+    phone?: string;
+    city?: string;
+    items: string;
+    totalTND: number;
+    paymentMethod: string;
+    status: string;
+    date: string;
+  }>>([]);
+
+  const [resellerSales, setResellerSales] = useState<Array<{
+    id: string;
+    resellerName: string;
+    rank: string;
+    orderRef: string;
+    product: string;
+    amountTND?: number;
+    commissionTND: number;
+    status: string;
+    date: string;
+  }>>([]);
+
+  // Load real orders, products, and reseller sales on client mount
+  React.useEffect(() => {
+    setProductList(getAllProducts());
+    const handleProductsUpdated = () => setProductList(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+
+    try {
+      const storedOrders = localStorage.getItem("levania_orders");
+      if (storedOrders) {
+        const parsed = JSON.parse(storedOrders);
+        if (Array.isArray(parsed)) {
+          setOrders(parsed);
+        }
+      }
+      const storedSales = localStorage.getItem("levania_reseller_sales");
+      if (storedSales) {
+        const parsed = JSON.parse(storedSales);
+        if (Array.isArray(parsed)) {
+          setResellerSales(parsed);
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    return () => {
+      window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+    };
+  }, []);
+
+  const handleOpenCreateProduct = () => {
+    setEditingProduct(null);
+    setIsProductModalOpen(true);
+  };
+
+  const handleOpenEditProduct = (prod: Product) => {
+    setEditingProduct(prod);
+    setIsProductModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = (prod: Product) => {
+    setProductToDelete(prod);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleSaveProduct = (prod: Product) => {
+    const updated = saveProduct(prod);
+    setProductList(updated);
+    setIsProductModalOpen(false);
+    showToast(
+      editingProduct ? "Flacon Modifié" : "Flacon Ajouté au Catalogue",
+      `${prod.name} est maintenant disponible sur la boutique.`,
+      "luxury"
+    );
+  };
+
+  const handleConfirmDelete = () => {
+    if (!productToDelete) return;
+    const updated = deleteProduct(productToDelete.id);
+    setProductList(updated);
+    setIsDeleteModalOpen(false);
+    showToast(
+      "Flacon Retiré du Catalogue",
+      `${productToDelete.name} a été supprimé.`,
+      "info"
+    );
+    setProductToDelete(null);
+  };
 
   const handleUpdateOrderStatus = (orderId: string, newStatus: string) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
-    );
-    showToast("Statut Commande Mis à Jour", `Commande ${orderId} passée à '${newStatus}'`, "success");
+    setOrders((prev) => {
+      const updated = prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
+      try {
+        localStorage.setItem("levania_orders", JSON.stringify(updated));
+      } catch {
+        // ignore
+      }
+      return updated;
+    });
+    showToast("Statut Commande Mis à Jour", `Commande passée à '${newStatus}'`, "success");
   };
 
   const handleApproveResellerSale = (saleId: string) => {
-    setResellerSales((prev) =>
-      prev.map((s) => (s.id === saleId ? { ...s, status: "Approuvée" } : s))
-    );
+    setResellerSales((prev) => {
+      const updated = prev.map((s) => (s.id === saleId ? { ...s, status: "Approuvée" } : s));
+      try {
+        localStorage.setItem("levania_reseller_sales", JSON.stringify(updated));
+      } catch {
+        // ignore
+      }
+      return updated;
+    });
     showToast("Vente Revendeur Approuvée", `Commission validée pour ${saleId}`, "success");
   };
 
   const handleRejectResellerSale = (saleId: string) => {
-    setResellerSales((prev) =>
-      prev.map((s) => (s.id === saleId ? { ...s, status: "Rejetée" } : s))
-    );
-    showToast("Vente Rejetée", "Motif de rejet enregistré", "info");
+    setResellerSales((prev) => {
+      const updated = prev.map((s) => (s.id === saleId ? { ...s, status: "Rejetée" } : s));
+      try {
+        localStorage.setItem("levania_reseller_sales", JSON.stringify(updated));
+      } catch {
+        // ignore
+      }
+      return updated;
+    });
+    showToast("Vente Rejetée", "Statut mis à jour", "info");
   };
+
+  // Real-time computed metrics from active orders and catalogue
+  const totalRevenueTND = orders.reduce((sum, o) => sum + (Number(o.totalTND) || 0), 0);
+  const totalOrdersCount = orders.length;
+  const avgBasketTND = totalOrdersCount > 0 ? totalRevenueTND / totalOrdersCount : 0;
+  const pendingCommissionsTND = resellerSales
+    .filter((s) => s.status === "En Attente" || s.status === "En Attente de Revue")
+    .reduce((sum, s) => sum + (Number(s.commissionTND) || 0), 0);
+  const pendingSalesCount = resellerSales.filter(
+    (s) => s.status === "En Attente" || s.status === "En Attente de Revue"
+  ).length;
+  const criticalStockItems = productList.flatMap((p) =>
+    p.formats.filter((f) => f.stock < 20).map((f) => `${p.name} (${f.size})`)
+  );
 
   if (isLoading) {
     return (
@@ -221,12 +293,14 @@ export default function AdminDashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
                   <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block mb-1">
-                    Chiffre d&apos;Affaires Brut (Mois)
+                    Chiffre d&apos;Affaires Réalisé
                   </span>
                   <div className="font-serif text-3xl text-burgundy-gradient font-bold">
-                    18 420.000 TND
+                    {formatTND(totalRevenueTND)}
                   </div>
-                  <span className="text-xs text-[#434B36] font-bold mt-1 block">+18.5% vs mois dernier</span>
+                  <span className="text-xs text-[#434B36] font-bold mt-1 block">
+                    {totalOrdersCount} commande{totalOrdersCount > 1 ? "s" : ""} enregistrée{totalOrdersCount > 1 ? "s" : ""}
+                  </span>
                 </div>
 
                 <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
@@ -234,9 +308,11 @@ export default function AdminDashboardPage() {
                     Commandes Confirmées
                   </span>
                   <div className="font-serif text-3xl text-[#23181A] font-bold">
-                    68 Commandes
+                    {totalOrdersCount} Commande{totalOrdersCount > 1 ? "s" : ""}
                   </div>
-                  <span className="text-xs text-[#756B6D] mt-1 block">Panier moyen : 270.880 TND</span>
+                  <span className="text-xs text-[#756B6D] mt-1 block">
+                    Panier moyen : {formatTND(avgBasketTND)}
+                  </span>
                 </div>
 
                 <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
@@ -244,9 +320,11 @@ export default function AdminDashboardPage() {
                     Commissions Revendeurs En Attente
                   </span>
                   <div className="font-serif text-3xl text-[#541B28] font-bold">
-                    140.000 TND
+                    {formatTND(pendingCommissionsTND)}
                   </div>
-                  <span className="text-xs text-[#756B6D] mt-1 block">14 ventes soumises</span>
+                  <span className="text-xs text-[#756B6D] mt-1 block">
+                    {pendingSalesCount} vente{pendingSalesCount > 1 ? "s" : ""} à valider
+                  </span>
                 </div>
 
                 <div className="p-6 rounded-3xl bg-rose-50/60 border border-rose-300 text-rose-900 shadow-sm">
@@ -254,9 +332,11 @@ export default function AdminDashboardPage() {
                     Alertes Stock Critique
                   </span>
                   <div className="font-serif text-3xl text-rose-700 font-bold">
-                    2 Flacons &lt; 15 ex.
+                    {criticalStockItems.length} Flacon{criticalStockItems.length > 1 ? "s" : ""} &lt; 20 ex.
                   </div>
-                  <span className="text-xs text-rose-800 mt-1 block font-medium">Oud Impérial & Cuir d&apos;Orient</span>
+                  <span className="text-xs text-rose-800 mt-1 block font-medium truncate">
+                    {criticalStockItems.length > 0 ? criticalStockItems.slice(0, 2).join(", ") : "Stock nominal"}
+                  </span>
                 </div>
               </div>
 
@@ -269,38 +349,50 @@ export default function AdminDashboardPage() {
                   </button>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs text-left">
-                    <thead>
-                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
-                        <th className="pb-3">Réf</th>
-                        <th className="pb-3">Client</th>
-                        <th className="pb-3">Ville</th>
-                        <th className="pb-3">Articles</th>
-                        <th className="pb-3">Total</th>
-                        <th className="pb-3">Statut</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#541B28]/5">
-                      {orders.map((ord) => (
-                        <tr key={ord.id} className="hover:bg-[#FAF7F2]">
-                          <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
-                          <td className="py-3 text-[#23181A] font-medium">{ord.customer}</td>
-                          <td className="py-3 text-[#756B6D]">{ord.city}</td>
-                          <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
-                          <td className="py-3 font-serif text-[#541B28] font-bold">
-                            {formatTND(ord.totalTND)}
-                          </td>
-                          <td className="py-3">
-                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                              {ord.status}
-                            </span>
-                          </td>
+                {orders.length === 0 ? (
+                  <div className="text-center py-12 px-4 rounded-2xl bg-[#FAF7F2]/60 border border-[#541B28]/10">
+                    <ShoppingBag className="w-10 h-10 text-[#541B28]/40 mx-auto mb-3" />
+                    <h4 className="font-serif text-base text-[#23181A] font-semibold mb-1">
+                      Aucune commande enregistrée pour le moment
+                    </h4>
+                    <p className="text-xs text-[#756B6D] max-w-md mx-auto">
+                      Dès qu&apos;un client finalise un panier sur la boutique, sa commande et ses coordonnées apparaîtront en direct ici.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs text-left">
+                      <thead>
+                        <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                          <th className="pb-3">Réf</th>
+                          <th className="pb-3">Client</th>
+                          <th className="pb-3">Ville</th>
+                          <th className="pb-3">Articles</th>
+                          <th className="pb-3">Total</th>
+                          <th className="pb-3">Statut</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-[#541B28]/5">
+                        {orders.slice(0, 5).map((ord) => (
+                          <tr key={ord.id} className="hover:bg-[#FAF7F2]">
+                            <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
+                            <td className="py-3 text-[#23181A] font-medium">{ord.customer}</td>
+                            <td className="py-3 text-[#756B6D]">{ord.city || "—"}</td>
+                            <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
+                            <td className="py-3 font-serif text-[#541B28] font-bold">
+                              {formatTND(ord.totalTND)}
+                            </td>
+                            <td className="py-3">
+                              <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
+                                {ord.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -308,11 +400,16 @@ export default function AdminDashboardPage() {
           {/* TAB 2: PRODUCTS & PODIUM */}
           {activeTab === "products" && (
             <div className="space-y-6 animate-in fade-in">
-              <div className="flex items-center justify-between">
-                <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Catalogue & Podium Bestsellers</h3>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Catalogue & Podium Bestsellers</h3>
+                  <p className="text-xs text-[#756B6D] mt-0.5">
+                    {productList.length} flacon{productList.length > 1 ? "s" : ""} référencé{productList.length > 1 ? "s" : ""} &bull; Créez, modifiez ou supprimez vos parfums avec synchronisation instantanée sur la boutique.
+                  </p>
+                </div>
                 <button
-                  onClick={() => showToast("Formulaire de création", "Module d'ajout flacon prêt", "info")}
-                  className="px-4 py-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
+                  onClick={handleOpenCreateProduct}
+                  className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-98"
                 >
                   <Plus className="w-4 h-4 text-[#DFC68B]" />
                   <span>Nouveau Flacon</span>
@@ -325,18 +422,25 @@ export default function AdminDashboardPage() {
                     <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
                       <th className="pb-3">Visuel</th>
                       <th className="pb-3">Nom & Collection</th>
-                      <th className="pb-3">Famille</th>
+                      <th className="pb-3">Genre / Famille</th>
                       <th className="pb-3">Prix (50ml / 100ml)</th>
                       <th className="pb-3">Stock Actuel</th>
                       <th className="pb-3">Rang Podium</th>
+                      <th className="pb-3 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#541B28]/5">
                     {productList.map((prod) => (
                       <tr key={prod.id} className="hover:bg-[#FAF7F2]">
                         <td className="py-3">
-                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15">
-                            <Image src={prod.images.main} alt={prod.name} fill className="object-cover" />
+                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15 shadow-xs">
+                            <Image
+                              src={prod.images.main}
+                              alt={prod.name}
+                              fill
+                              className="object-cover"
+                              unoptimized={prod.images.main.startsWith("data:")}
+                            />
                           </div>
                         </td>
                         <td className="py-3">
@@ -345,21 +449,42 @@ export default function AdminDashboardPage() {
                           </span>
                           <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
                         </td>
-                        <td className="py-3 text-[#5A4B4E]">{prod.fragranceFamily}</td>
+                        <td className="py-3">
+                          <span className="text-[#23181A] font-medium block">{prod.gender || "Unisexe"}</span>
+                          <span className="text-[10px] text-[#756B6D]">{prod.fragranceFamily}</span>
+                        </td>
                         <td className="py-3 font-serif text-[#541B28] font-bold">
-                          {formatTND(prod.formats[0].priceTND)} / {formatTND(prod.formats[1]?.priceTND || 0)}
+                          {formatTND(prod.formats[0]?.priceTND || 0)} / {formatTND(prod.formats[1]?.priceTND || 0)}
                         </td>
                         <td className="py-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            prod.formats[0].stock < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                            (prod.formats[0]?.stock || 0) < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                           }`}>
-                            {prod.formats[0].stock} ex.
+                            {prod.formats[0]?.stock || 0} ex. (50ml) &bull; {prod.formats[1]?.stock || 0} ex. (100ml)
                           </span>
                         </td>
                         <td className="py-3">
                           <span className="px-2.5 py-1 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold">
                             #{prod.bestsellerRank || "—"}
                           </span>
+                        </td>
+                        <td className="py-3 text-right">
+                          <div className="inline-flex items-center gap-1.5">
+                            <button
+                              onClick={() => handleOpenEditProduct(prod)}
+                              className="p-1.5 rounded-lg bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] transition-colors border border-[#541B28]/20"
+                              title="Modifier ce flacon"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleOpenDeleteModal(prod)}
+                              className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-700 text-rose-700 hover:text-white transition-colors border border-rose-200"
+                              title="Supprimer ce flacon"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -373,54 +498,66 @@ export default function AdminDashboardPage() {
           {activeTab === "orders" && (
             <div className="space-y-6 animate-in fade-in">
               <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Gestion des Expéditions & Commandes</h3>
-              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead>
-                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
-                      <th className="pb-3">N° Commande</th>
-                      <th className="pb-3">Client & Contact</th>
-                      <th className="pb-3">Articles</th>
-                      <th className="pb-3">Mode Paiement</th>
-                      <th className="pb-3">Montant</th>
-                      <th className="pb-3">Statut Actuel</th>
-                      <th className="pb-3">Action Statut</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#541B28]/5">
-                    {orders.map((ord) => (
-                      <tr key={ord.id} className="hover:bg-[#FAF7F2]">
-                        <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
-                        <td className="py-3">
-                          <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
-                          <span className="text-[10px] text-[#756B6D]">{ord.phone} &bull; {ord.city}</span>
-                        </td>
-                        <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
-                        <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>
-                        <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(ord.totalTND)}</td>
-                        <td className="py-3">
-                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                            {ord.status}
-                          </span>
-                        </td>
-                        <td className="py-3">
-                          <select
-                            value={ord.status}
-                            onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
-                            className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1 text-xs text-[#23181A] font-medium"
-                          >
-                            <option value="En Attente">En Attente</option>
-                            <option value="Confirmée">Confirmée</option>
-                            <option value="En Préparation">En Préparation</option>
-                            <option value="Expédiée">Expédiée</option>
-                            <option value="Livré">Livré</option>
-                            <option value="Annulée">Annulée</option>
-                          </select>
-                        </td>
+              {orders.length === 0 ? (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-12 text-center shadow-sm">
+                  <ShoppingBag className="w-12 h-12 text-[#541B28]/40 mx-auto mb-3" />
+                  <h4 className="font-serif text-lg text-[#23181A] font-semibold mb-1">
+                    Le registre des commandes est actuellement vide
+                  </h4>
+                  <p className="text-xs text-[#756B6D] max-w-md mx-auto">
+                    Aucune commande n&apos;a encore été passée. Lorsqu&apos;un visiteur achète un flacon, sa commande apparaîtra ici avec son statut et le mode d&apos;expédition.
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                        <th className="pb-3">N° Commande</th>
+                        <th className="pb-3">Client & Contact</th>
+                        <th className="pb-3">Articles</th>
+                        <th className="pb-3">Mode Paiement</th>
+                        <th className="pb-3">Montant</th>
+                        <th className="pb-3">Statut Actuel</th>
+                        <th className="pb-3">Action Statut</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5">
+                      {orders.map((ord) => (
+                        <tr key={ord.id} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
+                          <td className="py-3">
+                            <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
+                            <span className="text-[10px] text-[#756B6D]">{ord.phone || "—"} &bull; {ord.city || "—"}</span>
+                          </td>
+                          <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
+                          <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>
+                          <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(ord.totalTND)}</td>
+                          <td className="py-3">
+                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
+                              {ord.status}
+                            </span>
+                          </td>
+                          <td className="py-3">
+                            <select
+                              value={ord.status}
+                              onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
+                              className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1 text-xs text-[#23181A] font-medium"
+                            >
+                              <option value="En Attente">En Attente</option>
+                              <option value="Confirmée">Confirmée</option>
+                              <option value="En Préparation">En Préparation</option>
+                              <option value="Expédiée">Expédiée</option>
+                              <option value="Livré">Livré</option>
+                              <option value="Annulée">Annulée</option>
+                            </select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
@@ -432,69 +569,81 @@ export default function AdminDashboardPage() {
                 Règle: Les commissions ne sont payables qu&apos;après validation administrative de la preuve d&apos;achat et contrôle d&apos;absence de doublon.
               </p>
 
-              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead>
-                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
-                      <th className="pb-3">Revendeur</th>
-                      <th className="pb-3">Rang</th>
-                      <th className="pb-3">Réf Commande</th>
-                      <th className="pb-3">Produit Vendu</th>
-                      <th className="pb-3">Commission Prévue</th>
-                      <th className="pb-3">Statut</th>
-                      <th className="pb-3">Décision</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#541B28]/5">
-                    {resellerSales.map((sale) => (
-                      <tr key={sale.id} className="hover:bg-[#FAF7F2]">
-                        <td className="py-3 text-[#23181A] font-semibold">{sale.resellerName}</td>
-                        <td className="py-3">
-                          <span className="px-2 py-0.5 rounded bg-[#FAF7F2] text-[#434B36] border border-[#434B36]/30 text-[10px] font-bold">
-                            {sale.rank}
-                          </span>
-                        </td>
-                        <td className="py-3 font-mono text-[#541B28] font-bold">{sale.orderRef}</td>
-                        <td className="py-3 text-[#5A4B4E]">{sale.product}</td>
-                        <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(sale.commissionTND)}</td>
-                        <td className="py-3">
-                          <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
-                            sale.status === "Approuvée"
-                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                              : sale.status === "Rejetée"
-                              ? "bg-rose-50 text-rose-800 border border-rose-200"
-                              : "bg-amber-50 text-amber-800 border border-amber-200"
-                          }`}>
-                            {sale.status}
-                          </span>
-                        </td>
-                        <td className="py-3">
-                          {sale.status === "En Attente" ? (
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleApproveResellerSale(sale.id)}
-                                className="p-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800"
-                                title="Approuver la commission"
-                              >
-                                <Check className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handleRejectResellerSale(sale.id)}
-                                className="p-1 rounded bg-rose-100 hover:bg-rose-200 text-rose-800"
-                                title="Rejeter"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                          ) : (
-                            <span className="text-[10px] text-[#756B6D]">Traité</span>
-                          )}
-                        </td>
+              {resellerSales.length === 0 ? (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-12 text-center shadow-sm">
+                  <Users className="w-12 h-12 text-[#541B28]/40 mx-auto mb-3" />
+                  <h4 className="font-serif text-lg text-[#23181A] font-semibold mb-1">
+                    Aucune déclaration de vente revendeur
+                  </h4>
+                  <p className="text-xs text-[#756B6D] max-w-md mx-auto">
+                    Les revendeurs accrédités peuvent déclarer leurs ventes via le portail Revendeur. Les demandes apparaîtront ici pour arbitrage.
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                        <th className="pb-3">Revendeur</th>
+                        <th className="pb-3">Rang</th>
+                        <th className="pb-3">Réf Commande</th>
+                        <th className="pb-3">Produit Vendu</th>
+                        <th className="pb-3">Commission Prévue</th>
+                        <th className="pb-3">Statut</th>
+                        <th className="pb-3">Décision</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5">
+                      {resellerSales.map((sale) => (
+                        <tr key={sale.id} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3 text-[#23181A] font-semibold">{sale.resellerName}</td>
+                          <td className="py-3">
+                            <span className="px-2 py-0.5 rounded bg-[#FAF7F2] text-[#434B36] border border-[#434B36]/30 text-[10px] font-bold">
+                              {sale.rank}
+                            </span>
+                          </td>
+                          <td className="py-3 font-mono text-[#541B28] font-bold">{sale.orderRef}</td>
+                          <td className="py-3 text-[#5A4B4E]">{sale.product}</td>
+                          <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(sale.commissionTND)}</td>
+                          <td className="py-3">
+                            <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
+                              sale.status === "Approuvée"
+                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                : sale.status === "Rejetée"
+                                ? "bg-rose-50 text-rose-800 border border-rose-200"
+                                : "bg-amber-50 text-amber-800 border border-amber-200"
+                            }`}>
+                              {sale.status}
+                            </span>
+                          </td>
+                          <td className="py-3">
+                            {sale.status === "En Attente" || sale.status === "En Attente de Revue" ? (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleApproveResellerSale(sale.id)}
+                                  className="p-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800"
+                                  title="Approuver la commission"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleRejectResellerSale(sale.id)}
+                                  className="p-1 rounded bg-rose-100 hover:bg-rose-200 text-rose-800"
+                                  title="Rejeter"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-[#756B6D]">Traité ({sale.status})</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
@@ -546,6 +695,20 @@ export default function AdminDashboardPage() {
           )}
         </div>
       </main>
+
+      <ProductFormModal
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
+        onSave={handleSaveProduct}
+        initialProduct={editingProduct}
+      />
+
+      <DeleteProductModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        productName={productToDelete?.name || "ce flacon"}
+      />
 
       <Footer />
     </div>

@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { WaveCanvas, WaveExpression } from "./WaveCanvas";
 import { WaveMonogram } from "./WaveMonogram";
-import { Sparkles, ArrowRight, Layers, Flame, Compass, Wind } from "lucide-react";
+import { ArrowRight, Layers, Flame, Compass, Wind } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { formatTND, cn } from "@/lib/utils";
 
 interface WaveFeatureData {
@@ -121,15 +122,15 @@ export function WaveExperiencePavilion() {
   const activeData = WAVE_EXPRESSIONS_DATA[activeExpression];
 
   return (
-    <section className="py-24 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden border-y border-[#541B28]/15">
+    <section className="py-24 sm:py-32 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden border-y border-[#541B28]/15">
       {/* Background ambient lighting */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#C7A66A]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#541B28]/8 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-sm text-xs text-[#541B28] uppercase tracking-[0.25em] font-bold mb-4">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-sm font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4">
             <WaveMonogram size="xs" variant="gold" />
             <span>L&apos;Identité Fondatrice de la Maison</span>
           </div>

@@ -8,11 +8,10 @@ import {
   ShoppingBag,
   Check,
   Truck,
-  Sparkles,
   QrCode,
-  Star,
   ArrowRight,
 } from "lucide-react";
+import { GoldStarLozenge, LuxuryDrop } from "@/components/ui/LuxuryIcons";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
@@ -105,37 +104,37 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20 relative z-10">
+      <main className="flex-1 pt-36 sm:pt-44 pb-28 sm:pb-36 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs & Active Transparent Wave Indicator */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
-            <nav className="text-xs text-[#756B6D] flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+            <nav className="font-cinzel text-[11px] tracking-luxury text-[#756B6D] flex items-center gap-2 uppercase font-medium">
               <Link href="/" className="hover:text-[#541B28]">Accueil</Link>
               <span>/</span>
               <Link href="/shop" className="hover:text-[#541B28]">Boutique</Link>
               <span>/</span>
-              <span className="text-[#541B28] font-semibold">{product.name}</span>
+              <span className="text-[#541B28] font-bold">{product.name}</span>
             </nav>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/85 backdrop-blur-md border border-[#541B28]/20 text-[11px] text-[#541B28] shadow-sm self-start sm:self-auto">
+            <div className="luxury-pill inline-flex items-center gap-2.5 self-start sm:self-auto">
               <WaveMonogram size="xs" variant={waveExpression === "soft" ? "burgundy" : "gold"} />
-              <span>
+              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] font-bold">
                 Onde en Fond :{" "}
-                <strong className="font-bold">
+                <span className="text-[#C7A66A]">
                   {waveExpression === "soft"
                     ? "Onde Soyeuse Diaphane"
                     : waveExpression === "intense"
                     ? "Onde Sombre & Boisée"
                     : "Vague Signature Solaire"}
-                </strong>
+                </span>
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-24">
             {/* Left: Product Images Gallery */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-[#541B28]/20 shadow-xl">
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-[#541B28]/20 shadow-2xl">
                 <Image
                   src={selectedImage}
                   alt={product.name}
@@ -145,12 +144,12 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/40 via-transparent to-transparent pointer-events-none" />
 
-                <span className="absolute top-4 left-4 text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-white/95 border border-[#541B28]/25 text-[#541B28] shadow-sm backdrop-blur-md">
+                <span className="absolute top-5 left-5 font-cinzel text-[10px] uppercase tracking-luxury font-bold px-4 py-1.5 rounded-full bg-white/95 border border-[#541B28]/25 text-[#541B28] shadow-sm backdrop-blur-md">
                   {product.collection}
                 </span>
 
                 {/* Interactive Atomizer Vaporizer Action */}
-                <div className="absolute bottom-4 right-4 z-20">
+                <div className="absolute bottom-5 right-5 z-20">
                   <AtomizerSpray productName={product.name} />
                 </div>
               </div>
@@ -162,7 +161,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     key={i}
                     onClick={() => setSelectedImage(img)}
                     className={cn(
-                      "relative w-20 h-24 rounded-xl overflow-hidden border transition-all cursor-pointer bg-white shadow-sm",
+                      "relative w-20 h-24 rounded-2xl overflow-hidden border transition-all cursor-pointer bg-white shadow-sm",
                       selectedImage === img
                         ? "border-[#541B28] ring-2 ring-[#541B28]/30 scale-105"
                         : "border-[#541B28]/15 opacity-70 hover:opacity-100"
@@ -177,87 +176,83 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             {/* Right: Product Details & Purchase Controls */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <span className="text-xs uppercase tracking-[0.25em] text-[#541B28] font-bold">
+                <span className="font-cinzel text-[11px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
                   {product.subtitle}
                 </span>
-                <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mt-1 mb-2">
+                <h1 className="font-serif text-4xl sm:text-5xl text-burgundy-gradient font-light mt-1 mb-3">
                   {product.name}
                 </h1>
-                <div className="flex items-center gap-3">
-                  <div className="flex text-[#C7A66A]">
-                    {[...Array(5)].map((_, idx) => (
-                      <Star key={idx} className="w-3.5 h-3.5 fill-current" />
-                    ))}
-                  </div>
-                  <span className="text-xs text-[#756B6D]">
-                    {product.rating} ({product.reviewCount} avis vérifiés)
+                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#541B28]/15 shadow-xs">
+                  <GoldStarLozenge size={12} className="text-[#C7A66A]" />
+                  <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] font-bold">
+                    Haute Parfumerie Artisanale &bull; Flacon Scellé &amp; Traçable
                   </span>
                 </div>
               </div>
 
               {/* Price & Stock */}
-              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 shadow-sm flex items-center justify-between">
+              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 shadow-sm flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-[#756B6D] block">Prix Flacon</span>
-                  <span className="font-serif text-2xl text-[#541B28] font-bold">
+                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] block">Prix Flacon</span>
+                  <span className="font-serif text-2xl sm:text-3xl text-[#541B28] font-medium">
                     {formatTND(activeFormat.priceTND)}
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs text-[#434B36] flex items-center gap-1 font-bold">
-                    <Check className="w-3.5 h-3.5" />
+                  <span className="font-cinzel text-xs text-[#434B36] flex items-center gap-1.5 font-bold uppercase tracking-luxury">
+                    <Check className="w-4 h-4 text-[#434B36]" />
                     En stock ({activeFormat.stock} disponibles)
                   </span>
-                  <span className="text-[11px] text-[#756B6D]">SKU: {activeFormat.sku}</span>
+                  <span className="font-mono text-[10px] text-[#756B6D] mt-0.5 block">SKU: {activeFormat.sku}</span>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-[#5A4B4E] leading-relaxed">
+              <p className="text-sm text-[#5A4B4E] leading-relaxed font-light">
                 {product.description}
               </p>
 
               {/* Format Selection (50ml / 100ml) */}
-              <div className="space-y-2">
-                <span className="text-xs uppercase tracking-widest text-[#541B28] font-bold block mb-2">
+              <div className="space-y-2.5">
+                <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold block">
                   Contenance du Flacon
                 </span>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3.5">
                   {product.formats.map((fmt) => (
                     <button
                       key={fmt.size}
                       onClick={() => setSelectedSize(fmt.size)}
                       className={cn(
-                        "p-3 rounded-xl border text-center transition-all cursor-pointer",
+                        "p-4 rounded-2xl border text-center transition-all cursor-pointer",
                         selectedSize === fmt.size
-                          ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-sm backdrop-blur-sm"
-                          : "bg-white/80 backdrop-blur-sm border-[#541B28]/15 text-[#5A4B4E] hover:border-[#541B28]"
+                          ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-md ring-1 ring-[#541B28]/30 backdrop-blur-sm"
+                          : "bg-white/80 backdrop-blur-sm border-[#541B28]/15 text-[#5A4B4E] hover:border-[#541B28] hover:bg-white"
                       )}
                     >
-                      <span className="font-serif text-base font-bold block">{fmt.size}</span>
-                      <span className="text-xs text-[#541B28] font-bold">{formatTND(fmt.priceTND)}</span>
+                      <span className="font-cinzel text-sm font-bold tracking-luxury block">{fmt.size}</span>
+                      <span className="font-serif text-sm text-[#541B28] font-bold mt-1 block">{formatTND(fmt.priceTND)}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* CTAs: Add to cart & Buy Now */}
-              <div className="space-y-3 pt-2">
-                <div className="flex gap-3">
+              <div className="space-y-3 pt-3">
+                <div className="flex gap-3.5">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-white/90 hover:bg-white text-[#541B28] border border-[#541B28]/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md"
+                    className="flex-1 py-4 px-6 rounded-xl bg-white/95 hover:bg-white text-[#541B28] border border-[#541B28]/30 font-cinzel text-xs font-bold uppercase tracking-luxury transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md active:scale-98"
                   >
-                    <ShoppingBag className="w-4 h-4 text-[#541B28]" />
+                    <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
                     <span>Ajouter au Panier</span>
                   </button>
 
                   <button
                     onClick={handleBuyNow}
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-lg shadow-[#541B28]/20 transition-all flex items-center justify-center gap-2"
+                    className="flex-1 py-4 px-6 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 active:scale-98"
                   >
                     <span>Acheter Immédiatement</span>
-                    <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                    <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                   </button>
                 </div>
               </div>
@@ -284,8 +279,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </span>
                 </button>
 
-                <div className="flex items-center gap-2 text-[#23181A]">
-                  <Sparkles className="w-4 h-4 text-[#541B28] shrink-0" />
+                <div className="flex items-center gap-2.5 text-[#23181A]">
+                  <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>Rapporte +{Math.floor(activeFormat.priceTND / 10)} Luck pour la Roue du Destin</span>
                 </div>
               </div>
@@ -355,7 +350,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Top Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
-                <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold">
+                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   Notes de Tête (Première Impression)
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Éveil</h4>
@@ -368,11 +363,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         setSelectedNote(n);
                         setSelectedLayer("tête");
                       }}
-                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
                       title="Découvrir l'accord"
                     >
                       <span>{n}</span>
-                      <Sparkles className="w-2.5 h-2.5 text-[#C7A66A] opacity-60 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
                     </button>
                   ))}
                 </div>
@@ -380,7 +375,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
               {/* Heart Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 text-center">
-                <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold">
+                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   Notes de Cœur (Signature Centrale)
                 </span>
                 <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">L&apos;Âme du Sillage</h4>
@@ -393,11 +388,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         setSelectedNote(n);
                         setSelectedLayer("cœur");
                       }}
-                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/25 text-[#541B28] font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/25 text-[#541B28] font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
                       title="Découvrir l'accord"
                     >
                       <span>{n}</span>
-                      <Sparkles className="w-2.5 h-2.5 text-[#DFC68B] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop size={12} className="text-[#DFC68B] opacity-80 group-hover/tag:opacity-100 transition-opacity" />
                     </button>
                   ))}
                 </div>
@@ -405,7 +400,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
               {/* Base Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
-                <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold">
+                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   Notes de Fond (Tenue Inoubliable)
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Empreinte</h4>
@@ -418,11 +413,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         setSelectedNote(n);
                         setSelectedLayer("fond");
                       }}
-                      className="group/tag inline-flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
                       title="Découvrir l'accord"
                     >
                       <span>{n}</span>
-                      <Sparkles className="w-2.5 h-2.5 text-[#C7A66A] opacity-60 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
                     </button>
                   ))}
                 </div>

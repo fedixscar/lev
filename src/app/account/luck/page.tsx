@@ -4,22 +4,28 @@ import React from "react";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { WheelOfChance } from "@/components/wheel/WheelOfChance";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export default function LuckPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+      <AmbientWaveBackdrop expression="signature" opacity={0.25} />
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main className="flex-1 pt-36 sm:pt-44 pb-28 sm:pb-36 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-6">
-            <span className="text-xs uppercase tracking-[0.25em] text-[#541B28] font-bold">
-              Le Sanctuaire des Privilèges
-            </span>
-            <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mt-2 mb-3">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+            <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
+              <GoldStarLozenge size={12} className="text-[#C7A66A]" />
+              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
+                Le Sanctuaire des Privilèges
+              </span>
+            </div>
+            <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-4">
               La Roue du Destin Lévania
             </h1>
-            <p className="text-xs sm:text-sm text-[#5A4B4E] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
               Consommez votre solde de Luck pour déclencher la Vague correspondante et révéler votre récompense immédiate : flacons offerts, bons d&apos;achat ou points privilège.
             </p>
           </div>

@@ -358,3 +358,70 @@ export const PRODUCTS: Product[] = [
     createdAt: "2026-03-05T00:00:00Z",
   },
 ];
+
+export const PRODUCTS_UPDATED_EVENT = "levania_products_updated";
+
+/**
+ * Returns either custom stored products from localStorage (if any exist) or default PRODUCTS.
+ */
+export function getAllProducts(): Product[] {
+  if (typeof window === "undefined") return PRODUCTS;
+  try {
+    const stored = localStorage.getItem("levania_custom_products");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch {
+    // fallback
+  }
+  return PRODUCTS;
+}
+
+/**
+ * Saves a new product or updates an existing one (matching by id).
+ */
+export function saveProduct(product: Product): Product[] {
+  const current = getAllProducts();
+  const existingIdx = current.findIndex((p) => p.id === product.id);
+  let updated: Product[];
+
+  if (existingIdx >= 0) {
+    updated = [...current];
+    updated[existingIdx] = product;
+  } else {
+    updated = [product, ...current];
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+    } catch {
+      // ignore
+    }
+  }
+
+  return updated;
+}
+
+/**
+ * Deletes a product by id.
+ */
+export function deleteProduct(productId: string): Product[] {
+  const current = getAllProducts();
+  const updated = current.filter((p) => p.id !== productId);
+
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+    } catch {
+      // ignore
+    }
+  }
+
+  return updated;
+}

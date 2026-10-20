@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useCallback } from "react";
-import { X, Sparkles, MapPin, Droplets, Clock, ShieldCheck } from "lucide-react";
+import { X, MapPin, Droplets, Clock, ShieldCheck } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { getOlfactoryNoteDetail } from "@/lib/olfactoryNotes";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 
@@ -73,11 +74,11 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
 
         {/* Top Badges */}
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#541B28] text-[#FAF7F2] text-[10px] uppercase tracking-widest font-bold">
-            <Sparkles className="w-3 h-3 text-[#DFC68B]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#541B28] text-[#FAF7F2] font-cinzel text-[10px] uppercase tracking-luxury font-bold">
+            <GoldStarLozenge size={10} className="text-[#DFC68B]" />
             <span dangerouslySetInnerHTML={{ __html: layerLabel }} />
           </div>
-          <span className="text-[10px] px-2.5 py-1 rounded-full bg-[#C7A66A]/15 border border-[#C7A66A]/40 text-[#541B28] font-bold uppercase tracking-wider">
+          <span className="font-cinzel text-[10px] px-3 py-1.5 rounded-full bg-[#C7A66A]/15 border border-[#C7A66A]/40 text-[#541B28] font-bold uppercase tracking-luxury">
             {detail.family}
           </span>
         </div>

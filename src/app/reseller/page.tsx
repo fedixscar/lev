@@ -23,11 +23,17 @@ export default function ResellerDashboardPage() {
 
   const [activeTab, setActiveTab] = useState<"overview" | "submit" | "sales" | "objectives" | "chat">("overview");
 
-  // Reseller state
-  const currentRank = "Master";
-  const pendingCommissionTND = 30.0;
-  const approvedCommissionTND = 140.0;
-  const paidCommissionTND = 280.0;
+  // Dynamic Reseller Rank & Rates
+  const currentRank = user?.resellerRank || "Bronze";
+  const RANK_RATES: Record<string, number> = {
+    Iron: 5.0,
+    Bronze: 6.0,
+    Gold: 7.5,
+    Platinum: 8.5,
+    Diamond: 9.0,
+    Master: 10.0,
+  };
+  const commissionPerSale = RANK_RATES[currentRank] || 6.0;
 
   // New Sale Form
   const [orderRef, setOrderRef] = useState("");
@@ -35,56 +41,53 @@ export default function ResellerDashboardPage() {
   const [productSold, setProductSold] = useState("Onde d'Or (100ml)");
   const [evidenceNotes, setEvidenceNotes] = useState("");
 
-  // Submitted sales history
-  const [salesList, setSalesList] = useState([
-    {
-      id: "sub-1",
-      orderRef: "LEV-2026-9501",
-      product: "Onde d'Or (100ml)",
-      commissionTND: 10.0,
-      status: "En Attente de Revue",
-      date: "15/02/2026",
-    },
-    {
-      id: "sub-2",
-      orderRef: "LEV-2026-9482",
-      product: "Sillage d'Olivier (100ml)",
-      commissionTND: 10.0,
-      status: "Approuvée",
-      date: "14/02/2026",
-    },
-    {
-      id: "sub-3",
-      orderRef: "LEV-2026-9210",
-      product: "Néroli Flottant (50ml)",
-      commissionTND: 10.0,
-      status: "Payée",
-      date: "10/02/2026",
-    },
-  ]);
+  // Real submitted sales history (loaded from storage)
+  const [salesList, setSalesList] = useState<Array<{
+    id: string;
+    resellerName?: string;
+    orderRef: string;
+    product: string;
+    amountTND?: number;
+    commissionTND: number;
+    status: string;
+    date: string;
+  }>>([]);
 
-  // Chat messages
+  // Load reseller sales from local store
+  React.useEffect(() => {
+    try {
+      const stored = localStorage.getItem("levania_reseller_sales");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setSalesList(parsed);
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  // Dynamically computed commission metrics
+  const pendingSales = salesList.filter(
+    (s) => s.status === "En Attente" || s.status === "En Attente de Revue"
+  );
+  const pendingCommissionTND = pendingSales.reduce((sum, s) => sum + (Number(s.commissionTND) || 0), 0);
+  const approvedCommissionTND = salesList
+    .filter((s) => s.status === "Approuvée")
+    .reduce((sum, s) => sum + (Number(s.commissionTND) || 0), 0);
+  const paidCommissionTND = salesList
+    .filter((s) => s.status === "Payée")
+    .reduce((sum, s) => sum + (Number(s.commissionTND) || 0), 0);
+
+  // Chat messages initialized with official welcome
   const [chatMessages, setChatMessages] = useState([
     {
       id: "c1",
       sender: "Direction Lévania",
       role: "admin",
-      text: "Félicitations à tous les revendeurs pour les performances de la Saint-Valentin ! Le bonus mensuel sera clôturé ce dimanche.",
-      time: "10:15",
-    },
-    {
-      id: "c2",
-      sender: "Walid Mansour",
-      role: "reseller",
-      text: "Le stock d'Onde d'Or 100ml sera-t-il réapprovisionné d'ici vendredi ?",
-      time: "11:20",
-    },
-    {
-      id: "c3",
-      sender: "Direction Lévania",
-      role: "admin",
-      text: "Oui Walid, 40 nouveaux flacons scellés arrivent de l'atelier de fabrication demain matin.",
-      time: "11:25",
+      text: "Bienvenue sur le salon officiel du Réseau Revendeurs Lévania. Cet espace sécurisé vous permet d'échanger avec l'administration et de suivre les réapprovisionnements.",
+      time: "09:00",
     },
   ]);
   const [newMessage, setNewMessage] = useState("");
@@ -95,14 +98,24 @@ export default function ResellerDashboardPage() {
 
     const newSale = {
       id: `sub-${Date.now()}`,
+      resellerName: user?.name || "Revendeur Officiel",
+      rank: currentRank,
       orderRef: orderRef.trim().toUpperCase(),
       product: productSold,
-      commissionTND: 10.0, // Master rate
+      amountTND: 295.0,
+      commissionTND: commissionPerSale,
       status: "En Attente de Revue",
       date: new Date().toLocaleDateString("fr-FR"),
     };
 
-    setSalesList([newSale, ...salesList]);
+    const updated = [newSale, ...salesList];
+    setSalesList(updated);
+    try {
+      localStorage.setItem("levania_reseller_sales", JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+
     setOrderRef("");
     setCustomerPhone("");
     setEvidenceNotes("");
@@ -110,7 +123,7 @@ export default function ResellerDashboardPage() {
 
     showToast(
       "Vente Soumise à l'Administration",
-      `Référence ${newSale.orderRef} enregistrée \u2022 En attente de contrôle`,
+      `Référence ${newSale.orderRef} enregistrée \u2022 Commission : ${commissionPerSale} TND`,
       "luxury"
     );
   };
@@ -123,7 +136,7 @@ export default function ResellerDashboardPage() {
       ...prev,
       {
         id: `c-${Date.now()}`,
-        sender: user?.name || "Amira Khemir",
+        sender: user?.name || "Revendeur Partenaire",
         role: "reseller",
         text: newMessage,
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -280,17 +293,21 @@ export default function ResellerDashboardPage() {
                   <div className="font-serif text-3xl text-[#852538] font-bold">
                     {formatTND(pendingCommissionTND)}
                   </div>
-                  <span className="text-xs text-[#756B6D] mt-1 block">3 ventes en vérification</span>
+                  <span className="text-xs text-[#756B6D] mt-1 block">
+                    {pendingSales.length} vente{pendingSales.length > 1 ? "s" : ""} en vérification
+                  </span>
                 </div>
 
                 <div className="p-6 rounded-3xl bg-white border border-[#541B28]/20 shadow-sm">
                   <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block mb-1">
-                    Rang Suprême Atteint
+                    Rang Réseau
                   </span>
                   <div className="font-serif text-3xl text-[#23181A] font-bold">
-                    Master
+                    {currentRank}
                   </div>
-                  <span className="text-xs text-[#434B36] font-bold mt-1 block">Taux max de 10 TND / flacon</span>
+                  <span className="text-xs text-[#434B36] font-bold mt-1 block">
+                    Taux : {commissionPerSale} TND / flacon
+                  </span>
                 </div>
               </div>
 
@@ -394,8 +411,8 @@ export default function ResellerDashboardPage() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 flex justify-between items-center text-xs">
-                  <span className="text-[#5A4B4E]">Commission calculée pour ce flacon :</span>
-                  <span className="font-serif text-base text-[#541B28] font-bold">10.000 TND</span>
+                  <span className="text-[#5A4B4E]">Commission calculée selon votre rang ({currentRank}) :</span>
+                  <span className="font-serif text-base text-[#541B28] font-bold">{formatTND(commissionPerSale)}</span>
                 </div>
 
                 <button
@@ -414,44 +431,57 @@ export default function ResellerDashboardPage() {
               <h3 className="font-serif text-2xl text-[#23181A] font-semibold mb-4">
                 Historique de Vos Ventes & Commissions
               </h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead>
-                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
-                      <th className="pb-3">Réf Commande</th>
-                      <th className="pb-3">Produit</th>
-                      <th className="pb-3">Date</th>
-                      <th className="pb-3">Commission</th>
-                      <th className="pb-3">Statut Validation</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#541B28]/5">
-                    {salesList.map((s) => (
-                      <tr key={s.id} className="hover:bg-[#FAF7F2]">
-                        <td className="py-3 font-mono font-bold text-[#541B28]">{s.orderRef}</td>
-                        <td className="py-3 text-[#23181A] font-medium">{s.product}</td>
-                        <td className="py-3 text-[#756B6D]">{s.date}</td>
-                        <td className="py-3 font-serif text-[#541B28] font-bold">
-                          {formatTND(s.commissionTND)}
-                        </td>
-                        <td className="py-3">
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                              s.status === "Payée"
-                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                                : s.status === "Approuvée"
-                                ? "bg-sky-50 text-sky-800 border border-sky-200"
-                                : "bg-amber-50 text-amber-800 border border-amber-200"
-                            }`}
-                          >
-                            {s.status}
-                          </span>
-                        </td>
+
+              {salesList.length === 0 ? (
+                <div className="rounded-2xl bg-[#FAF7F2]/60 border border-[#541B28]/10 p-10 text-center">
+                  <Briefcase className="w-10 h-10 text-[#541B28]/40 mx-auto mb-3" />
+                  <h4 className="font-serif text-base text-[#23181A] font-semibold mb-1">
+                    Aucune vente enregistrée pour le moment
+                  </h4>
+                  <p className="text-xs text-[#756B6D] max-w-md mx-auto">
+                    Dès que vous concluez une vente, utilisez l&apos;onglet « Déclarer une Vente » pour soumettre le numéro de commande et percevoir vos commissions.
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                        <th className="pb-3">Réf Commande</th>
+                        <th className="pb-3">Produit</th>
+                        <th className="pb-3">Date</th>
+                        <th className="pb-3">Commission</th>
+                        <th className="pb-3">Statut Validation</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5">
+                      {salesList.map((s) => (
+                        <tr key={s.id} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3 font-mono font-bold text-[#541B28]">{s.orderRef}</td>
+                          <td className="py-3 text-[#23181A] font-medium">{s.product}</td>
+                          <td className="py-3 text-[#756B6D]">{s.date}</td>
+                          <td className="py-3 font-serif text-[#541B28] font-bold">
+                            {formatTND(s.commissionTND)}
+                          </td>
+                          <td className="py-3">
+                            <span
+                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                s.status === "Payée"
+                                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                  : s.status === "Approuvée"
+                                  ? "bg-sky-50 text-sky-800 border border-sky-200"
+                                  : "bg-amber-50 text-amber-800 border border-amber-200"
+                              }`}
+                            >
+                              {s.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
@@ -462,9 +492,30 @@ export default function ResellerDashboardPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { title: "Objectif Hebdomadaire", target: "8 Flacons", current: "6 / 8", bonus: "+50 TND Bonus", deadline: "Ce Dimanche 23h59" },
-                  { title: "Challenge Mensuel Prestige", target: "30 Flacons", current: "28 / 30", bonus: "+200 TND Bonus", deadline: "Fin du Mois" },
-                  { title: "Défi Collection Sombre", target: "5 Flacons Oud Impérial", current: "3 / 5", bonus: "+1 Flacon 50ml Offert", deadline: "Dans 10 jours" },
+                  {
+                    title: "Objectif Hebdomadaire",
+                    target: "8 Flacons",
+                    current: `${Math.min(salesList.length, 8)} / 8`,
+                    pct: Math.min(100, Math.round((Math.min(salesList.length, 8) / 8) * 100)),
+                    bonus: "+50 TND Bonus",
+                    deadline: "Ce Dimanche 23h59",
+                  },
+                  {
+                    title: "Challenge Mensuel Prestige",
+                    target: "30 Flacons",
+                    current: `${Math.min(salesList.length, 30)} / 30`,
+                    pct: Math.min(100, Math.round((Math.min(salesList.length, 30) / 30) * 100)),
+                    bonus: "+200 TND Bonus",
+                    deadline: "Fin du Mois",
+                  },
+                  {
+                    title: "Défi Collection Sombre",
+                    target: "5 Flacons Oud Impérial",
+                    current: `${Math.min(salesList.length, 5)} / 5`,
+                    pct: Math.min(100, Math.round((Math.min(salesList.length, 5) / 5) * 100)),
+                    bonus: "+1 Flacon 50ml Offert",
+                    deadline: "Dans 10 jours",
+                  },
                 ].map((obj, i) => (
                   <div key={i} className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm">
                     <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block mb-1">
@@ -476,7 +527,10 @@ export default function ResellerDashboardPage() {
                       <span className="text-[#434B36] font-bold">{obj.bonus}</span>
                     </div>
                     <div className="w-full h-2.5 rounded-full bg-[#FAF7F2] border border-[#541B28]/15 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-[#541B28] to-[#852538] w-4/5 rounded-full" />
+                      <div
+                        className="h-full bg-gradient-to-r from-[#541B28] to-[#852538] rounded-full transition-all duration-500"
+                        style={{ width: `${obj.pct}%` }}
+                      />
                     </div>
                     <span className="text-[10px] text-[#756B6D] block mt-3">Échéance : {obj.deadline}</span>
                   </div>

@@ -43,6 +43,9 @@ export interface Product {
     bottleOnly?: string;
   };
   formats: ProductFormat[];
+  gender?: "Unisexe" | "Pour Elle" | "Pour Lui" | string;
+  waveExpression?: "signature" | "soft" | "intense" | "crest" | "swirl" | "mist" | "flow" | string;
+  wavePalette?: "burgundy" | "gold" | "rose" | "sand" | "night" | "emerald" | string;
   isFeatured: boolean;
   isBestseller: boolean;
   bestsellerRank?: number; // 1 to 10

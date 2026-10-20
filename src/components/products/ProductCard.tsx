@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, ShoppingBag, Eye, Heart } from "lucide-react";
+import { ShoppingBag, Eye, Heart } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
@@ -68,10 +69,10 @@ export function ProductCard({ product, className, priority = false }: ProductCar
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Top Badges */}
-      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
         <span
           className={cn(
-            "text-[10px] tracking-widest uppercase font-bold px-3 py-1 rounded-full border backdrop-blur-md pointer-events-auto shadow-sm",
+            "font-cinzel text-[10px] tracking-luxury uppercase font-bold px-3.5 py-1.5 rounded-full border backdrop-blur-md pointer-events-auto shadow-sm",
             familyColors[product.fragranceFamily] || "bg-white text-[#541B28] border-[#541B28]/30"
           )}
         >
@@ -125,9 +126,9 @@ export function ProductCard({ product, className, priority = false }: ProductCar
       </Link>
 
       {/* Product Information */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-[#852538] font-bold mb-1">
+          <div className="flex items-center justify-between font-cinzel text-[10px] uppercase tracking-luxury text-[#852538] font-bold mb-1.5">
             <span>{product.collection}</span>
             <WaveMonogram
               size="xs"
@@ -135,24 +136,24 @@ export function ProductCard({ product, className, priority = false }: ProductCar
             />
           </div>
           <Link href={`/products/${product.slug}`}>
-            <h3 className="font-serif text-xl text-[#23181A] group-hover:text-[#541B28] transition-colors font-medium">
+            <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] group-hover:text-[#541B28] transition-colors font-medium">
               {product.name}
             </h3>
           </Link>
           <p className="text-xs text-[#756B6D] italic mt-0.5 line-clamp-1">{product.subtitle}</p>
 
           {/* Notes Preview */}
-          <div className="flex flex-wrap gap-1 mt-3">
+          <div className="flex flex-wrap gap-1.5 mt-3.5">
             {product.topNotes.slice(0, 2).map((note, idx) => (
               <span
                 key={idx}
-                className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#FAF7F2] text-[#4A3B3E] border border-[#541B28]/15 font-medium"
+                className="text-[10px] px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#4A3B3E] border border-[#541B28]/15 font-medium"
               >
                 {note}
               </span>
             ))}
             {product.baseNotes.length > 0 && (
-              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#541B28]/10 text-[#541B28] border border-[#541B28]/25 font-semibold">
+              <span className="text-[10px] px-2.5 py-1 rounded-full bg-[#541B28]/10 text-[#541B28] border border-[#541B28]/25 font-semibold">
                 {product.baseNotes[0]}
               </span>
             )}
@@ -161,14 +162,14 @@ export function ProductCard({ product, className, priority = false }: ProductCar
 
         {/* Price & Format Selector & Add Button */}
         <div className="mt-5 pt-4 border-t border-[#541B28]/10">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-3.5">
             <div className="flex items-center gap-1 bg-[#FAF7F2] p-1 rounded-xl border border-[#541B28]/15">
               {product.formats.map((fmt) => (
                 <button
                   key={fmt.size}
                   onClick={() => setSelectedFormat(fmt.size)}
                   className={cn(
-                    "px-2.5 py-0.5 text-xs rounded-lg transition-all",
+                    "px-3 py-1 text-xs rounded-lg transition-all font-cinzel",
                     selectedFormat === fmt.size
                       ? "bg-[#541B28] text-white font-bold shadow-sm"
                       : "text-[#756B6D] hover:text-[#541B28]"
@@ -180,7 +181,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
             </div>
 
             <div className="text-right">
-              <span className="font-serif text-lg text-[#541B28] font-bold">
+              <span className="font-serif text-xl text-[#541B28] font-bold">
                 {formatTND(activeFormat.priceTND)}
               </span>
             </div>
@@ -188,7 +189,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
 
           <button
             onClick={handleAddToCart}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-white border border-[#541B28]/30 hover:border-transparent text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm"
+            className="w-full py-3 px-5 rounded-xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-white border border-[#541B28]/30 hover:border-transparent font-cinzel text-[11px] font-bold tracking-luxury uppercase transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm cursor-pointer"
           >
             <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
             <span>Ajouter au Panier</span>

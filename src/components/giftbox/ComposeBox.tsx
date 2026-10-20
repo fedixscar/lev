@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Gift, Sparkles, Check, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { Gift, Check, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { PRODUCTS } from "@/lib/catalogue";
 import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
@@ -164,13 +165,13 @@ export function ComposeBox() {
   };
 
   return (
-    <div className="py-12 max-w-6xl mx-auto px-4">
+    <div className="py-6 sm:py-10 max-w-6xl mx-auto px-4">
       {/* Step Stepper */}
-      <div className="flex items-center justify-between max-w-2xl mx-auto mb-12">
+      <div className="flex items-center justify-between max-w-3xl mx-auto mb-14">
         {[
           { step: 1, label: "1. Écrin" },
           { step: 2, label: "2. Flacons" },
-          { step: 3, label: "3. Finitions & Message" },
+          { step: 3, label: "3. Finitions" },
           { step: 4, label: "4. Aperçu & Panier" },
         ].map((s) => (
           <button
@@ -180,20 +181,20 @@ export function ComposeBox() {
           >
             <div
               className={cn(
-                "w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all",
+                "w-11 h-11 rounded-full flex items-center justify-center font-cinzel text-xs font-bold transition-all duration-300",
                 currentStep === s.step
-                  ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25 scale-110"
+                  ? "bg-[#541B28] text-[#FAF7F2] shadow-xl shadow-[#541B28]/30 scale-110 ring-2 ring-[#C7A66A]/40"
                   : currentStep > s.step
-                  ? "bg-[#FAF7F2] text-[#541B28] border border-[#541B28]/40"
-                  : "bg-[#F3ECE1] text-[#756B6D] border border-[#541B28]/15"
+                  ? "bg-[#FAF7F2] text-[#541B28] border-2 border-[#541B28]"
+                  : "bg-[#F3ECE1] text-[#756B6D] border border-[#541B28]/20"
               )}
             >
-              {currentStep > s.step ? <Check className="w-4 h-4" /> : s.step}
+              {currentStep > s.step ? <Check className="w-4 h-4 text-[#C7A66A]" /> : s.step}
             </div>
             <span
               className={cn(
-                "text-[11px] mt-1.5 transition-colors",
-                currentStep === s.step ? "text-[#541B28] font-bold" : "text-[#756B6D]"
+                "font-cinzel text-[10px] sm:text-[11px] tracking-luxury uppercase mt-2.5 transition-colors font-bold",
+                currentStep === s.step ? "text-[#541B28]" : "text-[#756B6D]"
               )}
             >
               {s.label}
@@ -258,13 +259,13 @@ export function ComposeBox() {
                 ))}
               </div>
 
-              <div className="mt-8 flex justify-end">
+              <div className="mt-10 flex justify-end">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors shadow-md"
+                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
                 >
                   <span>Étape suivante: Flacons</span>
-                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                  <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                 </button>
               </div>
             </div>
@@ -337,21 +338,21 @@ export function ComposeBox() {
                 })}
               </div>
 
-              <div className="mt-8 flex justify-between">
+              <div className="mt-10 flex justify-between items-center">
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
+                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Retour</span>
                 </button>
                 <button
                   onClick={() => setCurrentStep(3)}
                   disabled={selectedPerfumes.length === 0}
-                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors disabled:opacity-40 shadow-md"
+                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all disabled:opacity-40 shadow-lg hover:shadow-xl active:scale-98"
                 >
                   <span>Étape suivante: Finitions</span>
-                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                  <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                 </button>
               </div>
             </div>
@@ -436,20 +437,20 @@ export function ComposeBox() {
                 )}
               </div>
 
-              <div className="mt-8 flex justify-between">
+              <div className="mt-10 flex justify-between items-center">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
+                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Retour</span>
                 </button>
                 <button
                   onClick={() => setCurrentStep(4)}
-                  className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-colors shadow-md"
+                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
                 >
                   <span>Voir l&apos;Aperçu Final</span>
-                  <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                  <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                 </button>
               </div>
             </div>
@@ -457,32 +458,32 @@ export function ComposeBox() {
 
           {/* STEP 4: Final Preview & Add to Cart */}
           {currentStep === 4 && (
-            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 shadow-xl">
-              <h2 className="font-serif text-3xl text-burgundy-gradient font-light mb-2">
+            <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-10 shadow-xl">
+              <h2 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light mb-2">
                 4. Aperçu de Votre Création Sur-Mesure
               </h2>
-              <p className="text-xs text-[#5A4B4E] mb-6 leading-relaxed">
+              <p className="text-sm text-[#5A4B4E] mb-8 leading-relaxed font-light">
                 Votre coffret est prêt à être confectionné avec le plus grand soin par nos artisans.
               </p>
 
-              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4 relative overflow-hidden">
+              <div className="p-7 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-5 relative overflow-hidden">
                 <div className="absolute top-4 right-4 opacity-20 pointer-events-none">
                   <WaveMonogram size="lg" variant="gold" withSeal={false} />
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="relative w-24 h-28 rounded-xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-sm">
+                <div className="flex items-center gap-5">
+                  <div className="relative w-28 h-32 rounded-2xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-md">
                     <Image src={selectedBox.image} alt={selectedBox.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2.5">
                       <WaveMonogram size="sm" variant="burgundy" withSeal />
-                      <h3 className="font-serif text-xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
+                      <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
                     </div>
-                    <p className="text-xs text-[#756B6D] mt-1">{selectedBox.description}</p>
-                    <div className="flex flex-wrap gap-1 mt-2.5">
+                    <p className="text-xs text-[#756B6D] mt-1.5 leading-relaxed">{selectedBox.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-3">
                       {selectedPerfumes.map((p, i) => (
-                        <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
+                        <span key={i} className="text-xs px-3 py-1 rounded-full bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
                           {p.product.name} ({p.size})
                         </span>
                       ))}
@@ -491,28 +492,28 @@ export function ComposeBox() {
                 </div>
 
                 {customMessage && (
-                  <div className="p-4 rounded-xl bg-white border border-[#541B28]/20 text-center font-serif italic text-sm text-[#23181A] shadow-inner">
+                  <div className="p-5 rounded-2xl bg-white border border-[#541B28]/20 text-center font-serif italic text-sm sm:text-base text-[#23181A] shadow-inner">
                     &laquo; Pour {recipientName || "Vous"} : {customMessage} &raquo;
-                    <span className="block text-[10px] uppercase font-sans text-[#541B28] tracking-widest mt-1 font-bold">
+                    <span className="block text-[10px] uppercase font-cinzel text-[#541B28] tracking-grand mt-2 font-bold">
                       Scellé au cachet de cire monogrammé Lévania
                     </span>
                   </div>
                 )}
               </div>
 
-              <div className="mt-8 flex justify-between items-center">
+              <div className="mt-10 flex justify-between items-center">
                 <button
                   onClick={() => setCurrentStep(3)}
-                  className="px-4 py-2 rounded-xl border border-[#541B28]/30 text-xs text-[#756B6D] hover:text-[#541B28] flex items-center gap-1.5 font-medium"
+                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Modifier</span>
                 </button>
                 <button
                   onClick={handleAddBoxToCart}
-                  className="px-8 py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#541B28]/25 transition-all"
+                  className="px-9 py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury flex items-center gap-2.5 shadow-xl shadow-[#541B28]/25 transition-all active:scale-98"
                 >
-                  <ShoppingBag className="w-4 h-4 text-[#DFC68B]" />
+                  <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
                   <span>Ajouter au Panier ({formatTND(totalPriceTND)})</span>
                 </button>
               </div>
@@ -521,10 +522,10 @@ export function ComposeBox() {
         </div>
 
         {/* Right Col: Live Summary & Price Breakdown */}
-        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 shadow-xl h-fit sticky top-28 space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/15">
-            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#541B28] font-bold">
-              <Gift className="w-4 h-4" />
+        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-7 shadow-xl h-fit sticky top-28 space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-[#541B28]/15">
+            <div className="flex items-center gap-2.5 font-cinzel text-[11px] uppercase tracking-luxury text-[#541B28] font-bold">
+              <Gift className="w-4 h-4 text-[#C7A66A]" />
               <span>Récapitulatif Coffret</span>
             </div>
             <WaveMonogram size="sm" variant="gold" withSeal={false} />
@@ -590,9 +591,9 @@ export function ComposeBox() {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 text-[11px] text-[#756B6D] space-y-1">
-            <div className="flex items-center gap-1.5 text-[#541B28] font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-[#C7A66A]" />
+          <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 text-[11px] text-[#756B6D] space-y-1">
+            <div className="flex items-center gap-2 text-[#541B28] font-cinzel font-bold tracking-luxury text-[11px] uppercase">
+              <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span>Garantie Haute Parfumerie</span>
             </div>
             <p>Emballage soigné, livraison assurée sous 24h à 48h partout en Tunisie.</p>

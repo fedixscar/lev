@@ -4,11 +4,12 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { WaveMonogram } from "./WaveMonogram";
-import { Sparkles, ArrowRight, ShieldCheck, Award } from "lucide-react";
+import { ArrowRight, ShieldCheck, Award } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export function MaisonHeritageSection() {
   return (
-    <section className="py-24 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden">
+    <section className="py-24 sm:py-32 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden">
       {/* Background soft ambient accents */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#C7A66A]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#541B28]/8 rounded-full blur-[140px] pointer-events-none" />
@@ -45,15 +46,15 @@ export function MaisonHeritageSection() {
             </div>
 
             {/* Accent Floating Badge Top Right */}
-            <div className="absolute -top-4 -right-4 hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 shadow-xl text-xs font-serif tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-[#DFC68B]" />
+            <div className="absolute -top-4 -right-4 hidden sm:flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 shadow-xl font-cinzel text-[11px] tracking-luxury uppercase">
+              <GoldStarLozenge size={12} className="text-[#DFC68B]" />
               <span>Artisanat du Cap Bon &bull; 2026</span>
             </div>
           </div>
 
           {/* Right Column: Editorial Narrative & Craft Commitments */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] uppercase tracking-[0.25em] font-bold shadow-sm">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold shadow-sm">
               <Award className="w-3.5 h-3.5 text-[#C7A66A]" />
               <span>Le Manifeste de la Maison</span>
             </div>

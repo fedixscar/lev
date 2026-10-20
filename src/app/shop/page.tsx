@@ -4,8 +4,10 @@ import React, { useState, useMemo } from "react";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
-import { PRODUCTS } from "@/lib/catalogue";
-import { Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { PRODUCTS, getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { Product } from "@/types";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
@@ -45,16 +47,24 @@ const WAVE_TABS = [
 ];
 
 export default function ShopPage() {
+  const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedWave, setSelectedWave] = useState<WaveFilter>("all");
   const [selectedFamily, setSelectedFamily] = useState<string>("all");
   const [selectedIntensity, setSelectedIntensity] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "bestseller">("featured");
 
+  React.useEffect(() => {
+    setProducts(getAllProducts());
+    const handleUpdate = () => setProducts(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+  }, []);
+
   const families = ["all", "Amber", "Woody", "Floral", "Citrus", "Spicy"];
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return products.filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -97,9 +107,9 @@ export default function ShopPage() {
       <main className="flex-1 pt-28 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-xs text-[#541B28] uppercase tracking-[0.25em] font-bold mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#C7A66A]" />
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold mb-3 shadow-sm">
+              <GoldStarLozenge size={11} className="text-[#C7A66A]" />
               <span>Boutique Haute Parfumerie</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mb-3">

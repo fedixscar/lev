@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
-import { Sparkles, Clock, Compass, ArrowRight, ShieldCheck } from "lucide-react";
+import { Clock, Compass, ArrowRight, ShieldCheck } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -81,7 +82,7 @@ export function OlfactoryPyramidStage() {
   const act = PYRAMID_ACTS.find((a) => a.id === activeAct) || PYRAMID_ACTS[1];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-white text-[#23181A] border-y border-[#541B28]/15">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-white text-[#23181A] border-y border-[#541B28]/15">
       {/* Decorative ambient subtle wave background */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#C7A66A]/8 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-[#541B28]/8 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
@@ -89,7 +90,7 @@ export function OlfactoryPyramidStage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 text-xs text-[#541B28] uppercase tracking-[0.25em] font-bold mb-4">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4 shadow-sm">
             <Compass className="w-3.5 h-3.5 text-[#541B28]" />
             <span>Architecture Olfactive de la Maison</span>
           </div>

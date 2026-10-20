@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, ArrowRight, ArrowLeft, RefreshCw, ShoppingBag, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, RefreshCw, ShoppingBag, Check } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { PRODUCTS } from "@/lib/catalogue";
 import { Product } from "@/types";
 import { formatTND } from "@/lib/utils";
@@ -186,7 +187,7 @@ export function PerfumeFinder() {
       {isAnalyzing && (
         <div className="py-20 flex flex-col items-center justify-center text-center animate-in fade-in">
           <div className="w-24 h-24 rounded-full border border-[#541B28]/30 flex items-center justify-center relative mb-6">
-            <Sparkles className="w-10 h-10 text-[#541B28] animate-spin" />
+            <GoldStarLozenge size={36} className="text-[#541B28] animate-pulse" />
             <div className="absolute inset-0 rounded-full border border-[#541B28] animate-ping opacity-20" />
           </div>
           <h3 className="font-serif text-3xl text-burgundy-gradient font-light mb-2">
@@ -204,65 +205,67 @@ export function PerfumeFinder() {
       {/* Recommendations view (exactly 4 products) */}
       {!isAnalyzing && recommendations && (
         <div className="animate-in fade-in slide-in-from-bottom-6">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-xs text-[#541B28] uppercase tracking-widest font-bold mb-3">
+          <div className="text-center mb-12">
+            <div className="luxury-pill mb-4 inline-flex items-center gap-2.5">
               <WaveMonogram size="xs" variant="gold" />
-              <span>Vos 4 Correspondances Maîtresses</span>
+              <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
+                Vos 4 Correspondances Maîtresses
+              </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light">
               Votre Signature Olfactive
             </h2>
-            <p className="text-xs text-[#5A4B4E] mt-2 max-w-xl mx-auto">
+            <p className="text-sm text-[#5A4B4E] mt-3 max-w-xl mx-auto font-light">
               Voici les quatre créations Lévania sculptées pour sublimer vos accords préférés.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {recommendations.map(({ product, matchScore, reason }, idx) => (
               <div
                 key={product.id}
-                className="rounded-2xl bg-white border border-[#541B28]/20 p-5 flex flex-col justify-between hover:border-[#541B28] transition-all shadow-sm hover:shadow-xl group"
+                className="rounded-3xl bg-white border border-[#541B28]/15 p-6 sm:p-7 flex flex-col justify-between hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl group"
               >
                 <div>
-                  <div className="flex gap-4 items-start">
-                    <div className="relative w-24 h-28 rounded-xl overflow-hidden bg-[#FAF7F2] shrink-0 border border-[#541B28]/15">
+                  <div className="flex gap-5 items-start">
+                    <div className="relative w-28 h-32 rounded-2xl overflow-hidden bg-[#FAF7F2] shrink-0 border border-[#541B28]/15 shadow-inner">
                       <Image
                         src={product.images.main}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                     </div>
 
                     <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] font-bold">
                           Rang #{idx + 1}
                         </span>
-                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 text-[#541B28] font-bold">
+                        <span className="font-cinzel text-[10px] tracking-wider px-3 py-1 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-[#541B28] font-bold">
                           {matchScore}% affinité
                         </span>
                       </div>
 
-                      <h3 className="font-serif text-xl text-[#23181A] mt-1 group-hover:text-[#541B28] transition-colors font-medium">
+                      <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] mt-1.5 group-hover:text-[#541B28] transition-colors font-medium">
                         {product.name}
                       </h3>
-                      <p className="text-xs text-[#756B6D] italic">{product.subtitle}</p>
-                      <div className="text-xs text-[#541B28] font-serif font-bold mt-2">
+                      <p className="text-xs text-[#756B6D] italic mt-0.5">{product.subtitle}</p>
+                      <div className="font-cinzel text-xs text-[#541B28] font-bold tracking-luxury mt-2.5">
                         Dès {formatTND(product.formats[0].priceTND)}
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#5A4B4E] mt-4 p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/10 leading-relaxed">
+                  <p className="text-xs text-[#5A4B4E] mt-5 p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/10 leading-relaxed font-light">
                     &laquo; {reason} &raquo;
                   </p>
 
-                  <div className="flex flex-wrap gap-1 mt-3">
+                  <div className="flex flex-wrap gap-1.5 mt-4">
                     {product.topNotes.slice(0, 3).map((note, nIdx) => (
                       <span
                         key={nIdx}
-                        className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] text-[#756B6D] border border-[#541B28]/10"
+                        className="text-[10px] px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#756B6D] border border-[#541B28]/10 font-medium"
                       >
                         {note}
                       </span>
@@ -270,18 +273,18 @@ export function PerfumeFinder() {
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-5 pt-3 border-t border-[#541B28]/15">
+                <div className="flex gap-3 mt-6 pt-4 border-t border-[#541B28]/15">
                   <Link
                     href={`/products/${product.slug}`}
-                    className="flex-1 py-2 text-center text-xs rounded-xl border border-[#541B28]/30 text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                    className="flex-1 py-3 text-center rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-colors"
                   >
-                    Détails du Flacon
+                    Détails Flacon
                   </Link>
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className="flex-[2] py-2 px-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md"
+                    className="flex-[2] py-3 px-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <ShoppingBag className="w-3.5 h-3.5 text-[#C7A66A]" />
                     <span>Choisir</span>
                   </button>
                 </div>
@@ -289,12 +292,12 @@ export function PerfumeFinder() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 sm:mt-16">
             <button
               onClick={resetFinder}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#541B28]/30 text-xs text-[#541B28] hover:bg-white font-semibold transition-colors shadow-sm"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full border border-[#541B28]/25 text-[#541B28] hover:bg-white font-cinzel text-xs tracking-luxury uppercase font-bold transition-all shadow-sm hover:shadow-md"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3.5 h-3.5 text-[#C7A66A]" />
               <span>Refaire le Diagnostic</span>
             </button>
           </div>
@@ -303,19 +306,19 @@ export function PerfumeFinder() {
 
       {/* Step by Step Questionnaire */}
       {!isAnalyzing && !recommendations && (
-        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-12 shadow-xl relative">
+        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-14 shadow-2xl relative">
           {/* Progress Indicator */}
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#541B28]/15">
-            <span className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
+          <div className="flex items-center justify-between mb-10 pb-5 border-b border-[#541B28]/15">
+            <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold">
               Étape {currentStepIndex + 1} sur {QUESTIONS.length}
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               {QUESTIONS.map((_, i) => (
                 <div
                   key={i}
-                  className={`w-6 h-1 rounded-full transition-colors ${
+                  className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
                     i === currentStepIndex
-                      ? "bg-[#541B28]"
+                      ? "bg-[#541B28] w-12"
                       : i < currentStepIndex
                       ? "bg-[#C7A66A]"
                       : "bg-[#EAE1D2]"
@@ -326,40 +329,40 @@ export function PerfumeFinder() {
           </div>
 
           {/* Question Title */}
-          <div className="mb-8">
+          <div className="mb-10">
             <h2 className="font-serif text-2xl sm:text-4xl text-[#23181A] font-light leading-tight">
               {currentQuestion.question}
             </h2>
-            <p className="text-sm text-[#5A4B4E] mt-2">{currentQuestion.subtitle}</p>
+            <p className="text-sm text-[#5A4B4E] mt-3 font-light leading-relaxed">{currentQuestion.subtitle}</p>
           </div>
 
           {/* Options Grid */}
-          <div className="grid grid-cols-1 gap-3 mb-8">
+          <div className="grid grid-cols-1 gap-3.5 mb-10">
             {currentQuestion.options.map((opt) => {
               const isSelected = answers[currentQuestion.id] === opt.value;
               return (
                 <button
                   key={opt.value}
                   onClick={() => handleSelectOption(opt.value)}
-                  className={`p-4 rounded-xl text-left border transition-all duration-300 flex items-center justify-between group ${
+                  className={`p-5 rounded-2xl text-left border transition-all duration-300 flex items-center justify-between group ${
                     isSelected
-                      ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-sm"
-                      : "bg-[#FAF7F2] border-[#541B28]/15 text-[#23181A] hover:border-[#541B28] hover:bg-white"
+                      ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-md ring-1 ring-[#541B28]/30"
+                      : "bg-[#FAF7F2] border-[#541B28]/15 text-[#23181A] hover:border-[#541B28] hover:bg-white hover:shadow-md"
                   }`}
                 >
-                  <div>
-                    <h4 className="font-semibold text-sm text-[#23181A] group-hover:text-[#541B28] transition-colors">
+                  <div className="pr-4">
+                    <h4 className="font-serif font-medium text-base text-[#23181A] group-hover:text-[#541B28] transition-colors">
                       {opt.label}
                     </h4>
                     {opt.desc && (
-                      <p className="text-xs text-[#756B6D] mt-0.5">{opt.desc}</p>
+                      <p className="text-xs text-[#756B6D] mt-1 font-light leading-relaxed">{opt.desc}</p>
                     )}
                   </div>
                   <div
-                    className={`w-6 h-6 rounded-full border flex items-center justify-center shrink-0 ml-4 transition-colors ${
+                    className={`w-7 h-7 rounded-full border flex items-center justify-center shrink-0 ml-4 transition-all ${
                       isSelected
-                        ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2]"
-                        : "border-[#756B6D]/40 group-hover:border-[#541B28]"
+                        ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2] shadow-sm"
+                        : "border-[#756B6D]/40 group-hover:border-[#541B28] group-hover:scale-105"
                     }`}
                   >
                     {isSelected ? <Check className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />}
@@ -370,13 +373,13 @@ export function PerfumeFinder() {
           </div>
 
           {/* Controls: Back & Skip */}
-          <div className="flex items-center justify-between pt-4 border-t border-[#541B28]/10">
+          <div className="flex items-center justify-between pt-6 border-t border-[#541B28]/10">
             {currentStepIndex > 0 ? (
               <button
                 onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-                className="flex items-center gap-1.5 text-xs text-[#756B6D] hover:text-[#541B28] font-medium transition-colors"
+                className="flex items-center gap-2 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold transition-colors"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                 <span>Question précédente</span>
               </button>
             ) : (
@@ -385,7 +388,7 @@ export function PerfumeFinder() {
 
             <button
               onClick={handleSkip}
-              className="text-xs text-[#756B6D] hover:text-[#541B28] underline transition-colors"
+              className="text-xs text-[#756B6D] hover:text-[#541B28] underline underline-offset-4 transition-colors font-medium"
             >
               Passer cette question
             </button>

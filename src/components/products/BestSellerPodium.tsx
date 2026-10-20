@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Crown, Sparkles, ShoppingBag, ArrowRight } from "lucide-react";
+import { Crown, ShoppingBag, ArrowRight } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
@@ -57,7 +58,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 text-xs text-[#541B28] uppercase tracking-widest font-bold mb-3 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3.5 shadow-sm">
             <Crown className="w-3.5 h-3.5 text-[#C7A66A]" />
             <span>Palmarès Officiel Haute Parfumerie</span>
           </div>

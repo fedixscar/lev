@@ -96,7 +96,7 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "text-xs tracking-[0.14em] uppercase transition-colors relative py-1 flex items-center gap-1.5",
+                      "font-cinzel text-[11px] tracking-luxury uppercase transition-colors relative py-1.5 flex items-center gap-1.5",
                       isActive
                         ? "text-[#541B28] font-bold"
                         : "text-[#4A3B3E] hover:text-[#541B28]",
@@ -106,7 +106,7 @@ export function Navbar() {
                     {Icon && <Icon className="w-3.5 h-3.5 text-[#541B28]" />}
                     <span>{link.label}</span>
                     {link.badge && (
-                      <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-medium">
+                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold tracking-wider">
                         {link.badge}
                       </span>
                     )}
@@ -265,11 +265,11 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm tracking-wider uppercase text-[#23181A] hover:text-[#541B28] py-2 flex items-center justify-between border-b border-[#541B28]/10 font-medium"
+                    className="font-cinzel text-xs tracking-luxury uppercase text-[#23181A] hover:text-[#541B28] py-2.5 flex items-center justify-between border-b border-[#541B28]/10 font-bold"
                   >
                     <span>{link.label}</span>
                     {link.badge && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#541B28] text-white">
+                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-white font-bold tracking-wider">
                         {link.badge}
                       </span>
                     )}

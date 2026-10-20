@@ -5,14 +5,16 @@ import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useAuth } from "@/context/AuthContext";
 import { Users, Copy, Check } from "lucide-react";
 
 export default function LoyaltyPage() {
+  const { user } = useAuth();
   const { loyaltyPoints, redeemPoints, xpPoints, xpLevel, doubleXpActive } = useLoyalty();
   const { showToast } = useNotification();
 
   const [copiedLink, setCopiedLink] = useState(false);
-  const referralCode = "LEVANIA-ELYES-77";
+  const referralCode = user ? `LEV-${user.id.slice(0, 6).toUpperCase()}` : "LEVANIA-PARRAIN";
   const referralLink = `https://levania-parfums.com/?ref=${referralCode}`;
 
   const copyReferral = () => {
@@ -68,7 +70,7 @@ export default function LoyaltyPage() {
                 Rang d&apos;Expérience (XP)
               </span>
               <div className="font-serif text-3xl text-[#541B28] font-bold">
-                Niveau {xpLevel} &bull; Connaisseur
+                Niveau {xpLevel} &bull; {xpLevel >= 3 ? "Connaisseur" : xpLevel === 2 ? "Initié" : "Découvreur"}
               </div>
               <p className="text-xs text-[#756B6D] mt-1">
                 {xpPoints} XP accumulés &bull; {doubleXpActive ? "Double XP Actif !" : "Multiplicateur normal"}
@@ -81,10 +83,10 @@ export default function LoyaltyPage() {
                 Filleuls Enregistrés
               </span>
               <div className="font-serif text-3xl text-[#434B36] font-bold">
-                3 Amis Parrainés
+                0 Ami Parrainé
               </div>
               <p className="text-xs text-[#756B6D] mt-1">
-                +140 points fidélité perçus via vos filleuls (Règle 50%)
+                Partagez votre lien exclusif pour percevoir 50% de leurs points d&apos;achat.
               </p>
             </div>
           </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useCallback, useState } from "react";
-import { X, ShieldCheck, QrCode, Copy, Check, Award, Compass, Sparkles } from "lucide-react";
+import { X, ShieldCheck, QrCode, Copy, Check, Award, Compass } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import Image from "next/image";
 import { Product } from "@/types";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
@@ -73,10 +74,10 @@ export function AuthenticityCertificateModal({
 
         {/* Header / Seal */}
         <div className="text-center relative z-10 mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#541B28] text-[#DFC68B] shadow-lg mb-3 border-2 border-[#C7A66A]/40">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#541B28] text-[#DFC68B] shadow-lg mb-3.5 border-2 border-[#C7A66A]/40">
             <WaveMonogram size="sm" variant="gold" />
           </div>
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[#541B28] font-bold block mb-1">
+          <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
             Maison Lévania &bull; Paris &bull; Nabeul
           </span>
           <h2 id="cert-modal-title" className="font-serif text-2xl sm:text-4xl text-[#541B28] font-light">
@@ -88,18 +89,18 @@ export function AuthenticityCertificateModal({
         </div>
 
         {/* Product Identity Card */}
-        <div className="relative z-10 bg-white/90 rounded-2xl border border-[#541B28]/15 p-5 mb-6 shadow-sm">
+        <div className="relative z-10 bg-white/90 rounded-2xl border border-[#541B28]/15 p-6 mb-6 shadow-sm">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-[#541B28]/10">
             <div>
-              <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block">
+              <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#756B6D] font-bold block">
                 Création Olfactive
               </span>
-              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">{product.name}</h3>
-              <span className="text-xs text-[#541B28] font-medium">{product.subtitle} &bull; {product.collection}</span>
+              <h3 className="font-serif text-2xl sm:text-3xl text-[#23181A] font-semibold">{product.name}</h3>
+              <span className="font-cinzel text-[11px] text-[#541B28] font-medium tracking-luxury uppercase">{product.subtitle} &bull; {product.collection}</span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#434B36]/10 text-[#434B36] border border-[#434B36]/30 text-xs font-bold">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#434B36]/10 text-[#434B36] border border-[#434B36]/30 font-cinzel text-[10px] uppercase tracking-luxury font-bold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Vérifié Conforme
               </span>

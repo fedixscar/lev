@@ -30,7 +30,6 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<AuthResponse>;
   signUp: (email: string, password: string, fullName: string, phone?: string) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
-  loginAsTestAccount: (role: "admin" | "reseller" | "customer") => void;
 }
 
 // Default pre-configured accounts
@@ -204,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     if (
-      (email === DEFAULT_ACCOUNTS.reseller.email || email.includes("revendeur") || email.includes("reseller")) &&
+      email === DEFAULT_ACCOUNTS.reseller.email &&
       password === DEFAULT_ACCOUNTS.reseller.password
     ) {
       const resellerUser: UserProfile = {
@@ -238,19 +237,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { success: true, role: "customer" };
     }
 
-    // Generic customer fallback if valid email and min length
-    if (email.includes("@") && password.length >= 6) {
-      const genericUser: UserProfile = {
-        id: `cust-${Date.now()}`,
-        name: email.split("@")[0].replace(".", " "),
-        email,
-        role: "customer",
-        avatar: "/brand/logo-emblem.jpg",
-      };
-      setUser(genericUser);
-      setRole("customer");
-      localStorage.setItem("levania_active_user", JSON.stringify(genericUser));
-      return { success: true, role: "customer" };
+    // Check locally registered accounts in localStorage
+    try {
+      const storedUsers = localStorage.getItem("levania_registered_users");
+      if (storedUsers) {
+        const usersList: Array<{ email: string; password: string; name: string; phone?: string; id: string }> = JSON.parse(storedUsers);
+        const matched = usersList.find((u) => u.email.toLowerCase() === email && u.password === password);
+        if (matched) {
+          const custUser: UserProfile = {
+            id: matched.id,
+            name: matched.name,
+            email: matched.email,
+            role: "customer",
+            phone: matched.phone,
+            avatar: "/brand/logo-emblem.jpg",
+          };
+          setUser(custUser);
+          setRole("customer");
+          localStorage.setItem("levania_active_user", JSON.stringify(custUser));
+          return { success: true, role: "customer" };
+        }
+      }
+    } catch {
+      // Ignore
     }
 
     return {
@@ -261,11 +270,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sign Up handler
   const signUp = async (
-    email: string,
+    emailInput: string,
     password: string,
     fullName: string,
     phone?: string
   ): Promise<AuthResponse> => {
+    const email = emailInput.trim().toLowerCase();
+
     if (isSupabaseConfigured()) {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -293,7 +304,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           role: "customer",
         });
 
-        // Initialize wallets
+        // Initialize wallets with 0 Luck and 0 Points
         await supabase.from("luck_wallets").upsert({
           customer_id: data.user.id,
           balance: 0,
@@ -308,9 +319,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Local state creation
+    // Local state creation and registered list
+    const newUserId = `cust-${Date.now()}`;
     const newUser: UserProfile = {
-      id: `cust-${Date.now()}`,
+      id: newUserId,
       name: fullName,
       email,
       role: "customer",
@@ -318,17 +330,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       avatar: "/brand/logo-emblem.jpg",
     };
 
+    try {
+      const storedUsers = localStorage.getItem("levania_registered_users");
+      const usersList = storedUsers ? JSON.parse(storedUsers) : [];
+      usersList.push({
+        id: newUserId,
+        email,
+        password,
+        name: fullName,
+        phone,
+      });
+      localStorage.setItem("levania_registered_users", JSON.stringify(usersList));
+    } catch {
+      // Ignore
+    }
+
     setUser(newUser);
     setRole("customer");
     localStorage.setItem("levania_active_user", JSON.stringify(newUser));
 
     return { success: true, role: "customer" };
-  };
-
-  // 1-Click Test Account Switcher
-  const loginAsTestAccount = (testRole: "admin" | "reseller" | "customer") => {
-    const acc = DEFAULT_ACCOUNTS[testRole];
-    signIn(acc.email, acc.password);
   };
 
   // Sign Out
@@ -351,7 +372,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signIn,
         signUp,
         signOut,
-        loginAsTestAccount,
       }}
     >
       {children}

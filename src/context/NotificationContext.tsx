@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { CheckCircle2, AlertCircle, Info, Sparkles, X } from "lucide-react";
+import { CheckCircle2, AlertCircle, Info, X } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { cn } from "@/lib/utils";
 
 export type ToastType = "success" | "error" | "info" | "luxury";
@@ -52,7 +53,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
             )}
           >
             <div className="mt-0.5 shrink-0">
-              {toast.type === "luxury" && <Sparkles className="w-5 h-5 text-[#C7A66A]" />}
+              {toast.type === "luxury" && <GoldStarLozenge size={18} className="text-[#C7A66A] shrink-0" />}
               {toast.type === "success" && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
               {toast.type === "error" && <AlertCircle className="w-5 h-5 text-rose-400" />}
               {toast.type === "info" && <Info className="w-5 h-5 text-sky-400" />}

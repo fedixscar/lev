@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Plus, Minus, Trash2, ArrowRight, Sparkles, Tag } from "lucide-react";
+import { X, Plus, Minus, Trash2, ArrowRight, Tag } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { useCart } from "@/context/CartContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
@@ -76,7 +77,7 @@ export function CartDrawer() {
           <div className="px-6 py-3 bg-[#F3ECE1]/70 border-b border-[#541B28]/10 text-xs text-[#5A4B4E]">
             {subtotalTND >= 200 ? (
               <div className="flex items-center gap-2 text-[#434B36] font-semibold">
-                <Sparkles className="w-4 h-4 text-[#C7A66A]" />
+                <GoldStarLozenge size={13} className="text-[#C7A66A]" />
                 <span>Livraison Express Offerte partout en Tunisie !</span>
               </div>
             ) : (
@@ -100,7 +101,7 @@ export function CartDrawer() {
             {items.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center text-[#756B6D] py-12">
                 <div className="w-16 h-16 rounded-full border border-[#541B28]/20 flex items-center justify-center mb-4 text-[#541B28] bg-white shadow-sm">
-                  <Sparkles className="w-8 h-8" />
+                  <WaveMonogram size="md" variant="burgundy" />
                 </div>
                 <p className="font-serif text-xl text-[#23181A] mb-2">Votre panier est vide</p>
                 <p className="text-sm max-w-xs text-[#756B6D] mb-6">
@@ -256,8 +257,8 @@ export function CartDrawer() {
 
               {/* Projected Luck Badge */}
               {projectedLuck > 0 && (
-                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 text-xs text-[#23181A]">
-                  <Sparkles className="w-4 h-4 text-[#C7A66A] shrink-0 animate-pulse" />
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 text-xs text-[#23181A]">
+                  <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>
                     Cette commande vous rapportera{" "}
                     <strong className="text-[#541B28]">+{projectedLuck} Luck</strong> pour la Roue du Destin!

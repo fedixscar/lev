@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
-import { Sparkles, Trophy, Flame, Crown, ShieldAlert, Copy, Check } from "lucide-react";
+import { Trophy, Flame, Crown, ShieldAlert, Copy, Check } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WheelSpinRecord } from "@/types";
@@ -96,7 +97,7 @@ export function WheelOfChance() {
       border: "border-[#541B28]/20 shadow-sm",
       accent: "text-[#541B28]",
       bg: "bg-white",
-      icon: Sparkles,
+      icon: GoldStarLozenge,
     },
     "Fire Wave": {
       name: "Onde Ardente (101–1,000 Luck)",
@@ -129,50 +130,50 @@ export function WheelOfChance() {
       {/* Tier Status Banner */}
       <div
         className={cn(
-          "mb-12 p-6 rounded-3xl border backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 shadow-sm",
+          "mb-14 p-7 sm:p-9 rounded-3xl border backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-700 shadow-sm",
           currentTheme.bg,
           currentTheme.border
         )}
       >
-        <div className="flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-[#541B28] border border-[#C7A66A]/40 flex items-center justify-center text-[#DFC68B] shadow-md shrink-0">
-            <TierIcon className="w-8 h-8 animate-pulse" />
+        <div className="flex items-center gap-6">
+          <div className="w-18 h-18 rounded-2xl bg-[#541B28] border border-[#C7A66A]/40 flex items-center justify-center text-[#DFC68B] shadow-lg shrink-0">
+            <TierIcon className="w-9 h-9 animate-pulse text-[#C7A66A]" />
           </div>
           <div>
-            <div className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
+            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold mb-1">
               Votre Vague Olfactive Active
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold">
+            <h2 className="font-serif text-2xl sm:text-3xl font-light text-[#23181A]">
               {currentTheme.name}
             </h2>
-            <p className="text-xs opacity-80 mt-1">
-              Solde Actuel: <strong className="text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> &bull; Cap Suprême: 7,777
+            <p className="text-xs text-[#5A4B4E] opacity-80 mt-1 font-light">
+              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> &bull; Cap Suprême: 7,777
             </p>
           </div>
         </div>
 
         {/* Tier Milestones Progress */}
-        <div className="w-full md:w-auto flex flex-col gap-2 min-w-[280px]">
-          <div className="flex justify-between text-[11px] text-[#756B6D] font-medium">
+        <div className="w-full md:w-auto flex flex-col gap-2 min-w-[300px]">
+          <div className="flex justify-between font-cinzel text-[10px] tracking-wider text-[#756B6D] font-medium uppercase">
             <span>Initiale (1)</span>
             <span>Ardente (101)</span>
             <span>Royale (1001)</span>
             <span>Impériale (7777)</span>
           </div>
-          <div className="w-full h-2.5 bg-[#FAF7F2] rounded-full overflow-hidden p-0.5 border border-[#541B28]/20">
+          <div className="w-full h-3 bg-[#FAF7F2] rounded-full overflow-hidden p-0.5 border border-[#541B28]/20">
             <div
-              className="h-full bg-gradient-to-r from-[#541B28] via-[#852538] to-[#C7A66A] rounded-full transition-all duration-1000"
+              className="h-full bg-gradient-to-r from-[#541B28] via-[#852538] to-[#C7A66A] rounded-full transition-all duration-1000 shadow-sm"
               style={{ width: `${Math.min(100, (luckBalance / 7777) * 100)}%` }}
             />
           </div>
-          <div className="text-right text-[10px] text-[#541B28] font-bold">
+          <div className="text-right font-cinzel text-[10px] tracking-luxury text-[#541B28] font-bold">
             {luckBalance >= 7777 ? "Palier Exceptionnel Atteint !" : `Plus que ${7777 - luckBalance} Luck pour l'Onde Impériale`}
           </div>
         </div>
       </div>
 
       {/* The Wheel Centerpiece */}
-      <div className="flex flex-col items-center justify-center my-8 relative">
+      <div className="flex flex-col items-center justify-center my-10 relative">
         {/* Liquid Wave Atmosphere Halo behind the Wheel */}
         <div className="absolute -inset-8 rounded-full opacity-35 pointer-events-none overflow-hidden blur-md">
           <WaveCanvas
@@ -226,7 +227,7 @@ export function WheelOfChance() {
                       y="16"
                       fill="#FAF7F2"
                       fontSize="3.8"
-                      fontFamily="serif"
+                      fontFamily="var(--font-cinzel), serif"
                       fontWeight="bold"
                       textAnchor="middle"
                       transform={`rotate(${startAngle + angle / 2}, 50, 50)`}
@@ -248,17 +249,17 @@ export function WheelOfChance() {
               className={cn(
                 "pointer-events-auto w-24 h-24 rounded-full border-2 border-[#C7A66A] shadow-2xl flex flex-col items-center justify-center transition-all duration-300",
                 luckBalance >= 1
-                  ? "bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_25px_rgba(84,27,40,0.5)]"
+                  ? "bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_30px_rgba(84,27,40,0.5)]"
                   : "bg-white text-[#756B6D] border-[#541B28]/20 cursor-not-allowed"
               )}
             >
               <div className="mb-0.5">
                 <WaveMonogram size="sm" variant="gold" withSeal={false} />
               </div>
-              <span className="font-serif text-[11px] font-bold uppercase tracking-wider">
+              <span className="font-cinzel text-[11px] font-bold uppercase tracking-luxury">
                 {animating ? "Destin..." : "LANCER"}
               </span>
-              <span className="text-[9px] opacity-90 text-[#DFC68B]">
+              <span className="font-cinzel text-[9px] opacity-90 text-[#C7A66A] tracking-wider">
                 {luckBalance >= 1 ? `${luckBalance} Luck` : "0 Luck"}
               </span>
             </button>
@@ -266,10 +267,10 @@ export function WheelOfChance() {
         </div>
 
         {/* Spin action explanation */}
-        <p className="text-xs text-[#756B6D] mt-8 text-center max-w-md leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#756B6D] mt-8 text-center max-w-md leading-relaxed font-light">
           {luckBalance >= 1 ? (
             <>
-              Chaque lancer consomme l&apos;intégralité de vos <strong className="text-[#541B28] font-bold">{luckBalance} Luck</strong>.
+              Chaque lancer consomme l&apos;intégralité de vos <strong className="font-cinzel text-[#541B28] font-bold">{luckBalance} Luck</strong>.
               Le palier actuel garantit la table de récompenses <strong>{currentTier}</strong>.
             </>
           ) : (
@@ -284,11 +285,11 @@ export function WheelOfChance() {
       {activeResult && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
           <div className="max-w-md w-full rounded-3xl bg-white border-2 border-[#541B28] p-8 text-center shadow-2xl relative animate-in zoom-in-95">
-            <div className="flex justify-center mb-3">
+            <div className="flex justify-center mb-4">
               <WaveMonogram size="md" variant="gold" withSeal />
             </div>
 
-            <div className="text-xs uppercase tracking-widest text-[#541B28] font-bold">
+            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
               Révélation {activeResult.tier}
             </div>
 
@@ -296,18 +297,18 @@ export function WheelOfChance() {
               {activeResult.rewardLabel}
             </h3>
 
-            <p className="text-xs text-[#5A4B4E] mb-6">
+            <p className="text-xs sm:text-sm text-[#5A4B4E] mb-6 font-light">
               Votre chance de {activeResult.luckConsumed} Luck a été honorée par la Maison Lévania.
             </p>
 
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
               <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 mb-6">
-                <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                <span className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1 font-bold">
                   Code Privilège Généré
                 </span>
-                <div className="flex items-center justify-between gap-2 bg-white p-2.5 rounded-lg border border-[#541B28]/20">
-                  <span className="font-mono text-sm font-bold text-[#541B28] tracking-wider">
+                <div className="flex items-center justify-between gap-2 bg-white p-3 rounded-lg border border-[#541B28]/20">
+                  <span className="font-mono text-base font-bold text-[#541B28] tracking-wider">
                     {activeResult.couponCodeGenerated}
                   </span>
                   <button
@@ -323,7 +324,7 @@ export function WheelOfChance() {
 
             <button
               onClick={() => setActiveResult(null)}
-              className="w-full py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-semibold text-xs tracking-wider uppercase shadow-md transition-colors"
+              className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs tracking-luxury uppercase shadow-xl transition-all active:scale-98"
             >
               Célébrer & Continuer
             </button>

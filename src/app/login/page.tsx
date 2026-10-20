@@ -6,7 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
-import { useAuth, DEFAULT_ACCOUNTS } from "@/context/AuthContext";
+import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
+import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/context/NotificationContext";
 import {
   Lock,
@@ -14,10 +15,6 @@ import {
   User,
   Phone,
   ArrowRight,
-  ShieldCheck,
-  Briefcase,
-  UserCheck,
-  CheckCircle2,
 } from "lucide-react";
 
 function LoginFormContent() {
@@ -85,34 +82,15 @@ function LoginFormContent() {
     }
   };
 
-  // Quick fill and sign-in for testing
-  const handleQuickLogin = async (accRole: "admin" | "reseller" | "customer") => {
-    const acc = DEFAULT_ACCOUNTS[accRole];
-    setEmail(acc.email);
-    setPassword(acc.password);
-    setIsSubmitting(true);
-
-    const res = await signIn(acc.email, acc.password);
-    setIsSubmitting(false);
-
-    if (res.success && res.role) {
-      showToast(
-        "Connexion Rapide Établie",
-        `Connecté en tant que ${acc.name}`,
-        "luxury"
-      );
-      handleRedirectAfterLogin(res.role);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+      <AmbientWaveBackdrop expression="signature" opacity={0.22} />
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20 flex items-center justify-center">
+      <main className="flex-1 pt-36 sm:pt-44 pb-28 sm:pb-36 flex items-center justify-center relative z-10">
         <div className="max-w-md w-full mx-auto px-4 sm:px-6">
           {/* Card Container */}
-          <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 shadow-2xl relative">
+          <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-10 shadow-2xl relative">
             {/* Top Logo Monogram */}
             <div className="flex flex-col items-center text-center mb-6">
               <LevaniaLogo size="md" />
@@ -245,43 +223,11 @@ function LoginFormContent() {
               )}
             </div>
 
-            {/* Quick 1-Click Access for Evaluation */}
-            <div className="mt-8 pt-6 border-t border-[#541B28]/15 space-y-3">
-              <span className="text-[10px] uppercase tracking-widest text-[#756B6D] font-bold block text-center">
-                Comptes de Test Rapides (1 Clic)
+            {/* Security Guarantee Notice */}
+            <div className="mt-8 pt-6 border-t border-[#541B28]/15 text-center">
+              <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#756B6D] font-bold block">
+                Session Chiffrée &bull; Haute Parfumerie Lévania
               </span>
-
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("admin")}
-                  className="p-2 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 hover:border-[#541B28] text-center transition-colors group"
-                >
-                  <ShieldCheck className="w-4 h-4 text-[#541B28] mx-auto mb-1" />
-                  <span className="text-[10px] font-bold text-[#541B28] block">Admin</span>
-                  <span className="text-[9px] text-[#756B6D] block">Direction</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("reseller")}
-                  className="p-2 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 hover:border-[#541B28] text-center transition-colors group"
-                >
-                  <Briefcase className="w-4 h-4 text-[#434B36] mx-auto mb-1" />
-                  <span className="text-[10px] font-bold text-[#434B36] block">Revendeur</span>
-                  <span className="text-[9px] text-[#756B6D] block">Master</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("customer")}
-                  className="p-2 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 hover:border-[#541B28] text-center transition-colors group"
-                >
-                  <UserCheck className="w-4 h-4 text-[#541B28] mx-auto mb-1" />
-                  <span className="text-[10px] font-bold text-[#23181A] block">Client</span>
-                  <span className="text-[9px] text-[#756B6D] block">Privilège</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>

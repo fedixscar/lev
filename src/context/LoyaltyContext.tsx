@@ -48,10 +48,10 @@ const TIER_REWARDS_TABLE: Record<WheelTier, WheelReward[]> = {
 const LoyaltyContext = createContext<LoyaltyContextType | null>(null);
 
 export function LoyaltyProvider({ children }: { children: React.ReactNode }) {
-  // Demo baseline: 250 Luck (Fire Wave)
-  const [luckBalance, setLuckBalance] = useState<number>(250);
-  const [loyaltyPoints, setLoyaltyPoints] = useState<number>(420);
-  const [xpPoints, setXpPoints] = useState<number>(1850);
+  // Production baseline: clean state, points & luck earned on real purchases
+  const [luckBalance, setLuckBalance] = useState<number>(0);
+  const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
+  const [xpPoints, setXpPoints] = useState<number>(0);
   const [doubleXpActive, setDoubleXpActive] = useState<boolean>(false);
   const [spinHistory, setSpinHistory] = useState<WheelSpinRecord[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);

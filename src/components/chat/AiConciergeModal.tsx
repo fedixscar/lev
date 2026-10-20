@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Send, Sparkles, Bot, ArrowRight, User } from "lucide-react";
+import { X, Send, Bot, ArrowRight, User } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { PRODUCTS } from "@/lib/catalogue";
 import { cn } from "@/lib/utils";
 
@@ -98,11 +99,11 @@ export function AiConciergeModal() {
       {/* Floating launcher button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 left-6 z-40 p-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2 group border border-[#C7A66A]/40"
+        className="fixed bottom-6 left-6 z-40 px-5 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2.5 group border border-[#C7A66A]/40 cursor-pointer"
         aria-label="Ouvrir le Concierge Olfactif IA"
       >
-        <Sparkles className="w-5 h-5 text-[#DFC68B] animate-spin" style={{ animationDuration: "8s" }} />
-        <span className="hidden sm:inline font-serif text-xs font-bold tracking-wider uppercase">
+        <GoldStarLozenge size={16} className="text-[#DFC68B] group-hover:rotate-45 transition-transform duration-500" />
+        <span className="hidden sm:inline font-cinzel text-[11px] font-bold tracking-luxury uppercase">
           Concierge Olfactif IA
         </span>
       </button>

@@ -12,12 +12,12 @@ import { useNotification } from "@/context/NotificationContext";
 import {
   ShoppingBag,
   ArrowRight,
-  Sparkles,
   Layers,
   Flame,
   Check,
   ShieldCheck,
 } from "lucide-react";
+import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 interface HeroStageItem {
   id: string;
@@ -172,12 +172,12 @@ export function HeroFragranceStage() {
 
           {/* Top Floating Badge */}
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-[#541B28]/20 text-[10px] uppercase tracking-widest font-bold text-[#541B28] shadow-sm">
-              <Sparkles className="w-3 h-3 text-[#C7A66A]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#541B28]/20 font-cinzel text-[10px] uppercase tracking-luxury font-bold text-[#541B28] shadow-sm">
+              <GoldStarLozenge size={10} className="text-[#C7A66A]" />
               <span>{activeItem.tag}</span>
             </div>
 
-            <span className="text-[10px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
+            <span className="font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
               {activeItem.expression.toUpperCase()} WAVE
             </span>
           </div>
