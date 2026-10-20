@@ -10,6 +10,7 @@ interface LevaniaLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
   variant?: "full" | "emblem-only" | "wordmark-only";
   href?: string;
+  tone?: "default" | "light";
 }
 
 export function LevaniaLogo({
@@ -17,6 +18,7 @@ export function LevaniaLogo({
   size = "md",
   variant = "full",
   href = "/",
+  tone = "default",
 }: LevaniaLogoProps) {
   const sizeMap = {
     sm: { emblem: 34, text: "text-lg", sub: "text-[9px] tracking-[0.35em]" },
@@ -28,10 +30,15 @@ export function LevaniaLogo({
   const config = sizeMap[size];
 
   const content = (
-    <div className={cn("inline-flex items-center gap-3.5 group transition-transform duration-300", className)}>
+    <div className={cn("inline-flex items-center gap-2 sm:gap-3.5 group transition-transform duration-300", className)}>
       {variant !== "wordmark-only" && (
         <div
-          className="relative rounded-full overflow-hidden border border-[#541B28]/20 p-0.5 shadow-sm shadow-[#541B28]/10 group-hover:border-[#541B28] group-hover:shadow-[0_0_15px_rgba(84,27,40,0.15)] transition-all duration-300 bg-white"
+          className={cn(
+            "relative rounded-full overflow-hidden border p-0.5 shadow-sm transition-all duration-300 bg-white",
+            tone === "light"
+              ? "border-[#C7A66A]/40 shadow-black/20 group-hover:border-[#C7A66A] group-hover:shadow-[0_0_15px_rgba(199,166,106,0.25)]"
+              : "border-[#541B28]/20 shadow-[#541B28]/10 group-hover:border-[#541B28] group-hover:shadow-[0_0_15px_rgba(84,27,40,0.15)]"
+          )}
           style={{ width: config.emblem, height: config.emblem }}
         >
           <Image
@@ -49,7 +56,10 @@ export function LevaniaLogo({
         <div className="flex flex-col text-left">
           <span
             className={cn(
-              "font-serif font-normal text-[#541B28] leading-tight tracking-[0.2em] uppercase group-hover:text-[#7A263B] transition-colors",
+              "font-serif font-normal leading-tight tracking-[0.2em] uppercase transition-colors",
+              tone === "light"
+                ? "text-[#FAF7F2] group-hover:text-[#DFC68B]"
+                : "text-[#541B28] group-hover:text-[#7A263B]",
               config.text
             )}
           >
@@ -59,7 +69,8 @@ export function LevaniaLogo({
             <span className="w-3 h-[0.5px] bg-[#C7A66A]" />
             <span
               className={cn(
-                "font-sans font-semibold text-[#852538] uppercase",
+                "font-sans font-semibold uppercase",
+                tone === "light" ? "text-[#DFC68B]" : "text-[#852538]",
                 config.sub
               )}
             >

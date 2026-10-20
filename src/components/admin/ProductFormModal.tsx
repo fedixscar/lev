@@ -292,7 +292,7 @@ export function ProductFormModal({
             </div>
             <div>
               <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold block">
-                Haute Parfumerie &bull; Atelier de Création
+                Haute Parfumerie • Atelier de Création
               </span>
               <h2 className="font-serif text-2xl text-burgundy-gradient font-light">
                 {initialProduct ? `Modifier ${initialProduct.name}` : "Nouveau Flacon Lévania"}

@@ -179,7 +179,7 @@ export default function CheckoutPage() {
               <div className="luxury-pill mb-4 inline-flex items-center gap-2">
                 <GoldStarLozenge size={12} className="text-[#C7A66A]" />
                 <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
-                  Haute Parfumerie Lévania &bull; Sillage Garanti
+                  Haute Parfumerie Lévania • Sillage Garanti
                 </span>
               </div>
 
@@ -423,7 +423,7 @@ export default function CheckoutPage() {
                           <div className="flex-1">
                             <h4 className="font-serif text-base text-[#23181A] font-medium">{item.productName}</h4>
                             <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D]">
-                              {item.formatSize} &bull; qté {item.quantity}
+                              {item.formatSize} • qté {item.quantity}
                             </span>
                           </div>
                           <span className="font-cinzel text-xs text-[#541B28] font-bold tracking-luxury">
@@ -477,7 +477,7 @@ export default function CheckoutPage() {
 
                     <div className="text-center text-[10px] text-[#756B6D] pt-2">
                       <ShieldCheck className="w-3.5 h-3.5 inline mr-1.5 text-[#434B36]" />
-                      <span className="font-cinzel tracking-luxury uppercase">Garantie Haute Parfumerie &bull; Paiement Sécurisé</span>
+                      <span className="font-cinzel tracking-luxury uppercase">Garantie Haute Parfumerie • Paiement Sécurisé</span>
                     </div>
                   </div>
                 </div>

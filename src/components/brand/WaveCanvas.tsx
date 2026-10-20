@@ -404,9 +404,9 @@ export function WaveCanvas({
 
       {/* Interactive prompt hint when hovered */}
       {interactive && (
-        <div className="absolute top-3 right-4 opacity-0 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none">
+        <div className="hidden sm:block absolute top-3 right-4 opacity-0 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none">
           <span className="text-[10px] tracking-widest uppercase font-serif text-[#FAF7F2] bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-[#C7A66A]/30">
-            Onde Interactive &bull; Survolez ou Touchez
+            Onde Interactive • Survolez ou Touchez
           </span>
         </div>
       )}

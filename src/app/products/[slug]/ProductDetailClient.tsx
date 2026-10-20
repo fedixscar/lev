@@ -185,7 +185,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#541B28]/15 shadow-xs">
                   <GoldStarLozenge size={12} className="text-[#C7A66A]" />
                   <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] font-bold">
-                    Haute Parfumerie Artisanale &bull; Flacon Scellé &amp; Traçable
+                    Haute Parfumerie Artisanale • Flacon Scellé &amp; Traçable
                   </span>
                 </div>
               </div>
@@ -238,10 +238,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
               {/* CTAs: Add to cart & Buy Now */}
               <div className="space-y-3 pt-3">
-                <div className="flex gap-3.5">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 py-4 px-6 rounded-xl bg-white/95 hover:bg-white text-[#541B28] border border-[#541B28]/30 font-cinzel text-xs font-bold uppercase tracking-luxury transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md active:scale-98"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-xl bg-white/95 hover:bg-white text-[#541B28] border border-[#541B28]/30 font-cinzel text-xs font-bold uppercase tracking-luxury transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md active:scale-98"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
                     <span>Ajouter au Panier</span>
@@ -249,7 +249,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
                   <button
                     onClick={handleBuyNow}
-                    className="flex-1 py-4 px-6 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 active:scale-98"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 active:scale-98"
                   >
                     <span>Acheter Immédiatement</span>
                     <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
@@ -261,7 +261,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2.5 text-xs text-[#5A4B4E] shadow-sm">
                 <div className="flex items-center gap-2 text-[#23181A]">
                   <Truck className="w-4 h-4 text-[#541B28] shrink-0" />
-                  <span>Livraison express en Tunisie sous 24h &bull; 48h (Offerte dès 200 TND)</span>
+                  <span>Livraison express en Tunisie sous 24h • 48h (Offerte dès 200 TND)</span>
                 </div>
                 
                 {/* Interactive Certificate Trigger */}
@@ -302,17 +302,17 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </span>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">
                     {waveExpression === "soft"
-                      ? "Onde Soyeuse Diaphane &bull; Voile Intime"
+                      ? "Onde Soyeuse Diaphane • Voile Intime"
                       : waveExpression === "intense"
-                      ? "Onde Sombre & Boisée &bull; Sillage Monumental"
-                      : "Vague Signature &bull; Noblesse Méditerranéenne"}
+                      ? "Onde Sombre & Boisée • Sillage Monumental"
+                      : "Vague Signature • Noblesse Méditerranéenne"}
                   </h3>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-[11px] px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold shadow-sm">
-                  Diffusion 14h &bull; Rayonnement 2.5m
+                  Diffusion 14h • Rayonnement 2.5m
                 </span>
               </div>
             </div>
@@ -325,9 +325,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 height="100%"
                 className="w-full h-full"
               />
-              <div className="absolute bottom-3 left-4 pointer-events-none">
-                <span className="text-[9px] uppercase tracking-widest text-[#756B6D] font-mono bg-white/90 px-2.5 py-1 rounded-full backdrop-blur-sm border border-[#541B28]/15 shadow-sm">
-                  &sim; Touchez ou survolez pour diffuser l&apos;onde olfactive
+              <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-auto pointer-events-none">
+                <span className="inline-block max-w-full text-[9px] uppercase tracking-widest text-[#756B6D] font-mono bg-white/90 px-2.5 py-1 rounded-full backdrop-blur-sm border border-[#541B28]/15 shadow-sm leading-relaxed">
+                  <span className="sm:hidden">&sim; Touchez pour diffuser</span>
+                  <span className="hidden sm:inline">&sim; Touchez ou survolez pour diffuser l&apos;onde olfactive</span>
                 </span>
               </div>
             </div>

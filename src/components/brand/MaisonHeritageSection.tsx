@@ -48,7 +48,7 @@ export function MaisonHeritageSection() {
             {/* Accent Floating Badge Top Right */}
             <div className="absolute -top-4 -right-4 hidden sm:flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 shadow-xl font-cinzel text-[11px] tracking-luxury uppercase">
               <GoldStarLozenge size={12} className="text-[#DFC68B]" />
-              <span>Artisanat du Cap Bon &bull; 2026</span>
+              <span>Artisanat du Cap Bon • 2026</span>
             </div>
           </div>
 

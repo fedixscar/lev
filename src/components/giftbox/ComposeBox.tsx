@@ -167,21 +167,21 @@ export function ComposeBox() {
   return (
     <div className="py-6 sm:py-10 max-w-6xl mx-auto px-4">
       {/* Step Stepper */}
-      <div className="flex items-center justify-between max-w-3xl mx-auto mb-14">
+      <div className="flex items-start justify-between max-w-3xl mx-auto mb-10 sm:mb-14 gap-1 sm:gap-2">
         {[
-          { step: 1, label: "1. Écrin" },
-          { step: 2, label: "2. Flacons" },
-          { step: 3, label: "3. Finitions" },
-          { step: 4, label: "4. Aperçu & Panier" },
+          { step: 1, label: "Écrin" },
+          { step: 2, label: "Flacons" },
+          { step: 3, label: "Finitions" },
+          { step: 4, label: "Aperçu" },
         ].map((s) => (
           <button
             key={s.step}
-            onClick={() => setCurrentStep(s.step as any)}
-            className="flex flex-col items-center group cursor-pointer"
+            onClick={() => setCurrentStep(s.step as 1 | 2 | 3 | 4)}
+            className="flex flex-1 min-w-0 flex-col items-center group cursor-pointer"
           >
             <div
               className={cn(
-                "w-11 h-11 rounded-full flex items-center justify-center font-cinzel text-xs font-bold transition-all duration-300",
+                "w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center font-cinzel text-xs font-bold transition-all duration-300",
                 currentStep === s.step
                   ? "bg-[#541B28] text-[#FAF7F2] shadow-xl shadow-[#541B28]/30 scale-110 ring-2 ring-[#C7A66A]/40"
                   : currentStep > s.step
@@ -193,7 +193,7 @@ export function ComposeBox() {
             </div>
             <span
               className={cn(
-                "font-cinzel text-[10px] sm:text-[11px] tracking-luxury uppercase mt-2.5 transition-colors font-bold",
+                "font-cinzel text-[9px] sm:text-[11px] tracking-wider sm:tracking-luxury uppercase mt-2.5 transition-colors font-bold text-center leading-tight",
                 currentStep === s.step ? "text-[#541B28]" : "text-[#756B6D]"
               )}
             >
@@ -222,49 +222,51 @@ export function ComposeBox() {
                     key={b.id}
                     onClick={() => setSelectedBox(b)}
                     className={cn(
-                      "p-5 rounded-2xl border transition-all cursor-pointer flex gap-5 items-center",
+                      "p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row gap-4 sm:gap-5 sm:items-center",
                       selectedBox.id === b.id
                         ? "bg-[#541B28]/8 border-[#541B28] shadow-md"
                         : "bg-[#FAF7F2] border-[#541B28]/15 hover:border-[#541B28]"
                     )}
                   >
-                    <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-white shrink-0 border border-[#541B28]/15 shadow-sm">
+                    <div className="relative w-full h-40 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-white shrink-0 border border-[#541B28]/15 shadow-sm">
                       <Image src={b.image} alt={b.name} fill className="object-cover" />
                     </div>
 
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-serif text-lg text-[#23181A] font-semibold">{b.name}</h4>
-                        <span className="text-xs text-[#541B28] font-serif font-bold">
-                          +{formatTND(b.priceTND)}
+                    <div className="flex-1 min-w-0 flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h4 className="font-serif text-base sm:text-lg text-[#23181A] font-semibold leading-snug">{b.name}</h4>
+                        <p className="text-[11px] sm:text-xs text-[#756B6D] mt-1 leading-relaxed">{b.description}</p>
+                        <span className="inline-block mt-2 text-[9px] sm:text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold">
+                          Accueille jusqu&apos;à {b.capacity} parfum(s)
                         </span>
                       </div>
-                      <p className="text-xs text-[#756B6D] mt-1">{b.description}</p>
-                      <span className="inline-block mt-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold">
-                        Accueille jusqu&apos;à {b.capacity} parfum(s)
-                      </span>
-                    </div>
 
-                    <div
-                      className={cn(
-                        "w-6 h-6 rounded-full border flex items-center justify-center shrink-0 ml-2",
-                        selectedBox.id === b.id
-                          ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2]"
-                          : "border-[#756B6D]/30"
-                      )}
-                    >
-                      {selectedBox.id === b.id && <Check className="w-3.5 h-3.5" />}
+                      <div className="flex flex-col items-end gap-2 shrink-0">
+                        <span className="text-xs text-[#541B28] font-serif font-bold whitespace-nowrap">
+                          +{formatTND(b.priceTND)}
+                        </span>
+                        <div
+                          className={cn(
+                            "w-6 h-6 rounded-full border flex items-center justify-center",
+                            selectedBox.id === b.id
+                              ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2]"
+                              : "border-[#756B6D]/30"
+                          )}
+                        >
+                          {selectedBox.id === b.id && <Check className="w-3.5 h-3.5" />}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-10 flex justify-end">
+              <div className="mt-8 sm:mt-10 flex justify-end">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
+                  className="w-full sm:w-auto px-5 sm:px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center justify-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
                 >
-                  <span>Étape suivante: Flacons</span>
+                  <span>Suivant : Flacons</span>
                   <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                 </button>
               </div>
@@ -283,7 +285,7 @@ export function ComposeBox() {
                 Sélectionnez jusqu&apos;à {selectedBox.capacity} parfum(s) pour composer votre harmonie.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[480px] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:max-h-[480px] sm:overflow-y-auto sm:pr-2">
                 {PRODUCTS.map((prod) => {
                   const isSelected = selectedPerfumes.some((p) => p.product.id === prod.id);
 
@@ -338,10 +340,10 @@ export function ComposeBox() {
                 })}
               </div>
 
-              <div className="mt-10 flex justify-between items-center">
+              <div className="mt-8 sm:mt-10 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3">
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
+                  className="w-full sm:w-auto justify-center px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Retour</span>
@@ -349,9 +351,9 @@ export function ComposeBox() {
                 <button
                   onClick={() => setCurrentStep(3)}
                   disabled={selectedPerfumes.length === 0}
-                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all disabled:opacity-40 shadow-lg hover:shadow-xl active:scale-98"
+                  className="w-full sm:w-auto justify-center px-5 sm:px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all disabled:opacity-40 shadow-lg hover:shadow-xl active:scale-98"
                 >
-                  <span>Étape suivante: Finitions</span>
+                  <span>Suivant : Finitions</span>
                   <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
                 </button>
               </div>
@@ -380,7 +382,7 @@ export function ComposeBox() {
                       key={acc.id}
                       onClick={() => toggleAccessory(acc.id)}
                       className={cn(
-                        "p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-colors",
+                        "p-3 rounded-xl border cursor-pointer flex items-center justify-between gap-3 transition-colors",
                         isChecked
                           ? "bg-[#541B28]/8 border-[#541B28]"
                           : "bg-[#FAF7F2] border-[#541B28]/15 hover:border-[#541B28]"
@@ -397,9 +399,9 @@ export function ComposeBox() {
                         >
                           {isChecked && <Check className="w-3.5 h-3.5" />}
                         </div>
-                        <span className="text-xs text-[#23181A] font-medium">{acc.name}</span>
+                        <span className="text-xs text-[#23181A] font-medium min-w-0">{acc.name}</span>
                       </div>
-                      <span className="text-xs text-[#541B28] font-bold">+{formatTND(acc.priceTND)}</span>
+                      <span className="text-xs text-[#541B28] font-bold shrink-0">+{formatTND(acc.priceTND)}</span>
                     </div>
                   );
                 })}
@@ -437,17 +439,17 @@ export function ComposeBox() {
                 )}
               </div>
 
-              <div className="mt-10 flex justify-between items-center">
+              <div className="mt-8 sm:mt-10 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
+                  className="w-full sm:w-auto justify-center px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Retour</span>
                 </button>
                 <button
                   onClick={() => setCurrentStep(4)}
-                  className="px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
+                  className="w-full sm:w-auto justify-center px-5 sm:px-8 py-3.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs tracking-luxury uppercase font-bold flex items-center gap-2.5 transition-all shadow-lg hover:shadow-xl active:scale-98"
                 >
                   <span>Voir l&apos;Aperçu Final</span>
                   <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
@@ -471,12 +473,12 @@ export function ComposeBox() {
                   <WaveMonogram size="lg" variant="gold" withSeal={false} />
                 </div>
 
-                <div className="flex items-center gap-5">
-                  <div className="relative w-28 h-32 rounded-2xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-md">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+                  <div className="relative w-full h-44 sm:w-28 sm:h-32 rounded-2xl overflow-hidden bg-white border border-[#541B28]/20 shrink-0 shadow-md">
                     <Image src={selectedBox.image} alt={selectedBox.name} fill className="object-cover" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2.5">
+                  <div className="min-w-0">
+                    <div className="flex items-start gap-2.5">
                       <WaveMonogram size="sm" variant="burgundy" withSeal />
                       <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">{selectedBox.name}</h3>
                     </div>
@@ -501,17 +503,17 @@ export function ComposeBox() {
                 )}
               </div>
 
-              <div className="mt-10 flex justify-between items-center">
+              <div className="mt-8 sm:mt-10 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3">
                 <button
                   onClick={() => setCurrentStep(3)}
-                  className="px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
+                  className="w-full sm:w-auto justify-center px-5 py-3 rounded-xl border border-[#541B28]/25 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold flex items-center gap-2 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                   <span>Modifier</span>
                 </button>
                 <button
                   onClick={handleAddBoxToCart}
-                  className="px-9 py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury flex items-center gap-2.5 shadow-xl shadow-[#541B28]/25 transition-all active:scale-98"
+                  className="w-full sm:w-auto justify-center px-5 sm:px-9 py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-luxury flex items-center gap-2.5 shadow-xl shadow-[#541B28]/25 transition-all active:scale-98"
                 >
                   <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
                   <span>Ajouter au Panier ({formatTND(totalPriceTND)})</span>
@@ -522,7 +524,7 @@ export function ComposeBox() {
         </div>
 
         {/* Right Col: Live Summary & Price Breakdown */}
-        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-7 shadow-xl h-fit sticky top-28 space-y-6">
+        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-7 shadow-xl h-fit lg:sticky lg:top-28 space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[#541B28]/15">
             <div className="flex items-center gap-2.5 font-cinzel text-[11px] uppercase tracking-luxury text-[#541B28] font-bold">
               <Gift className="w-4 h-4 text-[#C7A66A]" />
@@ -532,19 +534,19 @@ export function ComposeBox() {
           </div>
 
           <div className="space-y-3 text-xs text-[#5A4B4E]">
-            <div className="flex justify-between items-center">
-              <span>{selectedBox.name}</span>
-              <span className="text-[#23181A] font-medium">{formatTND(boxBasePrice)}</span>
+            <div className="flex justify-between items-start gap-3">
+              <span className="min-w-0">{selectedBox.name}</span>
+              <span className="text-[#23181A] font-medium shrink-0">{formatTND(boxBasePrice)}</span>
             </div>
 
             {selectedPerfumes.map((p, idx) => {
               const fmt = p.product.formats.find((f) => f.size === p.size) || p.product.formats[0];
               return (
-                <div key={idx} className="flex justify-between items-center pl-2 border-l-2 border-[#541B28]">
-                  <span className="text-[#541B28] font-medium">
+                <div key={idx} className="flex justify-between items-start gap-3 pl-2 border-l-2 border-[#541B28]">
+                  <span className="text-[#541B28] font-medium min-w-0">
                     {p.product.name} ({p.size})
                   </span>
-                  <span className="text-[#23181A] font-semibold">{formatTND(fmt.priceTND)}</span>
+                  <span className="text-[#23181A] font-semibold shrink-0">{formatTND(fmt.priceTND)}</span>
                 </div>
               );
             })}
@@ -553,9 +555,9 @@ export function ComposeBox() {
               const acc = ACCESSORIES.find((a) => a.id === accId);
               if (!acc) return null;
               return (
-                <div key={accId} className="flex justify-between items-center pl-2 border-l-2 border-[#C7A66A] text-[#756B6D]">
-                  <span>{acc.name}</span>
-                  <span className="text-[#23181A]">+{formatTND(acc.priceTND)}</span>
+                <div key={accId} className="flex justify-between items-start gap-3 pl-2 border-l-2 border-[#C7A66A] text-[#756B6D]">
+                  <span className="min-w-0">{acc.name}</span>
+                  <span className="text-[#23181A] shrink-0">+{formatTND(acc.priceTND)}</span>
                 </div>
               );
             })}

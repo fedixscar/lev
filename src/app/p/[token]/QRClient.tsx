@@ -41,7 +41,7 @@ export function QRClient({ token }: QRClientProps) {
               Certificat Numérique d&apos;Authenticité
             </h1>
             <p className="text-xs text-[#756B6D] mt-1 font-mono">
-              Jeton : {token} &bull; {serialNumber}
+              Jeton : {token} • {serialNumber}
             </p>
           </div>
 

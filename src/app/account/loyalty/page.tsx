@@ -70,10 +70,10 @@ export default function LoyaltyPage() {
                 Rang d&apos;Expérience (XP)
               </span>
               <div className="font-serif text-3xl text-[#541B28] font-bold">
-                Niveau {xpLevel} &bull; {xpLevel >= 3 ? "Connaisseur" : xpLevel === 2 ? "Initié" : "Découvreur"}
+                Niveau {xpLevel} • {xpLevel >= 3 ? "Connaisseur" : xpLevel === 2 ? "Initié" : "Découvreur"}
               </div>
               <p className="text-xs text-[#756B6D] mt-1">
-                {xpPoints} XP accumulés &bull; {doubleXpActive ? "Double XP Actif !" : "Multiplicateur normal"}
+                {xpPoints} XP accumulés • {doubleXpActive ? "Double XP Actif !" : "Multiplicateur normal"}
               </p>
             </div>
 
@@ -92,7 +92,7 @@ export default function LoyaltyPage() {
           </div>
 
           {/* Referral Program Section (50% rule) */}
-          <div className="rounded-3xl bg-gradient-to-b from-[#F3ECE1] to-white border border-[#541B28]/20 p-8 sm:p-10 mb-14 shadow-xl">
+          <div className="rounded-3xl bg-gradient-to-b from-[#F3ECE1] to-white border border-[#541B28]/20 p-6 sm:p-10 mb-14 shadow-xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#541B28]/10 text-[#541B28] text-xs font-bold">
@@ -109,16 +109,16 @@ export default function LoyaltyPage() {
                 {/* Copy Link Input */}
                 <div className="pt-2">
                   <span className="text-[11px] text-[#756B6D] block mb-1 font-bold">Votre Lien Unique de Parrainage :</span>
-                  <div className="flex gap-2 max-w-lg">
+                  <div className="flex flex-col sm:flex-row gap-2 max-w-lg">
                     <input
                       type="text"
                       readOnly
                       value={referralLink}
-                      className="flex-1 bg-white border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#541B28] font-mono font-bold focus:outline-none"
+                      className="w-full min-w-0 flex-1 bg-white border border-[#541B28]/20 rounded-xl px-4 py-2.5 text-xs text-[#541B28] font-mono font-bold focus:outline-none"
                     />
                     <button
                       onClick={copyReferral}
-                      className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md"
+                      className="w-full sm:w-auto shrink-0 justify-center px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md"
                     >
                       {copiedLink ? <Check className="w-4 h-4 text-[#DFC68B]" /> : <Copy className="w-4 h-4" />}
                       <span>{copiedLink ? "Copié !" : "Copier"}</span>

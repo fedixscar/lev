@@ -70,7 +70,7 @@ export default function AccountPage() {
               </h1>
               <p className="text-xs sm:text-sm text-[#756B6D] mt-1 font-light">
                 {user?.email ? (
-                  <span>Compte certifié &bull; {user.email}</span>
+                  <span>Compte certifié • {user.email}</span>
                 ) : (
                   <Link href="/login?redirect=/account" className="text-[#541B28] font-semibold underline underline-offset-2 hover:opacity-80">
                     Connectez-vous pour synchroniser vos flacons et points &rarr;
@@ -157,9 +157,9 @@ export default function AccountPage() {
 
           {/* Orders Section */}
           <div className="rounded-3xl bg-white border border-[#541B28]/15 p-7 sm:p-10 shadow-xl mb-12">
-            <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#541B28]/10">
+            <div className="flex flex-col items-start sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 pb-4 mb-6 border-b border-[#541B28]/10">
               <h2 className="font-serif text-2xl sm:text-3xl text-[#23181A] font-light">Vos Commandes Récentes</h2>
-              <Link href="/shop" className="font-cinzel text-xs text-[#541B28] font-bold uppercase tracking-luxury hover:underline">
+              <Link href="/shop" className="font-cinzel text-xs text-[#541B28] font-bold uppercase tracking-luxury hover:underline shrink-0">
                 Commander à nouveau
               </Link>
             </div>

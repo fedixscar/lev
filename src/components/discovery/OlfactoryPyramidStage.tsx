@@ -25,7 +25,7 @@ const PYRAMID_ACTS: PyramidAct[] = [
     id: "head",
     actNumber: "ACTE I",
     title: "L'Éveil Lumineux",
-    subtitle: "Notes de Tête &bull; Le Premier Souffle",
+    subtitle: "Notes de Tête • Le Premier Souffle",
     timeframe: "0 à 30 minutes après vaporisation",
     description:
       "La première onde olfactive libérée par l'atomiseur. Une envolée vive, hespéridée et précieusement épicée qui capte instantanément l'attention et éveille les sens sans jamais heurter.",
@@ -43,7 +43,7 @@ const PYRAMID_ACTS: PyramidAct[] = [
     id: "heart",
     actNumber: "ACTE II",
     title: "L'Âme du Sillage",
-    subtitle: "Notes de Cœur &bull; La Signature Vivante",
+    subtitle: "Notes de Cœur • La Signature Vivante",
     timeframe: "30 minutes à 4 heures",
     description:
       "Le cœur battant de la création Lévania. Lorsque l'alcool s'est totalement évaporé, l'huile précieuse fusionne avec la chaleur de votre épiderme pour exprimer la véritable identité du parfum.",
@@ -61,7 +61,7 @@ const PYRAMID_ACTS: PyramidAct[] = [
     id: "base",
     actNumber: "ACTE III",
     title: "L'Empreinte Souveraine",
-    subtitle: "Notes de Fond &bull; La Mémoire Éternelle",
+    subtitle: "Notes de Fond • La Mémoire Éternelle",
     timeframe: "4 heures jusqu'à 18 heures et plus",
     description:
       "L'accord le plus dense et le plus opulent de notre formule. Fixé par de longues semaines de macération artisanale, il laisse sur les vêtements et la peau un sillage mémorable qui défie le temps.",

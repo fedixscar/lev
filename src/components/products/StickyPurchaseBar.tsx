@@ -71,7 +71,7 @@ export function StickyPurchaseBar({
         {/* Center / Right: Format Switcher, Price & Actions */}
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {/* Format Selector Pills */}
-          <div className="hidden xs:flex items-center p-1 rounded-xl bg-white/80 border border-[#541B28]/15 text-xs">
+          <div className="hidden sm:flex items-center p-1 rounded-xl bg-white/80 border border-[#541B28]/15 text-xs">
             {product.formats.map((fmt) => (
               <button
                 key={fmt.size}
@@ -112,7 +112,7 @@ export function StickyPurchaseBar({
             onClick={onBuyNow}
             className="px-4 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-md shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span className="hidden xs:inline">Commander</span>
+            <span className="hidden sm:inline">Commander</span>
             <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
           </button>
         </div>

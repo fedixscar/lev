@@ -119,7 +119,7 @@ export default function PromotionsPage() {
                   -15% Supplémentaire avec le code : <span className="text-gold-gradient font-bold font-mono">WAVE20</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-[#D5C4C7] mt-1 font-light">
-                  Dès 250 TND d&apos;achat sur tout le panier &bull; Valable sur les flacons et les coffrets.
+                  Dès 250 TND d&apos;achat sur tout le panier • Valable sur les flacons et les coffrets.
                 </p>
               </div>
             </div>

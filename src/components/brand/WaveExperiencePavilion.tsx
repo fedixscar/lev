@@ -27,12 +27,12 @@ interface WaveFeatureData {
 const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   signature: {
     title: "L'Onde Signature",
-    tagline: "L'Équilibre Souverain &bull; Noblesse Méditerranéenne",
-    paletteLabel: "Vert Olive &bull; Or Champagne &bull; Bourgogne Impérial",
+    tagline: "L'Équilibre Souverain • Noblesse Méditerranéenne",
+    paletteLabel: "Vert Olive • Or Champagne • Bourgogne Impérial",
     description:
       "L'expression originelle de la Maison Lévania. Une onde fluide et généreuse où le bois d'olivier centenaire s'enlace au safran pur et à l'ambre solaire. Ni trop dense, ni éphémère : elle signe une présence royale et inoubliable.",
     notes: ["Safran de Méditerranée", "Bois d'Olivier", "Ambre Solaire", "Vanille Bourbon"],
-    sillage: "Rayonnant &bull; 2.5 mètres de diffusion contrôlée",
+    sillage: "Rayonnant • 2.5 mètres de diffusion contrôlée",
     longevity: "Tenue Haute Concentration (14h+)",
     bestSellers: [
       {
@@ -57,12 +57,12 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   },
   soft: {
     title: "L'Onde Soyeuse",
-    tagline: "La Caresse Diaphane &bull; Lumière & Voile Intime",
-    paletteLabel: "Ivoire Impérial &bull; Crème de Riz &bull; Rose Poudrée",
+    tagline: "La Caresse Diaphane • Lumière & Voile Intime",
+    paletteLabel: "Ivoire Impérial • Crème de Riz • Rose Poudrée",
     description:
       "Une onde délicate comme une mousseline de soie glissant sur la peau nue. La fraîcheur lumineuse du néroli pur de Nabeul et de la fleur d'oranger se fond dans un cœur poudré de muscs blancs. Une sensualité subtile qui ne s'impose jamais.",
     notes: ["Néroli Pur de Nabeul", "Fleur d'Oranger", "Poudre d'Iris", "Muscs Blancs Coton"],
-    sillage: "Intime &bull; Halo enveloppant au creux du cou",
+    sillage: "Intime • Halo enveloppant au creux du cou",
     longevity: "Fraîcheur Persistante (10h+)",
     bestSellers: [
       {
@@ -87,12 +87,12 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   },
   intense: {
     title: "L'Onde Sombre & Boisée",
-    tagline: "Le Sillage Tellurique &bull; Mystère & Puissance Orientale",
-    paletteLabel: "Noir Ébène &bull; Oud Impérial &bull; Or Métallique",
+    tagline: "Le Sillage Tellurique • Mystère & Puissance Orientale",
+    paletteLabel: "Noir Ébène • Oud Impérial • Or Métallique",
     description:
       "La force brute et envoûtante des nuits sans lune. Conçue pour les connaisseurs de sillages audacieux, cette onde sculpte l'espace par des contrastes dramatiques d'encens noir, d'accord cuir tanné et d'oud sauvage de haute macération.",
     notes: ["Oud Sauvage", "Cuir d'Orient", "Encens d'Oman", "Patchouli Sombre"],
-    sillage: "Monumental &bull; Sillage puissant qui traverse les pièces",
+    sillage: "Monumental • Sillage puissant qui traverse les pièces",
     longevity: "Ultra-Tenue Extrait (18h+)",
     bestSellers: [
       {
@@ -136,7 +136,7 @@ export function WaveExperiencePavilion() {
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-            La Vague Lévania &bull; L&apos;Onde Vivante des Sens
+            La Vague Lévania • L&apos;Onde Vivante des Sens
           </h2>
 
           <p className="text-sm text-[#5A4B4E] leading-relaxed mt-3">
@@ -263,7 +263,7 @@ export function WaveExperiencePavilion() {
             </div>
 
             {/* Top-Right Concentration Badge */}
-            <div className="absolute top-5 right-5 z-20">
+            <div className="hidden sm:block absolute top-5 right-5 z-20">
               <span
                 className={cn(
                   "px-3 py-1.5 rounded-2xl backdrop-blur-md border text-[10px] font-serif uppercase tracking-widest font-bold",
@@ -272,21 +272,22 @@ export function WaveExperiencePavilion() {
                     : "bg-[#23181A]/80 border-[#C7A66A]/40 text-[#DFC68B]"
                 )}
               >
-                Extrait de Parfum &bull; 28% Concentré
+                Extrait de Parfum • 28% Concentré
               </span>
             </div>
 
             {/* Bottom Interaction Guide */}
-            <div className="absolute bottom-4 left-6 z-20 pointer-events-none">
+            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-6 sm:right-auto z-20 pointer-events-none">
               <span
                 className={cn(
-                  "text-[10px] uppercase tracking-widest font-mono px-3 py-1 rounded-full backdrop-blur-md border",
+                  "inline-block max-w-full text-[9px] sm:text-[10px] uppercase tracking-widest font-mono px-3 py-1 rounded-full backdrop-blur-md border leading-relaxed",
                   activeExpression === "soft"
                     ? "bg-white/80 border-[#541B28]/20 text-[#541B28]"
                     : "bg-black/50 border-[#C7A66A]/30 text-[#DFC68B]"
                 )}
               >
-                &sim; Touchez ou survolez pour diffuser l&apos;onde olfactive
+                <span className="sm:hidden">&sim; Touchez pour diffuser</span>
+                <span className="hidden sm:inline">&sim; Touchez ou survolez pour diffuser l&apos;onde olfactive</span>
               </span>
             </div>
           </div>
@@ -377,7 +378,7 @@ export function WaveExperiencePavilion() {
 
               {/* Right Column: Flacons Matched to this Wave (5 cols) */}
               <div className="lg:col-span-5 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-[#C7A66A]/20">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#C7A66A]/20">
                   <span
                     className={cn(
                       "text-xs uppercase tracking-widest font-bold",

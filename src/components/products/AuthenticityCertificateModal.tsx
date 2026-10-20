@@ -78,13 +78,13 @@ export function AuthenticityCertificateModal({
             <WaveMonogram size="sm" variant="gold" />
           </div>
           <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
-            Maison Lévania &bull; Paris &bull; Nabeul
+            Maison Lévania • Paris • Nabeul
           </span>
           <h2 id="cert-modal-title" className="font-serif text-2xl sm:text-4xl text-[#541B28] font-light">
             Certificat d&apos;Authenticité &amp; de Traçabilité
           </h2>
           <p className="text-xs text-[#756B6D] max-w-md mx-auto mt-1 italic">
-            Registre officiel de haute parfumerie artisanale &bull; Cueillette &amp; Macération certifiées
+            Registre officiel de haute parfumerie artisanale • Cueillette &amp; Macération certifiées
           </p>
         </div>
 
@@ -96,7 +96,7 @@ export function AuthenticityCertificateModal({
                 Création Olfactive
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl text-[#23181A] font-semibold">{product.name}</h3>
-              <span className="font-cinzel text-[11px] text-[#541B28] font-medium tracking-luxury uppercase">{product.subtitle} &bull; {product.collection}</span>
+              <span className="font-cinzel text-[11px] text-[#541B28] font-medium tracking-luxury uppercase">{product.subtitle} • {product.collection}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ export function AuthenticityCertificateModal({
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                N° de Lot Sécurisé &bull; Clé d&apos;Authenticité
+                N° de Lot Sécurisé • Clé d&apos;Authenticité
               </span>
               <span className="font-mono text-sm font-bold text-[#541B28] tracking-wider">
                 {batchCode}

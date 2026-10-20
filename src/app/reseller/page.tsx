@@ -218,10 +218,10 @@ export default function ResellerDashboardPage() {
                 <span>Réseau Officiel Revendeurs Lévania</span>
               </div>
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
-                Portail Revendeur &bull; {user?.name || "Amira Khemir"}
+                Portail Revendeur • {user?.name || "Amira Khemir"}
               </h1>
               <p className="text-xs text-[#756B6D] mt-1">
-                Identifiant : <span className="font-mono text-[#541B28] font-bold">RES-MASTER-77</span> &bull; Rang Actuel : <strong className="text-[#434B36] font-bold">Master (10 TND / Vente)</strong>
+                Identifiant : <span className="font-mono text-[#541B28] font-bold">RES-MASTER-77</span> • Rang Actuel : <strong className="text-[#434B36] font-bold">Master (10 TND / Vente)</strong>
               </p>
             </div>
 
@@ -235,7 +235,7 @@ export default function ResellerDashboardPage() {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#541B28]/10 no-scrollbar">
+          <div className="grid grid-cols-2 sm:flex sm:flex-nowrap gap-2 sm:overflow-x-auto pb-4 mb-8 border-b border-[#541B28]/10 no-scrollbar">
             {[
               { id: "overview", label: "Tableau de Bord", icon: TrendingUp },
               { id: "submit", label: "Déclarer une Vente", icon: Plus },
@@ -248,7 +248,7 @@ export default function ResellerDashboardPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all whitespace-nowrap shadow-sm ${
+                  className={`px-3 sm:px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center sm:justify-start text-center sm:text-left gap-2 transition-all sm:whitespace-nowrap shadow-sm ${tab.id === "chat" ? "col-span-2 sm:col-span-1" : ""} ${
                     activeTab === tab.id
                       ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25"
                       : "bg-white text-[#5A4B4E] hover:text-[#541B28] border border-[#541B28]/15"

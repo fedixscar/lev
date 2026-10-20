@@ -177,7 +177,7 @@ export function HeroFragranceStage() {
               <span>{activeItem.tag}</span>
             </div>
 
-            <span className="font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
+            <span className="hidden min-[360px]:inline-block font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
               {activeItem.expression.toUpperCase()} WAVE
             </span>
           </div>

@@ -247,7 +247,7 @@ export default function AdminDashboardPage() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-2 shadow-sm">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />
-                <span>Panneau de Contrôle &bull; Direction Générale</span>
+                <span>Panneau de Contrôle • Direction Générale</span>
               </div>
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
                 Administration Centrale Lévania Parfums
@@ -404,7 +404,7 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Catalogue & Podium Bestsellers</h3>
                   <p className="text-xs text-[#756B6D] mt-0.5">
-                    {productList.length} flacon{productList.length > 1 ? "s" : ""} référencé{productList.length > 1 ? "s" : ""} &bull; Créez, modifiez ou supprimez vos parfums avec synchronisation instantanée sur la boutique.
+                    {productList.length} flacon{productList.length > 1 ? "s" : ""} référencé{productList.length > 1 ? "s" : ""} • Créez, modifiez ou supprimez vos parfums avec synchronisation instantanée sur la boutique.
                   </p>
                 </div>
                 <button
@@ -460,7 +460,7 @@ export default function AdminDashboardPage() {
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                             (prod.formats[0]?.stock || 0) < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                           }`}>
-                            {prod.formats[0]?.stock || 0} ex. (50ml) &bull; {prod.formats[1]?.stock || 0} ex. (100ml)
+                            {prod.formats[0]?.stock || 0} ex. (50ml) • {prod.formats[1]?.stock || 0} ex. (100ml)
                           </span>
                         </td>
                         <td className="py-3">
@@ -528,7 +528,7 @@ export default function AdminDashboardPage() {
                           <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
                           <td className="py-3">
                             <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
-                            <span className="text-[10px] text-[#756B6D]">{ord.phone || "—"} &bull; {ord.city || "—"}</span>
+                            <span className="text-[10px] text-[#756B6D]">{ord.phone || "—"} • {ord.city || "—"}</span>
                           </td>
                           <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
                           <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>

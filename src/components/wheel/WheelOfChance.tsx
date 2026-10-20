@@ -147,7 +147,7 @@ export function WheelOfChance() {
               {currentTheme.name}
             </h2>
             <p className="text-xs text-[#5A4B4E] opacity-80 mt-1 font-light">
-              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> &bull; Cap Suprême: 7,777
+              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Suprême: 7,777
             </p>
           </div>
         </div>
@@ -349,7 +349,7 @@ export function WheelOfChance() {
                     {spin.rewardLabel}
                   </span>
                   <span className="text-[10px] text-[#756B6D]">
-                    {new Date(spin.timestamp).toLocaleDateString("fr-FR")} &bull; Vague: {spin.tier} ({spin.luckConsumed} Luck)
+                    {new Date(spin.timestamp).toLocaleDateString("fr-FR")} • Vague: {spin.tier} ({spin.luckConsumed} Luck)
                   </span>
                 </div>
                 {spin.couponCodeGenerated && (

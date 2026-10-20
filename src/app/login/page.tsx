@@ -226,7 +226,7 @@ function LoginFormContent() {
             {/* Security Guarantee Notice */}
             <div className="mt-8 pt-6 border-t border-[#541B28]/15 text-center">
               <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#756B6D] font-bold block">
-                Session Chiffrée &bull; Haute Parfumerie Lévania
+                Session Chiffrée • Haute Parfumerie Lévania
               </span>
             </div>
           </div>

@@ -40,11 +40,11 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
 
   const layerLabel =
     layer === "tête"
-      ? "Note de Tête &bull; L'Éveil (Première Impression)"
+      ? "Note de Tête • L'Éveil (Première Impression)"
       : layer === "cœur"
-      ? "Note de Cœur &bull; L'Âme du Sillage (Signature Centrale)"
+      ? "Note de Cœur • L'Âme du Sillage (Signature Centrale)"
       : layer === "fond"
-      ? "Note de Fond &bull; L'Empreinte (Tenue Inoubliable)"
+      ? "Note de Fond • L'Empreinte (Tenue Inoubliable)"
       : "Accord d'Exception";
 
   return (
@@ -88,7 +88,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
           <WaveMonogram size="sm" variant="gold" withSeal />
           <div>
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#756B6D] font-mono block">
-              Matière Première &bull; Haute Parfumerie
+              Matière Première • Haute Parfumerie
             </span>
             <h3 id="note-modal-title" className="font-serif text-2xl sm:text-3xl text-[#541B28] font-semibold">
               {detail.name}
@@ -156,7 +156,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
         {/* Footer Action */}
         <div className="mt-6 pt-4 border-t border-[#541B28]/15 flex items-center justify-between">
           <span className="text-[10px] text-[#756B6D] italic">
-            Maison Lévania &bull; Alchimie Méditerranéenne
+            Maison Lévania • Alchimie Méditerranéenne
           </span>
           <button
             onClick={onClose}

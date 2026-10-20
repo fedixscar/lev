@@ -140,7 +140,7 @@ export default function ShopPage() {
                     Sillage Ondulatoire Sélectionné
                   </span>
                   <h3 className="font-serif text-lg text-[#23181A] font-semibold">
-                    {activeWaveTab.label} &bull; {activeWaveTab.sub}
+                    {activeWaveTab.label} • {activeWaveTab.sub}
                   </h3>
                 </div>
               </div>
@@ -160,9 +160,10 @@ export default function ShopPage() {
                 height="100%"
                 className="w-full h-full"
               />
-              <div className="absolute bottom-2 left-3 pointer-events-none">
-                <span className="text-[9px] uppercase tracking-wider text-[#756B6D] font-mono bg-white/80 px-2 py-0.5 rounded-full border border-[#541B28]/15">
-                  &sim; Cliquez ou survolez la vague pour diffuser les effluves
+              <div className="absolute bottom-2 left-3 right-3 sm:right-auto pointer-events-none">
+                <span className="inline-block max-w-full text-[9px] uppercase tracking-wider text-[#756B6D] font-mono bg-white/80 px-2 py-0.5 rounded-full border border-[#541B28]/15 leading-relaxed">
+                  <span className="sm:hidden">&sim; Touchez la vague</span>
+                  <span className="hidden sm:inline">&sim; Cliquez ou survolez la vague pour diffuser les effluves</span>
                 </span>
               </div>
             </div>

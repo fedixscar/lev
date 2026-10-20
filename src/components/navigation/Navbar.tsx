@@ -119,13 +119,13 @@ export function Navbar() {
             </nav>
 
             {/* Right Controls: User Profile & Cart */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Authentication Button or User Menu */}
               {isAuthenticated && user ? (
                 <div className="relative">
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] hover:border-[#541B28] transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] hover:border-[#541B28] transition-colors shadow-sm"
                   >
                     {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />}
                     {role === "reseller" && <Briefcase className="w-3.5 h-3.5 text-[#434B36]" />}
@@ -136,7 +136,7 @@ export function Navbar() {
                     </span>
 
                     {role !== "customer" && (
-                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#541B28]/10 text-[#541B28] font-bold uppercase">
+                      <span className="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold uppercase">
                         {role === "admin" ? "DG" : "Master"}
                       </span>
                     )}
@@ -207,17 +207,18 @@ export function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-bold hover:bg-[#FAF7F2] transition-colors shadow-sm"
+                  aria-label="Connexion"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-bold hover:bg-[#FAF7F2] transition-colors shadow-sm"
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span>Connexion</span>
+                  <span className="hidden sm:inline">Connexion</span>
                 </Link>
               )}
 
               {/* Cart Button */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2.5 rounded-full bg-white border border-[#541B28]/20 text-[#541B28] hover:border-[#541B28] transition-all shadow-sm"
+                className="relative p-2 sm:p-2.5 rounded-full bg-white border border-[#541B28]/20 text-[#541B28] hover:border-[#541B28] transition-all shadow-sm"
                 aria-label="Ouvrir le panier"
               >
                 <ShoppingBag className="w-4 h-4" />
@@ -337,7 +338,7 @@ export function Navbar() {
             <div className="pt-6 border-t border-[#541B28]/10 flex flex-col items-center gap-2">
               <WaveMonogram size="sm" variant="gold" withSeal={false} />
               <div className="text-[11px] text-[#756B6D] text-center tracking-wider">
-                LÉVANIA PARFUMS &bull; Haute Parfumerie Tunisienne
+                LÉVANIA PARFUMS • Haute Parfumerie Tunisienne
               </div>
             </div>
           </div>

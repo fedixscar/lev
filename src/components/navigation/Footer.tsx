@@ -29,7 +29,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-[#C7A66A]/20">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <LevaniaLogo size="lg" />
+            <LevaniaLogo size="lg" tone="light" />
             <p className="text-sm text-[#D5C4C7] leading-relaxed max-w-sm mt-3">
               Maison de haute parfumerie artisanale. Une onde olfactive singulière, façonnée entre noblesse méditerranéenne et accords d&apos;exception. Découvrez le parfum qui bouge avec vous.
             </p>
@@ -52,11 +52,11 @@ export function Footer() {
                     placeholder="Votre adresse email privée..."
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 bg-[#3B121C] border border-[#C7A66A]/30 rounded-lg px-3.5 py-2 text-xs text-[#FAF7F2] placeholder:text-[#C4B2B6] focus:outline-none focus:border-[#C7A66A]"
+                    className="min-w-0 flex-1 bg-[#3B121C] border border-[#C7A66A]/30 rounded-lg px-3.5 py-2 text-xs text-[#FAF7F2] placeholder:text-[#C4B2B6] focus:outline-none focus:border-[#C7A66A]"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-md"
+                    className="shrink-0 px-4 py-2 rounded-lg bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-md"
                   >
                     <span>Rejoindre</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -159,7 +159,7 @@ export function Footer() {
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
                 Onde Signature
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Or &bull; Olive &bull; Bourgogne</span>
+              <span className="text-[9px] text-[#C4B2B6] block">Or • Olive • Bourgogne</span>
             </Link>
 
             <Link
@@ -169,7 +169,7 @@ export function Footer() {
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
                 Onde Soyeuse
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Ivoire &bull; Fleur &bull; Néroli</span>
+              <span className="text-[9px] text-[#C4B2B6] block">Ivoire • Fleur • Néroli</span>
             </Link>
 
             <Link
@@ -179,17 +179,17 @@ export function Footer() {
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
                 Onde Sombre
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Ébène &bull; Oud &bull; Ambre</span>
+              <span className="text-[9px] text-[#C4B2B6] block">Ébène • Oud • Ambre</span>
             </Link>
           </div>
         </div>
 
         {/* Bottom copyright and legal */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
-          <div className="pl-20 sm:pl-64">
+          <div className="pl-0 sm:pl-64 text-center sm:text-left">
             &copy; 2026 Syntra. Tous droits réservés. Haute Parfumerie.
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6">
             <span>Paiement Sécurisé & Livraison en Tunisie</span>
             <span>Mentions Légales</span>
             <span>Confidentialité</span>

@@ -27,7 +27,7 @@ import { PRODUCTS } from "@/lib/catalogue";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] overflow-x-hidden">
       <Navbar />
 
       <main className="flex-1">
@@ -47,10 +47,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
               {/* Text Editorial Column */}
-              <div className="lg:col-span-7 space-y-7 text-center lg:text-left">
+              <div className="lg:col-span-7 min-w-0 space-y-7 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-white/95 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold backdrop-blur-md shadow-sm">
                   <WaveMonogram size="xs" variant="gold" />
-                  <span>Haute Parfumerie &bull; Nabeul &bull; Cap Bon</span>
+                  <span>Haute Parfumerie • Nabeul • Cap Bon</span>
                 </div>
 
                 <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light text-burgundy-gradient leading-[1.06] tracking-tight">
@@ -82,24 +82,26 @@ export default function HomePage() {
                 </div>
 
                 {/* Subtle Editorial Signature Line */}
-                <div className="pt-4 flex items-center justify-center lg:justify-start gap-6 font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#C7A66A]" />
-                    <span>Extraits Purs & Eaux Nobles</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#541B28]" />
-                    <span>Écrins Cylindriques Scellés</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#434B36]" />
-                    <span>Créations Numérotées</span>
+                <div className="pt-4 flex justify-center lg:justify-start font-cinzel text-[9px] sm:text-[10px] tracking-luxury uppercase text-[#756B6D]">
+                  <div className="flex flex-col items-start gap-2.5 lg:flex-row lg:items-center lg:gap-6">
+                    <div className="flex items-center gap-2 whitespace-nowrap">
+                      <span className="w-2 h-2 rounded-full bg-[#C7A66A]" />
+                      <span>Extraits Purs &amp; Eaux Nobles</span>
+                    </div>
+                    <div className="flex items-center gap-2 whitespace-nowrap">
+                      <span className="w-2 h-2 rounded-full bg-[#541B28]" />
+                      <span>Écrins Cylindriques Scellés</span>
+                    </div>
+                    <div className="flex items-center gap-2 whitespace-nowrap">
+                      <span className="w-2 h-2 rounded-full bg-[#434B36]" />
+                      <span>Créations Numérotées</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Interactive Haute Parfumerie Flacon Stage */}
-              <div className="lg:col-span-5 relative flex items-center justify-center">
+              <div className="lg:col-span-5 min-w-0 relative flex items-center justify-center">
                 <HeroFragranceStage />
               </div>
             </div>
@@ -178,7 +180,7 @@ export default function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/60 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 text-center">
                     <span className="font-cinzel text-[11px] text-[#FAF7F2] font-medium bg-[#541B28]/90 px-4 py-1.5 rounded-full border border-[#C7A66A]/40 backdrop-blur-md shadow-md tracking-luxury uppercase">
-                      Écrins Cylindriques 50ml & 100ml &bull; Sceau de Cire Officiel
+                      Écrins Cylindriques 50ml & 100ml • Sceau de Cire Officiel
                     </span>
                   </div>
                 </div>

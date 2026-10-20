@@ -99,7 +99,7 @@ export function AiConciergeModal() {
       {/* Floating launcher button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 left-6 z-40 px-5 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2.5 group border border-[#C7A66A]/40 cursor-pointer"
+        className="fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-40 px-4 sm:px-5 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2.5 group border border-[#C7A66A]/40 cursor-pointer"
         aria-label="Ouvrir le Concierge Olfactif IA"
       >
         <GoldStarLozenge size={16} className="text-[#DFC68B] group-hover:rotate-45 transition-transform duration-500" />
@@ -123,7 +123,7 @@ export function AiConciergeModal() {
                 </h4>
                 <span className="text-[10px] text-amber-200 flex items-center gap-1 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Maison Lévania &bull; En ligne
+                  Maison Lévania • En ligne
                 </span>
               </div>
             </div>

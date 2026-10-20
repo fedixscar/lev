@@ -154,7 +154,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
 
               <div className="absolute -top-6 px-4 py-1.5 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-xl border border-[#C7A66A]/40">
                 <WaveMonogram size="xs" variant="gold" />
-                <span>N°1 Absolu &bull; Onde d&apos;Or</span>
+                <span>N°1 Absolu • Onde d&apos;Or</span>
               </div>
 
               <div className="relative w-56 h-64 my-3 overflow-hidden rounded-2xl border border-[#541B28]/20 bg-[#FAF7F2] shadow-inner">
@@ -305,18 +305,18 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
 
         {/* 7 Additional Bestselling Fragrances */}
         <div>
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#541B28]/15">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15">
             <div>
               <h3 className="font-serif text-2xl text-[#541B28] font-semibold">
                 Les 7 Autres Signatures Incontournables
               </h3>
               <p className="text-xs text-[#756B6D] mt-1">
-                Du rang 4 au rang 10 &bull; Sélectionnées par nos maîtres parfumeurs
+                Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs
               </p>
             </div>
             <Link
               href="/shop"
-              className="text-xs text-[#541B28] hover:underline flex items-center gap-1 font-bold"
+              className="text-xs text-[#541B28] hover:underline flex items-center gap-1 font-bold shrink-0"
             >
               <span>Voir tout le catalogue</span>
               <ArrowRight className="w-3.5 h-3.5" />
