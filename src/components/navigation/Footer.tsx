@@ -26,7 +26,7 @@ export function Footer() {
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#541B28] via-[#C7A66A] to-[#852538] opacity-90" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#C7A66A]/20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-[#C7A66A]/20">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <LevaniaLogo size="lg" />
@@ -135,35 +135,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Maison & Conciergerie */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-serif uppercase tracking-widest text-[#DFC68B] font-semibold">
-              Maison & Conciergerie
-            </h4>
-            <div className="space-y-2.5 text-xs text-[#D5C4C7]">
-              <div>
-                <span className="text-[#FAF7F2] font-medium block">Atelier de Création</span>
-                <span className="text-[11px] text-[#D5C4C7]">Nabeul, Cap Bon &bull; Tunisie</span>
-              </div>
-              <div>
-                <span className="text-[#FAF7F2] font-medium block">Showroom Privé</span>
-                <span className="text-[11px] text-[#D5C4C7]">Les Berges du Lac, Tunis</span>
-              </div>
-              <div className="pt-1">
-                <span className="text-[#DFC68B] font-medium block">Conciergerie Téléphonique</span>
-                <span className="text-[#FAF7F2] font-semibold text-xs">+216 71 800 900</span>
-                <span className="text-[10px] text-[#D5C4C7] block mt-0.5">Lun &ndash; Sam : 09h00 &ndash; 19h30</span>
-              </div>
-              <div className="pt-2">
-                <Link
-                  href="/login"
-                  className="inline-flex items-center gap-1.5 text-[11px] text-[#DFC68B] hover:text-[#FAF7F2] transition-colors underline underline-offset-4"
-                >
-                  <span>Accès Espace Privilège</span>
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* The 3 Wave Olfactory Pillars */}
@@ -215,8 +186,8 @@ export function Footer() {
 
         {/* Bottom copyright and legal */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
-          <div>
-            &copy; 2026 LÉVANIA PARFUMS. Tous droits réservés. Haute Parfumerie.
+          <div className="pl-20 sm:pl-64">
+            &copy; 2026 Syntra. Tous droits réservés. Haute Parfumerie.
           </div>
           <div className="flex gap-6">
             <span>Paiement Sécurisé & Livraison en Tunisie</span>
