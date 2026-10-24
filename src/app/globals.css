@@ -25,11 +25,23 @@
   --font-sans: var(--font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light dark;
   --background: #FAF7F2;
   --foreground: #23181A;
   --burgundy-primary: #541B28;
   --gold-accent: #C7A66A;
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0E0709;
+  --foreground: #FAF7F2;
+  --burgundy-primary: #852538;
+  --gold-accent: #DFC68B;
 }
 
 /* Modern Typography Defaults & Balancing (per Modern Web Guidance) */
@@ -322,4 +334,156 @@ p, .prose-luxury {
   outline: none;
   ring: 2px solid #C7A66A;
   box-shadow: 0 0 0 2px #FAF7F2, 0 0 0 4px #C7A66A;
+}
+
+/* ========================================================
+   HAUTE PARFUMERIE LUXURY DARK MODE (NOIR IMPÉRIAL & OR)
+   ======================================================== */
+
+.dark body {
+  background-color: #0E0709 !important;
+  color: #FAF7F2 !important;
+}
+
+/* Surface backgrounds: transforms stark white to deep obsidian velvet */
+.dark .bg-white,
+.dark [class*="bg-white"] {
+  background-color: #170B10 !important;
+}
+
+.dark .bg-\[\#FAF7F2\],
+.dark [class*="bg-[#FAF7F2]"] {
+  background-color: #0E0709 !important;
+}
+
+.dark .bg-\[\#F3ECE1\],
+.dark [class*="bg-[#F3ECE1]"] {
+  background-color: #14080D !important;
+}
+
+.dark .bg-\[\#EAE1D2\],
+.dark [class*="bg-[#EAE1D2]"] {
+  background-color: #1F0D15 !important;
+}
+
+/* Text colors */
+.dark .text-\[\#23181A\],
+.dark [class*="text-[#23181A]"] {
+  color: #FAF7F2 !important;
+}
+
+.dark .text-\[\#5A4B4E\],
+.dark [class*="text-[#5A4B4E]"] {
+  color: #D8CCD0 !important;
+}
+
+.dark .text-\[\#756B6D\],
+.dark [class*="text-[#756B6D]"] {
+  color: #A8989C !important;
+}
+
+.dark .text-\[\#4A3B3E\],
+.dark [class*="text-[#4A3B3E]"] {
+  color: #E2D7DA !important;
+}
+
+/* Burgundy text adapts to illuminated champagne gold in dark mode */
+.dark .text-\[\#541B28\],
+.dark [class*="text-[#541B28]"] {
+  color: #DFC68B !important;
+}
+
+.dark .text-\[\#852538\],
+.dark [class*="text-[#852538]"] {
+  color: #EACCA0 !important;
+}
+
+/* Borders in dark mode */
+.dark [class*="border-[#541B28]"] {
+  border-color: rgba(199, 166, 106, 0.28) !important;
+}
+
+.dark .border-neutral-100,
+.dark .border-neutral-200 {
+  border-color: rgba(199, 166, 106, 0.15) !important;
+}
+
+/* Gradient Text adaptation */
+.dark .text-burgundy-gradient {
+  background: linear-gradient(135deg, #FAF7F2 0%, #DFCA9E 50%, #C7A66A 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.dark .text-gold-gradient {
+  background: linear-gradient(135deg, #FFF3D6 0%, #DFC68B 50%, #C7A66A 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Glass Panels & Cards in Dark Mode */
+.dark .glass-panel-luxury {
+  background: rgba(23, 11, 16, 0.85) !important;
+  border: 1px solid rgba(199, 166, 106, 0.25) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(223, 198, 139, 0.08) !important;
+}
+
+.dark .glass-panel-card {
+  background: #170B10 !important;
+  border: 1px solid rgba(199, 166, 106, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark .glass-panel-card:hover {
+  border-color: rgba(199, 166, 106, 0.45) !important;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(199, 166, 106, 0.2) !important;
+}
+
+/* Buttons in Dark Mode */
+.dark .luxury-btn-secondary {
+  background: #1C0D14 !important;
+  color: #DFC68B !important;
+  border-color: rgba(199, 166, 106, 0.35) !important;
+}
+
+.dark .luxury-btn-secondary:hover {
+  background: #2A131E !important;
+  border-color: #DFC68B !important;
+  color: #FAF7F2 !important;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Luxury Pills in Dark Mode */
+.dark .luxury-pill {
+  background: rgba(84, 27, 40, 0.45) !important;
+  border-color: rgba(199, 166, 106, 0.35) !important;
+  color: #DFC68B !important;
+}
+
+/* Form Inputs in Dark Mode */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #14080D !important;
+  color: #FAF7F2 !important;
+  border-color: rgba(199, 166, 106, 0.3) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #8C7B80 !important;
+}
+
+/* Custom Scrollbars in Dark Mode */
+.dark ::-webkit-scrollbar-track {
+  background: #0E0709 !important;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #26111A !important;
+  border: 1px solid rgba(199, 166, 106, 0.25) !important;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #C7A66A !important;
 }

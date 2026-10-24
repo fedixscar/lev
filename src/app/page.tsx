@@ -121,7 +121,7 @@ export default function HomePage() {
         {/* ========================================================
             REASSURANCE & TRUST BAR
             ======================================================== */}
-        <section className="bg-white border-y border-[#541B28]/10 py-6 relative z-20 shadow-xs">
+        <section className="bg-white dark:bg-[#180B10] border-y border-[#541B28]/10 dark:border-[#C7A66A]/20 py-6 relative z-20 shadow-xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <div className="flex items-center justify-center gap-3">
@@ -242,7 +242,7 @@ export default function HomePage() {
         {/* ========================================================
             7. QUIZ PARFUM RAPIDE (2 MINUTES)
             ======================================================== */}
-        <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-[#F3ECE1] to-[#FAF7F2] border-y border-[#541B28]/10">
+        <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-[#F3ECE1] to-[#FAF7F2] dark:from-[#0E0709] dark:via-[#170B10] dark:to-[#0E0709] border-y border-[#541B28]/10 dark:border-[#C7A66A]/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
@@ -292,7 +292,7 @@ export default function HomePage() {
         {/* ========================================================
             8. AVIS CLIENTS VÉRIFIÉS (RÉASSURANCE SOCIALE)
             ======================================================== */}
-        <section className="py-20 sm:py-28 bg-[#FAF7F2] border-b border-[#541B28]/10 relative overflow-hidden">
+        <section className="py-20 sm:py-28 bg-[#FAF7F2] dark:bg-[#0E0709] border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-xs font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3">

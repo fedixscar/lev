@@ -23,6 +23,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -64,8 +65,8 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-500",
           isScrolled
-            ? "bg-[#FAF7F2]/95 backdrop-blur-2xl border-b border-[#C7A66A]/25 py-3 shadow-md shadow-[#541B28]/5"
-            : "bg-gradient-to-b from-[#FAF7F2]/95 via-[#FAF7F2]/70 to-transparent py-4 sm:py-5"
+            ? "bg-[#FAF7F2]/95 dark:bg-[#0E0709]/95 backdrop-blur-2xl border-b border-[#C7A66A]/25 py-3 shadow-md shadow-[#541B28]/5 dark:shadow-black/50"
+            : "bg-gradient-to-b from-[#FAF7F2]/95 dark:from-[#0E0709]/95 via-[#FAF7F2]/70 dark:via-[#0E0709]/70 to-transparent py-4 sm:py-5"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,8 +121,11 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Right Controls: User Profile & Cart */}
+            {/* Right Controls: Theme Toggle, User Profile & Cart */}
             <div className="flex items-center gap-2 sm:gap-3">
+              {/* Theme Toggle Button */}
+              <ThemeToggle />
+
               {/* Authentication Button or User Menu */}
               {isAuthenticated && user ? (
                 <div className="relative">
@@ -255,20 +259,28 @@ export function Navbar() {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-[#FAF7F2] border-r border-[#541B28]/20 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
+          <div className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-[#FAF7F2] dark:bg-[#0E0709] border-r border-[#541B28]/20 dark:border-[#C7A66A]/30 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-[#541B28]/15">
+              <div className="flex items-center justify-between pb-6 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
                 <LevaniaLogo size="sm" />
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1 text-[#756B6D] hover:text-[#541B28]"
+                  className="p-1 text-[#756B6D] hover:text-[#541B28] dark:hover:text-[#FAF7F2]"
                   aria-label="Fermer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="mt-6 flex flex-col gap-4">
+              {/* Theme switcher pill in mobile drawer */}
+              <div className="mt-5 p-3 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 flex items-center justify-between">
+                <span className="font-cinzel text-[11px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold">
+                  Thème Visuel
+                </span>
+                <ThemeToggle variant="pill" />
+              </div>
+
+              <div className="mt-5 flex flex-col gap-3">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}

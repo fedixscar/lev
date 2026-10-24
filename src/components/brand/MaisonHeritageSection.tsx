@@ -29,16 +29,16 @@ export function MaisonHeritageSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/80 via-[#23181A]/10 to-transparent opacity-60" />
 
               {/* Floating Bottom Emblem Badge */}
-              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/95 backdrop-blur-xl border border-[#541B28]/20 shadow-xl flex items-center gap-4">
+              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/95 dark:bg-[#180B10]/95 backdrop-blur-xl border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-xl flex items-center gap-4">
                 <WaveMonogram size="md" variant="gold" withSeal />
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-[#852538] font-bold block">
-                    Architecture & Conservation
+                  <span className="text-[10px] uppercase tracking-widest text-[#852538] dark:text-[#DFC68B] font-bold block">
+                    Architecture &amp; Conservation
                   </span>
-                  <h4 className="font-serif text-base text-[#23181A] font-semibold">
-                    L&apos;Écrin Cylindrique Vert Olive & Or
+                  <h4 className="font-serif text-base text-[#23181A] dark:text-[#FAF7F2] font-semibold">
+                    L&apos;Écrin Cylindrique Vert Olive &amp; Or
                   </h4>
-                  <p className="text-[11px] text-[#756B6D] mt-0.5">
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#B0A0A4] mt-0.5">
                     Protection absolue contre la lumière pour préserver la macération des huiles.
                   </p>
                 </div>
@@ -54,7 +54,7 @@ export function MaisonHeritageSection() {
 
           {/* Right Column: Editorial Narrative & Craft Commitments */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold shadow-xs">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 font-cinzel text-[11px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold shadow-xs">
               <Award className="w-3.5 h-3.5 text-[#C7A66A]" />
               <span>Artisanat &amp; Savoir-Faire • Nabeul</span>
             </div>
@@ -63,58 +63,58 @@ export function MaisonHeritageSection() {
               L&apos;Excellence du Parfum Artisanal en Tunisie.
             </h2>
 
-            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#DCD0D3] leading-relaxed">
               Née à Nabeul au cœur des vergers du Cap Bon, la <strong>Maison LÉVANIA PARFUMS</strong> crée des fragrances
               uniques à haute concentration. Nous allions la fraîcheur du néroli et de la fleur d&apos;oranger à la noblesse
               des bois d&apos;olivier et des résines orientales pour une tenue remarquable.
             </p>
 
-            <blockquote className="p-5 rounded-2xl bg-white border-l-4 border-[#541B28] shadow-xs font-serif italic text-sm text-[#23181A] leading-relaxed">
+            <blockquote className="p-5 rounded-2xl bg-white dark:bg-[#180B10] border-l-4 border-[#541B28] dark:border-[#C7A66A] shadow-xs font-serif italic text-sm text-[#23181A] dark:text-[#FAF7F2] leading-relaxed">
               &laquo; Nous créons des parfums authentiques qui marquent les esprits et durent toute la journée, protégés dans un écrin digne des plus grands noms. &raquo;
-              <span className="block text-[10px] uppercase font-sans font-bold text-[#852538] tracking-widest mt-2 not-italic">
+              <span className="block text-[10px] uppercase font-sans font-bold text-[#852538] dark:text-[#DFC68B] tracking-widest mt-2 not-italic">
                 &mdash; L&apos;Atelier Lévania Parfums
               </span>
             </blockquote>
 
             {/* 3 Pillars List */}
             <div className="space-y-3.5 pt-2">
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
-                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
                   1
                 </div>
                 <div>
-                  <h4 className="font-serif text-sm font-bold text-[#23181A]">
+                  <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
                     Ingrédients Purs &amp; Longue Tenue (14h+)
                   </h4>
-                  <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
+                  <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
                     Néroli pur de Nabeul, safran, bois d&apos;olivier et oud. Forte concentration en huiles parfumées pour un sillage durable.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
-                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
                   2
                 </div>
                 <div>
-                  <h4 className="font-serif text-sm font-bold text-[#23181A]">
+                  <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
                     Écrin Cylindrique Offert pour Chaque Flacon
                   </h4>
-                  <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
+                  <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
                     Boîte rigide vert olive et or qui protège le parfum de la lumière. Idéal et prêt à offrir en cadeau.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
-                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
                   3
                 </div>
                 <div>
-                  <h4 className="font-serif text-sm font-bold text-[#23181A]">
+                  <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
                     Flacon Dédié avec Certificat QR &amp; Nom du Client
                   </h4>
-                  <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
+                  <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
                     Chaque bouteille porte un QR code exclusif qui affiche sur votre téléphone votre certificat nominatif officiel.
                   </p>
                 </div>

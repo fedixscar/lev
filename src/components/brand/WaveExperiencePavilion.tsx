@@ -122,7 +122,7 @@ export function WaveExperiencePavilion() {
   const activeData = WAVE_EXPRESSIONS_DATA[activeExpression];
 
   return (
-    <section className="py-24 sm:py-32 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden border-y border-[#541B28]/15">
+    <section className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] relative overflow-hidden border-y border-[#541B28]/15 dark:border-[#C7A66A]/20">
       {/* Background ambient lighting */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#C7A66A]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#541B28]/8 rounded-full blur-3xl pointer-events-none" />
@@ -130,7 +130,7 @@ export function WaveExperiencePavilion() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-xs font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 shadow-xs font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-4">
             <WaveMonogram size="xs" variant="gold" />
             <span>Trois Styles de Parfums</span>
           </div>
@@ -139,7 +139,7 @@ export function WaveExperiencePavilion() {
             Choisissez Votre Style de Sillage
           </h2>
 
-          <p className="text-sm text-[#5A4B4E] leading-relaxed mt-3">
+          <p className="text-sm text-[#5A4B4E] dark:text-[#DCD0D3] leading-relaxed mt-3">
             Chaque personne a sa personnalité. Découvrez nos <strong>trois univers de créations</strong>,
             du plus frais et délicat au plus boisé et intense.
           </p>
@@ -161,9 +161,9 @@ export function WaveExperiencePavilion() {
                   "p-5 rounded-2xl border text-left transition-all duration-500 cursor-pointer flex flex-col justify-between group",
                   isActive
                     ? expr === "soft"
-                      ? "bg-white border-[#541B28] shadow-xl ring-1 ring-[#541B28]/30 scale-[1.02]"
+                      ? "bg-white dark:bg-[#1C0D15] text-[#541B28] dark:text-[#FAF7F2] border-[#541B28] dark:border-[#C7A66A] shadow-xl ring-1 ring-[#541B28]/30 dark:ring-[#C7A66A]/40 scale-[1.02]"
                       : "bg-[#3B121C] text-[#FAF7F2] border-[#C7A66A] shadow-xl ring-1 ring-[#C7A66A]/40 scale-[1.02]"
-                    : "bg-white/70 hover:bg-white text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]/30 shadow-sm"
+                    : "bg-white/70 dark:bg-[#180B10]/70 hover:bg-white dark:hover:bg-[#1C0D15] text-[#23181A] dark:text-[#FAF7F2] border-[#541B28]/15 dark:border-[#C7A66A]/20 hover:border-[#541B28]/30 shadow-sm"
                 )}
               >
                 <div className="flex items-center justify-between mb-3">
@@ -228,7 +228,7 @@ export function WaveExperiencePavilion() {
           className={cn(
             "rounded-3xl border shadow-2xl overflow-hidden transition-all duration-700",
             activeExpression === "soft"
-              ? "bg-gradient-to-b from-white to-[#F3ECE1] text-[#23181A] border-[#541B28]/25"
+              ? "bg-gradient-to-b from-white to-[#F3ECE1] dark:from-[#1A0C13] dark:to-[#12080B] text-[#23181A] dark:text-[#FAF7F2] border-[#541B28]/25 dark:border-[#C7A66A]/30"
               : "bg-gradient-to-b " + activeData.bgGradient + " text-[#FAF7F2] " + activeData.borderAccent
           )}
         >
@@ -251,7 +251,7 @@ export function WaveExperiencePavilion() {
                 className={cn(
                   "p-2.5 rounded-2xl backdrop-blur-md border shadow-lg flex items-center gap-2",
                   activeExpression === "soft"
-                    ? "bg-white/90 border-[#541B28]/20 text-[#541B28]"
+                    ? "bg-white/90 dark:bg-[#180B10]/90 border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B]"
                     : "bg-[#23181A]/80 border-[#C7A66A]/40 text-[#DFC68B]"
                 )}
               >

@@ -52,21 +52,21 @@ export function CartDrawer() {
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#FAF7F2] border-l border-[#541B28]/20 shadow-2xl flex flex-col text-[#23181A]">
+        <div className="w-screen max-w-md bg-[#FAF7F2] dark:bg-[#0E0709] border-l border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl flex flex-col text-[#23181A] dark:text-[#FAF7F2]">
           {/* Header */}
-          <div className="p-6 border-b border-[#541B28]/15 flex items-center justify-between bg-white/90 backdrop-blur-md">
+          <div className="p-6 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20 flex items-center justify-between bg-white/90 dark:bg-[#180B10]/90 backdrop-blur-md">
             <div className="flex items-center gap-2.5">
-              <WaveMonogram size="xs" variant="burgundy" />
-              <span className="font-serif text-2xl text-[#541B28] font-normal">
+              <WaveMonogram size="xs" variant="gold" />
+              <span className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-normal">
                 Votre Panier
               </span>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#541B28]/10 text-[#541B28] font-bold border border-[#541B28]/20">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/20 dark:border-[#C7A66A]/30">
                 {items.reduce((sum, i) => sum + i.quantity, 0)}
               </span>
             </div>
             <button
               onClick={() => setIsCartOpen(false)}
-              className="p-2 text-[#756B6D] hover:text-[#541B28] rounded-full hover:bg-black/5 transition-colors"
+              className="p-2 text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2] rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               aria-label="Fermer le panier"
             >
               <X className="w-5 h-5" />
@@ -74,7 +74,7 @@ export function CartDrawer() {
           </div>
 
           {/* Free Shipping & Wave Meter */}
-          <div className="px-6 py-3 bg-[#F3ECE1]/70 border-b border-[#541B28]/10 text-xs text-[#5A4B4E]">
+          <div className="px-6 py-3 bg-[#F3ECE1]/70 dark:bg-[#180B10]/70 border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 text-xs text-[#5A4B4E] dark:text-[#DCD0D3]">
             {subtotalTND >= 200 ? (
               <div className="flex items-center gap-2 text-[#434B36] font-semibold">
                 <GoldStarLozenge size={13} className="text-[#C7A66A]" />
@@ -189,22 +189,22 @@ export function CartDrawer() {
 
           {/* Footer with Calculations and projected Luck */}
           {items.length > 0 && (
-            <div className="p-6 border-t border-[#541B28]/20 bg-white shadow-lg space-y-4">
+            <div className="p-6 border-t border-[#541B28]/20 dark:border-[#C7A66A]/25 bg-white dark:bg-[#180B10] shadow-lg space-y-4">
               {/* Coupon Form */}
               <form onSubmit={handleApplyCoupon} className="flex gap-2">
                 <div className="relative flex-1">
-                  <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D]" />
+                  <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D] dark:text-[#A8989C]" />
                   <input
                     type="text"
                     placeholder="Code Promo (ex: LEVANIA10)"
                     value={couponCodeInput}
                     onChange={(e) => setCouponCodeInput(e.target.value)}
-                    className="w-full bg-[#FAF7F2] border border-[#541B28]/25 rounded-xl pl-8 pr-3 py-2 text-xs text-[#23181A] uppercase tracking-wider placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
+                    className="w-full bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/25 dark:border-[#C7A66A]/30 rounded-xl pl-8 pr-3 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] uppercase tracking-wider placeholder:text-[#756B6D] dark:placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white text-xs font-semibold transition-colors shadow-sm"
+                  className="px-4 py-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer"
                 >
                   Appliquer
                 </button>

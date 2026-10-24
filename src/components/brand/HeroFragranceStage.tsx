@@ -120,7 +120,7 @@ export function HeroFragranceStage() {
       <div className="absolute -bottom-6 left-10 right-10 h-12 bg-gradient-to-r from-transparent via-[#C7A66A]/35 to-transparent blur-2xl rounded-full pointer-events-none" />
 
       {/* 3-Flacon Switcher Tabs */}
-      <div className="flex items-center justify-center gap-2 mb-5 bg-white/80 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 shadow-sm">
+      <div className="flex items-center justify-center gap-2 mb-5 bg-white/80 dark:bg-[#180B10]/80 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-sm">
         {HERO_STAGE_ITEMS.map((item, idx) => {
           const isSelected = activeIndex === idx;
           return (
@@ -131,7 +131,7 @@ export function HeroFragranceStage() {
                 "px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5",
                 isSelected
                   ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25 scale-105 border border-[#C7A66A]/40"
-                  : "text-[#756B6D] hover:text-[#541B28]"
+                  : "text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2]"
               )}
             >
               <WaveMonogram
@@ -145,9 +145,9 @@ export function HeroFragranceStage() {
       </div>
 
       {/* Main Flacon Pedestal Frame */}
-      <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 hover:border-[#C7A66A]/50 transition-all duration-500 shadow-2xl bg-white group">
+      <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 dark:border-[#C7A66A]/30 hover:border-[#C7A66A]/50 transition-all duration-500 shadow-2xl bg-white dark:bg-[#170B10] group">
         {/* Aspect Ratio Box with Product Image */}
-        <div className="relative aspect-[4/5] sm:aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F3ECE1]">
+        <div className="relative aspect-[4/5] sm:aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F3ECE1] dark:from-[#170B10] dark:to-[#0E0709]">
           <Image
             key={activeItem.slug}
             src={activeItem.image}
@@ -175,7 +175,7 @@ export function HeroFragranceStage() {
 
           {/* Top Floating Badge */}
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#541B28]/20 font-cinzel text-[10px] uppercase tracking-luxury font-bold text-[#541B28] shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#170B10]/90 backdrop-blur-md border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[10px] uppercase tracking-luxury font-bold text-[#541B28] dark:text-[#DFC68B] shadow-sm">
               <GoldStarLozenge size={10} className="text-[#C7A66A]" />
               <span>{activeItem.tag}</span>
             </div>
@@ -186,7 +186,7 @@ export function HeroFragranceStage() {
           </div>
 
           {/* Floating Luxury Details Card */}
-          <div className="absolute bottom-4 left-4 right-4 p-5 rounded-2xl bg-white/95 backdrop-blur-xl border border-[#541B28]/25 shadow-xl transition-all duration-300">
+          <div className="absolute bottom-4 left-4 right-4 p-5 rounded-2xl bg-white/95 dark:bg-[#170B10]/95 backdrop-blur-xl border border-[#541B28]/25 dark:border-[#C7A66A]/35 shadow-xl transition-all duration-300">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2 mb-0.5">
@@ -194,18 +194,18 @@ export function HeroFragranceStage() {
                     size="xs"
                     variant={activeItem.expression === "soft" ? "burgundy" : "gold"}
                   />
-                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#852538] font-bold">
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#852538] dark:text-[#EACCA0] font-bold">
                     {activeItem.collectionName}
                   </span>
                 </div>
                 <h3 className="font-serif text-2xl text-burgundy-gradient font-light">
                   {activeItem.name}
                 </h3>
-                <p className="text-[11px] text-[#756B6D] italic -mt-0.5">{activeItem.subtitle}</p>
+                <p className="text-[11px] text-[#756B6D] dark:text-[#B0A0A4] italic -mt-0.5">{activeItem.subtitle}</p>
               </div>
 
               {/* Format Switcher */}
-              <div className="flex bg-[#FAF7F2] p-1 rounded-xl border border-[#541B28]/15 shrink-0">
+              <div className="flex bg-[#FAF7F2] dark:bg-[#0E0709] p-1 rounded-xl border border-[#541B28]/15 dark:border-[#C7A66A]/20 shrink-0">
                 {(["50ml", "100ml"] as const).map((sz) => (
                   <button
                     key={sz}
@@ -214,7 +214,7 @@ export function HeroFragranceStage() {
                       "px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all",
                       selectedFormat === sz
                         ? "bg-[#541B28] text-[#FAF7F2] shadow-sm"
-                        : "text-[#756B6D] hover:text-[#541B28]"
+                        : "text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2]"
                     )}
                   >
                     {sz}
@@ -224,11 +224,11 @@ export function HeroFragranceStage() {
             </div>
 
             {/* Micro Notes Preview */}
-            <div className="flex flex-wrap gap-1.5 my-3 pt-3 border-t border-[#541B28]/10">
+            <div className="flex flex-wrap gap-1.5 my-3 pt-3 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20">
               {activeItem.topNotes.map((note, i) => (
                 <span
                   key={i}
-                  className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#FAF7F2] text-[#4A3B3E] border border-[#541B28]/15"
+                  className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#FAF7F2] dark:bg-[#0E0709] text-[#4A3B3E] dark:text-[#FAF7F2] border border-[#541B28]/15 dark:border-[#C7A66A]/20"
                 >
                   {note}
                 </span>
@@ -236,7 +236,7 @@ export function HeroFragranceStage() {
               {activeItem.baseNotes.map((note, i) => (
                 <span
                   key={i}
-                  className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#541B28]/10 text-[#541B28] font-semibold border border-[#541B28]/25"
+                  className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] font-semibold border border-[#541B28]/25 dark:border-[#C7A66A]/30"
                 >
                   {note}
                 </span>
@@ -246,10 +246,10 @@ export function HeroFragranceStage() {
             {/* Price & Action Row */}
             <div className="flex items-center justify-between gap-3 pt-1">
               <div>
-                <span className="text-[10px] uppercase tracking-wider text-[#756B6D] block">
+                <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#A8989C] block">
                   Prix Flacon ({selectedFormat})
                 </span>
-                <span className="font-serif text-xl font-bold text-[#541B28]">
+                <span className="font-serif text-xl font-bold text-[#541B28] dark:text-[#DFC68B]">
                   {formatTND(activePrice)}
                 </span>
               </div>
@@ -265,7 +265,7 @@ export function HeroFragranceStage() {
 
                 <Link
                   href={`/products/${activeItem.slug}`}
-                  className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#541B28] border border-[#541B28]/25 hover:border-[#541B28] transition-all active:scale-95"
+                  className="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#14080D] hover:bg-white dark:hover:bg-[#220E16] text-[#541B28] dark:text-[#DFC68B] border border-[#541B28]/25 dark:border-[#C7A66A]/30 hover:border-[#541B28] transition-all active:scale-95"
                   title="Voir la fiche détaillée"
                 >
                   <ArrowRight className="w-4 h-4" />

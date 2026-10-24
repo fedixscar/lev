@@ -29,9 +29,9 @@ export function AmbientWaveBackdrop({
       glowBottom: "bg-[#541B28]/8",
     },
     soft: {
-      glowTop: "bg-[#FAF7F2]/60",
-      glowMid: "bg-[#D8A8B0]/18",
-      glowBottom: "bg-[#C7A66A]/12",
+      glowTop: "bg-[#FAF7F2]/60 dark:bg-[#C7A66A]/15",
+      glowMid: "bg-[#D8A8B0]/18 dark:bg-[#541B28]/25",
+      glowBottom: "bg-[#C7A66A]/12 dark:bg-[#DFC68B]/10",
     },
     intense: {
       glowTop: "bg-[#541B28]/18",

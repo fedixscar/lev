@@ -110,7 +110,7 @@ export function AiConciergeModal() {
 
       {/* Floating Modal Window */}
       {isOpen && (
-        <div className="fixed bottom-24 left-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] rounded-3xl bg-white border-2 border-[#541B28] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
+        <div className="fixed bottom-24 left-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] rounded-3xl bg-white dark:bg-[#180B10] border-2 border-[#541B28] dark:border-[#C7A66A]/40 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
           {/* Header */}
           <div className="p-4 bg-[#541B28] text-[#FAF7F2] border-b border-[#C7A66A]/30 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -129,14 +129,14 @@ export function AiConciergeModal() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 text-[#FAF7F2]/80 hover:text-[#FAF7F2] rounded-full transition-colors"
+              className="p-1.5 text-[#FAF7F2]/80 hover:text-[#FAF7F2] rounded-full transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Messages Body */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-[#FAF7F2]">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-[#FAF7F2] dark:bg-[#0E0709]">
             {messages.map((m) => (
               <div
                 key={m.id}
@@ -150,7 +150,7 @@ export function AiConciergeModal() {
                     "w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px]",
                     m.sender === "user"
                       ? "bg-[#541B28] text-[#FAF7F2]"
-                      : "bg-white text-[#541B28] border border-[#541B28]/25 shadow-sm"
+                      : "bg-white dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] border border-[#541B28]/25 dark:border-[#C7A66A]/30 shadow-sm"
                   )}
                 >
                   {m.sender === "user" ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
@@ -161,7 +161,7 @@ export function AiConciergeModal() {
                     "p-3 rounded-2xl leading-relaxed shadow-sm",
                     m.sender === "user"
                       ? "bg-[#541B28] text-[#FAF7F2] rounded-tr-none font-medium"
-                      : "bg-white text-[#23181A] rounded-tl-none border border-[#541B28]/15"
+                      : "bg-white dark:bg-[#180B10] text-[#23181A] dark:text-[#FAF7F2] rounded-tl-none border border-[#541B28]/15 dark:border-[#C7A66A]/25"
                   )}
                 >
                   <p>{m.text}</p>
@@ -169,7 +169,7 @@ export function AiConciergeModal() {
                     <Link
                       href={m.recommendedSlug === "compose-box" ? "/compose-box" : `/products/${m.recommendedSlug}`}
                       onClick={() => setIsOpen(false)}
-                      className="inline-flex items-center gap-1 mt-2 text-[10px] uppercase font-bold text-[#541B28] hover:underline"
+                      className="inline-flex items-center gap-1 mt-2 text-[10px] uppercase font-bold text-[#541B28] dark:text-[#DFC68B] hover:underline"
                     >
                       <span>Découvrir la création</span>
                       <ArrowRight className="w-3 h-3 text-[#C7A66A]" />
@@ -181,45 +181,45 @@ export function AiConciergeModal() {
             ))}
 
             {isTyping && (
-              <div className="flex gap-2 items-center text-[#756B6D] text-xs pl-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] animate-bounce" />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] animate-bounce delay-150" />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] animate-bounce delay-300" />
+              <div className="flex gap-2 items-center text-[#756B6D] dark:text-[#A8989C] text-xs pl-8">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] dark:bg-[#DFC68B] animate-bounce" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] dark:bg-[#DFC68B] animate-bounce delay-150" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#541B28] dark:bg-[#DFC68B] animate-bounce delay-300" />
                 <span className="text-[10px] ml-1 font-medium">Lévania analyse vos désirs...</span>
               </div>
             )}
           </div>
 
           {/* Quick Questions Suggestions */}
-          <div className="px-3 py-2 bg-white border-t border-[#541B28]/10 flex gap-1.5 overflow-x-auto text-[10px] no-scrollbar">
+          <div className="px-3 py-2 bg-white dark:bg-[#14080D] border-t border-[#541B28]/10 dark:border-[#C7A66A]/20 flex gap-1.5 overflow-x-auto text-[10px] no-scrollbar">
             <button
               onClick={() => setInput("Parlez-moi de votre N°1 Onde d'Or")}
-              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#541B28] font-bold border border-[#541B28]/15 whitespace-nowrap hover:border-[#541B28]"
+              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
             >
               N°1 Onde d&apos;Or
             </button>
             <button
-              onClick={() => setInput("Comment fonctionne la Roue du Destin et la Luck ?")}
-              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#541B28] font-bold border border-[#541B28]/15 whitespace-nowrap hover:border-[#541B28]"
+              onClick={() => setInput("Comment fonctionne la Roue Cadeau et les points ?")}
+              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
             >
-              La Roue & Luck
+              La Roue Cadeau
             </button>
             <button
               onClick={() => setInput("Quels sont les délais et frais de livraison ?")}
-              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#541B28] font-bold border border-[#541B28]/15 whitespace-nowrap hover:border-[#541B28]"
+              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
             >
               Livraison
             </button>
           </div>
 
           {/* Input Form */}
-          <form onSubmit={handleSend} className="p-3 bg-white border-t border-[#541B28]/15 flex gap-2">
+          <form onSubmit={handleSend} className="p-3 bg-white dark:bg-[#180B10] border-t border-[#541B28]/15 dark:border-[#C7A66A]/25 flex gap-2">
             <input
               type="text"
               placeholder="Posez votre question au Maître Parfumeur..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-3 py-2 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
+              className="flex-1 bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/30 rounded-xl px-3 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] placeholder:text-[#756B6D] dark:placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"
             />
             <button
               type="submit"
