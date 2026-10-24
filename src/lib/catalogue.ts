@@ -398,6 +398,24 @@ export function saveProduct(product: Product): Product[] {
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+    } catch (err) {
+      console.warn("localStorage quota reached, attempting storage with compressed records:", err);
+      try {
+        // Fallback: prune non-essential fields if storage quota is tight
+        const streamlined = updated.map((p) => ({
+          ...p,
+          images: {
+            main: p.images.main,
+            packaging: p.images.packaging || p.images.main,
+          },
+        }));
+        localStorage.setItem("levania_custom_products", JSON.stringify(streamlined));
+      } catch (innerErr) {
+        console.error("Critical storage error:", innerErr);
+      }
+    }
+
+    try {
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
     } catch {
       // ignore
@@ -417,6 +435,11 @@ export function deleteProduct(productId: string): Product[] {
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+    } catch (err) {
+      console.error("Error saving after delete:", err);
+    }
+
+    try {
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
     } catch {
       // ignore

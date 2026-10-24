@@ -12,6 +12,13 @@ import { useNotification } from "@/context/NotificationContext";
 import { Product } from "@/types";
 import { ProductFormModal } from "@/components/admin/ProductFormModal";
 import { DeleteProductModal } from "@/components/admin/DeleteProductModal";
+import { OrderBottlesModal } from "@/components/admin/OrderBottlesModal";
+import {
+  BottleCertificate,
+  getAllCertificates,
+  saveCertificate,
+  CERTIFICATES_UPDATED_EVENT,
+} from "@/lib/certificates";
 import {
   ShieldCheck,
   TrendingUp,
@@ -25,6 +32,11 @@ import {
   Plus,
   Pencil,
   Trash2,
+  Film,
+  ExternalLink,
+  Printer,
+  Search,
+  Sparkles,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -43,14 +55,23 @@ export default function AdminDashboardPage() {
     id: string;
     number: string;
     customer: string;
+    email?: string;
     phone?: string;
     city?: string;
     items: string;
+    itemsList?: any[];
+    certificates?: BottleCertificate[];
     totalTND: number;
     paymentMethod: string;
     status: string;
     date: string;
   }>>([]);
+
+  const [selectedOrderForBottles, setSelectedOrderForBottles] = useState<any | null>(null);
+  const [isOrderBottlesModalOpen, setIsOrderBottlesModalOpen] = useState(false);
+  const [allCertificates, setAllCertificates] = useState<BottleCertificate[]>([]);
+  const [certSearch, setCertSearch] = useState("");
+  const [certFilter, setCertFilter] = useState<"all" | "with-video" | "no-video">("all");
 
   const [resellerSales, setResellerSales] = useState<Array<{
     id: string;
@@ -64,11 +85,16 @@ export default function AdminDashboardPage() {
     date: string;
   }>>([]);
 
-  // Load real orders, products, and reseller sales on client mount
+  // Load real orders, products, certificates, and reseller sales on client mount
   React.useEffect(() => {
     setProductList(getAllProducts());
+    setAllCertificates(getAllCertificates());
+
     const handleProductsUpdated = () => setProductList(getAllProducts());
+    const handleCertsUpdated = () => setAllCertificates(getAllCertificates());
+
     window.addEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+    window.addEventListener(CERTIFICATES_UPDATED_EVENT, handleCertsUpdated);
 
     try {
       const storedOrders = localStorage.getItem("levania_orders");
@@ -91,8 +117,124 @@ export default function AdminDashboardPage() {
 
     return () => {
       window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+      window.removeEventListener(CERTIFICATES_UPDATED_EVENT, handleCertsUpdated);
     };
   }, []);
+
+  const handlePrintSingleLabel = (cert: BottleCertificate) => {
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Étiquette Flacon QR - ${cert.serialNumber}</title>
+          <style>
+            @page { size: 70mm 100mm; margin: 0; }
+            body {
+              font-family: 'Cinzel', serif, system-ui;
+              margin: 0;
+              padding: 20px;
+              background: #FAF7F2;
+              color: #23181A;
+              text-align: center;
+              box-sizing: border-box;
+            }
+            .border-box {
+              border: 2px solid #541B28;
+              border-radius: 16px;
+              padding: 16px 12px;
+              background: #FFF;
+            }
+            .logo {
+              font-size: 14px;
+              font-weight: 700;
+              color: #541B28;
+              letter-spacing: 3px;
+              text-transform: uppercase;
+              margin-bottom: 4px;
+            }
+            .sub {
+              font-size: 8px;
+              color: #756B6D;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+              margin-bottom: 12px;
+            }
+            .qr-img {
+              width: 140px;
+              height: 140px;
+              margin: 0 auto 10px auto;
+              display: block;
+              border: 1px solid #541B28;
+              border-radius: 8px;
+              padding: 4px;
+              background: #FAF7F2;
+            }
+            .name {
+              font-size: 13px;
+              font-weight: 700;
+              color: #23181A;
+              margin-bottom: 2px;
+            }
+            .customer {
+              font-size: 10px;
+              color: #541B28;
+              font-weight: 600;
+              margin-bottom: 6px;
+            }
+            .serial {
+              font-family: monospace;
+              font-size: 9px;
+              color: #5A4B4E;
+              background: #FAF7F2;
+              padding: 4px 8px;
+              border-radius: 4px;
+              display: inline-block;
+              margin-bottom: 8px;
+            }
+            .notice {
+              font-size: 7px;
+              color: #756B6D;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="border-box">
+            <div class="logo">LÉVANIA</div>
+            <div class="sub">Haute Parfumerie &bull; Flacon Scellé</div>
+            ${cert.qrDataUrl ? `<img src="${cert.qrDataUrl}" class="qr-img" />` : ""}
+            <div class="name">${cert.productName} (${cert.formatSize})</div>
+            <div class="customer">Dédié à ${cert.customerName}</div>
+            <div class="serial">${cert.serialNumber}</div>
+            <div class="notice">Scannez pour accéder au certificat numérique &amp; à la vidéo artisanale</div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
+  const handleOpenBottleOrder = (cert: BottleCertificate) => {
+    const matchingOrder = orders.find(
+      (o) => o.number === cert.orderNumber || o.id === cert.orderId
+    ) || {
+      id: cert.orderId || `ord-${cert.token}`,
+      number: cert.orderNumber || "LEV-OFFICIEL",
+      customer: cert.customerName || "Client Lévania",
+      email: cert.customerEmail || "",
+      phone: cert.customerPhone || "",
+      items: `${cert.productName} (${cert.formatSize})`,
+    };
+    setSelectedOrderForBottles(matchingOrder);
+    setIsOrderBottlesModalOpen(true);
+  };
 
   const handleOpenCreateProduct = () => {
     setEditingProduct(null);
@@ -185,6 +327,22 @@ export default function AdminDashboardPage() {
   const criticalStockItems = productList.flatMap((p) =>
     p.formats.filter((f) => f.stock < 20).map((f) => `${p.name} (${f.size})`)
   );
+
+  const filteredCertificates = allCertificates.filter((cert: BottleCertificate) => {
+    const query = certSearch.trim().toLowerCase();
+    const matchesSearch =
+      !query ||
+      cert.customerName.toLowerCase().includes(query) ||
+      cert.serialNumber.toLowerCase().includes(query) ||
+      cert.token.toLowerCase().includes(query) ||
+      cert.productName.toLowerCase().includes(query) ||
+      cert.orderNumber.toLowerCase().includes(query);
+
+    if (!matchesSearch) return false;
+    if (certFilter === "with-video") return !!cert.videoUrl;
+    if (certFilter === "no-video") return !cert.videoUrl;
+    return true;
+  });
 
   if (isLoading) {
     return (
@@ -516,6 +674,7 @@ export default function AdminDashboardPage() {
                         <th className="pb-3">N° Commande</th>
                         <th className="pb-3">Client & Contact</th>
                         <th className="pb-3">Articles</th>
+                        <th className="pb-3">Flacons &amp; QR Codes</th>
                         <th className="pb-3">Mode Paiement</th>
                         <th className="pb-3">Montant</th>
                         <th className="pb-3">Statut Actuel</th>
@@ -523,37 +682,64 @@ export default function AdminDashboardPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#541B28]/5">
-                      {orders.map((ord) => (
-                        <tr key={ord.id} className="hover:bg-[#FAF7F2]">
-                          <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
-                          <td className="py-3">
-                            <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
-                            <span className="text-[10px] text-[#756B6D]">{ord.phone || "—"} • {ord.city || "—"}</span>
-                          </td>
-                          <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
-                          <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>
-                          <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(ord.totalTND)}</td>
-                          <td className="py-3">
-                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                              {ord.status}
-                            </span>
-                          </td>
-                          <td className="py-3">
-                            <select
-                              value={ord.status}
-                              onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
-                              className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1 text-xs text-[#23181A] font-medium"
-                            >
-                              <option value="En Attente">En Attente</option>
-                              <option value="Confirmée">Confirmée</option>
-                              <option value="En Préparation">En Préparation</option>
-                              <option value="Expédiée">Expédiée</option>
-                              <option value="Livré">Livré</option>
-                              <option value="Annulée">Annulée</option>
-                            </select>
-                          </td>
-                        </tr>
-                      ))}
+                      {orders.map((ord) => {
+                        const orderCerts = allCertificates.filter(
+                          (c) => c.orderNumber === ord.number || c.orderId === ord.id
+                        );
+                        const hasVideo = orderCerts.some((c) => !!c.videoUrl);
+
+                        return (
+                          <tr key={ord.id} className="hover:bg-[#FAF7F2]">
+                            <td className="py-3 font-mono font-bold text-[#541B28]">{ord.number}</td>
+                            <td className="py-3">
+                              <span className="text-[#23181A] font-semibold block">{ord.customer}</span>
+                              <span className="text-[10px] text-[#756B6D]">{ord.phone || "—"} • {ord.city || "—"}</span>
+                            </td>
+                            <td className="py-3 text-[#5A4B4E]">{ord.items}</td>
+                            <td className="py-3">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedOrderForBottles(ord);
+                                  setIsOrderBottlesModalOpen(true);
+                                }}
+                                className="px-3 py-1.5 rounded-xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] transition-colors border border-[#541B28]/20 flex items-center gap-1.5 text-[11px] font-semibold shadow-xs"
+                                title="Gérer les QR Codes, vidéos artisanales et étiquettes pour chaque flacon"
+                              >
+                                <QrCode className="w-3.5 h-3.5 text-[#541B28]" />
+                                <span>{orderCerts.length > 0 ? `${orderCerts.length} Flacon${orderCerts.length > 1 ? "s" : ""}` : "Flacons QR"}</span>
+                                {hasVideo && (
+                                  <span className="inline-flex items-center gap-0.5 text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full font-bold ml-1">
+                                    <Film className="w-2.5 h-2.5" />
+                                    Vidéo
+                                  </span>
+                                )}
+                              </button>
+                            </td>
+                            <td className="py-3 text-[#756B6D]">{ord.paymentMethod}</td>
+                            <td className="py-3 font-serif text-[#541B28] font-bold">{formatTND(ord.totalTND)}</td>
+                            <td className="py-3">
+                              <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
+                                {ord.status}
+                              </span>
+                            </td>
+                            <td className="py-3">
+                              <select
+                                value={ord.status}
+                                onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
+                                className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1 text-xs text-[#23181A] font-medium"
+                              >
+                                <option value="En Attente">En Attente</option>
+                                <option value="Confirmée">Confirmée</option>
+                                <option value="En Préparation">En Préparation</option>
+                                <option value="Expédiée">Expédiée</option>
+                                <option value="Livré">Livré</option>
+                                <option value="Annulée">Annulée</option>
+                              </select>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -671,26 +857,225 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          {/* TAB 6: QR CODE MANAGER */}
+          {/* TAB 6: QR CODE & ARTISAN VIDEO MANAGER */}
           {activeTab === "qr" && (
             <div className="space-y-6 animate-in fade-in">
-              <h3 className="font-serif text-2xl text-[#23181A] font-semibold">Gestion des QR Codes de Traçabilité Flacons</h3>
-              <p className="text-xs text-[#756B6D]">
-                Générez des jetons cryptographiques uniques pour chaque flacon scellé et associez-les au lot de mise en bouteille.
-              </p>
-
-              <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="font-serif text-lg text-[#23181A] font-semibold">Générer un Nouveau Lot de QR Codes</h4>
-                  <p className="text-xs text-[#756B6D]">Création par paquet de 50 jetons avec export planche imprimable.</p>
+                  <h3 className="font-serif text-2xl text-[#23181A] font-semibold">
+                    Traçabilité Cryptographique &amp; Dédicaces Vidéo
+                  </h3>
+                  <p className="text-xs text-[#756B6D] mt-0.5">
+                    Chaque flacon commandé possède son propre jeton cryptographique QR scellé avec le nom nominatif du client et une vidéo artisanale attachée.
+                  </p>
                 </div>
-                <button
-                  onClick={() => showToast("Lot de 50 QR Codes généré", "Export PDF prêt pour l'atelier", "success")}
-                  className="px-6 py-2.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
-                >
-                  Générer le Lot
-                </button>
               </div>
+
+              {/* Stats badges */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
+                    Flacons Certifiés
+                  </span>
+                  <span className="font-serif text-2xl text-[#541B28] font-bold">
+                    {allCertificates.length}
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
+                    Vidéos Attachées
+                  </span>
+                  <span className="font-serif text-2xl text-emerald-700 font-bold">
+                    {allCertificates.filter((c) => !!c.videoUrl).length}
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
+                    En Attente de Vidéo
+                  </span>
+                  <span className="font-serif text-2xl text-amber-600 font-bold">
+                    {allCertificates.filter((c) => !c.videoUrl).length}
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
+                    Commandes Clients
+                  </span>
+                  <span className="font-serif text-2xl text-[#23181A] font-bold">
+                    {new Set(allCertificates.map((c) => c.orderNumber)).size}
+                  </span>
+                </div>
+              </div>
+
+              {/* Search & Filter Bar */}
+              <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs">
+                <div className="relative w-full md:w-80">
+                  <Search className="w-4 h-4 text-[#756B6D] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher par client, flacon, série LEV..."
+                    value={certSearch}
+                    onChange={(e) => setCertSearch(e.target.value)}
+                    className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl pl-9 pr-3 py-2 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
+                  />
+                </div>
+
+                <div className="flex gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+                  {[
+                    { id: "all", label: `Tous (${allCertificates.length})` },
+                    { id: "with-video", label: `Avec Vidéo (${allCertificates.filter((c) => !!c.videoUrl).length})` },
+                    { id: "no-video", label: `Sans Vidéo (${allCertificates.filter((c) => !c.videoUrl).length})` },
+                  ].map((filterTab) => (
+                    <button
+                      key={filterTab.id}
+                      onClick={() => setCertFilter(filterTab.id as any)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                        certFilter === filterTab.id
+                          ? "bg-[#541B28] text-[#FAF7F2] shadow-xs"
+                          : "bg-[#FAF7F2] text-[#5A4B4E] hover:text-[#541B28] border border-[#541B28]/15"
+                      }`}
+                    >
+                      {filterTab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Certificates List */}
+              {allCertificates.length === 0 ? (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-12 text-center shadow-sm">
+                  <QrCode className="w-12 h-12 text-[#541B28]/40 mx-auto mb-3" />
+                  <h4 className="font-serif text-lg text-[#23181A] font-semibold mb-1">
+                    Aucun Certificat QR Flacon Généré
+                  </h4>
+                  <p className="text-xs text-[#756B6D] max-w-md mx-auto mb-6">
+                    Dès qu&apos;un client passe une commande sur la boutique, les QR codes nominatifs de chaque flacon sont automatiquement scellés ici.
+                  </p>
+                  {orders.length > 0 && (
+                    <button
+                      onClick={() => {
+                        setSelectedOrderForBottles(orders[0]);
+                        setIsOrderBottlesModalOpen(true);
+                      }}
+                      className="px-6 py-2.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md inline-flex items-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4 text-[#DFC68B]" />
+                      <span>Générer pour la commande {orders[0].number}</span>
+                    </button>
+                  )}
+                </div>
+              ) : filteredCertificates.length === 0 ? (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-10 text-center shadow-sm">
+                  <p className="text-xs text-[#756B6D]">
+                    Aucun certificat ne correspond à votre recherche &ldquo;{certSearch}&rdquo;.
+                  </p>
+                  <button
+                    onClick={() => { setCertSearch(""); setCertFilter("all"); }}
+                    className="mt-3 text-xs text-[#541B28] font-bold hover:underline"
+                  >
+                    Réinitialiser les filtres
+                  </button>
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                        <th className="pb-3">QR Flacon</th>
+                        <th className="pb-3">N° Série &amp; Jeton</th>
+                        <th className="pb-3">Client Dédié</th>
+                        <th className="pb-3">Flacon Commandé</th>
+                        <th className="pb-3">Réf Commande</th>
+                        <th className="pb-3">Vidéo Artisanale</th>
+                        <th className="pb-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5">
+                      {filteredCertificates.map((cert) => (
+                        <tr key={cert.token} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3">
+                            <div className="w-12 h-12 rounded-lg overflow-hidden border border-[#541B28]/20 bg-[#FAF7F2] relative shrink-0">
+                              {cert.qrDataUrl ? (
+                                <Image src={cert.qrDataUrl} alt="QR Code" fill className="object-contain" unoptimized />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <QrCode className="w-5 h-5 text-[#541B28]" />
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3">
+                            <span className="font-mono text-xs font-bold text-[#541B28] block">
+                              {cert.serialNumber}
+                            </span>
+                            <span className="font-mono text-[9px] text-[#756B6D] block">
+                              {cert.batchCode} &bull; {cert.bottlingDate}
+                            </span>
+                          </td>
+                          <td className="py-3">
+                            <span className="text-[#23181A] font-semibold block">
+                              {cert.customerName}
+                            </span>
+                            <span className="text-[10px] text-[#756B6D]">
+                              {cert.customerEmail || cert.customerPhone || "Client Nominatif"}
+                            </span>
+                          </td>
+                          <td className="py-3">
+                            <span className="text-[#23181A] font-medium block">
+                              {cert.productName}
+                            </span>
+                            <span className="text-[10px] text-[#541B28] font-bold">
+                              Format {cert.formatSize}
+                            </span>
+                          </td>
+                          <td className="py-3 font-mono text-[#5A4B4E]">
+                            {cert.orderNumber}
+                          </td>
+                          <td className="py-3">
+                            {cert.videoUrl ? (
+                              <span className="inline-flex items-center gap-1 text-[10px] text-[#434B36] font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                                <Film className="w-3 h-3 text-emerald-700" />
+                                <span>Vidéo Active</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-[10px] text-amber-700 font-medium bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                                En attente vidéo
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 text-right">
+                            <div className="inline-flex items-center gap-1.5">
+                              <button
+                                onClick={() => handleOpenBottleOrder(cert)}
+                                className="px-2.5 py-1.5 rounded-lg bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] transition-colors border border-[#541B28]/20 flex items-center gap-1 text-[11px] font-semibold"
+                                title="Uploader ou modifier la vidéo pour ce flacon"
+                              >
+                                <Film className="w-3.5 h-3.5" />
+                                <span>Vidéo</span>
+                              </button>
+                              <button
+                                onClick={() => handlePrintSingleLabel(cert)}
+                                className="p-1.5 rounded-lg bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-white transition-colors border border-[#541B28]/20"
+                                title="Imprimer l'étiquette QR flacon"
+                              >
+                                <Printer className="w-3.5 h-3.5" />
+                              </button>
+                              <Link
+                                href={`/p/${cert.token}`}
+                                target="_blank"
+                                className="p-1.5 rounded-lg bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] transition-colors"
+                                title="Voir le certificat client en direct"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -708,6 +1093,13 @@ export default function AdminDashboardPage() {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         productName={productToDelete?.name || "ce flacon"}
+      />
+
+      <OrderBottlesModal
+        isOpen={isOrderBottlesModalOpen}
+        onClose={() => setIsOrderBottlesModalOpen(false)}
+        order={selectedOrderForBottles}
+        onCertificatesUpdated={() => setAllCertificates(getAllCertificates())}
       />
 
       <Footer />

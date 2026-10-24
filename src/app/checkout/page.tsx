@@ -11,6 +11,7 @@ import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { generateCertificatesForOrder, BottleCertificate } from "@/lib/certificates";
 import {
   ShieldCheck,
   Truck,
@@ -19,6 +20,7 @@ import {
   CheckCircle2,
   ArrowRight,
   Lock,
+  QrCode,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
@@ -66,6 +68,7 @@ export default function CheckoutPage() {
     orderNumber: string;
     luckAwarded: number;
     totalTND: number;
+    certificates: BottleCertificate[];
   } | null>(null);
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
@@ -77,13 +80,32 @@ export default function CheckoutPage() {
     try {
       // Generate unique order number
       const orderNum = `LEV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderId = `ord-${Date.now()}`;
 
       // Award authoritative Luck (1 Luck per 10 TND)
       const luckResult = awardLuck(projectedLuck);
       awardLoyaltyPoints(Math.floor(totalTND));
 
+      // Automatically generate unique authentic QR Code bottle certificates for each flacon
+      const structuredItems = items.map((it) => ({
+        name: it.productName,
+        size: it.formatSize,
+        quantity: it.quantity,
+        priceTND: it.unitPriceTND,
+        image: it.image,
+      }));
+
+      const certificates = await generateCertificatesForOrder({
+        id: orderId,
+        number: orderNum,
+        customer: fullName,
+        email: email.toLowerCase(),
+        phone: phone,
+        itemsList: structuredItems,
+      });
+
       const newOrder = {
-        id: `ord-${Date.now()}`,
+        id: orderId,
         number: orderNum,
         customer: fullName,
         email: email.toLowerCase(),
@@ -91,13 +113,8 @@ export default function CheckoutPage() {
         address: `${address}, ${city}, ${governorate}`,
         city: `${city}, ${governorate}`,
         items: items.map((it) => `${it.productName} (${it.formatSize}) x${it.quantity}`).join(" + "),
-        itemsList: items.map((it) => ({
-          name: it.productName,
-          size: it.formatSize,
-          quantity: it.quantity,
-          priceTND: it.unitPriceTND,
-          image: it.image,
-        })),
+        itemsList: structuredItems,
+        certificates: certificates,
         totalTND: totalTND,
         paymentMethod: paymentMethod === "cod" ? "Paiement à la Livraison (Espèces)" : "Carte Bancaire (Flouci/Konnect)",
         status: "En Attente",
@@ -144,6 +161,7 @@ export default function CheckoutPage() {
         orderNumber: orderNum,
         luckAwarded: luckResult.added,
         totalTND,
+        certificates,
       });
 
       clearCart();
@@ -194,6 +212,63 @@ export default function CheckoutPage() {
                 </strong>
                 . Nos maîtres artisans préparent vos flacons avec le plus grand soin.
               </p>
+
+              {/* Generated QR Bottle Certificates */}
+              {confirmedOrder.certificates && confirmedOrder.certificates.length > 0 && (
+                <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 mb-8 max-w-lg mx-auto text-left space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/15">
+                    <div className="flex items-center gap-2">
+                      <QrCode className="w-4 h-4 text-[#541B28]" />
+                      <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold">
+                        Certificats QR Flacons Dédiés ({confirmedOrder.certificates.length})
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-[#434B36] font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      Scellés &amp; Numérotés
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {confirmedOrder.certificates.map((cert) => (
+                      <div
+                        key={cert.token}
+                        className="p-3.5 rounded-xl bg-white border border-[#541B28]/15 flex items-center justify-between gap-3 shadow-xs"
+                      >
+                        <div className="flex items-center gap-3">
+                          {cert.qrDataUrl ? (
+                            <div className="w-12 h-12 rounded-lg overflow-hidden border border-[#541B28]/20 relative shrink-0">
+                              <Image src={cert.qrDataUrl} alt="QR Code" fill className="object-contain" unoptimized />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-lg bg-[#FAF7F2] flex items-center justify-center shrink-0">
+                              <QrCode className="w-5 h-5 text-[#541B28]" />
+                            </div>
+                          )}
+                          <div>
+                            <span className="font-serif text-sm font-semibold text-[#23181A] block">
+                              {cert.productName} ({cert.formatSize})
+                            </span>
+                            <span className="text-[11px] text-[#541B28] font-medium block">
+                              Flacon dédié à : <strong>{cert.customerName}</strong>
+                            </span>
+                            <span className="font-mono text-[10px] text-[#756B6D] block">
+                              Série : {cert.serialNumber}
+                            </span>
+                          </div>
+                        </div>
+
+                        <Link
+                          href={`/p/${cert.token}`}
+                          target="_blank"
+                          className="px-3 py-1.5 rounded-lg bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-[10px] font-bold uppercase tracking-wider transition-colors shrink-0"
+                        >
+                          Certificat &rarr;
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Luck Awarded Celebration Card */}
               {confirmedOrder.luckAwarded > 0 && (
