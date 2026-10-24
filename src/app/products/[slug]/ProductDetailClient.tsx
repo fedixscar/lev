@@ -15,7 +15,7 @@ import { GoldStarLozenge, LuxuryDrop } from "@/components/ui/LuxuryIcons";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
-import { PRODUCTS } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
 import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
@@ -29,30 +29,61 @@ import { AuthenticityCertificateModal } from "@/components/products/Authenticity
 import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
 
 interface ProductDetailClientProps {
-  product: Product;
+  product?: Product;
+  initialProduct?: Product;
+  slug?: string;
 }
 
-export function ProductDetailClient({ product }: ProductDetailClientProps) {
+export function ProductDetailClient({
+  product: directProduct,
+  initialProduct,
+  slug,
+}: ProductDetailClientProps) {
+  const [product, setProduct] = useState<Product | null>(directProduct || initialProduct || null);
+
+  React.useEffect(() => {
+    if (!product && slug) {
+      const all = getAllProducts();
+      const found = all.find((p) => p.slug === slug);
+      if (found) {
+        setProduct(found);
+        setSelectedImage(found.images.main);
+      }
+    }
+  }, [slug, product]);
+
   const router = useRouter();
   const { addItem, setIsCartOpen } = useCart();
   const { showToast } = useNotification();
 
   const [selectedSize, setSelectedSize] = useState<"50ml" | "100ml">("50ml");
-  const [selectedImage, setSelectedImage] = useState<string>(product.images.main);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    directProduct?.images.main || initialProduct?.images.main || "/brand/bottle-and-cylinder.jpg"
+  );
   const [quantity] = useState(1);
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [selectedLayer, setSelectedLayer] = useState<"tête" | "cœur" | "fond" | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
 
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-[#23181A]">
+        <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28]">Chargement du flacon...</p>
+      </div>
+    );
+  }
+
   const activeFormat =
     product.formats.find((f) => f.size === selectedSize) || product.formats[0];
 
   const waveExpression =
-    product.collectionSlug === "soyeuse"
+    (product.waveExpression as any) ||
+    (product.collectionSlug === "soyeuse"
       ? "soft"
       : product.collectionSlug === "intense"
       ? "intense"
-      : "signature";
+      : "signature");
 
   const galleryImages = [
     product.images.main,
@@ -140,6 +171,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   alt={product.name}
                   fill
                   priority
+                  unoptimized={selectedImage.startsWith("data:")}
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/40 via-transparent to-transparent pointer-events-none" />
@@ -167,7 +199,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         : "border-[#541B28]/15 opacity-70 hover:opacity-100"
                     )}
                   >
-                    <Image src={img} alt={`Aperçu ${i}`} fill className="object-cover" />
+                    <Image
+                      src={img}
+                      alt={`Aperçu ${i}`}
+                      fill
+                      unoptimized={img.startsWith("data:")}
+                      className="object-cover"
+                    />
                   </button>
                 ))}
               </div>

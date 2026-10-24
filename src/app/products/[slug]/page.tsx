@@ -16,9 +16,5 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const resolvedParams = await params;
   const product = PRODUCTS.find((p) => p.slug === resolvedParams.slug);
 
-  if (!product) {
-    notFound();
-  }
-
-  return <ProductDetailClient product={product} />;
+  return <ProductDetailClient initialProduct={product} slug={resolvedParams.slug} />;
 }

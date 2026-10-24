@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { WaveCanvas, WaveExpression } from "./WaveCanvas";
 import { WaveMonogram } from "./WaveMonogram";
-import { PRODUCTS } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -93,7 +93,7 @@ export function HeroFragranceStage() {
   const activePrice = selectedFormat === "50ml" ? activeItem.price50ml : activeItem.price100ml;
 
   const handleQuickAdd = () => {
-    const product = PRODUCTS.find((p) => p.slug === activeItem.slug) || PRODUCTS[0];
+    const product = getAllProducts().find((p) => p.slug === activeItem.slug) || PRODUCTS[0];
     const fmt = product.formats.find((f) => f.size === selectedFormat) || product.formats[0];
 
     addItem({

@@ -10,20 +10,30 @@ import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { ProductCard } from "./ProductCard";
 
 interface BestSellerPodiumProps {
   products: Product[];
 }
 
-export function BestSellerPodium({ products }: BestSellerPodiumProps) {
+export function BestSellerPodium({ products: initialProducts }: BestSellerPodiumProps) {
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
+  const [productsList, setProductsList] = useState<Product[]>(initialProducts);
+
+  React.useEffect(() => {
+    setProductsList(getAllProducts());
+    const handleUpdate = () => setProductsList(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+  }, []);
+
   // Top 3 Podium: rank 1, 2, 3
-  const first = products.find((p) => p.bestsellerRank === 1) || products[0];
-  const second = products.find((p) => p.bestsellerRank === 2) || products[1];
-  const third = products.find((p) => p.bestsellerRank === 3) || products[2];
+  const first = productsList.find((p) => p.bestsellerRank === 1) || productsList[0];
+  const second = productsList.find((p) => p.bestsellerRank === 2) || productsList[1];
+  const third = productsList.find((p) => p.bestsellerRank === 3) || productsList[2];
 
   // Selected formats for podium
   const [firstFormat, setFirstFormat] = useState<"50ml" | "100ml">("100ml");
@@ -31,7 +41,7 @@ export function BestSellerPodium({ products }: BestSellerPodiumProps) {
   const [thirdFormat, setThirdFormat] = useState<"50ml" | "100ml">("50ml");
 
   // Remaining 7 bestsellers
-  const otherBestsellers = products.filter(
+  const otherBestsellers = productsList.filter(
     (p) => p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10
   );
 

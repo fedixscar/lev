@@ -5,7 +5,8 @@ import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
-import { COLLECTIONS, PRODUCTS } from "@/lib/catalogue";
+import { COLLECTIONS, PRODUCTS, getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { Product } from "@/types";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
@@ -14,10 +15,18 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export default function CollectionsPage() {
   const [activeCollectionSlug, setActiveCollectionSlug] = useState<string>("signature");
+  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+
+  React.useEffect(() => {
+    setProducts(getAllProducts());
+    const handleUpdate = () => setProducts(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+  }, []);
 
   const activeCollection =
     COLLECTIONS.find((c) => c.slug === activeCollectionSlug) || COLLECTIONS[0];
-  const collectionProducts = PRODUCTS.filter(
+  const collectionProducts = products.filter(
     (p) => p.collectionSlug === activeCollectionSlug
   );
 
