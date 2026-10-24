@@ -186,13 +186,13 @@ export function Footer() {
 
         {/* Bottom copyright and legal */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
-          <div className="pl-0 sm:pl-64 text-center sm:text-left">
-            &copy; 2026 Syntra. Tous droits réservés. Haute Parfumerie.
+          <div className="text-center sm:text-left font-cinzel text-[11px] tracking-wider">
+            &copy; 2026 LÉVANIA PARFUMS. Tous droits réservés. Maison de Haute Parfumerie Artisanale.
           </div>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6">
-            <span>Paiement Sécurisé & Livraison en Tunisie</span>
-            <span>Mentions Légales</span>
-            <span>Confidentialité</span>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6 text-[11px]">
+            <span>Paiement Sécurisé &bull; Espèces &amp; Carte</span>
+            <span>Livraison Express Tunisie 24-48h</span>
+            <span>Certifié Authentique</span>
           </div>
         </div>
       </div>

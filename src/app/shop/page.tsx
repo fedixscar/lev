@@ -6,7 +6,7 @@ import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { PRODUCTS, getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { Product } from "@/types";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
@@ -112,7 +112,7 @@ export default function ShopPage() {
               <GoldStarLozenge size={11} className="text-[#C7A66A]" />
               <span>Boutique Haute Parfumerie</span>
             </div>
-            <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mb-3">
+            <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mb-3">
               Le Catalogue des Fragrances
             </h1>
             <p className="text-xs sm:text-sm text-[#5A4B4E] leading-relaxed">
@@ -210,8 +210,18 @@ export default function ShopPage() {
                 placeholder="Rechercher par note, nom..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl pl-9 pr-3 py-2 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
+                className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl pl-9 pr-8 py-2 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#756B6D] hover:text-[#541B28] p-1"
+                  aria-label="Effacer la recherche"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
             {/* Filter Pills */}
@@ -275,6 +285,36 @@ export default function ShopPage() {
               ))}
             </div>
           )}
+
+          {/* Luxury Reassurance Bar */}
+          <div className="mt-16 rounded-3xl bg-white border border-[#541B28]/15 p-6 sm:p-8 shadow-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+              <div className="space-y-1">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                  Flacons Scellés à la Main
+                </span>
+                <p className="text-[11px] text-[#756B6D]">
+                  Chaque création est numérotée et scellée à la cire dans notre atelier de Nabeul.
+                </p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                  Certificat Numérique QR
+                </span>
+                <p className="text-[11px] text-[#756B6D]">
+                  Accédez au certificat dédié à votre nom et à la vidéo de mise en flacon.
+                </p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                  Livraison Sécurisée en Tunisie
+                </span>
+                <p className="text-[11px] text-[#756B6D]">
+                  Expédition soignée 24-48h avec paiement à la livraison (espèces ou carte).
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 

@@ -48,25 +48,26 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
               {/* Text Editorial Column */}
               <div className="lg:col-span-7 min-w-0 space-y-7 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-white/95 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold backdrop-blur-md shadow-sm">
+                <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-white/95 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold backdrop-blur-md shadow-xs">
                   <WaveMonogram size="xs" variant="gold" />
                   <span>Haute Parfumerie • Nabeul • Cap Bon</span>
                 </div>
 
-                <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light text-burgundy-gradient leading-[1.06] tracking-tight">
-                  L&apos;Art du Sillage en Mouvement.
+                <h1 className="font-serif text-fluid-hero font-light text-burgundy-gradient tracking-tight">
+                  L&apos;Art du Sillage{" "}
+                  <span className="italic font-normal text-gold-gradient">en Mouvement.</span>
                 </h1>
 
                 <p className="text-base sm:text-lg text-[#5A4B4E] font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                   Une onde liquide sculptée dans la noblesse des bois d&apos;olivier centenaires,
-                  du safran pur et des fleurs solaires de Méditerranée. L&apos;élégance vivante d&apos;un sillage inoubliable.
+                  du safran pur et des fleurs solaires de Méditerranée. L&apos;élégance vivante d&apos;un sillage inoubliable scellé à la main.
                 </p>
 
                 {/* Refined Luxury CTAs */}
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                   <Link
                     href="/shop"
-                    className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#541B28] via-[#7A263B] to-[#541B28] text-[#FAF7F2] font-cinzel font-bold text-xs uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 border border-[#C7A66A]/40"
+                    className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-primary flex items-center justify-center gap-2.5"
                   >
                     <span>Explorer la Maison</span>
                     <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
@@ -74,7 +75,7 @@ export default function HomePage() {
 
                   <Link
                     href="/discover"
-                    className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-[#F3ECE1] text-[#541B28] border border-[#541B28]/30 font-cinzel font-bold text-xs uppercase tracking-luxury shadow-sm backdrop-blur-md transition-all flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-secondary flex items-center justify-center gap-2"
                   >
                     <Compass className="w-4 h-4 text-[#C7A66A]" />
                     <span>Diagnostic Sillage IA</span>
@@ -85,16 +86,16 @@ export default function HomePage() {
                 <div className="pt-4 flex justify-center lg:justify-start font-cinzel text-[9px] sm:text-[10px] tracking-luxury uppercase text-[#756B6D]">
                   <div className="flex flex-col items-start gap-2.5 lg:flex-row lg:items-center lg:gap-6">
                     <div className="flex items-center gap-2 whitespace-nowrap">
-                      <span className="w-2 h-2 rounded-full bg-[#C7A66A]" />
+                      <span className="w-2 h-2 rounded-full bg-[#C7A66A] shadow-xs" />
                       <span>Extraits Purs &amp; Eaux Nobles</span>
                     </div>
                     <div className="flex items-center gap-2 whitespace-nowrap">
-                      <span className="w-2 h-2 rounded-full bg-[#541B28]" />
+                      <span className="w-2 h-2 rounded-full bg-[#541B28] shadow-xs" />
                       <span>Écrins Cylindriques Scellés</span>
                     </div>
                     <div className="flex items-center gap-2 whitespace-nowrap">
-                      <span className="w-2 h-2 rounded-full bg-[#434B36]" />
-                      <span>Créations Numérotées</span>
+                      <span className="w-2 h-2 rounded-full bg-[#434B36] shadow-xs" />
+                      <span>Certificat QR &amp; Vidéo Dédiée</span>
                     </div>
                   </div>
                 </div>
@@ -162,7 +163,7 @@ export default function HomePage() {
                   <div className="flex flex-wrap gap-4 pt-2">
                     <Link
                       href="/compose-box"
-                      className="px-8 py-4 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs uppercase tracking-luxury transition-all flex items-center gap-2.5 shadow-lg shadow-[#541B28]/20"
+                      className="px-8 py-4 rounded-full luxury-btn-primary flex items-center gap-2.5"
                     >
                       <Gift className="w-4 h-4 text-[#DFC68B]" />
                       <span>Concevoir Mon Coffret Personnalisé</span>
@@ -214,7 +215,7 @@ export default function HomePage() {
                 <div className="pt-2">
                   <Link
                     href="/discover"
-                    className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-[#541B28] to-[#7A263B] text-[#FAF7F2] font-cinzel font-bold text-xs uppercase tracking-luxury hover:opacity-95 shadow-xl shadow-[#541B28]/20"
+                    className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full luxury-btn-primary"
                   >
                     <span>Lancer la Consultation Privée (2 min)</span>
                     <ArrowRight className="w-4 h-4 text-[#DFC68B]" />

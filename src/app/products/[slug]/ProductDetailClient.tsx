@@ -217,7 +217,7 @@ export function ProductDetailClient({
                 <span className="font-cinzel text-[11px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
                   {product.subtitle}
                 </span>
-                <h1 className="font-serif text-4xl sm:text-5xl text-burgundy-gradient font-light mt-1 mb-3">
+                <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mt-1 mb-3">
                   {product.name}
                 </h1>
                 <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#541B28]/15 shadow-xs">
@@ -279,7 +279,7 @@ export function ProductDetailClient({
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-xl bg-white/95 hover:bg-white text-[#541B28] border border-[#541B28]/30 font-cinzel text-xs font-bold uppercase tracking-luxury transition-all flex items-center justify-center gap-2 shadow-sm backdrop-blur-md active:scale-98"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-secondary flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
                     <span>Ajouter au Panier</span>
@@ -287,10 +287,10 @@ export function ProductDetailClient({
 
                   <button
                     onClick={handleBuyNow}
-                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 active:scale-98"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-primary flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Acheter Immédiatement</span>
-                    <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
+                    <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
                   </button>
                 </div>
               </div>

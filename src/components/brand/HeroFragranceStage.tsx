@@ -116,8 +116,11 @@ export function HeroFragranceStage() {
 
   return (
     <div className="relative w-full max-w-lg mx-auto lg:max-w-none">
+      {/* Ambient Pedestal Glow */}
+      <div className="absolute -bottom-6 left-10 right-10 h-12 bg-gradient-to-r from-transparent via-[#C7A66A]/35 to-transparent blur-2xl rounded-full pointer-events-none" />
+
       {/* 3-Flacon Switcher Tabs */}
-      <div className="flex items-center justify-center gap-2 mb-4 bg-white/70 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 shadow-sm">
+      <div className="flex items-center justify-center gap-2 mb-5 bg-white/80 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 shadow-sm">
         {HERO_STAGE_ITEMS.map((item, idx) => {
           const isSelected = activeIndex === idx;
           return (
@@ -125,9 +128,9 @@ export function HeroFragranceStage() {
               key={item.id}
               onClick={() => setActiveIndex(idx)}
               className={cn(
-                "px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5",
+                "px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5",
                 isSelected
-                  ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/20 scale-105"
+                  ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25 scale-105 border border-[#C7A66A]/40"
                   : "text-[#756B6D] hover:text-[#541B28]"
               )}
             >
@@ -135,14 +138,14 @@ export function HeroFragranceStage() {
                 size="xs"
                 variant={isSelected ? "gold" : item.expression === "soft" ? "burgundy" : "gold"}
               />
-              <span className="hidden sm:inline">{item.name}</span>
+              <span className="hidden sm:inline font-cinzel text-[11px]">{item.name}</span>
             </button>
           );
         })}
       </div>
 
       {/* Main Flacon Pedestal Frame */}
-      <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 shadow-2xl bg-white group">
+      <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 hover:border-[#C7A66A]/50 transition-all duration-500 shadow-2xl bg-white group">
         {/* Aspect Ratio Box with Product Image */}
         <div className="relative aspect-[4/5] sm:aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F3ECE1]">
           <Image
@@ -254,7 +257,7 @@ export function HeroFragranceStage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleQuickAdd}
-                  className="px-4 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md shadow-[#541B28]/20"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#541B28] via-[#66182C] to-[#541B28] hover:brightness-110 text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md shadow-[#541B28]/25 border border-[#C7A66A]/40 active:scale-95 cursor-pointer"
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />
                   <span>Ajouter</span>
@@ -262,7 +265,7 @@ export function HeroFragranceStage() {
 
                 <Link
                   href={`/products/${activeItem.slug}`}
-                  className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#541B28] border border-[#541B28]/25 transition-colors"
+                  className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#541B28] border border-[#541B28]/25 hover:border-[#541B28] transition-all active:scale-95"
                   title="Voir la fiche détaillée"
                 >
                   <ArrowRight className="w-4 h-4" />

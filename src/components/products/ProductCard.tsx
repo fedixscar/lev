@@ -62,7 +62,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
   return (
     <div
       className={cn(
-        "group relative rounded-3xl bg-white border border-[#541B28]/15 overflow-hidden transition-all duration-500 hover:border-[#541B28]/40 hover:shadow-xl hover:shadow-[#541B28]/8 flex flex-col justify-between text-[#23181A]",
+        "group relative rounded-3xl bg-white border border-[#541B28]/15 overflow-hidden transition-all duration-500 hover:border-[#C7A66A]/60 hover:shadow-2xl hover:shadow-[#541B28]/10 flex flex-col justify-between text-[#23181A] container-card",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -190,9 +190,9 @@ export function ProductCard({ product, className, priority = false }: ProductCar
 
           <button
             onClick={handleAddToCart}
-            className="w-full py-3 px-5 rounded-xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-white border border-[#541B28]/30 hover:border-transparent font-cinzel text-[11px] font-bold tracking-luxury uppercase transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm cursor-pointer"
+            className="w-full py-3 px-5 rounded-2xl bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/30 hover:border-[#C7A66A]/50 font-cinzel text-[11px] font-bold tracking-luxury uppercase transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-md hover:shadow-[#541B28]/20 active:scale-98 cursor-pointer relative overflow-hidden"
           >
-            <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+            <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:scale-110 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
             <span>Ajouter au Panier</span>
           </button>
         </div>

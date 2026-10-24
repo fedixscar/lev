@@ -32,6 +32,45 @@
   --gold-accent: #C7A66A;
 }
 
+/* Modern Typography Defaults & Balancing (per Modern Web Guidance) */
+body {
+  line-height: 1.5;
+  text-align: start;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-serif, .font-cinzel {
+  text-wrap: balance;
+}
+
+p, .prose-luxury {
+  text-wrap: pretty;
+  max-width: 75ch;
+}
+
+/* Fluid Typography Utilities (clamp) */
+.text-fluid-hero {
+  font-size: clamp(2.35rem, 1.4rem + 4.2vw, 5rem);
+  line-height: 1.05;
+}
+
+.text-fluid-section {
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 3.25rem);
+  line-height: 1.15;
+}
+
+.text-fluid-card {
+  font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.6rem);
+  line-height: 1.25;
+}
+
+/* Container Queries for Fluid Components */
+.container-card {
+  container-type: inline-size;
+}
+
 /* Custom Scrollbar - Burgundy & Gold */
 ::-webkit-scrollbar {
   width: 6px;
@@ -193,4 +232,94 @@
   background: rgba(84, 27, 40, 0.05);
   border: 1px solid rgba(84, 27, 40, 0.15);
   color: #541B28;
+}
+
+/* Haute Parfumerie Buttons & Micro-Interactions */
+.luxury-btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #541B28 0%, #6E1C30 50%, #541B28 100%);
+  color: #FAF7F2;
+  font-family: var(--font-cinzel), 'Cinzel', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border: 1px solid rgba(199, 166, 106, 0.35);
+  box-shadow: 0 10px 25px rgba(84, 27, 40, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-btn-primary::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    rgba(223, 198, 139, 0) 0%,
+    rgba(223, 198, 139, 0.25) 50%,
+    rgba(223, 198, 139, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: all 0.75s ease-out;
+  pointer-events: none;
+}
+
+.luxury-btn-primary:hover::after {
+  left: 120%;
+}
+
+.luxury-btn-primary:hover {
+  transform: translateY(-1.5px);
+  border-color: rgba(223, 198, 139, 0.65);
+  box-shadow: 0 14px 30px rgba(84, 27, 40, 0.28), 0 0 15px rgba(199, 166, 106, 0.25);
+}
+
+.luxury-btn-primary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+.luxury-btn-secondary {
+  position: relative;
+  background: #FFFFFF;
+  color: #541B28;
+  font-family: var(--font-cinzel), 'Cinzel', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border: 1px solid rgba(84, 27, 40, 0.22);
+  box-shadow: 0 4px 15px rgba(84, 27, 40, 0.04);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-btn-secondary:hover {
+  background: #FAF7F2;
+  border-color: #541B28;
+  color: #3B121C;
+  transform: translateY(-1.5px);
+  box-shadow: 0 10px 22px rgba(84, 27, 40, 0.08);
+}
+
+.luxury-btn-secondary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* Gold Hairline Dividers */
+.luxury-hairline-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(199, 166, 106, 0) 0%,
+    rgba(199, 166, 106, 0.5) 50%,
+    rgba(199, 166, 106, 0) 100%
+  );
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: none;
+  ring: 2px solid #C7A66A;
+  box-shadow: 0 0 0 2px #FAF7F2, 0 0 0 4px #C7A66A;
 }

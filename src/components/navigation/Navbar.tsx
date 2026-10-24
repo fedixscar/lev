@@ -64,8 +64,8 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-500",
           isScrolled
-            ? "bg-[#FAF7F2]/95 backdrop-blur-xl border-b border-[#541B28]/15 py-3 shadow-md shadow-[#541B28]/5"
-            : "bg-gradient-to-b from-[#FAF7F2]/90 via-[#FAF7F2]/60 to-transparent py-5"
+            ? "bg-[#FAF7F2]/95 backdrop-blur-2xl border-b border-[#C7A66A]/25 py-3 shadow-md shadow-[#541B28]/5"
+            : "bg-gradient-to-b from-[#FAF7F2]/95 via-[#FAF7F2]/70 to-transparent py-4 sm:py-5"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +74,7 @@ export function Navbar() {
             <div className="flex items-center lg:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-[#541B28] hover:text-[#852538] rounded-lg focus:outline-none"
+                className="p-2 text-[#541B28] hover:text-[#852538] rounded-xl focus:outline-none transition-colors"
                 aria-label="Menu Principal"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -96,22 +96,24 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "font-cinzel text-[11px] tracking-luxury uppercase transition-colors relative py-1.5 flex items-center gap-1.5",
+                      "font-cinzel text-[11px] tracking-luxury uppercase transition-all duration-300 relative py-2 flex items-center gap-1.5 group",
                       isActive
                         ? "text-[#541B28] font-bold"
                         : "text-[#4A3B3E] hover:text-[#541B28]",
                       link.highlight && "text-[#541B28] font-semibold"
                     )}
                   >
-                    {Icon && <Icon className="w-3.5 h-3.5 text-[#541B28]" />}
+                    {Icon && <Icon className="w-3.5 h-3.5 text-[#541B28] group-hover:scale-110 transition-transform" />}
                     <span>{link.label}</span>
                     {link.badge && (
-                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold tracking-wider">
+                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold tracking-wider shadow-xs">
                         {link.badge}
                       </span>
                     )}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#541B28] animate-in fade-in" />
+                    {isActive ? (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-[#541B28] shadow-[0_0_8px_rgba(84,27,40,0.5)] animate-in zoom-in-75 duration-300" />
+                    ) : (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] rounded-full bg-[#C7A66A] transition-all duration-300 group-hover:w-4" />
                     )}
                   </Link>
                 );
@@ -208,7 +210,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   aria-label="Connexion"
-                  className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-bold hover:bg-[#FAF7F2] transition-colors shadow-sm"
+                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-cinzel font-bold tracking-wider hover:bg-[#FAF7F2] hover:border-[#541B28] transition-all shadow-xs active:scale-98"
                 >
                   <User className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Connexion</span>
@@ -218,12 +220,17 @@ export function Navbar() {
               {/* Cart Button */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 sm:p-2.5 rounded-full bg-white border border-[#541B28]/20 text-[#541B28] hover:border-[#541B28] transition-all shadow-sm"
+                className={cn(
+                  "relative p-2 sm:p-2.5 rounded-full bg-white border transition-all duration-300 shadow-xs active:scale-95 cursor-pointer",
+                  totalItemsCount > 0
+                    ? "border-[#C7A66A] shadow-md shadow-[#C7A66A]/25 text-[#541B28]"
+                    : "border-[#541B28]/20 text-[#541B28] hover:border-[#541B28]"
+                )}
                 aria-label="Ouvrir le panier"
               >
                 <ShoppingBag className="w-4 h-4" />
                 {totalItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#541B28] text-[#FAF7F2] text-[10px] font-bold flex items-center justify-center shadow-md animate-in zoom-in">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-r from-[#541B28] to-[#7A263B] text-[#FAF7F2] text-[10px] font-bold flex items-center justify-center border border-[#DFC68B]/60 shadow-md animate-in zoom-in">
                     {totalItemsCount}
                   </span>
                 )}
