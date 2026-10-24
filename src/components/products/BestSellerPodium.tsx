@@ -68,15 +68,15 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3.5 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3.5 shadow-xs">
             <Crown className="w-3.5 h-3.5 text-[#C7A66A]" />
-            <span>Palmarès Officiel Haute Parfumerie</span>
+            <span>Les Plus Demandés</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-5xl text-[#541B28] font-normal tracking-tight mb-4">
-            Le Podium des Bestsellers
+            Nos 3 Meilleurs Parfums
           </h2>
           <p className="text-sm text-[#756B6D] leading-relaxed">
-            Les trois chefs-d&apos;œuvre plébiscités par nos connaisseurs, incarnant l&apos;apogée du sillage et de la diffusion artisanale Lévania.
+            Découvrez les parfums préférés de nos clients, reconnus pour leur élégance et leur tenue exceptionnelle.
           </p>
         </div>
 
@@ -164,7 +164,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
 
               <div className="absolute -top-6 px-4 py-1.5 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-xl border border-[#C7A66A]/40">
                 <WaveMonogram size="xs" variant="gold" />
-                <span>N°1 Absolu • Onde d&apos;Or</span>
+                <span>N°1 des Ventes • Onde d&apos;Or</span>
               </div>
 
               <div className="relative w-56 h-64 my-3 overflow-hidden rounded-2xl border border-[#541B28]/20 bg-[#FAF7F2] shadow-inner">

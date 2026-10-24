@@ -21,16 +21,16 @@ export default function DiscoverPage() {
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
-                Diagnostic Olfactif Sur-Mesure
+                Quiz Parfum Lévania (2 min)
               </span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light tracking-tight mt-2 mb-5">
-              Trouvez Votre Signature Lévania
+              Trouvez Votre Parfum Idéal
             </h1>
 
             <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
-              Répondez à quelques questions subtiles pour que notre intelligence olfactive identifie avec exactitude les 4 fragrances qui sublimeront votre aura.
+              Répondez à 4 questions simples. Découvrez immédiatement les créations Lévania qui correspondent parfaitement à vos goûts et à votre style.
             </p>
           </div>
 

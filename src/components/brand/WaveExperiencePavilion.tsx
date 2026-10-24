@@ -26,14 +26,14 @@ interface WaveFeatureData {
 
 const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   signature: {
-    title: "L'Onde Signature",
-    tagline: "L'Équilibre Souverain • Noblesse Méditerranéenne",
-    paletteLabel: "Vert Olive • Or Champagne • Bourgogne Impérial",
+    title: "L'Onde Signature (Équilibrée & Solaire)",
+    tagline: "L'Équilibre Idéal • Bois d'Olivier & Ambre Doré",
+    paletteLabel: "Vert Olive • Or Champagne • Ambre",
     description:
-      "L'expression originelle de la Maison Lévania. Une onde fluide et généreuse où le bois d'olivier centenaire s'enlace au safran pur et à l'ambre solaire. Ni trop dense, ni éphémère : elle signe une présence royale et inoubliable.",
-    notes: ["Safran de Méditerranée", "Bois d'Olivier", "Ambre Solaire", "Vanille Bourbon"],
-    sillage: "Rayonnant • 2.5 mètres de diffusion contrôlée",
-    longevity: "Tenue Haute Concentration (14h+)",
+      "Le parfum emblématique de la maison. Un accord chaleureux et solaire où le bois d'olivier centenaire s'associe au safran pur et à la vanille douce. Idéal pour tous les jours comme pour les grandes occasions.",
+    notes: ["Safran Méditerranéen", "Bois d'Olivier", "Ambre Solaire", "Vanille Bourbon"],
+    sillage: "Diffusion Élégante (environ 2 mètres)",
+    longevity: "Excellente Tenue (14h+)",
     bestSellers: [
       {
         name: "Onde d'Or",
@@ -56,14 +56,14 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
     themeColor: "#C7A66A",
   },
   soft: {
-    title: "L'Onde Soyeuse",
-    tagline: "La Caresse Diaphane • Lumière & Voile Intime",
-    paletteLabel: "Ivoire Impérial • Crème de Riz • Rose Poudrée",
+    title: "L'Onde Soyeuse (Fraîche & Florale)",
+    tagline: "Douceur Florale • Fleur d'Oranger & Néroli",
+    paletteLabel: "Ivoire • Fleur d'Oranger • Musc Blanc",
     description:
-      "Une onde délicate comme une mousseline de soie glissant sur la peau nue. La fraîcheur lumineuse du néroli pur de Nabeul et de la fleur d'oranger se fond dans un cœur poudré de muscs blancs. Une sensualité subtile qui ne s'impose jamais.",
-    notes: ["Néroli Pur de Nabeul", "Fleur d'Oranger", "Poudre d'Iris", "Muscs Blancs Coton"],
-    sillage: "Intime • Halo enveloppant au creux du cou",
-    longevity: "Fraîcheur Persistante (10h+)",
+      "Un parfum lumineux et apaisant qui rappelle les jardins de Nabeul au printemps. Le néroli pur et la fleur d'oranger s'enveloppent de muscs blancs soyeux pour une sensation de propreté et d'élégance irrésistible.",
+    notes: ["Néroli Pur de Nabeul", "Fleur d'Oranger", "Pétales de Jasmin", "Musc Blanc Coton"],
+    sillage: "Subtil & Enveloppant",
+    longevity: "Fraîcheur Durable (10h+)",
     bestSellers: [
       {
         name: "Néroli Flottant",
@@ -86,14 +86,14 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
     themeColor: "#852538",
   },
   intense: {
-    title: "L'Onde Sombre & Boisée",
-    tagline: "Le Sillage Tellurique • Mystère & Puissance Orientale",
-    paletteLabel: "Noir Ébène • Oud Impérial • Or Métallique",
+    title: "L'Onde Sombre (Boisée & Intense)",
+    tagline: "Caractère Affirmé • Oud Majestueux & Cuir",
+    paletteLabel: "Noir Ébène • Oud Impérial • Épices",
     description:
-      "La force brute et envoûtante des nuits sans lune. Conçue pour les connaisseurs de sillages audacieux, cette onde sculpte l'espace par des contrastes dramatiques d'encens noir, d'accord cuir tanné et d'oud sauvage de haute macération.",
-    notes: ["Oud Sauvage", "Cuir d'Orient", "Encens d'Oman", "Patchouli Sombre"],
-    sillage: "Monumental • Sillage puissant qui traverse les pièces",
-    longevity: "Ultra-Tenue Extrait (18h+)",
+      "Une fragrance intense et magnétique pour ceux qui aiment les sillages puissants. L'oud sauvage et le cuir se mêlent à l'encens et au patchouli pour laisser une présence inoubliable là où vous passez.",
+    notes: ["Oud Sauvage", "Cuir Noble", "Encens Noir", "Patchouli Ambré"],
+    sillage: "Intense & Remarquable",
+    longevity: "Très Longue Tenue (18h+)",
     bestSellers: [
       {
         name: "Rose d'Hiver",
@@ -130,18 +130,18 @@ export function WaveExperiencePavilion() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-sm font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-xs font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4">
             <WaveMonogram size="xs" variant="gold" />
-            <span>L&apos;Identité Fondatrice de la Maison</span>
+            <span>Trois Styles de Parfums</span>
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-            La Vague Lévania • L&apos;Onde Vivante des Sens
+            Choisissez Votre Style de Sillage
           </h2>
 
           <p className="text-sm text-[#5A4B4E] leading-relaxed mt-3">
-            Le parfum n&apos;est pas une formule inerte : c&apos;est un fluide vivant en perpétuelle diffusion.
-            Explorez nos <strong>trois expressions sculpturales</strong> sculptées par nos maîtres parfumeurs.
+            Chaque personne a sa personnalité. Découvrez nos <strong>trois univers de créations</strong>,
+            du plus frais et délicat au plus boisé et intense.
           </p>
         </div>
 

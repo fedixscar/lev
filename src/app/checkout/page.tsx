@@ -275,16 +275,16 @@ export default function CheckoutPage() {
                 <div className="p-6 rounded-2xl bg-[#541B28]/10 border border-[#541B28]/30 mb-8 max-w-md mx-auto text-center">
                   <div className="flex items-center justify-center gap-2 text-sm text-[#541B28] font-bold mb-1.5 font-cinzel">
                     <GoldStarLozenge size={14} className="text-[#C7A66A]" />
-                    <span>+{confirmedOrder.luckAwarded} Points de Luck Gagnés !</span>
+                    <span>+{confirmedOrder.luckAwarded} Points Gagnés !</span>
                   </div>
                   <p className="text-xs text-[#756B6D] font-light">
-                    Votre solde de Luck est actualisé. Vous pouvez dès à présent lancer la Roue du Destin Lévania.
+                    Vos points sont disponibles. Vous pouvez dès à présent tenter votre chance sur la Roue Cadeau Lévania.
                   </p>
                   <Link
                     href="/account/luck"
                     className="inline-block mt-3 text-xs uppercase font-cinzel font-bold text-[#541B28] hover:underline tracking-luxury"
                   >
-                    Aller à la Roue du Destin &rarr;
+                    Tourner la Roue Cadeau &rarr;
                   </Link>
                 </div>
               )}
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                   href="/shop"
                   className="px-8 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury transition-all shadow-md"
                 >
-                  Continuer la Visite
+                  Continuer mes Achats
                 </Link>
                 <Link
                   href="/account"

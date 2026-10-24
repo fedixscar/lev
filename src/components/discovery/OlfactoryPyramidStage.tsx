@@ -23,56 +23,56 @@ interface PyramidAct {
 const PYRAMID_ACTS: PyramidAct[] = [
   {
     id: "head",
-    actNumber: "ACTE I",
-    title: "L'Éveil Lumineux",
-    subtitle: "Notes de Tête • Le Premier Souffle",
-    timeframe: "0 à 30 minutes après vaporisation",
+    actNumber: "TEMPS 1",
+    title: "L'Ouverture Fraîche",
+    subtitle: "Notes de Tête • Les 30 Premières Minutes",
+    timeframe: "Dès la vaporisation (0 à 30 min)",
     description:
-      "La première onde olfactive libérée par l'atomiseur. Une envolée vive, hespéridée et précieusement épicée qui capte instantanément l'attention et éveille les sens sans jamais heurter.",
+      "C'est la première impression que vous et votre entourage ressentez. Une envolée vive, hespéridée et pétillante qui éveille les sens avec élégance.",
     keyIngredients: [
       { name: "Safran Pur", origin: "Méditerranée", role: "Éclat doré & chaleur vive" },
       { name: "Néroli Distillé", origin: "Nabeul, Cap Bon", role: "Fraîcheur florale cristalline" },
       { name: "Bergamote Noble", origin: "Calabre", role: "Zeste solaire pétillant" },
       { name: "Baies Roses", origin: "Océan Indien", role: "Vibration épicée subtile" },
     ],
-    sensation: "Fraîcheur impériale, éclat solaire et diffusion immédiate.",
-    badge: "Diffusion Immédiate",
+    sensation: "Fraîcheur vive, éclat solaire et énergie immédiate.",
+    badge: "Première Impression",
     gradient: "from-[#F3ECE1] to-white",
   },
   {
     id: "heart",
-    actNumber: "ACTE II",
-    title: "L'Âme du Sillage",
-    subtitle: "Notes de Cœur • La Signature Vivante",
-    timeframe: "30 minutes à 4 heures",
+    actNumber: "TEMPS 2",
+    title: "Le Cœur du Parfum",
+    subtitle: "Notes de Cœur • Votre Vraie Signature",
+    timeframe: "Pendant 30 min à 4 heures",
     description:
-      "Le cœur battant de la création Lévania. Lorsque l'alcool s'est totalement évaporé, l'huile précieuse fusionne avec la chaleur de votre épiderme pour exprimer la véritable identité du parfum.",
+      "Le véritable caractère de votre parfum. Les huiles précieuses se réchauffent au contact de votre peau pour exprimer votre charme et votre présence.",
     keyIngredients: [
-      { name: "Bois d'Olivier", origin: "Cap Bon centenaire", role: "Texture boisée texturée & rondeur" },
-      { name: "Rose Centifolia", origin: "Damas", role: "Velouté charnel & noblesse" },
-      { name: "Fleur d'Oranger", origin: "Cap Bon", role: "Opulence solaire envoûtante" },
-      { name: "Cèdre de l'Atlas", origin: "Atlas marocain", role: "Structure architecturale noble" },
+      { name: "Bois d'Olivier", origin: "Cap Bon centenaire", role: "Texture boisée chaleureuse" },
+      { name: "Rose Centifolia", origin: "Damas", role: "Élégance florale noble" },
+      { name: "Fleur d'Oranger", origin: "Cap Bon", role: "Douceur solaire envoûtante" },
+      { name: "Cèdre de l'Atlas", origin: "Atlas marocain", role: "Structure boisée raffinée" },
     ],
-    sensation: "Profondeur enveloppante, élégance royale et présence magnétique.",
-    badge: "Cœur Vibrant",
+    sensation: "Profondeur enveloppante, élégance naturelle et présence magnétique.",
+    badge: "Signature Quotidienne",
     gradient: "from-[#541B28]/10 to-[#FAF7F2]",
   },
   {
     id: "base",
-    actNumber: "ACTE III",
-    title: "L'Empreinte Souveraine",
-    subtitle: "Notes de Fond • La Mémoire Éternelle",
-    timeframe: "4 heures jusqu'à 18 heures et plus",
+    actNumber: "TEMPS 3",
+    title: "La Longue Tenue",
+    subtitle: "Notes de Fond • Jusqu'au Lendemain",
+    timeframe: "De 4h à 18h et plus",
     description:
-      "L'accord le plus dense et le plus opulent de notre formule. Fixé par de longues semaines de macération artisanale, il laisse sur les vêtements et la peau un sillage mémorable qui défie le temps.",
+      "L'accord le plus riche et persistant. Grâce à une macération artisanale prolongée, ces notes nobles restent sur votre peau et vos vêtements jusqu'au lendemain.",
     keyIngredients: [
-      { name: "Oud Sauvage", origin: "Orient rare", role: "Puissance tellurique & mystère" },
-      { name: "Ambre Gris Solaire", origin: "Méditerranée", role: "Sillage chaud & tenue légendaire" },
-      { name: "Muscs Blancs Coton", origin: "Haute Parfumerie", role: "Sensation seconde peau poudrée" },
-      { name: "Vanille Bourbon", origin: "Madagascar", role: "Douceur balsamique enveloppante" },
+      { name: "Oud Sauvage", origin: "Orient rare", role: "Puissance & caractère" },
+      { name: "Ambre Gris Solaire", origin: "Méditerranée", role: "Chaleur & tenue exceptionnelle" },
+      { name: "Muscs Blancs Coton", origin: "Haute Parfumerie", role: "Douceur soyeuse et propre" },
+      { name: "Vanille Bourbon", origin: "Madagascar", role: "Rondeur délicate et gourmande" },
     ],
-    sensation: "Tenue magistrale, rémanence indélébile et signature intime.",
-    badge: "Ultra-Persistance (18h+)",
+    sensation: "Tenue remarquable, réconfort et sillage inoubliable.",
+    badge: "Très Longue Tenue (18h+)",
     gradient: "from-[#3B121C]/15 to-white",
   },
 ];
@@ -90,18 +90,18 @@ export function OlfactoryPyramidStage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4 shadow-sm">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-4 shadow-xs">
             <Compass className="w-3.5 h-3.5 text-[#541B28]" />
-            <span>Architecture Olfactive de la Maison</span>
+            <span>Guide Olfactif &bull; Comprendre les Parfums</span>
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-            Les Trois Actes du Sillage Lévania
+            Comment Évolue Votre Parfum ?
           </h2>
 
           <p className="text-sm text-[#5A4B4E] leading-relaxed mt-3">
-            Un grand parfum ne se dévoile jamais d&apos;un seul coup. C&apos;est une partition temporelle
-            conçue pour évoluer harmonieusement au contact de votre chaleur corporelle.
+            Un parfum de qualité vit et change au cours de la journée. Voici les <strong>trois temps</strong> qui composent
+            chaque flacon Lévania pour vous offrir une tenue exceptionnelle.
           </p>
         </div>
 

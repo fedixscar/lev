@@ -260,8 +260,8 @@ export function CartDrawer() {
                 <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 text-xs text-[#23181A]">
                   <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>
-                    Cette commande vous rapportera{" "}
-                    <strong className="text-[#541B28]">+{projectedLuck} Luck</strong> pour la Roue du Destin!
+                    Cette commande vous offre{" "}
+                    <strong className="text-[#541B28]">+{projectedLuck} points</strong> pour la Roue Cadeau !
                   </span>
                 </div>
               )}

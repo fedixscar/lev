@@ -54,68 +54,68 @@ export function MaisonHeritageSection() {
 
           {/* Right Column: Editorial Narrative & Craft Commitments */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold shadow-sm">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold shadow-xs">
               <Award className="w-3.5 h-3.5 text-[#C7A66A]" />
-              <span>Le Manifeste de la Maison</span>
+              <span>Artisanat &amp; Savoir-Faire • Nabeul</span>
             </div>
 
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-              Façonnée entre les Vents de Méditerranée & la Noblesse d&apos;Orient.
+              L&apos;Excellence du Parfum Artisanal en Tunisie.
             </h2>
 
             <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed">
-              Née sous le ciel ardent de la Tunisie et nourrie par les secrets séculaires des alambics de Nabeul,
-              la <strong>Maison LÉVANIA PARFUMS</strong> conçoit le parfum non comme un apparat statique, mais comme
-              une onde vivante en perpétuelle pulsation.
+              Née à Nabeul au cœur des vergers du Cap Bon, la <strong>Maison LÉVANIA PARFUMS</strong> crée des fragrances
+              uniques à haute concentration. Nous allions la fraîcheur du néroli et de la fleur d&apos;oranger à la noblesse
+              des bois d&apos;olivier et des résines orientales pour une tenue remarquable.
             </p>
 
-            <blockquote className="p-5 rounded-2xl bg-white border-l-4 border-[#541B28] shadow-sm font-serif italic text-sm text-[#23181A] leading-relaxed">
-              &laquo; Chaque flacon Lévania enferme la mémoire d&apos;un olivier centenaire, le frisson d&apos;un néroli pur cueilli à l&apos;aube et l&apos;obscure majesté d&apos;un oud vieilli dans l&apos;ombre. &raquo;
+            <blockquote className="p-5 rounded-2xl bg-white border-l-4 border-[#541B28] shadow-xs font-serif italic text-sm text-[#23181A] leading-relaxed">
+              &laquo; Nous créons des parfums authentiques qui marquent les esprits et durent toute la journée, protégés dans un écrin digne des plus grands noms. &raquo;
               <span className="block text-[10px] uppercase font-sans font-bold text-[#852538] tracking-widest mt-2 not-italic">
-                &mdash; Le Nez de la Maison Lévania
+                &mdash; L&apos;Atelier Lévania Parfums
               </span>
             </blockquote>
 
             {/* 3 Pillars List */}
             <div className="space-y-3.5 pt-2">
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
                 <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
-                  I
+                  1
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A]">
-                    Le Terroir Méditerranéen & Matières Premières Rares
+                    Ingrédients Purs &amp; Longue Tenue (14h+)
                   </h4>
                   <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
-                    Néroli pur du Cap Bon, absolu de rose de Damas, safran et bois précieux d&apos;olivier.
+                    Néroli pur de Nabeul, safran, bois d&apos;olivier et oud. Forte concentration en huiles parfumées pour un sillage durable.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
                 <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
-                  II
+                  2
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A]">
-                    Le Flacon Iconique & son Cylindre Vert Olive
+                    Écrin Cylindrique Offert pour Chaque Flacon
                   </h4>
                   <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
-                    Verre lourd, capot noir d&apos;ébène et étiquette ornée du sceau officiel Lévania.
+                    Boîte rigide vert olive et or qui protège le parfum de la lumière. Idéal et prêt à offrir en cadeau.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-sm">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/80 border border-[#541B28]/15 shadow-xs">
                 <div className="w-9 h-9 rounded-xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center shrink-0 font-serif font-bold text-sm">
-                  III
+                  3
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A]">
-                    Traçabilité par Sceau Numéroté & QR Code
+                    Flacon Dédié avec Certificat QR &amp; Nom du Client
                   </h4>
                   <p className="text-xs text-[#756B6D] mt-0.5 leading-relaxed">
-                    Chaque flacon est scellé individuellement et accompagné de son certificat numérique.
+                    Chaque bouteille porte un QR code exclusif qui affiche sur votre téléphone votre certificat nominatif officiel.
                   </p>
                 </div>
               </div>
@@ -124,17 +124,17 @@ export function MaisonHeritageSection() {
             <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
               <Link
                 href="/collections"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#541B28]/20 transition-all"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full luxury-btn-primary flex items-center justify-center gap-2"
               >
-                <span>Découvrir les 3 Collections</span>
+                <span>Découvrir nos Collections</span>
                 <ArrowRight className="w-3.5 h-3.5 text-[#DFC68B]" />
               </Link>
 
               <Link
                 href="/compose-box"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white hover:bg-[#FAF7F2] text-[#541B28] border border-[#541B28]/30 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full luxury-btn-secondary flex items-center justify-center gap-2"
               >
-                <span>Composer Mon Coffret</span>
+                <span>Composer un Coffret Cadeau</span>
               </Link>
             </div>
           </div>

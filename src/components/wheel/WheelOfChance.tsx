@@ -141,13 +141,13 @@ export function WheelOfChance() {
           </div>
           <div>
             <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold mb-1">
-              Votre Vague Olfactive Active
+              Votre Niveau de Fidélité
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-light text-[#23181A]">
               {currentTheme.name}
             </h2>
             <p className="text-xs text-[#5A4B4E] opacity-80 mt-1 font-light">
-              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Suprême: 7,777
+              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Maximum: 7,777
             </p>
           </div>
         </div>
@@ -257,7 +257,7 @@ export function WheelOfChance() {
                 <WaveMonogram size="sm" variant="gold" withSeal={false} />
               </div>
               <span className="font-cinzel text-[11px] font-bold uppercase tracking-luxury">
-                {animating ? "Destin..." : "LANCER"}
+                {animating ? "Tirage..." : "TOURNER"}
               </span>
               <span className="font-cinzel text-[9px] opacity-90 text-[#C7A66A] tracking-wider">
                 {luckBalance >= 1 ? `${luckBalance} Luck` : "0 Luck"}
@@ -298,14 +298,14 @@ export function WheelOfChance() {
             </h3>
 
             <p className="text-xs sm:text-sm text-[#5A4B4E] mb-6 font-light">
-              Votre chance de {activeResult.luckConsumed} Luck a été honorée par la Maison Lévania.
+              Félicitations ! Votre cadeau est débloqué et prêt à être utilisé.
             </p>
 
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
               <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 mb-6">
                 <span className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1 font-bold">
-                  Code Privilège Généré
+                  Votre Code Promo
                 </span>
                 <div className="flex items-center justify-between gap-2 bg-white p-3 rounded-lg border border-[#541B28]/20">
                   <span className="font-mono text-base font-bold text-[#541B28] tracking-wider">
@@ -326,7 +326,7 @@ export function WheelOfChance() {
               onClick={() => setActiveResult(null)}
               className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs tracking-luxury uppercase shadow-xl transition-all active:scale-98"
             >
-              Célébrer & Continuer
+              En profiter maintenant
             </button>
           </div>
         </div>
@@ -336,7 +336,7 @@ export function WheelOfChance() {
       {spinHistory.length > 0 && (
         <div className="mt-16 pt-8 border-t border-[#541B28]/15">
           <h3 className="font-serif text-xl text-[#23181A] font-semibold mb-4">
-            Historique de Vos Tirages du Destin
+            Historique de Vos Récompenses
           </h3>
           <div className="space-y-2">
             {spinHistory.slice(0, 5).map((spin) => (

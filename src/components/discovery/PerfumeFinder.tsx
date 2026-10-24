@@ -23,48 +23,48 @@ interface QuestionStep {
 const QUESTIONS: QuestionStep[] = [
   {
     id: "family",
-    question: "Quelles familles olfactives vous inspirent ?",
-    subtitle: "Sélectionnez l'univers qui fait écho à votre sensibilité.",
+    question: "Quelles senteurs préférez-vous ?",
+    subtitle: "Choisissez l'univers qui vous correspond le plus.",
     options: [
-      { label: "Ambrée & Solaire", value: "Amber", desc: "Chaleur de l'ambre, vanille noble, baumes suaves" },
-      { label: "Boisée & Noble", value: "Woody", desc: "Cèdre de l'Atlas, oud sombre, vétiver terreux" },
-      { label: "Florale & Soyeuse", value: "Floral", desc: "Néroli blanc, rose centifolia, jasmin voluptueux" },
-      { label: "Agrumes & Fraîcheur", value: "Citrus", desc: "Bergamote de Calabre, cédrat vivifiant, petitgrain" },
-      { label: "Épicée & Chaude", value: "Spicy", desc: "Safran d'Orient, cannelle de Ceylan, poivre noir" },
+      { label: "Ambrée & Chaude", value: "Amber", desc: "Ambre chaleureux, vanille douce, notes solaires" },
+      { label: "Boisée & Élégante", value: "Woody", desc: "Bois de cèdre, oud précieux, vétiver" },
+      { label: "Florale & Fraîche", value: "Floral", desc: "Fleur d'oranger, rose délicate, jasmin" },
+      { label: "Agrumes & Fraîcheur", value: "Citrus", desc: "Bergamote pétillante, citron d'Italie, mandarine" },
+      { label: "Épicée & Envoûtante", value: "Spicy", desc: "Safran oriental, cannelle douce, poivre noir" },
     ],
   },
   {
     id: "intensity",
-    question: "Quelle intensité et quel sillage recherchez-vous ?",
-    subtitle: "De la caresse intime au sillage monumental et inoubliable.",
+    question: "Quelle intensité préférez-vous ?",
+    subtitle: "Du parfum discret et subtil au sillage très intense et remarqué.",
     options: [
-      { label: "Subtile & Intime", value: "Subtle", desc: "Un voile de peau discret, perceptible uniquement de près" },
-      { label: "Équilibrée & Élégante", value: "Balanced", desc: "Parfaite harmonie entre présence et raffinement" },
-      { label: "Intense & Remarquable", value: "Intense", desc: "Un sillage riche qui signe votre passage" },
-      { label: "Monumentale & Audacieuse", value: "Monumental", desc: "Concentration extrait pur, tenue exceptionnelle" },
+      { label: "Légère & Discrète", value: "Subtle", desc: "Un parfum intime, perceptible uniquement de près" },
+      { label: "Équilibrée & Élégante", value: "Balanced", desc: "Idéale au quotidien : présente sans être entêtante" },
+      { label: "Intense & Remarquée", value: "Intense", desc: "Un sillage remarquable qui tient toute la journée" },
+      { label: "Très Intense & Puissante", value: "Monumental", desc: "Extrait de parfum concentré, tenue exceptionnelle (18h+)" },
     ],
   },
   {
     id: "occasion",
-    question: "Pour quels moments d'exception ce parfum est-il destiné ?",
-    subtitle: "Votre rituel personnel ou les grandes célébrations.",
+    question: "Pour quelle occasion recherchez-vous ce parfum ?",
+    subtitle: "Pour vous accompagner au quotidien ou pour marquer un événement.",
     options: [
-      { label: "Signature Quotidienne", value: "daily", desc: "Un compagnon fidèle pour chaque journée" },
-      { label: "Soirées de Gala & Événements", value: "gala", desc: "Prestance, distinction et haute société" },
-      { label: "Moments Romantiques & Intimes", value: "romance", desc: "Sensualité, velours et magnétisme" },
-      { label: "Célébration & Cadeau Précieux", value: "gift", desc: "L'art d'offrir l'excellence artisanale" },
+      { label: "Pour Tous les Jours", value: "daily", desc: "Votre parfum signature au bureau et en journée" },
+      { label: "Soirées & Événements", value: "gala", desc: "Mariages, dîners, réceptions et fêtes" },
+      { label: "Rendez-vous Romantiques", value: "romance", desc: "Sensuel, séduisant et captivant" },
+      { label: "À Offrir en Cadeau", value: "gift", desc: "Un cadeau d'exception avec écrin offert" },
     ],
   },
   {
     id: "preferredNote",
-    question: "Y a-t-il une note maîtresse que vous chérissez particulièrement ?",
-    subtitle: "La matière première qui éveille votre mémoire émotionnelle.",
+    question: "Avez-vous un ingrédient ou une note préférée ?",
+    subtitle: "L'odeur qui vous fait immédiatement craquer.",
     options: [
-      { label: "Safran & Ambre Doré", value: "safran", desc: "L'or rouge des épices précieuses" },
-      { label: "Bois d'Olivier & Forêt Méditerranéenne", value: "olive", desc: "L'authenticité et la noblesse de nos terres" },
-      { label: "Fleur d'Oranger de Nabeul & Néroli", value: "neroli", desc: "La pureté des vergers en fleur sous le soleil" },
-      { label: "Oud Impérial & Cuir Sombre", value: "oud", desc: "Le mystère puissant des nuits d'Orient" },
-      { label: "Je laisse le Maître Parfumeur me guider", value: "any", desc: "Ouvert à toutes les découvertes olfactives" },
+      { label: "Safran & Ambre Doré", value: "safran", desc: "Chaleureux, luxueux et gourmand" },
+      { label: "Bois d'Olivier & Notes Boisées", value: "olive", desc: "Naturel, noble et réconfortant" },
+      { label: "Fleur d'Oranger & Néroli", value: "neroli", desc: "Frais, lumineux et solaire (Nabeul)" },
+      { label: "Oud Impérial & Cuir", value: "oud", desc: "Caractère affirmé, profond et royal" },
+      { label: "Laissez-vous surprendre", value: "any", desc: "Ouvert à toutes les belles découvertes" },
     ],
   },
 ];
@@ -191,10 +191,10 @@ export function PerfumeFinder() {
             <div className="absolute inset-0 rounded-full border border-[#541B28] animate-ping opacity-20" />
           </div>
           <h3 className="font-serif text-3xl text-burgundy-gradient font-light mb-2">
-            Harmonisation Olfactive en cours...
+            Recherche de votre parfum idéal...
           </h3>
           <p className="text-xs text-[#5A4B4E] max-w-md mb-8">
-            Notre moteur d&apos;intelligence olfactive compare vos réponses à la composition pyramidale de chaque flacon Lévania.
+            Nous analysons vos réponses pour sélectionner les parfums qui correspondent exactement à vos préférences.
           </p>
           <div className="w-full max-w-md h-24 overflow-hidden rounded-2xl border border-[#541B28]/20 bg-white shadow-sm">
             <SignatureWave expression="soft" intensity="gentle" />
@@ -209,14 +209,14 @@ export function PerfumeFinder() {
             <div className="luxury-pill mb-4 inline-flex items-center gap-2.5">
               <WaveMonogram size="xs" variant="gold" />
               <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
-                Vos 4 Correspondances Maîtresses
+                Vos Recommandations Personnalisées
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light">
-              Votre Signature Olfactive
+              Votre Parfum Idéal
             </h2>
             <p className="text-sm text-[#5A4B4E] mt-3 max-w-xl mx-auto font-light">
-              Voici les quatre créations Lévania sculptées pour sublimer vos accords préférés.
+              Voici les créations Lévania sélectionnées sur mesure selon vos goûts.
             </p>
           </div>
 
@@ -278,14 +278,14 @@ export function PerfumeFinder() {
                     href={`/products/${product.slug}`}
                     className="flex-1 py-3 text-center rounded-xl border border-[#541B28]/25 text-[#541B28] hover:bg-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-colors"
                   >
-                    Détails Flacon
+                    Voir le Parfum
                   </Link>
                   <button
                     onClick={() => handleAddToCart(product)}
                     className="flex-[2] py-3 px-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98"
                   >
                     <ShoppingBag className="w-3.5 h-3.5 text-[#C7A66A]" />
-                    <span>Choisir</span>
+                    <span>Ajouter</span>
                   </button>
                 </div>
               </div>
@@ -298,7 +298,7 @@ export function PerfumeFinder() {
               className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full border border-[#541B28]/25 text-[#541B28] hover:bg-white font-cinzel text-xs tracking-luxury uppercase font-bold transition-all shadow-sm hover:shadow-md"
             >
               <RefreshCw className="w-3.5 h-3.5 text-[#C7A66A]" />
-              <span>Refaire le Diagnostic</span>
+              <span>Recommencer le Quiz</span>
             </button>
           </div>
         </div>

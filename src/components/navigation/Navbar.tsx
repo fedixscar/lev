@@ -55,7 +55,7 @@ export function Navbar() {
     { href: "/compose-box", label: "Composer Mon Coffret", icon: Gift },
     { href: "/promotions", label: "Offres du Mois" },
     { href: "/mystery-box", label: "Mystery Box" },
-    { href: "/account/luck", label: "Roue du Destin", badge: currentTier || "Roue", icon: Flame },
+    { href: "/account/luck", label: "Roue Cadeau", badge: currentTier || "Cadeaux", icon: Flame },
   ];
 
   return (

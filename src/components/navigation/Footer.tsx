@@ -31,7 +31,7 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <LevaniaLogo size="lg" tone="light" />
             <p className="text-sm text-[#D5C4C7] leading-relaxed max-w-sm mt-3">
-              Maison de haute parfumerie artisanale. Une onde olfactive singulière, façonnée entre noblesse méditerranéenne et accords d&apos;exception. Découvrez le parfum qui bouge avec vous.
+              Parfums d&apos;exception longue tenue créés en Tunisie. Chaque flacon est livré dans son écrin de luxe avec certificat d&apos;authenticité personnalisé.
             </p>
 
             {/* Newsletter */}
@@ -85,7 +85,7 @@ export function Footer() {
               <li>
                 <Link href="/discover" className="hover:text-[#DFC68B] transition-colors flex items-center gap-1.5">
                   <GoldStarLozenge size={10} className="text-[#DFC68B]" />
-                  <span>Diagnostic Parfum IA</span>
+                  <span>Trouver Mon Parfum (Quiz)</span>
                 </Link>
               </li>
               <li>
@@ -109,12 +109,12 @@ export function Footer() {
           {/* Privileges & Loyalty */}
           <div className="space-y-3">
             <h4 className="text-xs font-serif uppercase tracking-widest text-[#DFC68B] font-semibold">
-              Privilèges & Destin
+              Fidélité & Privilèges
             </h4>
             <ul className="space-y-2 text-xs text-[#D5C4C7]">
               <li>
                 <Link href="/account/luck" className="hover:text-[#DFC68B] transition-colors">
-                  La Roue du Destin (Vagues)
+                  La Roue Cadeau Lévania
                 </Link>
               </li>
               <li>

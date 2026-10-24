@@ -49,13 +49,13 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
     topNotes: ["Safran d'Orient", "Bergamote"],
     heartNotes: ["Rose de Damas", "Cèdre Atlas"],
     baseNotes: ["Ambre Solaire", "Vanille Bourbon"],
-    tag: "N°1 Sceau Doré & Bulles d'Ambre",
+    tag: "N°1 des Ventes • Ambre & Safran",
   },
   {
     id: "lev-03",
     slug: "neroli-flottant",
     name: "Néroli Flottant",
-    subtitle: "Eau Noble de Méditerranée",
+    subtitle: "Eau de Parfum Fraîche & Solaire",
     collectionName: "Onde Soyeuse",
     expression: "soft",
     image: "/brand/bottle-and-cylinder.jpg",
@@ -64,13 +64,13 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
     topNotes: ["Néroli Pur de Nabeul", "Petitgrain"],
     heartNotes: ["Fleur d'Oranger", "Jasmin Blanc"],
     baseNotes: ["Musc Blanc Coton", "Bois Clair"],
-    tag: "Voile Lumineux & Néroli de Nabeul",
+    tag: "Fleur d'Oranger & Néroli de Nabeul",
   },
   {
     id: "lev-04",
     slug: "oud-imperial",
     name: "Oud Impérial",
-    subtitle: "Extrait de Parfum Majestueux",
+    subtitle: "Extrait de Parfum Boisé & Intense",
     collectionName: "Onde Sombre & Boisée",
     expression: "intense",
     image: "/brand/bottle-and-cylinder.jpg",
@@ -79,7 +79,7 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
     topNotes: ["Encens d'Oman", "Poivre Noir"],
     heartNotes: ["Oud du Cambodge", "Cuir de Cordoue"],
     baseNotes: ["Ambre Gris", "Tabac Blond"],
-    tag: "Sillage Monumental & Oud Sombre",
+    tag: "Intense & Boisé • Oud Précieux",
   },
 ];
 
@@ -108,7 +108,7 @@ export function HeroFragranceStage() {
     });
 
     showToast(
-      "Flacon réservé au panier",
+      "Ajouté au panier !",
       `${activeItem.name} (${selectedFormat}) — ${formatTND(activePrice)}`,
       "luxury"
     );
