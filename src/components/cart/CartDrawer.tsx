@@ -53,8 +53,8 @@ export function CartDrawer() {
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#FAF7F2] dark:bg-[#0E0709] border-l border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl flex flex-col text-[#23181A] dark:text-[#FAF7F2]">
+      <div className="fixed inset-y-0 right-0 rtl:right-auto rtl:left-0 max-w-full flex pl-10 rtl:pl-0 rtl:pr-10">
+        <div className="w-screen max-w-md bg-[#FAF7F2] dark:bg-[#0E0709] border-l rtl:border-l-0 rtl:border-r border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl flex flex-col text-[#23181A] dark:text-[#FAF7F2]">
           {/* Header */}
           <div className="p-6 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20 flex items-center justify-between bg-white/90 dark:bg-[#180B10]/90 backdrop-blur-md">
             <div className="flex items-center gap-2.5">
@@ -69,7 +69,7 @@ export function CartDrawer() {
             <button
               onClick={() => setIsCartOpen(false)}
               className="p-2 text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2] rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              aria-label="Fermer le panier"
+              aria-label={t("common.close", "Fermer")}
             >
               <X className="w-5 h-5" />
             </button>
@@ -141,7 +141,7 @@ export function CartDrawer() {
                         <button
                           onClick={() => removeItem(item.id)}
                           className="text-[#756B6D] dark:text-[#A8989C] hover:text-rose-600 p-1 transition-colors"
-                          aria-label="Supprimer"
+                          aria-label={t("cart.delete_title", "Supprimer")}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -221,7 +221,7 @@ export function CartDrawer() {
               {appliedCoupon && (
                 <div className="flex items-center justify-between p-2 rounded-xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-xs">
                   <span className="text-[#541B28] dark:text-[#DFC68B] font-bold">
-                    Code activé: {appliedCoupon.code} (-{appliedCoupon.discountValue}{appliedCoupon.discountType === "percent" ? "%" : " TND"})
+                    {t("cart.coupon_active", "Code activé :")} {appliedCoupon.code} (-{appliedCoupon.discountValue}{appliedCoupon.discountType === "percent" ? "%" : " TND"})
                   </span>
                   <button
                     onClick={removeCoupon}
@@ -263,7 +263,7 @@ export function CartDrawer() {
                   <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>
                     {t("product.luck_points_prefix", "Cette commande vous offre")}{" "}
-                    <strong className="text-[#541B28] dark:text-[#DFC68B]">+{projectedLuck} points</strong> {t("wheel_promo.tag", "pour la Roue Cadeau !")}
+                    <strong className="text-[#541B28] dark:text-[#DFC68B]">+{projectedLuck} points</strong> {t("cart.luck_reward_suffix", "pour la Roue Cadeau !")}
                   </span>
                 </div>
               )}

@@ -5,6 +5,7 @@ import { X, MapPin, Droplets, Clock, ShieldCheck } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { getOlfactoryNoteDetail } from "@/lib/olfactoryNotes";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface NoteAccordModalProps {
   note: string | null;
@@ -13,6 +14,7 @@ interface NoteAccordModalProps {
 }
 
 export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) {
+  const { t } = useLanguage();
   // Handle Escape key
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -40,12 +42,12 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
 
   const layerLabel =
     layer === "tête"
-      ? "Note de Tête • L'Éveil (Première Impression)"
+      ? t("note_modal.head_label", "Note de Tête • L'Éveil (Première Impression)")
       : layer === "cœur"
-      ? "Note de Cœur • L'Âme du Sillage (Signature Centrale)"
+      ? t("note_modal.heart_label", "Note de Cœur • L'Âme du Sillage (Signature Centrale)")
       : layer === "fond"
-      ? "Note de Fond • L'Empreinte (Tenue Inoubliable)"
-      : "Accord d'Exception";
+      ? t("note_modal.base_label", "Note de Fond • L'Empreinte (Tenue Inoubliable)")
+      : t("note_modal.raw_material", "Matière Première • Haute Parfumerie");
 
   return (
     <div
@@ -66,7 +68,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
         {/* Close Button */}
         <button
           onClick={onClose}
-          aria-label="Fermer le détail de l'accord"
+          aria-label={t("aria.close", "Fermer")}
           className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white text-[#541B28] border border-[#541B28]/20 transition-all cursor-pointer shadow-sm hover:scale-105"
         >
           <X className="w-4 h-4" />
@@ -88,7 +90,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
           <WaveMonogram size="sm" variant="gold" withSeal />
           <div>
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#756B6D] font-mono block">
-              Matière Première • Haute Parfumerie
+              {t("note_modal.raw_material", "Matière Première • Haute Parfumerie")}
             </span>
             <h3 id="note-modal-title" className="font-serif text-2xl sm:text-3xl text-[#541B28] font-semibold">
               {detail.name}
@@ -110,7 +112,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                Terroir d&apos;Origine
+                {t("note_modal.origin", "Terroir d'Origine")}
               </span>
               <span className="text-xs font-semibold text-[#23181A]">{detail.origin}</span>
             </div>
@@ -123,7 +125,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                Méthode d&apos;Extraction
+                {t("note_modal.extraction", "Méthode d'Extraction")}
               </span>
               <span className="text-xs text-[#23181A]">{detail.extraction}</span>
             </div>
@@ -135,7 +137,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
               <Clock className="w-4 h-4 text-[#541B28] shrink-0" />
               <div>
                 <span className="text-[9px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                  Tenue Active
+                  {t("note_modal.holding_time", "Tenue Active")}
                 </span>
                 <span className="text-xs font-bold text-[#541B28]">{detail.holdingTime}</span>
               </div>
@@ -145,7 +147,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
               <ShieldCheck className="w-4 h-4 text-[#434B36] shrink-0" />
               <div>
                 <span className="text-[9px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                  Harmonie Onde
+                  {t("note_modal.wave_harmony", "Harmonie Onde")}
                 </span>
                 <span className="text-xs font-bold text-[#434B36]">{detail.resonance}</span>
               </div>
@@ -156,13 +158,13 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
         {/* Footer Action */}
         <div className="mt-6 pt-4 border-t border-[#541B28]/15 flex items-center justify-between">
           <span className="text-[10px] text-[#756B6D] italic">
-            Maison Lévania • Alchimie Méditerranéenne
+            {t("note_modal.house_seal", "Maison Lévania • Alchimie Méditerranéenne")}
           </span>
           <button
             onClick={onClose}
             className="px-5 py-2 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
           >
-            Fermer
+            {t("note_modal.close", "Fermer")}
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 interface PromoOffer {
   id: string;
-  theme: "Mariage" | "Omra & Célébration" | "Anniversaire" | "Duo Signature";
+  theme: string;
   title: string;
   tagline: string;
   description: string;
@@ -26,49 +26,113 @@ interface PromoOffer {
   contents: string[];
 }
 
-const OFFERS: PromoOffer[] = [
-  {
-    id: "pack-mariage-royal",
-    theme: "Mariage",
-    title: "Le Coffret des Mariés \u2022 Noces d'Or",
-    tagline: "L'union suprême de deux âmes olfactives",
-    description: "Deux flacons d'exception (Onde d'Or 100ml + Néroli Flottant 100ml) dans leur grand coffret d'apparat, accompagnés d'un ruban satin bordeaux et d'une dédicace calligraphiée personnalisée.",
-    originalPriceTND: 555.0,
-    promoPriceTND: 440.0,
-    image: "/brand/cylinders-dual.jpg",
-    badge: "-115 TND Remise Cérémonie",
-    contents: ["1x Onde d'Or (100ml)", "1x Néroli Flottant (100ml)", "Écrin Duo Rigide Or & Velours", "Livraison Express Offerte"],
-  },
-  {
-    id: "pack-omra-serenite",
-    theme: "Omra & Célébration",
-    title: "Pack Sillage Sacré \u2022 Omra & Événements",
-    tagline: "Pureté des accords précieux sans compromis",
-    description: "Flacon Oud Impérial 100ml accompagné de l'extrait Ambre Méditerranéen 50ml et d'un étui de voyage cylindrique protecteur.",
-    originalPriceTND: 535.0,
-    promoPriceTND: 425.0,
-    image: "/brand/bottle-and-cylinder.jpg",
-    badge: "-20% Pack Spirituel",
-    contents: ["1x Oud Impérial (100ml)", "1x Ambre Méditerranéen (50ml)", "Étui Nomade Cuir Lévania", "Certificat d'Authenticité"],
-  },
-  {
-    id: "pack-anniversaire-prestige",
-    theme: "Anniversaire",
-    title: "Coffret Anniversaire \u2022 Sillage d'Olivier",
-    tagline: "Pour marquer une date inoubliable",
-    description: "Flacon Sillage d'Olivier 100ml avec son cylindre vert olive, un flacon échantillon prestige 10ml offert et la carte d'anniversaire gravée.",
-    originalPriceTND: 310.0,
-    promoPriceTND: 250.0,
-    image: "/brand/bottle-and-cylinder.jpg",
-    badge: "Échantillon Luxe Offert",
-    contents: ["1x Sillage d'Olivier (100ml)", "1x Flacon Sac 10ml Offert", "Cylindre Vert Olive Scellé", "Carte Vœux Calligraphiée"],
-  },
-];
+function getOffers(locale: string, t: (k: string, fb?: string) => string): PromoOffer[] {
+  const isAr = locale === "ar";
+  const isEn = locale === "en";
+
+  return [
+    {
+      id: "pack-mariage-royal",
+      theme: t("promotions.pack1_theme", "Mariage"),
+      title: t("promotions.pack1_title", "Le Coffret des Mariés • Noces d'Or"),
+      tagline: t("promotions.pack1_tagline", "L'union suprême de deux âmes olfactives"),
+      description: t("promotions.pack1_desc", "Deux flacons d'exception (Onde d'Or 100ml + Néroli Flottant 100ml) dans leur grand coffret d'apparat, accompagnés d'un ruban satin bordeaux et d'une dédicace calligraphiée personnalisée."),
+      originalPriceTND: 555.0,
+      promoPriceTND: 440.0,
+      image: "/brand/cylinders-dual.jpg",
+      badge: t("promotions.pack1_badge", "-115 TND Remise Cérémonie"),
+      contents: isAr
+        ? [
+            "1x أوند دور (100 مل)",
+            "1x نيرولي فلوتان (100 مل)",
+            "صندوق ثنائي فاخر بالذهب والمخمل",
+            "توصيل سريع مجاني كامل أنحاء تونس",
+          ]
+        : isEn
+        ? [
+            "1x Onde d'Or (100ml)",
+            "1x Néroli Flottant (100ml)",
+            "Prestige Gold & Velvet Duo Case",
+            "Complimentary Express Delivery",
+          ]
+        : [
+            "1x Onde d'Or (100ml)",
+            "1x Néroli Flottant (100ml)",
+            "Écrin Duo Rigide Or & Velours",
+            "Livraison Express Offerte",
+          ],
+    },
+    {
+      id: "pack-omra-serenite",
+      theme: t("promotions.pack2_theme", "Omra & Célébration"),
+      title: t("promotions.pack2_title", "Pack Sillage Sacré • Omra & Événements"),
+      tagline: t("promotions.pack2_tagline", "Pureté des accords précieux sans compromis"),
+      description: t("promotions.pack2_desc", "Flacon Oud Impérial 100ml accompagné de l'extrait Ambre Méditerranéen 50ml et d'un étui de voyage cylindrique protecteur."),
+      originalPriceTND: 535.0,
+      promoPriceTND: 425.0,
+      image: "/brand/bottle-and-cylinder.jpg",
+      badge: t("promotions.pack2_badge", "-20% Pack Spirituel"),
+      contents: isAr
+        ? [
+            "1x عود إمبريال (100 مل)",
+            "1x عنبر متوسطي (50 مل)",
+            "حافظة جلدية فاخرة للسفر",
+            "شهادة أصالة موثقة",
+          ]
+        : isEn
+        ? [
+            "1x Oud Impérial (100ml)",
+            "1x Ambre Méditerranéen (50ml)",
+            "Lévania Leather Travel Case",
+            "Personalized Authenticity Certificate",
+          ]
+        : [
+            "1x Oud Impérial (100ml)",
+            "1x Ambre Méditerranéen (50ml)",
+            "Étui Nomade Cuir Lévania",
+            "Certificat d'Authenticité",
+          ],
+    },
+    {
+      id: "pack-anniversaire-prestige",
+      theme: t("promotions.pack3_theme", "Anniversaire"),
+      title: t("promotions.pack3_title", "Coffret Anniversaire • Sillage d'Olivier"),
+      tagline: t("promotions.pack3_tagline", "Pour marquer une date inoubliable"),
+      description: t("promotions.pack3_desc", "Flacon Sillage d'Olivier 100ml avec son cylindre vert olive, un flacon échantillon prestige 10ml offert et la carte d'anniversaire gravée."),
+      originalPriceTND: 310.0,
+      promoPriceTND: 250.0,
+      image: "/brand/bottle-and-cylinder.jpg",
+      badge: t("promotions.pack3_badge", "Échantillon Luxe Offert"),
+      contents: isAr
+        ? [
+            "1x سيّاج دوليفيي (100 مل)",
+            "1x عينة حقيبة 10 مل فاخرة مجانًا",
+            "علبة أسطوانية زيتونية مختومة",
+            "بطاقة تهنئة بالخط العربي الأصيل",
+          ]
+        : isEn
+        ? [
+            "1x Sillage d'Olivier (100ml)",
+            "1x Complimentary 10ml Travel Flacon",
+            "Sealed Olive Green Cylinder",
+            "Calligraphed Greeting Card",
+          ]
+        : [
+            "1x Sillage d'Olivier (100ml)",
+            "1x Flacon Sac 10ml Offert",
+            "Cylindre Vert Olive Scellé",
+            "Carte Vœux Calligraphiée",
+          ],
+    },
+  ];
+}
 
 export default function PromotionsPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
+
+  const offers = getOffers(locale, t);
 
   const handleAddPack = (pack: PromoOffer) => {
     addItem({
@@ -81,7 +145,7 @@ export default function PromotionsPage() {
       unitPriceMillimes: Math.round(pack.promoPriceTND * 1000),
       quantity: 1,
     });
-    showToast("Pack Privilège Ajouté au Panier", `${pack.title} — ${formatTND(pack.promoPriceTND)}`, "luxury");
+    showToast(t("promotions.toast_added", "Pack Privilège Ajouté au Panier"), `${pack.title} — ${formatTND(pack.promoPriceTND)}`, "luxury");
   };
 
   return (
@@ -95,14 +159,14 @@ export default function PromotionsPage() {
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
+              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                 {t("promotions.pill", "Campagnes & Offres Spéciales")}
               </span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-4">
               {t("promotions.title", "Les Offres du Mois")}
             </h1>
-            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
               {t("promotions.subtitle", "Des compositions thématiques créées pour célébrer les moments majeurs de votre vie : mariages, retours d'Omra, anniversaires et présents prestigieux.")}
             </p>
           </div>
@@ -131,21 +195,21 @@ export default function PromotionsPage() {
               className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] font-cinzel text-xs font-bold uppercase tracking-luxury hover:brightness-110 transition-all shrink-0 flex items-center gap-2.5 shadow-xl active:scale-98"
             >
               <span>{t("promotions.flash_cta", "Profiter de la Vente Flash")}</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Link>
           </div>
 
           {/* Curated Packs */}
           <div className="space-y-12 sm:space-y-16">
-            {OFFERS.map((pack) => (
+            {offers.map((pack) => (
               <div
                 key={pack.id}
-                className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-8 sm:p-12 hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center group"
+                className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-8 sm:p-12 hover:border-[#C7A66A] dark:hover:border-[#DFC68B] transition-all duration-300 shadow-sm hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center group"
               >
                 {/* Image */}
                 <div className="lg:col-span-5 relative aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-[#12080D] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-md">
                   <Image src={pack.image} alt={pack.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <span className="absolute top-4 left-4 font-cinzel text-[10px] tracking-luxury uppercase px-4 py-1.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold shadow-md">
+                  <span className="absolute top-4 left-4 rtl:left-auto rtl:right-4 font-cinzel text-[10px] tracking-luxury uppercase px-4 py-1.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold shadow-md">
                     {pack.badge}
                   </span>
                 </div>
@@ -167,8 +231,8 @@ export default function PromotionsPage() {
                   </p>
 
                   <div className="p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/10 dark:border-[#C7A66A]/20 space-y-2">
-                    <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold block mb-2">
-                      Contenu Spécial Inclus :
+                    <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block mb-2">
+                      {t("promotions.included_content", "Contenu Spécial Inclus :")}
                     </span>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-[#23181A] dark:text-[#FAF7F2]">
                       {pack.contents.map((item, idx) => (
@@ -183,7 +247,7 @@ export default function PromotionsPage() {
                   {/* Pricing and Action */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-4 border-t border-[#541B28]/15 dark:border-[#C7A66A]/20">
                     <div>
-                      <span className="font-cinzel text-xs text-[#756B6D] line-through block tracking-luxury">
+                      <span className="font-cinzel text-xs text-[#756B6D] dark:text-[#A8989C] line-through block tracking-luxury">
                         {formatTND(pack.originalPriceTND)}
                       </span>
                       <span className="font-serif text-3xl text-[#541B28] dark:text-[#DFC68B] font-medium">
@@ -193,10 +257,10 @@ export default function PromotionsPage() {
 
                     <button
                       onClick={() => handleAddPack(pack)}
-                      className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 flex items-center justify-center gap-2.5 transition-all active:scale-98"
+                      className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 flex items-center justify-center gap-2.5 transition-all active:scale-98 cursor-pointer"
                     >
                       <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
-                      <span>Commander Ce Pack</span>
+                      <span>{t("promotions.order_pack", "Commander Ce Pack")}</span>
                     </button>
                   </div>
                 </div>

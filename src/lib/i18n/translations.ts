@@ -252,6 +252,11 @@ export const translations: Translations = {
     ar: "ابحث عن عطر أو نوتة (عود، نيرولي، عنبر)...",
     en: "Search perfume or note (Oud, Neroli, Amber)...",
   },
+  "shop.clear_search": {
+    fr: "Effacer la recherche",
+    ar: "مسح البحث",
+    en: "Clear search",
+  },
   "shop.filter_all": {
     fr: "Toutes les Vagues",
     ar: "جميع العطور",
@@ -1522,6 +1527,16 @@ export const translations: Translations = {
     ar: "عرض حسابي وطلباتي",
     en: "View My Account & Orders",
   },
+  "checkout.toast_success": {
+    fr: "Commande Validée avec Succès",
+    ar: "تم تأكيد طلبكم بنجاح",
+    en: "Order Confirmed Successfully",
+  },
+  "checkout.toast_desc": {
+    fr: "Réf {orderNum} • +{luck} Luck crédités !",
+    ar: "رقم الطلب {orderNum} • تم شحن +{luck} نقطة حظ !",
+    en: "Ref {orderNum} • +{luck} Luck credited!",
+  },
 
   // Collections Page
   "collections.pill": {
@@ -1709,5 +1724,1551 @@ export const translations: Translations = {
     fr: "Découvrir la Fiche Produit Complète",
     ar: "مشاهدة صفحة العطر الكاملة",
     en: "View Complete Product Page",
+  },
+  "reviews.r1_name": {
+    fr: "Sarra M.",
+    ar: "سارة م.",
+    en: "Sarra M.",
+  },
+  "reviews.r1_city": {
+    fr: "Tunis",
+    ar: "تونس",
+    en: "Tunis",
+  },
+  "reviews.r1_perfume": {
+    fr: "Onde d'Or (100ml)",
+    ar: "أوند دور (100 مل)",
+    en: "Onde d'Or (100ml)",
+  },
+  "reviews.r1_comment": {
+    fr: "Une tenue impressionnante. Je l'ai mis le matin avant de partir travailler, et le soir mes collègues me demandaient encore le nom de mon parfum. Le flacon cylindrique est somptueux !",
+    ar: "ثبات مذهل حقًا. وضعته صباحًا قبل الذهاب إلى العمل، وفي المساء كان زملائي لا يزالون يسألونني عن اسم عطري. العلبة الأسطوانية تحفة فنية فاخرة!",
+    en: "Impressive longevity. I applied it in the morning before leaving for work, and in the evening my colleagues were still asking for its name. The cylindrical case is sumptuous!",
+  },
+  "reviews.r2_name": {
+    fr: "Karim B.",
+    ar: "كريم ب.",
+    en: "Karim B.",
+  },
+  "reviews.r2_city": {
+    fr: "Sousse",
+    ar: "سوسة",
+    en: "Sousse",
+  },
+  "reviews.r2_perfume": {
+    fr: "Oud Impérial (100ml)",
+    ar: "عود إمبريال (100 مل)",
+    en: "Oud Impérial (100ml)",
+  },
+  "reviews.r2_comment": {
+    fr: "J'ai commandé pour l'anniversaire de mon père. Le QR code avec son nom personnalisé sur la bouteille l'a énormément touché. Livraison reçue en 24h chrono.",
+    ar: "طلبته بمناسبة عيد ميلاد والدي. رمز الاستجابة السريعة (QR) مع اسمه المخصص على الزجاجة أثّر فيه بعمق. التوصيل تم في غضون 24 ساعة فقط.",
+    en: "Ordered for my father's birthday. The QR code personalized with his name on the bottle touched him deeply. Delivered in less than 24 hours.",
+  },
+  "reviews.r3_name": {
+    fr: "Amira K.",
+    ar: "أميرة ك.",
+    en: "Amira K.",
+  },
+  "reviews.r3_city": {
+    fr: "Sfax",
+    ar: "صفاقس",
+    en: "Sfax",
+  },
+  "reviews.r3_perfume": {
+    fr: "Néroli Flottant (50ml)",
+    ar: "نيرولي فلوتان (50 مل)",
+    en: "Néroli Flottant (50ml)",
+  },
+  "reviews.r3_comment": {
+    fr: "Une fleur d'oranger pure et délicate qui rappelle les jardins de Nabeul. Très frais et élégant sans être agressif. Je recommanderai sans hésiter !",
+    ar: "زهر برتقال نقي وناعم يذكرني بحدائق نابل العريقة في فصل الربيع. عطر منعش وراقٍ دون أي حدة. سأطلب مجددًا بكل تأكيد!",
+    en: "A pure and delicate orange blossom reminiscent of the gardens of Nabeul in spring. Very fresh and elegant without being overpowering. Will definitely reorder!",
+  },
+  "pavilion.tab_signature": {
+    fr: "Signature",
+    ar: "التوقيع",
+    en: "Signature",
+  },
+  "pavilion.tab_soft": {
+    fr: "Soyeuse",
+    ar: "الحريرية",
+    en: "Silken",
+  },
+  "pavilion.tab_intense": {
+    fr: "Sombre",
+    ar: "الداكنة",
+    en: "Dark",
+  },
+  "pavilion.concentration_badge": {
+    fr: "Extrait de Parfum • 28% Concentré",
+    ar: "خلاصة عطرية نقية • تركيز 28%",
+    en: "Extrait de Parfum • 28% Concentration",
+  },
+  "pavilion.tap_diffuse_mobile": {
+    fr: "~ Touchez pour diffuser",
+    ar: "~ المس لنشر الأثير العطري",
+    en: "~ Tap to diffuse scent",
+  },
+  "pavilion.tap_diffuse_desktop": {
+    fr: "~ Touchez ou survolez pour diffuser l'onde olfactive",
+    ar: "~ المس أو مرر الفأرة لنشر الموجة العطرية",
+    en: "~ Tap or hover to release the olfactory wave",
+  },
+  "pavilion.sig_title": {
+    fr: "L'Onde Signature (Équilibrée & Solaire)",
+    ar: "الموجة التوقيع (متوازنة وشمسية)",
+    en: "Signature Wave (Balanced & Solar)",
+  },
+  "pavilion.sig_tagline": {
+    fr: "L'Équilibre Idéal • Bois d'Olivier & Ambre Doré",
+    ar: "التوازن المثالي • خشب الزيتون والعنبر المذهب",
+    en: "The Ideal Balance • Olive Wood & Golden Amber",
+  },
+  "pavilion.sig_palette": {
+    fr: "Vert Olive • Or Champagne • Ambre",
+    ar: "أخضر زيتوني • ذهب شامبانيا • عنبر",
+    en: "Olive Green • Champagne Gold • Amber",
+  },
+  "pavilion.sig_desc": {
+    fr: "Le parfum emblématique de la maison. Un accord chaleureux et solaire où le bois d'olivier centenaire s'associe au safran pur et à la vanille douce. Idéal pour tous les jours comme pour les grandes occasions.",
+    ar: "العطر الأيقوني الخالد لدار ليفانيا. توليفة دافئة ومشرقة يلتقي فيها خشب الزيتون المعمر مع الزعفران النقي والفانيليا الناعمة. مثالي ليومياتك الراقية ومناسباتك الفاخرة.",
+    en: "The iconic fragrance of the Maison. A warm, solar accord uniting centenary olive wood with pure saffron and gentle vanilla. Ideal for everyday elegance and grand occasions.",
+  },
+  "pavilion.sig_sillage": {
+    fr: "Diffusion Élégante (environ 2 mètres)",
+    ar: "فوحان راقٍ (حوالي 2 متر)",
+    en: "Refined Sillage (approx. 2 meters)",
+  },
+  "pavilion.sig_longevity": {
+    fr: "Excellente Tenue (14h+)",
+    ar: "ثبات استثنائي (14+ ساعة)",
+    en: "Exceptional Longevity (14h+)",
+  },
+  "pavilion.soft_title": {
+    fr: "L'Onde Soyeuse (Fraîche & Florale)",
+    ar: "الموجة الحريرية (منعشة وزهرية)",
+    en: "Silken Wave (Fresh & Floral)",
+  },
+  "pavilion.soft_tagline": {
+    fr: "Douceur Florale • Fleur d'Oranger & Néroli",
+    ar: "نعومة زهرية • زهر البرتقال والنيرولي",
+    en: "Floral Softness • Orange Blossom & Neroli",
+  },
+  "pavilion.soft_palette": {
+    fr: "Ivoire • Fleur d'Oranger • Musc Blanc",
+    ar: "عاجي • زهر البرتقال • مسك أبيض",
+    en: "Ivory • Orange Blossom • White Musk",
+  },
+  "pavilion.soft_desc": {
+    fr: "Un parfum lumineux et apaisant qui rappelle les jardins de Nabeul au printemps. Le néroli pur et la fleur d'oranger s'enveloppent de muscs blancs soyeux pour une sensation de propreté et d'élégance irrésistible.",
+    ar: "عطر مشرق ومهدئ للأحاسيس يستحضر عبير بساتين نابل في الربيع. يمتزج النيرولي النقي وزهر البرتقال بمسك أبيض حريري ليمنحك إحساسًا فريدًا بالنقاء والجاذبية.",
+    en: "A luminous, soothing fragrance evoking the springtime gardens of Nabeul. Pure neroli and orange blossom wrap in silken white musks for an irresistible feeling of cleanliness and grace.",
+  },
+  "pavilion.soft_sillage": {
+    fr: "Subtil & Enveloppant",
+    ar: "هادئ ومحيط بالأحاسيس",
+    en: "Subtle & Enveloping",
+  },
+  "pavilion.soft_longevity": {
+    fr: "Fraîcheur Durable (10h+)",
+    ar: "انتعاش دائم (10+ ساعات)",
+    en: "Lasting Freshness (10h+)",
+  },
+  "pavilion.intense_title": {
+    fr: "L'Onde Sombre (Boisée & Intense)",
+    ar: "الموجة الداكنة (خشبية وعميقة)",
+    en: "Dark Wave (Woody & Intense)",
+  },
+  "pavilion.intense_tagline": {
+    fr: "Caractère Affirmé • Oud Majestueux & Cuir",
+    ar: "شخصية قوية • عود ملكي وجلد فاخر",
+    en: "Commanding Character • Regal Oud & Leather",
+  },
+  "pavilion.intense_palette": {
+    fr: "Noir Ébène • Oud Impérial • Épices",
+    ar: "أسود أبنوسي • عود إمبريال • توابل",
+    en: "Ebony Black • Imperial Oud • Spices",
+  },
+  "pavilion.intense_desc": {
+    fr: "Une fragrance intense et magnétique pour ceux qui aiment les sillages puissants. L'oud sauvage et le cuir se mêlent à l'encens et au patchouli pour laisser une présence inoubliable là où vous passez.",
+    ar: "عطر عميق ومغناطيسي لعشاق الفوحان القوي المهيب. يتناغم العود الطبيعي والجلد الفاخر مع البخور والباتشولي ليترك أثرًا لا يُنسى في كل مكان تحل به.",
+    en: "An intense, magnetic fragrance for connoisseurs who adore powerful trails. Wild oud and noble leather blend with dark incense and patchouli for an unforgettable presence.",
+  },
+  "pavilion.intense_sillage": {
+    fr: "Intense & Remarquable",
+    ar: "فوحان قوي ولافت",
+    en: "Intense & Striking",
+  },
+  "pavilion.intense_longevity": {
+    fr: "Très Longue Tenue (18h+)",
+    ar: "ثبات طويل جدًا (18+ ساعة)",
+    en: "Very Long-Lasting (18h+)",
+  },
+  "hero.spray_released_title": {
+    fr: "Sillage Libéré",
+    ar: "تم إطلاق الأثر العطري",
+    en: "Sillage Released",
+  },
+  "hero.spray_released_desc": {
+    fr: "Diffusion active des molécules parfumées...",
+    ar: "نغمات العطر في حالة انتشار نشط...",
+    en: "Active diffusion of fragrant molecules...",
+  },
+  "hero.spray_bubble_sillage": {
+    fr: "✨ Sillage Libéré : Note de Tête & Cœur",
+    ar: "✨ الفوحان الملكي : نوتات القمة والقلب",
+    en: "✨ Released Sillage: Top & Heart Notes",
+  },
+  "pyramid.act1_num": {
+    fr: "TEMPS 1",
+    ar: "الفصل الأول",
+    en: "ACT 1",
+  },
+  "pyramid.act1_title": {
+    fr: "L'Ouverture Fraîche",
+    ar: "الافتتاحية المنعشة",
+    en: "The Fresh Opening",
+  },
+  "pyramid.act1_subtitle": {
+    fr: "Notes de Tête • Les 30 Premières Minutes",
+    ar: "نوتات القمة • أول 30 دقيقة",
+    en: "Top Notes • The First 30 Minutes",
+  },
+  "pyramid.act1_time": {
+    fr: "Dès la vaporisation (0 à 30 min)",
+    ar: "فور الرش (0 إلى 30 دقيقة)",
+    en: "Upon spraying (0 to 30 min)",
+  },
+  "pyramid.act1_desc": {
+    fr: "C'est la première impression que vous et votre entourage ressentez. Une envolée vive, hespéridée et pétillante qui éveille les sens avec élégance.",
+    ar: "هي الانطباع الأولي الفوري الذي يأسرك ويأسر من حولك. انطلاقة حيوية فوارة من الحمضيات والنفحات المضيئة التي توقظ الحواس بكل رقي.",
+    en: "The very first impression you and those around you experience. A vibrant, sparkling citrus and radiant burst that awakens the senses with elegance.",
+  },
+  "pyramid.act1_sensation": {
+    fr: "Fraîcheur vive, éclat solaire et énergie immédiate.",
+    ar: "انتعاش مفعم بالحياة، إشراقة شمسية وطاقة فورية.",
+    en: "Lively freshness, solar radiance, and instant energy.",
+  },
+  "pyramid.act1_badge": {
+    fr: "Première Impression",
+    ar: "الانطباع الأول",
+    en: "First Impression",
+  },
+  "pyramid.act2_num": {
+    fr: "TEMPS 2",
+    ar: "الفصل الثاني",
+    en: "ACT 2",
+  },
+  "pyramid.act2_title": {
+    fr: "Le Cœur du Parfum",
+    ar: "قلب العطر",
+    en: "The Heart of the Scent",
+  },
+  "pyramid.act2_subtitle": {
+    fr: "Notes de Cœur • Votre Vraie Signature",
+    ar: "نوتات القلب • بصمتك العطرية الحقيقية",
+    en: "Heart Notes • Your True Signature",
+  },
+  "pyramid.act2_time": {
+    fr: "Pendant 30 min à 4 heures",
+    ar: "من 30 دقيقة إلى 4 ساعات",
+    en: "From 30 min to 4 hours",
+  },
+  "pyramid.act2_desc": {
+    fr: "Le véritable caractère de votre parfum. Les huiles précieuses se réchauffent au contact de votre peau pour exprimer votre charme et votre présence.",
+    ar: "الجوهر الحقيقي لشخصية عطرك. تتفاعل الزيوت العطرية الثمينة مع دفء بشرتك لتعبّر عن جاذبيتك وحضورك الفريد طوال اليوم.",
+    en: "The true character of your perfume. Precious oils warm on your skin to project your charm and magnetic presence.",
+  },
+  "pyramid.act2_sensation": {
+    fr: "Profondeur enveloppante, élégance naturelle et présence magnétique.",
+    ar: "عمق محيط بالأحاسيس، أناقة طبيعية وحضور مغناطيسي جذاب.",
+    en: "Enveloping depth, natural elegance, and magnetic presence.",
+  },
+  "pyramid.act2_badge": {
+    fr: "Signature Quotidienne",
+    ar: "البصمة اليومية",
+    en: "Daily Signature",
+  },
+  "pyramid.act3_num": {
+    fr: "TEMPS 3",
+    ar: "الفصل الثالث",
+    en: "ACT 3",
+  },
+  "pyramid.act3_title": {
+    fr: "La Longue Tenue",
+    ar: "القاعدة والثبات الممتد",
+    en: "The Long-Lasting Base",
+  },
+  "pyramid.act3_subtitle": {
+    fr: "Notes de Fond • Jusqu'au Lendemain",
+    ar: "نوتات القاعدة • تدوم حتى اليوم التالي",
+    en: "Base Notes • Lasting Until the Next Day",
+  },
+  "pyramid.act3_time": {
+    fr: "De 4h à 18h et plus",
+    ar: "من 4 ساعات إلى أكثر من 18 ساعة",
+    en: "From 4h to 18h and beyond",
+  },
+  "pyramid.act3_desc": {
+    fr: "L'accord le plus riche et persistant. Grâce à une macération artisanale prolongée, ces notes nobles restent sur votre peau et vos vêtements jusqu'au lendemain.",
+    ar: "الطبقة الأكثر ثراءً ورسوخًا. بفضل التعتيق الحرفي المطول، تستقر هذه النوتات الملكية على بشرتك وأزيائك حتى اليوم التالي.",
+    en: "The richest, most persistent layer. Thanks to prolonged artisanal maceration, these noble notes linger on skin and garments into the next day.",
+  },
+  "pyramid.act3_sensation": {
+    fr: "Tenue remarquable, réconfort et sillage inoubliable.",
+    ar: "ثبات لا مثيل له، دفء مريح وأثر عطري لا يُنسى.",
+    en: "Remarkable longevity, comforting warmth, and an unforgettable trail.",
+  },
+  "pyramid.act3_badge": {
+    fr: "Très Longue Tenue (18h+)",
+    ar: "ثبات فائق (18+ ساعة)",
+    en: "Exceptional Longevity (18h+)",
+  },
+  "pyramid.sensory_imprint_label": {
+    fr: "Empreinte Sensorielle :",
+    ar: "البصمة الحسية :",
+    en: "Sensory Impression:",
+  },
+  "bestsellers.podium_rank1": {
+    fr: "N°1 des Ventes • Onde d'Or",
+    ar: "الأكثر مبيعًا رقم 1 • أوند دور",
+    en: "#1 Bestseller • Onde d'Or",
+  },
+  "family.amber": {
+    fr: "Ambrée",
+    ar: "عنبرية",
+    en: "Amber",
+  },
+  "family.woody": {
+    fr: "Boisée",
+    ar: "خشبية",
+    en: "Woody",
+  },
+  "family.floral": {
+    fr: "Florale",
+    ar: "زهرية",
+    en: "Floral",
+  },
+  "family.citrus": {
+    fr: "Hespéridée",
+    ar: "حمضيات",
+    en: "Citrus",
+  },
+  "family.spicy": {
+    fr: "Épicée",
+    ar: "توابل",
+    en: "Spicy",
+  },
+  "family.fresh": {
+    fr: "Fraîche",
+    ar: "منعشة",
+    en: "Fresh",
+  },
+  "family.sweet": {
+    fr: "Gourmande",
+    ar: "حلوة",
+    en: "Sweet",
+  },
+  "family.oriental": {
+    fr: "Orientale",
+    ar: "شرقية",
+    en: "Oriental",
+  },
+  "toast.added_to_cart": {
+    fr: "Flacon ajouté à votre panier",
+    ar: "تمت إضافة العطر إلى سلة التسوق",
+    en: "Fragrance added to your shopping bag",
+  },
+  "toast.added_wishlist": {
+    fr: "Ajouté à vos favoris",
+    ar: "تمت الإضافة إلى المفضلة",
+    en: "Added to your wishlist",
+  },
+  "toast.removed_wishlist": {
+    fr: "Retiré de vos favoris",
+    ar: "تمت الإزالة من المفضلة",
+    en: "Removed from your wishlist",
+  },
+  "aria.add_wishlist": {
+    fr: "Ajouter aux favoris",
+    ar: "إضافة إلى المفضلة",
+    en: "Add to wishlist",
+  },
+  "aria.open_cart": {
+    fr: "Ouvrir le panier",
+    ar: "فتح سلة التسوق",
+    en: "Open shopping bag",
+  },
+  "aria.close": {
+    fr: "Fermer",
+    ar: "إغلاق",
+    en: "Close",
+  },
+  "product.wave_bg_label": {
+    fr: "Onde en Fond :",
+    ar: "الموجة في الخلفية :",
+    en: "Backdrop Wave:",
+  },
+  "product.wave_soyeuse": {
+    fr: "Onde Soyeuse Diaphane",
+    ar: "موجة حريرية شفافة",
+    en: "Diaphanous Silken Wave",
+  },
+  "product.wave_sombre": {
+    fr: "Onde Sombre & Boisée",
+    ar: "موجة داكنة وخشبية",
+    en: "Dark & Woody Wave",
+  },
+  "product.wave_signature": {
+    fr: "Vague Signature Solaire",
+    ar: "موجة التوقيع الشمسية",
+    en: "Solar Signature Wave",
+  },
+  "product.wave_soyeuse_full": {
+    fr: "Onde Soyeuse Diaphane • Voile Intime",
+    ar: "موجة حريرية شفافة • وشاح حميمي",
+    en: "Diaphanous Silken Wave • Intimate Veil",
+  },
+  "product.wave_sombre_full": {
+    fr: "Onde Sombre & Boisée • Sillage Monumental",
+    ar: "موجة داكنة وخشبية • فوحان أسطوري",
+    en: "Dark & Woody Wave • Monumental Sillage",
+  },
+  "product.wave_signature_full": {
+    fr: "Vague Signature • Noblesse Méditerranéenne",
+    ar: "موجة التوقيع • نبل متوسطي أصيل",
+    en: "Signature Wave • Mediterranean Nobility",
+  },
+  "product.diffusion_spec": {
+    fr: "Diffusion 14h • Rayonnement 2.5m",
+    ar: "ثبات 14 ساعة • مدى فوحان 2.5 متر",
+    en: "14h Diffusion • 2.5m Projection",
+  },
+  "product.harmonic_arch": {
+    fr: "Architecture Harmonique",
+    ar: "الهندسة العطرية المتناغمة",
+    en: "Harmonic Architecture",
+  },
+  "product.layer_awakening": {
+    fr: "L'Éveil",
+    ar: "الصحوة الأولى",
+    en: "The Awakening",
+  },
+  "product.layer_soul": {
+    fr: "L'Âme du Sillage",
+    ar: "روح الأثر العطري",
+    en: "The Soul of the Sillage",
+  },
+  "product.layer_imprint": {
+    fr: "L'Empreinte",
+    ar: "البصمة الخالدة",
+    en: "The Imprint",
+  },
+  "product.layer_head_title": {
+    fr: "Notes de Tête (Première Impression)",
+    ar: "نوتات القمة (الانطباع الأول)",
+    en: "Top Notes (First Impression)",
+  },
+  "product.layer_heart_title": {
+    fr: "Notes de Cœur (Signature Centrale)",
+    ar: "نوتات القلب (البصمة المركزية)",
+    en: "Heart Notes (Central Signature)",
+  },
+  "product.layer_base_title": {
+    fr: "Notes de Fond (Tenue Inoubliable)",
+    ar: "نوتات القاعدة (ثبات لا يُنسى)",
+    en: "Base Notes (Unforgettable Longevity)",
+  },
+  "product.sticky_quick_buy": {
+    fr: "Commander",
+    ar: "اطلب الآن",
+    en: "Order Now",
+  },
+  "product.sticky_add": {
+    fr: "Ajouter",
+    ar: "إضافة",
+    en: "Add",
+  },
+  "note_modal.head_label": {
+    fr: "Note de Tête • L'Éveil (Première Impression)",
+    ar: "نوتة القمة • الصحوة الأولى (الانطباع الفوري)",
+    en: "Top Note • The Awakening (First Impression)",
+  },
+  "note_modal.heart_label": {
+    fr: "Note de Cœur • L'Âme du Sillage (Signature Centrale)",
+    ar: "نوتة القلب • روح الأثر العطري (البصمة المركزية)",
+    en: "Heart Note • The Soul of the Sillage (Core Signature)",
+  },
+  "note_modal.base_label": {
+    fr: "Note de Fond • L'Empreinte (Tenue Inoubliable)",
+    ar: "نوتة القاعدة • البصمة الخالدة (ثبات ممتد)",
+    en: "Base Note • The Imprint (Unforgettable Longevity)",
+  },
+  "note_modal.raw_material": {
+    fr: "Matière Première • Haute Parfumerie",
+    ar: "مادة خام فاخرة • صناعة العطور الراقية",
+    en: "Precious Raw Material • Haute Parfumerie",
+  },
+  "note_modal.origin": {
+    fr: "Terroir d'Origine",
+    ar: "الموطن الأصلي والتربة",
+    en: "Terroir of Origin",
+  },
+  "note_modal.extraction": {
+    fr: "Méthode d'Extraction",
+    ar: "طريقة الاستخلاص",
+    en: "Extraction Method",
+  },
+  "note_modal.holding_time": {
+    fr: "Tenue Active",
+    ar: "مدة البقاء الفعالة",
+    en: "Active Longevity",
+  },
+  "note_modal.wave_harmony": {
+    fr: "Harmonie Onde",
+    ar: "التناغم مع الموجة",
+    en: "Wave Harmony",
+  },
+  "note_modal.house_seal": {
+    fr: "Maison Lévania • Alchimie Méditerranéenne",
+    ar: "دار ليفانيا للعطور • كيمياء متوسطية أصيلة",
+    en: "Maison Lévania • Mediterranean Alchemy",
+  },
+  "note_modal.close": {
+    fr: "Fermer",
+    ar: "إغلاق",
+    en: "Close",
+  },
+  "cert_modal.seal_title": {
+    fr: "Maison Lévania • Paris • Nabeul",
+    ar: "دار ليفانيا للعطور • باريس • نابل",
+    en: "Maison Lévania • Paris • Nabeul",
+  },
+  "cert_modal.title": {
+    fr: "Certificat d'Authenticité & de Traçabilité",
+    ar: "شهادة الأصالة والتتبع الرسمي",
+    en: "Certificate of Authenticity & Traceability",
+  },
+  "cert_modal.subtitle": {
+    fr: "Registre officiel de haute parfumerie artisanale • Cueillette & Macération certifiées",
+    ar: "السجل الرسمي لصناعة العطور الحرفية • قطاف وتعتيق موثقان مخبريًا",
+    en: "Official register of artisanal haute parfumerie • Certified harvest & maceration",
+  },
+  "cert_modal.creation_label": {
+    fr: "Création Olfactive",
+    ar: "الابتكار العطري",
+    en: "Olfactory Creation",
+  },
+  "cert_modal.verified_compliant": {
+    fr: "Vérifié Conforme",
+    ar: "موثق ومطابق للمواصفات",
+    en: "Verified Compliant",
+  },
+  "cert_modal.spec_concentration": {
+    fr: "Concentration",
+    ar: "التركيز",
+    en: "Concentration",
+  },
+  "cert_modal.spec_concentration_val": {
+    fr: "28% Extrait Pur",
+    ar: "خلاصة نقية 28%",
+    en: "28% Pure Extract",
+  },
+  "cert_modal.spec_maceration": {
+    fr: "Macération",
+    ar: "مدة التعتيق",
+    en: "Maceration",
+  },
+  "cert_modal.spec_maceration_val": {
+    fr: "180 Jours en Verre Obscurci",
+    ar: "180 يومًا في زجاج معتم",
+    en: "180 Days in Dark Glass",
+  },
+  "cert_modal.spec_terroir": {
+    fr: "Terroir Clé",
+    ar: "الموطن الأساسي",
+    en: "Key Terroir",
+  },
+  "cert_modal.spec_wax": {
+    fr: "Cire & Scellé",
+    ar: "الشمع والختم",
+    en: "Wax & Seal",
+  },
+  "cert_modal.spec_wax_val": {
+    fr: "Tampon d'Artisan Manuel",
+    ar: "ختم حرفي يدوي",
+    en: "Handcrafted Artisan Stamp",
+  },
+  "cert_modal.spec_vintage": {
+    fr: "Millésime",
+    ar: "سنة الإصدار",
+    en: "Vintage",
+  },
+  "cert_modal.spec_vintage_val": {
+    fr: "Édition 2026",
+    ar: "إصدار 2026",
+    en: "2026 Edition",
+  },
+  "cert_modal.spec_glass": {
+    fr: "Flaconnage",
+    ar: "صناعة الزجاج",
+    en: "Bottle Glass",
+  },
+  "cert_modal.spec_glass_val": {
+    fr: "Verre Haute Densité",
+    ar: "زجاج عالي الكثافة والنقاء",
+    en: "High-Density Glass",
+  },
+  "cert_modal.batch_label": {
+    fr: "N° de Lot Sécurisé • Clé d'Authenticité",
+    ar: "رقم الدفعة المؤمن • مفتاح التوثيق",
+    en: "Secured Batch No. • Authenticity Key",
+  },
+  "cert_modal.copy_btn": {
+    fr: "Copier le N°",
+    ar: "نسخ الرقم",
+    en: "Copy Number",
+  },
+  "cert_modal.copied_btn": {
+    fr: "Copié",
+    ar: "تم النسخ",
+    en: "Copied",
+  },
+  "cert_modal.haute_parfumerie_vow": {
+    fr: "Formulé selon les préceptes de la Haute Parfumerie",
+    ar: "صيغ وفق أسمى معايير العطور الراقية",
+    en: "Formulated according to Haute Parfumerie precepts",
+  },
+  "cert_modal.master_perfumer": {
+    fr: "Maître Nez Parfumeur",
+    ar: "كبير خبراء العطور",
+    en: "Master Perfumer",
+  },
+  "cert_modal.atelier_title": {
+    fr: "Atelier Lévania",
+    ar: "محترف ليفانيا",
+    en: "Lévania Atelier",
+  },
+  "sticky.quick_bar_aria": {
+    fr: "Barre d'achat rapide",
+    ar: "شريط الشراء السريع",
+    en: "Quick purchase bar",
+  },
+  "sticky.add": {
+    fr: "Ajouter",
+    ar: "إضافة",
+    en: "Add",
+  },
+  "sticky.order": {
+    fr: "Commander",
+    ar: "اطلب الآن",
+    en: "Order Now",
+  },
+  "nav.main_menu": {
+    fr: "Menu Principal",
+    ar: "القائمة الرئيسية",
+    en: "Main Menu",
+  },
+  "cart.open_cart": {
+    fr: "Ouvrir le panier",
+    ar: "فتح سلة التسوق",
+    en: "Open Cart",
+  },
+
+  "cart.coupon_active": {
+    fr: "Code activé :",
+    ar: "تم تفعيل القسيمة :",
+    en: "Coupon active:",
+  },
+  "cart.luck_reward_suffix": {
+    fr: "pour la Roue Cadeau !",
+    ar: "لعجلة الهدايا الحصرية !",
+    en: "for the Gift Wheel!",
+  },
+  "nav.mystery_box": {
+    fr: "Mystery Box",
+    ar: "صناديق المفاجآت",
+    en: "Mystery Box",
+  },
+  "mystery.tag": {
+    fr: "Surprise de Prestige & Transparence",
+    ar: "مفاجأة فاخرة بشفافية تامة",
+    en: "Prestige Surprise & Transparency",
+  },
+  "mystery.title": {
+    fr: "Les Mystery Boxes Lévania",
+    ar: "صناديق المفاجآت الفاخرة من ليفانيا",
+    en: "Lévania Mystery Boxes",
+  },
+  "mystery.subtitle": {
+    fr: "Le frisson du hasard allié à la rigueur de la haute parfumerie. Chaque boîte garantit une valeur marchande strictement supérieure au prix d'achat.",
+    ar: "متعة التشويق تلتقي مع فخامة العطور الراقية. كل صندوق يضمن لك قيمة عطرية أعلى بكثير من ثمن الشراء.",
+    en: "The thrill of surprise meets haute parfumerie excellence. Every box is guaranteed to contain items worth far more than the purchase price.",
+  },
+  "mystery.transparency_label": {
+    fr: "Transparence Totale :",
+    ar: "شفافية مطلقة :",
+    en: "Total Transparency:",
+  },
+  "mystery.transparency_text": {
+    fr: "Aucun produit périmé ni générique. Exclusivement des flacons officiels Lévania neufs et scellés.",
+    ar: "لا منتجات مقلدة أو قديمة إطلاقًا. حصرًا عطور ليفانيا الأصلية الجديدة والمختومة بالشمع.",
+    en: "No expired or generic products. Exclusively brand-new, sealed official Lévania flacons.",
+  },
+  "mystery.guaranteed_val_badge": {
+    fr: "Valeur Marchande Garantie",
+    ar: "قيمة مضمونة تفوق السعر",
+    en: "Guaranteed Retail Value",
+  },
+  "mystery.stock_left": {
+    fr: "Reste {n} ex.",
+    ar: "متبقي {n} قطع فقط",
+    en: "{n} left in stock",
+  },
+  "mystery.possible_contents": {
+    fr: "Contenus Possibles :",
+    ar: "المحتويات المحتملة :",
+    en: "Possible Contents:",
+  },
+  "mystery.box_price": {
+    fr: "Prix Coffret",
+    ar: "سعر الصندوق",
+    en: "Box Price",
+  },
+  "mystery.min_val": {
+    fr: "Valeur Min.",
+    ar: "القيمة الدنيا",
+    en: "Min. Value",
+  },
+  "mystery.try_btn": {
+    fr: "Tenter la Surprise",
+    ar: "اكتشف مفاجأتك الآن",
+    en: "Try Your Luck",
+  },
+  "mystery.toast_added": {
+    fr: "Mystery Box Ajoutée au Panier",
+    ar: "تمت إضافة صندوق المفاجآت إلى السلة",
+    en: "Mystery Box Added to Bag",
+  },
+  "mystery.box1_name": {
+    fr: "Mystery Box • Initiation Olfactive",
+    ar: "صندوق المفاجآت • البداية العطرية",
+    en: "Mystery Box • Olfactory Initiation",
+  },
+  "mystery.box1_title": {
+    fr: "Onde Soyeuse",
+    ar: "الموجة الحريرية",
+    en: "Silken Wave",
+  },
+  "mystery.box1_desc": {
+    fr: "Un élixir 50ml garanti au hasard parmi nos bestsellers + 2 échantillons découverte 5ml scellés dans l'écrin cylindrique.",
+    ar: "زجاجة عطر 50 مل مضمونة من بين عطورنا الأكثر طلبًا + عينتان 5 مل في العلبة الأسطوانية.",
+    en: "Guaranteed 50ml flacon from our bestsellers + 2 discovery samples (5ml) in cylinder case.",
+  },
+  "mystery.box2_name": {
+    fr: "Mystery Box • Or Impérial",
+    ar: "صندوق المفاجآت • الذهب الإمبراطوري",
+    en: "Mystery Box • Imperial Gold",
+  },
+  "mystery.box2_title": {
+    fr: "Onde Signature",
+    ar: "الموجة التوقيع",
+    en: "Signature Wave",
+  },
+  "mystery.box2_desc": {
+    fr: "Au minimum un grand flacon 100ml de la Collection Signature ou Sombre & Boisée + un accessoire précieux (Ruban, Écrin double).",
+    ar: "على الأقل زجاجة عطر فاخرة 100 مل من مجموعة التوقيع أو الداكنة + إكسسوار فاخر.",
+    en: "At least one full 100ml flacon from Signature or Dark collection + luxury accessory.",
+  },
+  "mystery.box3_name": {
+    fr: "Mystery Box • Grand Sceau Royal",
+    ar: "صندوق المفاجآت • الختم الملكي الكبير",
+    en: "Mystery Box • Grand Royal Seal",
+  },
+  "mystery.box3_title": {
+    fr: "Onde Sombre",
+    ar: "الموجة الداكنة",
+    en: "Dark Wave",
+  },
+  "mystery.box3_desc": {
+    fr: "Le sommet de la surprise de luxe : 2 Flacons garantis (1x 100ml + 1x 50ml) + ensemble d'échantillons complet de la maison.",
+    ar: "قمة المفاجآت الفاخرة: عطران مضمونان (100 مل + 50 مل) + باقة العينات الكاملة لجميع عطور الدار.",
+    en: "The ultimate luxury surprise: 2 guaranteed flacons (100ml + 50ml) + complete house sample set.",
+  },
+  "compose.step_box": {
+    fr: "Écrin",
+    ar: "العلبة",
+    en: "Case",
+  },
+  "compose.step_perfumes": {
+    fr: "Flacons",
+    ar: "العطور",
+    en: "Flacons",
+  },
+  "compose.step_finishing": {
+    fr: "Finitions",
+    ar: "اللمسات",
+    en: "Finishes",
+  },
+  "compose.step_preview": {
+    fr: "Aperçu",
+    ar: "المعاينة",
+    en: "Preview",
+  },
+  "compose.capacity_reached_title": {
+    fr: "Capacité maximale atteinte",
+    ar: "تم بلوغ السعة القصوى",
+    en: "Maximum capacity reached",
+  },
+  "compose.capacity_reached_desc": {
+    fr: "Ce coffret accueille au maximum {n} flacon(s).",
+    ar: "هذا الصندوق يتسع لحد أقصى {n} عطر.",
+    en: "This box holds a maximum of {n} flacon(s).",
+  },
+  "compose.select_at_least_one": {
+    fr: "Veuillez sélectionner au moins un flacon",
+    ar: "يرجى اختيار عطر واحد على الأقل",
+    en: "Please select at least one flacon",
+  },
+  "compose.toast_added": {
+    fr: "Coffret Personnalisé Ajouté au Panier",
+    ar: "تمت إضافة الصندوق المخصص إلى السلة",
+    en: "Custom Gift Box Added to Bag",
+  },
+  "compose.wrapping_name": {
+    fr: "Papier de Soie Nacré & Velours Lévania",
+    ar: "ورق حريري لؤلؤي ومخمل ليفانيا الفاخر",
+    en: "Pearly Silk Paper & Lévania Velvet",
+  },
+  "compose.box1_name": {
+    fr: "L'Écrin Cylindrique Signature (1 Flacon)",
+    ar: "العلبة الأسطوانية التوقيع (عطر واحد)",
+    en: "Signature Cylindrical Case (1 Flacon)",
+  },
+  "compose.box1_desc": {
+    fr: "Le cylindre iconique vert olive doré Lévania, doublé d'une mousse protectrice sur mesure.",
+    ar: "الأسطوانة الأيقونية باللون الأخضر الزيتوني والذهب مع بطانة حماية مخملية مخصصة.",
+    en: "Iconic Lévania olive green and gold cylinder, lined with protective custom foam.",
+  },
+  "compose.box2_name": {
+    fr: "Le Coffret Duo Prestige (2 Flacons)",
+    ar: "صندوق الثنائي الفاخر برستيج (عطران)",
+    en: "Prestige Duo Box (2 Flacons)",
+  },
+  "compose.box2_desc": {
+    fr: "Duo de flacons 50ml ou 100ml dans leur écrin double rigide aux finitions bordeaux et or.",
+    ar: "عطران سعة 50 مل أو 100 مل في علبة صلبة مزدوجة بلمسات ملكية من اللون النبيذي والذهب.",
+    en: "Duo of 50ml or 100ml flacons in a rigid double case with burgundy and gold finishes.",
+  },
+  "compose.box3_name": {
+    fr: "Le Grand Triptyque Royal (3 Flacons)",
+    ar: "الصندوق الثلاثي الملكي (3 عطور)",
+    en: "Grand Royal Triptych (3 Flacons)",
+  },
+  "compose.box3_desc": {
+    fr: "Coffret d'apparat contenant trois élixirs au choix, scellé d'un médaillon en cire monogrammé Lévania.",
+    ar: "صندوق ملكي مهيب يضم ثلاثة عطور من اختيارك، مختوم بمدالية شمعية منقوشة بشعار الدار.",
+    en: "Ceremonial box containing three chosen elixirs, sealed with a Lévania wax medallion.",
+  },
+  "compose.acc_ribbon": {
+    fr: "Ruban de Satin Bordeaux & Or Ciselé",
+    ar: "شريط ستان نبيذي وذهب منقوش",
+    en: "Burgundy & Gold Chiseled Satin Ribbon",
+  },
+  "compose.acc_flowers": {
+    fr: "Fleurs Séchées de Néroli & Lavande Méditerranéenne",
+    ar: "زهور نيرولي وخزامى متوسطية مجففة",
+    en: "Dried Neroli & Mediterranean Lavender",
+  },
+  "compose.acc_sealing": {
+    fr: "Cachet de Cire Lévania & Écrin Velours",
+    ar: "ختم شمعي من ليفانيا وحافظة مخملية",
+    en: "Lévania Wax Seal & Velvet Pouch",
+  },
+  "compose.step1_title": {
+    fr: "1. Choisissez Votre Format d'Écrin",
+    ar: "1. اختر تصميم العلبة الفاخرة",
+    en: "1. Choose Your Box Format",
+  },
+  "compose.step1_desc": {
+    fr: "Nos boîtes cylindriques et coffrets rigides sont réalisés artisanalement en carton recyclé noble et finitions dorées.",
+    ar: "صناديقنا الأسطوانية والصلبة صُنعت يدويًا ببراعة حرفية متناهية مع لمسات مذهبة.",
+    en: "Our cylindrical and rigid cases are handcrafted with noble materials and gilded touches.",
+  },
+  "compose.holds_up_to": {
+    fr: "Accueille jusqu'à {n} parfum(s)",
+    ar: "تتسع لما يصل إلى {n} عطر",
+    en: "Holds up to {n} perfume(s)",
+  },
+  "compose.next_perfumes": {
+    fr: "Suivant : Flacons",
+    ar: "التالي : اختيار العطور",
+    en: "Next: Fragrances",
+  },
+  "compose.step2_title": {
+    fr: "2. Choisissez Vos Fragrances",
+    ar: "2. اختر العطور التي ترغب بها",
+    en: "2. Choose Your Fragrances",
+  },
+  "compose.step2_desc": {
+    fr: "Sélectionnez jusqu'à {n} parfum(s) pour composer votre harmonie.",
+    ar: "اختر حتى {n} عطور لصياغة تناغمك العطري المفضل.",
+    en: "Select up to {n} perfume(s) to craft your olfactory harmony.",
+  },
+  "compose.remove": {
+    fr: "Retirer",
+    ar: "إزالة",
+    en: "Remove",
+  },
+  "compose.select_50ml": {
+    fr: "Sélectionner (50ml)",
+    ar: "اختيار (50 مل)",
+    en: "Select (50ml)",
+  },
+  "compose.included": {
+    fr: "Inclus",
+    ar: "مضاف",
+    en: "Included",
+  },
+  "compose.back": {
+    fr: "Retour",
+    ar: "رجوع",
+    en: "Back",
+  },
+  "compose.next_finishes": {
+    fr: "Suivant : Finitions",
+    ar: "التالي : اللمسات الختامية",
+    en: "Next: Finishing",
+  },
+  "compose.step3_title": {
+    fr: "3. Finitions Décoratives & Dédicace",
+    ar: "3. اللمسات الراقية والإهداء",
+    en: "3. Decorative Touches & Dedication",
+  },
+  "compose.step3_desc": {
+    fr: "Chaque détail transforme votre coffret en une œuvre d'art mémorable.",
+    ar: "كل لمسة تحول صندوق هديتك إلى تحفة فنية لا تُنسى.",
+    en: "Every touch turns your gift box into a memorable work of art.",
+  },
+  "compose.accessories_label": {
+    fr: "Accessoires d'Élégance",
+    ar: "إكسسوارات الأناقة",
+    en: "Elegance Accessories",
+  },
+  "compose.calligraphy_label": {
+    fr: "Message Calligraphié Offert",
+    ar: "بطاقة إهداء مخصصة بالخط العربي مجانًا",
+    en: "Complimentary Calligraphy Message",
+  },
+  "compose.recipient_placeholder": {
+    fr: "Nom du destinataire (ex: Yasmine)",
+    ar: "اسم المستلم (مثال: ياسمين)",
+    en: "Recipient's name (e.g., Jasmine)",
+  },
+  "compose.message_placeholder": {
+    fr: "Votre mot tendre (ex: Pour célébrer ton éclat...)",
+    ar: "رسالتك الخاصة (مثال: احتفاءً بنورك وإشراقتك...)",
+    en: "Your warm words (e.g., Celebrating your brilliance...)",
+  },
+  "compose.for_prefix": {
+    fr: "Pour",
+    ar: "إلى",
+    en: "For",
+  },
+  "compose.you_default": {
+    fr: "Vous",
+    ar: "شخصكم الكريم",
+    en: "You",
+  },
+  "compose.parchment_label": {
+    fr: "Imprimé sur papier parchemin doré Lévania",
+    ar: "مطبوعة على ورق بردي مذهب حصري من ليفانيا",
+    en: "Printed on Lévania gilded parchment paper",
+  },
+  "compose.view_preview": {
+    fr: "Voir l'Aperçu Final",
+    ar: "معاينة الصندوق النهائي",
+    en: "View Final Preview",
+  },
+  "compose.step4_title": {
+    fr: "4. Aperçu de Votre Création Sur-Mesure",
+    ar: "4. معاينة ابتكارك المخصص",
+    en: "4. Preview of Your Bespoke Creation",
+  },
+  "compose.step4_desc": {
+    fr: "Votre coffret est prêt à être confectionné avec le plus grand soin par nos artisans.",
+    ar: "صندوقك الملكي جاهز للتجهيز بحرفية فائقة بأيدي حرفيينا المهرة.",
+    en: "Your gift box is ready to be meticulously assembled by our artisans.",
+  },
+  "compose.wax_imprint_label": {
+    fr: "Scellé au cachet de cire monogrammé Lévania",
+    ar: "مختوم بشمع فاخر يحمل شعار دار ليفانيا",
+    en: "Sealed with Lévania monogrammed wax seal",
+  },
+  "compose.modify": {
+    fr: "Modifier",
+    ar: "تعديل",
+    en: "Modify",
+  },
+  "compose.add_to_cart_btn": {
+    fr: "Ajouter au Panier",
+    ar: "أضف إلى السلة",
+    en: "Add to Bag",
+  },
+  "compose.summary_title": {
+    fr: "Récapitulatif Coffret",
+    ar: "ملخص الصندوق",
+    en: "Box Summary",
+  },
+  "compose.box_total": {
+    fr: "Total du Coffret",
+    ar: "مجموع الصندوق",
+    en: "Box Total",
+  },
+  "compose.box_wave": {
+    fr: "Onde du Coffret",
+    ar: "موجة الصندوق",
+    en: "Box Wave",
+  },
+  "compose.harmony_soft": {
+    fr: "Harmonie Soyeuse",
+    ar: "التناغم الحريري",
+    en: "Silken Harmony",
+  },
+  "compose.harmony_dark": {
+    fr: "Harmonie Sombre",
+    ar: "التناغم الداكن",
+    en: "Dark Harmony",
+  },
+  "compose.harmony_signature": {
+    fr: "Harmonie Signature",
+    ar: "تناغم التوقيع",
+    en: "Signature Harmony",
+  },
+  "compose.guarantee_title": {
+    fr: "Garantie Haute Parfumerie",
+    ar: "ضمان العطور الراقية",
+    en: "Haute Parfumerie Guarantee",
+  },
+  "compose.guarantee_desc": {
+    fr: "Emballage soigné, livraison assurée sous 24h à 48h partout en Tunisie.",
+    ar: "تغليف استثنائي وتوصيل سريع ومؤمن خلال 24 إلى 48 ساعة في كامل أنحاء تونس.",
+    en: "Meticulous packaging, guaranteed 24-48h delivery throughout Tunisia.",
+  },
+  "promotions.included_content": {
+    fr: "Contenu Spécial Inclus :",
+    ar: "المحتويات المشمولة في العرض :",
+    en: "Special Included Contents:",
+  },
+  "promotions.order_pack": {
+    fr: "Commander Ce Pack",
+    ar: "طلب هذا العرض الآن",
+    en: "Order This Pack",
+  },
+  "promotions.toast_added": {
+    fr: "Pack Privilège Ajouté au Panier",
+    ar: "تمت إضافة العرض الحصري إلى السلة",
+    en: "Privilege Pack Added to Bag",
+  },
+  "promotions.pack1_theme": {
+    fr: "Mariage",
+    ar: "الأعراس والزفاف",
+    en: "Wedding",
+  },
+  "promotions.pack1_title": {
+    fr: "Le Coffret des Mariés • Noces d'Or",
+    ar: "صندوق العروسين • الأعراس الذهبية",
+    en: "The Bridal Box • Golden Wedding",
+  },
+  "promotions.pack1_tagline": {
+    fr: "L'union suprême de deux âmes olfactives",
+    ar: "الالتقاء الأسمى بين روحين عطريتين",
+    en: "The supreme union of two olfactory souls",
+  },
+  "promotions.pack1_desc": {
+    fr: "Deux flacons d'exception (Onde d'Or 100ml + Néroli Flottant 100ml) dans leur grand coffret d'apparat, accompagnés d'un ruban satin bordeaux et d'une dédicace calligraphiée personnalisée.",
+    ar: "عطران استثنائيان (أوند دور 100 مل + نيرولي فلوتان 100 مل) في صندوق فاخر مع شريط ستان ملكي وإهداء مخصص بالخط العربي الأصيل.",
+    en: "Two exceptional flacons (Onde d'Or 100ml + Néroli Flottant 100ml) in a ceremonial box with burgundy satin ribbon and custom calligraphy.",
+  },
+  "promotions.pack1_badge": {
+    fr: "-115 TND Remise Cérémonie",
+    ar: "تخفيض 115 د.ت لموسم الأفراح",
+    en: "-115 TND Ceremony Discount",
+  },
+  "promotions.pack2_theme": {
+    fr: "Omra & Célébration",
+    ar: "العمرة والمناسبات الدينية",
+    en: "Umrah & Celebration",
+  },
+  "promotions.pack2_title": {
+    fr: "Pack Sillage Sacré • Omra & Événements",
+    ar: "باقة الأثر المبارك • العمرة والاحتفالات",
+    en: "Sacred Sillage Pack • Umrah & Events",
+  },
+  "promotions.pack2_tagline": {
+    fr: "Pureté des accords précieux sans compromis",
+    ar: "نقاء النوتات الثمينة بروحانية رفيعة",
+    en: "Purity of noble accords without compromise",
+  },
+  "promotions.pack2_desc": {
+    fr: "Flacon Oud Impérial 100ml accompagné de l'extrait Ambre Méditerranéen 50ml et d'un étui de voyage cylindrique protecteur.",
+    ar: "عطر عود إمبريال 100 مل مصحوبًا بخلاصة العنبر 50 مل وحافظة سفر أسطوانية واقية.",
+    en: "Oud Impérial 100ml flacon accompanied by Mediterranean Amber extract 50ml and a protective travel case.",
+  },
+  "promotions.pack2_badge": {
+    fr: "-20% Pack Spirituel",
+    ar: "خصم 20% للباقة الروحانية",
+    en: "-20% Spiritual Pack",
+  },
+  "promotions.pack3_theme": {
+    fr: "Anniversaire",
+    ar: "أعياد الميلاد والمناسبات",
+    en: "Birthday",
+  },
+  "promotions.pack3_title": {
+    fr: "Coffret Anniversaire • Sillage d'Olivier",
+    ar: "صندوق عيد الميلاد • سيّاج دوليفيي",
+    en: "Birthday Box • Sillage d'Olivier",
+  },
+  "promotions.pack3_tagline": {
+    fr: "Pour marquer une date inoubliable",
+    ar: "لتخليد تاريخ لا يُنسى",
+    en: "To commemorate an unforgettable date",
+  },
+  "promotions.pack3_desc": {
+    fr: "Flacon Sillage d'Olivier 100ml avec son cylindre vert olive, un flacon échantillon prestige 10ml offert et la carte d'anniversaire gravée.",
+    ar: "عطر سيّاج دوليفيي 100 مل مع علبته الأسطوانية الزيتونية، وعينة فاخرة 10 مل مجانية وبطاقة تهنئة منقوشة.",
+    en: "Sillage d'Olivier 100ml flacon with olive green cylinder, complimentary 10ml prestige sample and engraved birthday card.",
+  },
+  "promotions.pack3_badge": {
+    fr: "Échantillon Luxe Offert",
+    ar: "عينة فاخرة مهداة",
+    en: "Complimentary Luxury Sample",
+  },
+  "wheel.tier_initial": {
+    fr: "Onde Initiale (1–100 Luck)",
+    ar: "الموجة الابتدائية (1–100 نقطة)",
+    en: "Initial Wave (1–100 Luck)",
+  },
+  "wheel.tier_ardent": {
+    fr: "Onde Ardente (101–1,000 Luck)",
+    ar: "الموجة المتوقدة (101–1,000 نقطة)",
+    en: "Ardent Wave (101–1,000 Luck)",
+  },
+  "wheel.tier_royal": {
+    fr: "Onde Royale (1,001–7,776 Luck)",
+    ar: "الموجة الملكية (1,001–7,776 نقطة)",
+    en: "Royal Wave (1,001–7,776 Luck)",
+  },
+  "wheel.tier_imperial": {
+    fr: "Onde Impériale Suprême — Sceau 7,777",
+    ar: "الموجة الإمبراطورية العظمى — الختم 7,777",
+    en: "Supreme Imperial Wave — Seal 7,777",
+  },
+  "wheel.tier_level_title": {
+    fr: "Votre Niveau de Fidélité",
+    ar: "مستوى عضويتك المميز",
+    en: "Your Loyalty Level",
+  },
+  "wheel.insufficient_luck_title": {
+    fr: "Solde de Luck insuffisant",
+    ar: "رصيد الحظ غير كافٍ",
+    en: "Insufficient Luck balance",
+  },
+  "wheel.insufficient_luck_desc": {
+    fr: "Passez commande sur le site pour accumuler de la Luck (1 Luck par 10 TND dépensés).",
+    ar: "اطلب من المتجر لكسب نقاط الحظ (نقطة واحدة لكل 10 د.ت).",
+    en: "Place an order to earn Luck (1 Luck per 10 TND spent).",
+  },
+  "wheel.revealed_toast": {
+    fr: "Récompense Lévania Révélée !",
+    ar: "تم الكشف عن جائزتك من ليفانيا !",
+    en: "Lévania Reward Revealed!",
+  },
+  "wheel.code_copied_toast": {
+    fr: "Code copié",
+    ar: "تم نسخ الرمز بنجاح",
+    en: "Code copied",
+  },
+  "wheel.milestone_reached": {
+    fr: "Palier Exceptionnel Atteint !",
+    ar: "تم بلوغ أسمى المراتب !",
+    en: "Exceptional Milestone Reached!",
+  },
+  "wheel.milestone_remaining": {
+    fr: "Plus que {n} Luck pour l'Onde Impériale",
+    ar: "متبقي {n} نقطة فقط لبلوغ الموجة الإمبراطورية",
+    en: "Only {n} Luck left to reach Imperial Wave",
+  },
+  "wheel.milestone_initial": {
+    fr: "Initiale (1)",
+    ar: "الابتدائية (1)",
+    en: "Initial (1)",
+  },
+  "wheel.milestone_ardent": {
+    fr: "Ardente (101)",
+    ar: "المتوقدة (101)",
+    en: "Ardent (101)",
+  },
+  "wheel.milestone_royal": {
+    fr: "Royale (1001)",
+    ar: "الملكية (1001)",
+    en: "Royal (1001)",
+  },
+  "wheel.milestone_imperial": {
+    fr: "Impériale (7777)",
+    ar: "الإمبراطورية (7777)",
+    en: "Imperial (7777)",
+  },
+  "wheel.history_title": {
+    fr: "Historique de Vos Récompenses",
+    ar: "سجل مكافآتك السابقة",
+    en: "Your Reward History",
+  },
+  "wheel.enjoy_btn": {
+    fr: "En profiter maintenant",
+    ar: "الاستفادة من المكافأة الآن",
+    en: "Enjoy Reward Now",
+  },
+  "wheel.rules_has_luck": {
+    fr: "Chaque lancer consomme l'intégralité de vos {n} Luck. Le palier actuel garantit la table de récompenses {tier}.",
+    ar: "كل تدويرة تستهلك كامل رصيدك البالغ {n} نقطة حظ. مستواك الحالي يضمن لك جوائز فئة {tier}.",
+    en: "Each spin consumes all your {n} Luck. Current tier guarantees the {tier} reward table.",
+  },
+  "wheel.rules_no_luck": {
+    fr: "Vous avez 0 Luck actuellement. Effectuez un achat pour recharger votre balance (1 Luck par tranche de 10 TND d'achat).",
+    ar: "رصيدك الحالي 0 نقطة حظ. قم بالشراء لشحن رصيدك (نقطة واحدة لكل 10 د.ت).",
+    en: "You currently have 0 Luck. Make a purchase to top up your balance (1 Luck per 10 TND spent).",
+  },
+  "account.privilege_badge": {
+    fr: "Espace Privilège Membre",
+    ar: "بوابة العضوية الحصرية",
+    en: "Member Privilege Space",
+  },
+  "account.welcome": {
+    fr: "Bienvenue, {name}",
+    ar: "أهلاً بك، {name}",
+    en: "Welcome, {name}",
+  },
+  "account.default_name": {
+    fr: "Cher Connaisseur",
+    ar: "عاشق العطور الراقية",
+    en: "Dear Connoisseur",
+  },
+  "account.certified_account": {
+    fr: "Compte certifié • {email}",
+    ar: "حساب موثق رسميًا • {email}",
+    en: "Certified Account • {email}",
+  },
+  "account.connect_sync": {
+    fr: "Connectez-vous pour synchroniser vos flacons et points →",
+    ar: "سجّل دخولك لمزامنة عطورك ونقاطك ←",
+    en: "Sign in to sync your bottles and loyalty points →",
+  },
+  "account.spin_wheel_btn": {
+    fr: "Lancer la Roue",
+    ar: "تدوير العجلة",
+    en: "Spin the Wheel",
+  },
+  "account.luck_balance_title": {
+    fr: "Solde de Luck",
+    ar: "رصيد الحظ",
+    en: "Luck Balance",
+  },
+  "account.wave_label": {
+    fr: "Vague :",
+    ar: "الموجة :",
+    en: "Wave:",
+  },
+  "account.none_wave": {
+    fr: "Aucune",
+    ar: "لا يوجد",
+    en: "None",
+  },
+  "account.tour_wheel": {
+    fr: "Tourner la Roue →",
+    ar: "جرّب حظك الآن ←",
+    en: "Spin the Wheel →",
+  },
+  "account.loyalty_points_title": {
+    fr: "Points Fidélité",
+    ar: "نقاط الوفاء",
+    en: "Loyalty Points",
+  },
+  "account.points_suffix": {
+    fr: "Points",
+    ar: "نقطة",
+    en: "Points",
+  },
+  "account.convert_discount": {
+    fr: "Remise possible : {val} TND",
+    ar: "خصم متاح : {val} د.ت",
+    en: "Available discount: {val} TND",
+  },
+  "account.convert_btn": {
+    fr: "Convertir →",
+    ar: "تحويل النقاط ←",
+    en: "Convert →",
+  },
+  "account.xp_level_title": {
+    fr: "Niveau d'Expérience",
+    ar: "مستوى الخبرة",
+    en: "Experience Level",
+  },
+  "account.level_prefix": {
+    fr: "Niveau {n}",
+    ar: "المستوى {n}",
+    en: "Level {n}",
+  },
+  "account.title_connoisseur": {
+    fr: "Titre : Connaisseur Averti",
+    ar: "اللقب : خبير عطور متميز",
+    en: "Title: Seasoned Connoisseur",
+  },
+  "account.progress_details": {
+    fr: "Détails progression →",
+    ar: "تفاصيل التقدم ←",
+    en: "Progress Details →",
+  },
+  "account.referral_title": {
+    fr: "Parrainage",
+    ar: "دعوة الأصدقاء",
+    en: "Referrals",
+  },
+  "account.referral_count": {
+    fr: "{n} Filleul(s)",
+    ar: "{n} صديق مسجل",
+    en: "{n} Friend(s)",
+  },
+  "account.referral_code_label": {
+    fr: "Code : {code}",
+    ar: "الرمز : {code}",
+    en: "Code: {code}",
+  },
+  "account.share_link": {
+    fr: "Partager mon lien →",
+    ar: "مشاركة الرابط ←",
+    en: "Share My Link →",
+  },
+  "account.recent_orders_title": {
+    fr: "Vos Commandes Récentes",
+    ar: "طلباتك الأخيرة",
+    en: "Your Recent Orders",
+  },
+  "account.order_again": {
+    fr: "Commander à nouveau",
+    ar: "طلب عطر جديد",
+    en: "Order Again",
+  },
+  "account.no_orders_title": {
+    fr: "Aucune commande enregistrée pour le moment",
+    ar: "لا توجد طلبات مسجلة حتى الآن",
+    en: "No orders registered yet",
+  },
+  "account.no_orders_desc": {
+    fr: "Vos flacons et coffrets commandés apparaîtront ici avec leur numéro de suivi et historique d'expédition.",
+    ar: "ستظهر عطورك وصناديقك المطلوبة هنا مع أرقام التتبع وتفاصيل الشحن الدقيقة.",
+    en: "Your ordered flacons and boxes will appear here with tracking numbers and delivery status.",
+  },
+  "account.explore_collections": {
+    fr: "Découvrir les Collections",
+    ar: "استكشف المجموعات",
+    en: "Explore Collections",
+  },
+  "account.ordered_on": {
+    fr: "Commandé le {date}",
+    ar: "تاريخ الطلب : {date}",
+    en: "Ordered on {date}",
+  },
+  "account.express_shipping_badge": {
+    fr: "Livraison Colis Express Tunisie",
+    ar: "توصيل سريع لكافة ولايات تونس",
+    en: "Tunisia Express Parcel Delivery",
+  },
+  "loyalty.tag": {
+    fr: "Programme Ambassadeur & Fidélité",
+    ar: "برنامج السفراء والولاء",
+    en: "Ambassador & Loyalty Program",
+  },
+  "loyalty.title": {
+    fr: "Vos Points & Parrainages",
+    ar: "نقاطك ودعوات الأصدقاء",
+    en: "Your Points & Referrals",
+  },
+  "loyalty.subtitle": {
+    fr: "Gagnez des points fidélité sur chaque achat et recevez 50% des points de vos filleuls sur leurs commandes qualifiées.",
+    ar: "اكسب نقاط وفاء مع كل عملية شراء واحصل على 50% من نقاط أصدقائك عند أول طلب مؤهل لهم.",
+    en: "Earn loyalty points on every purchase and receive 50% of your friends' points on their qualified orders.",
+  },
+  "loyalty.balance_title": {
+    fr: "Solde Fidélité",
+    ar: "رصيد الولاء",
+    en: "Loyalty Balance",
+  },
+  "loyalty.balance_value_desc": {
+    fr: "Valeur convertible : {val} TND en réductions",
+    ar: "قيمة الاستبدال : {val} د.ت كخصم مباشر",
+    en: "Redeemable value: {val} TND in discounts",
+  },
+  "loyalty.xp_title": {
+    fr: "Rang d'Expérience (XP)",
+    ar: "رتبة الخبرة (XP)",
+    en: "Experience Rank (XP)",
+  },
+  "loyalty.xp_accumulated": {
+    fr: "{points} XP accumulés • {mult}",
+    ar: "{points} نقطة خبرة • {mult}",
+    en: "{points} XP accumulated • {mult}",
+  },
+  "loyalty.double_xp_active": {
+    fr: "Double XP Actif !",
+    ar: "مضاعف النقاط نشط !",
+    en: "Double XP Active!",
+  },
+  "loyalty.normal_mult": {
+    fr: "Multiplicateur normal",
+    ar: "المضاعف الاعتيادي",
+    en: "Normal multiplier",
+  },
+  "loyalty.referrals_title": {
+    fr: "Filleuls Enregistrés",
+    ar: "الأصدقاء المسجلون",
+    en: "Registered Referrals",
+  },
+  "loyalty.referrals_count": {
+    fr: "{n} Ami(s) Parrainé(s)",
+    ar: "{n} صديق مسجل برابطك",
+    en: "{n} Friend(s) Referred",
+  },
+  "loyalty.referrals_desc": {
+    fr: "Partagez votre lien exclusif pour percevoir 50% de leurs points d'achat.",
+    ar: "شارك رابطك الخاص لتحصل على 50% من نقاط مشترياتهم.",
+    en: "Share your exclusive link to earn 50% of their purchase points.",
+  },
+  "loyalty.referral_rule_tag": {
+    fr: "Règle Officielle de Parrainage Lévania",
+    ar: "القاعدة الرسمية لبرنامج سفراء ليفانيا",
+    en: "Official Lévania Referral Rule",
+  },
+  "loyalty.referral_rule_title": {
+    fr: "Recevez 50% des Points de Vos Amis",
+    ar: "احصل على 50% من نقاط أصدقائك",
+    en: "Receive 50% of Your Friends' Points",
+  },
+  "loyalty.referral_rule_desc": {
+    fr: "Partagez votre lien exclusif. Dès que votre filleul effectue son premier achat d'au moins 100 TND, vous recevez automatiquement 50% de ses points de fidélité gagnés, crédités sur votre compte sans limitation de temps.",
+    ar: "شارك رابطك الفريد. بمجرد أن يكمل صديقك أول طلب بقيمة 100 د.ت على الأقل، تُضاف 50% من نقاطه المكتسبة تلقائيًا إلى حسابك دون أي حد زمني.",
+    en: "Share your exclusive link. As soon as your friend completes their first purchase of at least 100 TND, you automatically receive 50% of their earned loyalty points, credited without expiration.",
+  },
+  "loyalty.unique_link_label": {
+    fr: "Votre Lien Unique de Parrainage :",
+    ar: "رابط الدعوة الخاص بك :",
+    en: "Your Unique Referral Link:",
+  },
+  "loyalty.copy_link": {
+    fr: "Copier",
+    ar: "نسخ",
+    en: "Copy",
+  },
+  "loyalty.copied_link": {
+    fr: "Copié !",
+    ar: "تم النسخ !",
+    en: "Copied!",
+  },
+  "loyalty.transparency_title": {
+    fr: "Conditions de Transparence",
+    ar: "شروط وضمانات الشفافية",
+    en: "Transparency Conditions",
+  },
+  "loyalty.rule1": {
+    fr: "S'applique sur les points de fidélité réels (hors Luck de la Roue).",
+    ar: "تسري على نقاط الولاء الحقيقية (باستثناء نقاط حظ العجلة).",
+    en: "Applies to actual loyalty points (excluding Wheel Luck).",
+  },
+  "loyalty.rule2": {
+    fr: "Premier achat éligible dès 100 TND de commande livrée.",
+    ar: "الطلب الأول مؤهل ابتداءً من 100 د.ت مستلمة.",
+    en: "First order eligible starting at 100 TND delivered.",
+  },
+  "loyalty.rule3": {
+    fr: "L'auto-parrainage est automatiquement bloqué par détection IP/adresse.",
+    ar: "يتم حظر الإحالة الذاتية تلقائيًا عبر تقنيات فحص العنوان والـ IP.",
+    en: "Self-referral is automatically blocked via IP/address checks.",
+  },
+  "loyalty.redeem_title": {
+    fr: "Convertir Vos Points en Privilèges",
+    ar: "استبدل نقاطك بامتيازات وهدايا",
+    en: "Convert Your Points into Privileges",
+  },
+  "loyalty.points_required": {
+    fr: "{points} Points Requis",
+    ar: "مطلوب {points} نقطة",
+    en: "{points} Points Required",
+  },
+  "loyalty.redeem_btn": {
+    fr: "Échanger Mes Points",
+    ar: "استبدال النقاط الآن",
+    en: "Redeem My Points",
+  },
+  "loyalty.insufficient_points": {
+    fr: "Points Insuffisants",
+    ar: "النقاط غير كافية",
+    en: "Insufficient Points",
+  },
+  "loyalty.toast_copied": {
+    fr: "Lien de Parrainage Copié",
+    ar: "تم نسخ رابط الدعوة",
+    en: "Referral Link Copied",
+  },
+  "loyalty.toast_redeemed": {
+    fr: "Points Convertis avec Succès",
+    ar: "تم تحويل النقاط بنجاح",
+    en: "Points Successfully Redeemed",
+  },
+  "loyalty.toast_insufficient": {
+    fr: "Solde Insuffisant",
+    ar: "الرصيد غير كافٍ",
+    en: "Insufficient Balance",
+  },
+  "loyalty.reward1_title": {
+    fr: "Bon d'Achat 20 TND",
+    ar: "قسيمة شراء 20 د.ت",
+    en: "20 TND Voucher",
+  },
+  "loyalty.reward1_desc": {
+    fr: "Valable sur toute commande",
+    ar: "صالحة على جميع الطلبات",
+    en: "Valid on all orders",
+  },
+  "loyalty.reward2_title": {
+    fr: "Bon d'Achat 45 TND",
+    ar: "قسيمة شراء 45 د.ت",
+    en: "45 TND Voucher",
+  },
+  "loyalty.reward2_desc": {
+    fr: "Bonus +5 TND inclus",
+    ar: "تشمل مكافأة إضافية 5 د.ت",
+    en: "Includes +5 TND bonus",
+  },
+  "loyalty.reward3_title": {
+    fr: "Flacon 50ml Offert",
+    ar: "زجاجة عطر 50 مل مجانًا",
+    en: "Complimentary 50ml Flacon",
+  },
+  "loyalty.reward3_desc": {
+    fr: "Choix libre parmi le catalogue",
+    ar: "اختيار حر من كامل التشكيلة",
+    en: "Free choice from the catalogue",
+  },
+  "heritage.arch_label": {
+    fr: "Architecture & Conservation",
+    ar: "الهندسة المعمارية وحفظ الجودة",
+    en: "Architecture & Preservation",
+  },
+  "heritage.atelier_sign": {
+    fr: "L'Atelier Lévania Parfums",
+    ar: "محترف ليفانيا للعطور",
+    en: "The Lévania Parfums Atelier",
   },
 };

@@ -35,7 +35,7 @@ export function MaisonHeritageSection() {
                 <WaveMonogram size="md" variant="gold" withSeal />
                 <div>
                   <span className="text-[10px] uppercase tracking-widest text-[#852538] dark:text-[#DFC68B] font-bold block">
-                    Architecture &amp; Conservation
+                    {t("heritage.arch_label", "Architecture & Conservation")}
                   </span>
                   <h4 className="font-serif text-base text-[#23181A] dark:text-[#FAF7F2] font-semibold">
                     {t("heritage.pedestal_title", "L'Écrin Cylindrique Vert Olive & Or")}
@@ -72,7 +72,7 @@ export function MaisonHeritageSection() {
             <blockquote className="p-5 rounded-2xl bg-white dark:bg-[#180B10] border-l-4 border-[#541B28] dark:border-[#C7A66A] shadow-xs font-serif italic text-sm text-[#23181A] dark:text-[#FAF7F2] leading-relaxed">
               &laquo; {t("heritage.quote", "Nous créons des parfums authentiques qui marquent les esprits et durent toute la journée, protégés dans un écrin digne des plus grands noms.")} &raquo;
               <span className="block text-[10px] uppercase font-sans font-bold text-[#852538] dark:text-[#DFC68B] tracking-widest mt-2 not-italic">
-                &mdash; L&apos;Atelier Lévania Parfums
+                &mdash; {t("heritage.atelier_sign", "L'Atelier Lévania Parfums")}
               </span>
             </blockquote>
 

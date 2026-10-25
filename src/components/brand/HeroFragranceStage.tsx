@@ -87,22 +87,92 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
   },
 ];
 
+const LOCALIZED_HERO_DATA: Record<string, Record<"ar" | "en", Partial<HeroStageItem>>> = {
+  "lev-01": {
+    ar: {
+      name: "أوند دور",
+      subtitle: "خلاصة عطرية نقية ومركزة",
+      collectionName: "المجموعة التوقيع",
+      tag: "الأكثر مبيعًا • عنبر وزعفران",
+      topNotes: ["زعفران شرقي", "برغموت"],
+      heartNotes: ["ورد دمشقي", "أرز الأطلس"],
+      baseNotes: ["عنبر شمسي", "فانيليا بوربون"],
+    },
+    en: {
+      name: "Onde d'Or",
+      subtitle: "Pure Absolu Perfume Extract",
+      collectionName: "The Signature Collection",
+      tag: "#1 Bestseller • Amber & Saffron",
+      topNotes: ["Eastern Saffron", "Bergamot"],
+      heartNotes: ["Damascus Rose", "Atlas Cedar"],
+      baseNotes: ["Solar Amber", "Bourbon Vanilla"],
+    },
+  },
+  "lev-03": {
+    ar: {
+      name: "نيرولي فلوتان",
+      subtitle: "ماء عطر منعش ومشرق",
+      collectionName: "الأمواج الحريرية",
+      tag: "زهر البرتقال ونيرولي نابل",
+      topNotes: ["نيرولي نابل النقي", "بيتي غران"],
+      heartNotes: ["زهر البرتقال", "ياسمين أبيض"],
+      baseNotes: ["مسك أبيض قطني", "أخشاب بيضاء"],
+    },
+    en: {
+      name: "Néroli Flottant",
+      subtitle: "Fresh & Solar Eau de Parfum",
+      collectionName: "Silken Wave",
+      tag: "Orange Blossom & Nabeul Neroli",
+      topNotes: ["Pure Nabeul Neroli", "Petitgrain"],
+      heartNotes: ["Orange Blossom", "White Jasmine"],
+      baseNotes: ["Cotton White Musk", "Clear Woods"],
+    },
+  },
+  "lev-04": {
+    ar: {
+      name: "عود إمبريال",
+      subtitle: "خلاصة عطرية خشبية فاخرة",
+      collectionName: "الأمواج الداكنة والخشبية",
+      tag: "قوي وخشبي • عود نفيس",
+      topNotes: ["بخور عماني", "فلفل أسود"],
+      heartNotes: ["عود كمبودي", "جلد قرطبي"],
+      baseNotes: ["عنبر رمادي", "تبغ أشقر"],
+    },
+    en: {
+      name: "Oud Impérial",
+      subtitle: "Intense Woody Extrait de Parfum",
+      collectionName: "Dark & Woody Wave",
+      tag: "Intense & Woody • Precious Oud",
+      topNotes: ["Omani Incense", "Black Pepper"],
+      heartNotes: ["Cambodian Oud", "Cordovan Leather"],
+      baseNotes: ["Ambergris", "Blonde Tobacco"],
+    },
+  },
+};
+
 export function HeroFragranceStage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("100ml");
   const [isSpraying, setIsSpraying] = useState(false);
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
-  const activeItem = HERO_STAGE_ITEMS[activeIndex];
+  const heroItems = HERO_STAGE_ITEMS.map((item) => {
+    if (locale === "fr") return item;
+    const loc = LOCALIZED_HERO_DATA[item.id]?.[locale];
+    if (!loc) return item;
+    return { ...item, ...loc };
+  });
+
+  const activeItem = heroItems[activeIndex];
   const activePrice = selectedFormat === "50ml" ? activeItem.price50ml : activeItem.price100ml;
 
   const handleSprayMist = () => {
     setIsSpraying(true);
     showToast(
-      "Sillage Libéré",
-      `Notes de ${activeItem.name} en diffusion active...`,
+      t("hero.spray_released_title", "Sillage Libéré"),
+      t("hero.spray_released_desc", `Notes de ${activeItem.name} en diffusion active...`),
       "luxury"
     );
     setTimeout(() => {
@@ -147,7 +217,7 @@ export function HeroFragranceStage() {
 
       {/* 3-Flacon Switcher Tabs */}
       <div className="flex items-center justify-center gap-2 mb-5 bg-white/80 dark:bg-[#180B10]/80 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-sm">
-        {HERO_STAGE_ITEMS.map((item, idx) => {
+        {heroItems.map((item, idx) => {
           const isSelected = activeIndex === idx;
           return (
             <button
@@ -216,7 +286,7 @@ export function HeroFragranceStage() {
                 <div className="absolute w-80 h-80 rounded-full bg-gradient-to-r from-[#C7A66A]/45 via-[#DFC68B]/35 to-transparent blur-3xl animate-ping" />
                 <div className="relative z-40 flex flex-col items-center gap-2 p-4 text-center">
                   <span className="font-cinzel text-xs font-bold uppercase tracking-luxury text-[#FAF7F2] bg-[#541B28]/95 px-5 py-2 rounded-full border border-[#C7A66A] shadow-2xl backdrop-blur-md animate-bounce">
-                    ✨ Sillage : {activeItem.topNotes[0]} &amp; {activeItem.heartNotes[0]}
+                    ✨ {activeItem.topNotes[0]} &amp; {activeItem.heartNotes[0]}
                   </span>
                   <span className="font-cinzel text-[10px] uppercase tracking-wider text-[#DFC68B] bg-black/75 px-3 py-1 rounded-full backdrop-blur-md border border-[#DFC68B]/30">
                     {t("hero.spray_longevity", "Tenue 14h+ Garantie • Extrait Absolu")}

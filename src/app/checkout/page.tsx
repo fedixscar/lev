@@ -169,8 +169,8 @@ export default function CheckoutPage() {
       clearCart();
 
       showToast(
-        "Commande Validée avec Succès",
-        `Réf ${orderNum} \u2022 +${luckResult.added} Luck crédités!`,
+        t("checkout.toast_success", "Commande Validée avec Succès"),
+        t("checkout.toast_desc", `Réf ${orderNum} • +${luckResult.added} Luck crédités!`).replace("{orderNum}", orderNum).replace("{luck}", String(luckResult.added)),
         "luxury"
       );
     } finally {

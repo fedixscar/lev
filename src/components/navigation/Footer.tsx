@@ -61,7 +61,7 @@ export function Footer() {
                     className="shrink-0 px-4 py-2 rounded-lg bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-md"
                   >
                     <span>{t("footer.newsletter_btn", "Rejoindre")}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                   </button>
                 </form>
               )}

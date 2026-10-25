@@ -28,6 +28,7 @@ import { NoteAccordModal } from "@/components/discovery/NoteAccordModal";
 import { AuthenticityCertificateModal } from "@/components/products/AuthenticityCertificateModal";
 import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct, getLocalizedProducts } from "@/lib/i18n/catalogueLocale";
 
 interface ProductDetailClientProps {
   product?: Product;
@@ -40,21 +41,22 @@ export function ProductDetailClient({
   initialProduct,
   slug,
 }: ProductDetailClientProps) {
-  const [product, setProduct] = useState<Product | null>(directProduct || initialProduct || null);
+  const [baseProduct, setBaseProduct] = useState<Product | null>(directProduct || initialProduct || null);
 
   React.useEffect(() => {
-    if (!product && slug) {
+    if (!baseProduct && slug) {
       const all = getAllProducts();
       const found = all.find((p) => p.slug === slug);
       if (found) {
-        setProduct(found);
+        setBaseProduct(found);
         setSelectedImage(found.images.main);
       }
     }
-  }, [slug, product]);
+  }, [slug, baseProduct]);
 
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const product = baseProduct ? getLocalizedProduct(baseProduct, locale) : null;
   const { addItem, setIsCartOpen } = useCart();
   const { showToast } = useNotification();
 
@@ -126,9 +128,12 @@ export function ProductDetailClient({
     router.push("/checkout");
   };
 
-  const relatedProducts = PRODUCTS.filter(
-    (p) => p.id !== product.id && p.collectionSlug === product.collectionSlug
-  ).slice(0, 3);
+  const relatedProducts = getLocalizedProducts(
+    PRODUCTS.filter(
+      (p) => p.id !== product.id && p.collectionSlug === product.collectionSlug
+    ).slice(0, 3),
+    locale
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
@@ -152,13 +157,13 @@ export function ProductDetailClient({
             <div className="luxury-pill inline-flex items-center gap-2.5 self-start sm:self-auto">
               <WaveMonogram size="xs" variant={waveExpression === "soft" ? "burgundy" : "gold"} />
               <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                Onde en Fond :{" "}
+                {t("product.wave_bg_label", "Onde en Fond :")}{" "}
                 <span className="text-[#C7A66A]">
                   {waveExpression === "soft"
-                    ? "Onde Soyeuse Diaphane"
+                    ? t("product.wave_soyeuse", "Onde Soyeuse Diaphane")
                     : waveExpression === "intense"
-                    ? "Onde Sombre & Boisée"
-                    : "Vague Signature Solaire"}
+                    ? t("product.wave_sombre", "Onde Sombre & Boisée")
+                    : t("product.wave_signature", "Vague Signature Solaire")}
                 </span>
               </span>
             </div>
@@ -308,7 +313,7 @@ export function ProductDetailClient({
                 <button
                   type="button"
                   onClick={() => setIsCertOpen(true)}
-                  className="w-full flex items-center justify-between text-left p-1.5 -mx-1.5 rounded-xl hover:bg-[#541B28]/5 transition-colors cursor-pointer group"
+                  className="w-full flex items-center justify-between text-left rtl:text-right p-1.5 -mx-1.5 rounded-xl hover:bg-[#541B28]/5 dark:hover:bg-[#C7A66A]/10 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center gap-2 text-[#23181A]">
                     <QrCode className="w-4 h-4 text-[#541B28] shrink-0" />
@@ -342,17 +347,17 @@ export function ProductDetailClient({
                   </span>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">
                     {waveExpression === "soft"
-                      ? "Onde Soyeuse Diaphane • Voile Intime"
+                      ? t("product.wave_soyeuse_full", "Onde Soyeuse Diaphane • Voile Intime")
                       : waveExpression === "intense"
-                      ? "Onde Sombre & Boisée • Sillage Monumental"
-                      : "Vague Signature • Noblesse Méditerranéenne"}
+                      ? t("product.wave_sombre_full", "Onde Sombre & Boisée • Sillage Monumental")
+                      : t("product.wave_signature_full", "Vague Signature • Noblesse Méditerranéenne")}
                   </h3>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-[11px] px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold shadow-sm">
-                  Diffusion 14h • Rayonnement 2.5m
+                  {t("product.diffusion_spec", "Diffusion 14h • Rayonnement 2.5m")}
                 </span>
               </div>
             </div>
@@ -367,8 +372,8 @@ export function ProductDetailClient({
               />
               <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-auto pointer-events-none">
                 <span className="inline-block max-w-full text-[9px] uppercase tracking-widest text-[#756B6D] font-mono bg-white/90 px-2.5 py-1 rounded-full backdrop-blur-sm border border-[#541B28]/15 shadow-sm leading-relaxed">
-                  <span className="sm:hidden">&sim; Touchez pour diffuser</span>
-                  <span className="hidden sm:inline">&sim; Touchez ou survolez pour diffuser l&apos;onde olfactive</span>
+                  <span className="sm:hidden">{t("pavilion.tap_diffuse_mobile", "~ Touchez pour diffuser")}</span>
+                  <span className="hidden sm:inline">{t("pavilion.tap_diffuse_desktop", "~ Touchez ou survolez pour diffuser l'onde olfactive")}</span>
                 </span>
               </div>
             </div>
@@ -378,7 +383,7 @@ export function ProductDetailClient({
           <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-12 mb-20 shadow-xl">
             <div className="text-center max-w-xl mx-auto mb-8">
               <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold block mb-1">
-                Architecture Harmonique
+                {t("product.harmonic_arch", "Architecture Harmonique")}
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light">
                 {t("product.interactive_pyramid", "La Pyramide Olfactive")}
@@ -394,7 +399,7 @@ export function ProductDetailClient({
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   {t("product.head_notes", "Notes de Tête (Première Impression)")}
                 </span>
-                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Éveil</h4>
+                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">{t("product.layer_awakening", "L'Éveil")}</h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.topNotes.map((n, i) => (
                     <button
@@ -419,7 +424,7 @@ export function ProductDetailClient({
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   {t("product.heart_notes", "Notes de Cœur (Signature Centrale)")}
                 </span>
-                <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">L&apos;Âme du Sillage</h4>
+                <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">{t("product.layer_soul", "L'Âme du Sillage")}</h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.heartNotes.map((n, i) => (
                     <button
@@ -444,7 +449,7 @@ export function ProductDetailClient({
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
                   {t("product.base_notes", "Notes de Fond (Tenue Inoubliable)")}
                 </span>
-                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Empreinte</h4>
+                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">{t("product.layer_imprint", "L'Empreinte")}</h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.baseNotes.map((n, i) => (
                     <button

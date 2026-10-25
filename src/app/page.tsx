@@ -324,24 +324,24 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  name: "Sarra M.",
-                  city: "Tunis",
-                  perfume: "Onde d'Or (100ml)",
-                  comment: "Une tenue impressionnante. Je l'ai mis le matin avant de partir travailler, et le soir mes collègues me demandaient encore le nom de mon parfum. Le flacon cylindrique est somptueux !",
+                  name: t("reviews.r1_name", "Sarra M."),
+                  city: t("reviews.r1_city", "Tunis"),
+                  perfume: t("reviews.r1_perfume", "Onde d'Or (100ml)"),
+                  comment: t("reviews.r1_comment", "Une tenue impressionnante. Je l'ai mis le matin avant de partir travailler, et le soir mes collègues me demandaient encore le nom de mon parfum. Le flacon cylindrique est somptueux !"),
                   rating: 5,
                 },
                 {
-                  name: "Karim B.",
-                  city: "Sousse",
-                  perfume: "Oud Impérial (100ml)",
-                  comment: "J'ai commandé pour l'anniversaire de mon père. Le QR code avec son nom personnalisé sur la bouteille l'a énormément touché. Livraison reçue en 24h chrono.",
+                  name: t("reviews.r2_name", "Karim B."),
+                  city: t("reviews.r2_city", "Sousse"),
+                  perfume: t("reviews.r2_perfume", "Oud Impérial (100ml)"),
+                  comment: t("reviews.r2_comment", "J'ai commandé pour l'anniversaire de mon père. Le QR code avec son nom personnalisé sur la bouteille l'a énormément touché. Livraison reçue en 24h chrono."),
                   rating: 5,
                 },
                 {
-                  name: "Amira K.",
-                  city: "Sfax",
-                  perfume: "Néroli Flottant (50ml)",
-                  comment: "Une fleur d'oranger pure et délicate qui rappelle les jardins de Nabeul. Très frais et élégant sans être agressif. Je recommanderai sans hésiter !",
+                  name: t("reviews.r3_name", "Amira K."),
+                  city: t("reviews.r3_city", "Sfax"),
+                  perfume: t("reviews.r3_perfume", "Néroli Flottant (50ml)"),
+                  comment: t("reviews.r3_comment", "Une fleur d'oranger pure et délicate qui rappelle les jardins de Nabeul. Très frais et élégant sans être agressif. Je recommanderai sans hésiter !"),
                   rating: 5,
                 },
               ].map((rev, idx) => (

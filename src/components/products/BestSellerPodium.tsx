@@ -14,13 +14,14 @@ import { getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { ProductCard } from "./ProductCard";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct, getLocalizedProducts } from "@/lib/i18n/catalogueLocale";
 
 interface BestSellerPodiumProps {
   products: Product[];
 }
 
 export function BestSellerPodium({ products: initialProducts }: BestSellerPodiumProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
@@ -34,9 +35,13 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
   }, []);
 
   // Top 3 Podium: rank 1, 2, 3
-  const first = productsList.find((p) => p.bestsellerRank === 1) || productsList[0];
-  const second = productsList.find((p) => p.bestsellerRank === 2) || productsList[1];
-  const third = productsList.find((p) => p.bestsellerRank === 3) || productsList[2];
+  const rawFirst = productsList.find((p) => p.bestsellerRank === 1) || productsList[0];
+  const rawSecond = productsList.find((p) => p.bestsellerRank === 2) || productsList[1];
+  const rawThird = productsList.find((p) => p.bestsellerRank === 3) || productsList[2];
+
+  const first = rawFirst ? getLocalizedProduct(rawFirst, locale) : rawFirst;
+  const second = rawSecond ? getLocalizedProduct(rawSecond, locale) : rawSecond;
+  const third = rawThird ? getLocalizedProduct(rawThird, locale) : rawThird;
 
   // Selected formats for podium
   const [firstFormat, setFirstFormat] = useState<"50ml" | "100ml">("100ml");
@@ -44,8 +49,9 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
   const [thirdFormat, setThirdFormat] = useState<"50ml" | "100ml">("50ml");
 
   // Remaining 7 bestsellers
-  const otherBestsellers = productsList.filter(
-    (p) => p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10
+  const otherBestsellers = getLocalizedProducts(
+    productsList.filter((p) => p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10),
+    locale
   );
 
   const handleQuickAdd = (p: Product, size: "50ml" | "100ml") => {
@@ -60,7 +66,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
       unitPriceMillimes: fmt.priceMillimes,
       quantity: 1,
     });
-    showToast("Flacon réservé", `${p.name} (${fmt.size}) — ${formatTND(fmt.priceTND)}`, "luxury");
+    showToast(t("toast.added_to_cart", "Flacon réservé"), `${p.name} (${fmt.size}) — ${formatTND(fmt.priceTND)}`, "luxury");
   };
 
   return (
@@ -182,7 +188,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
 
                 <div className="absolute -top-6 px-4 py-1.5 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-xl border border-[#C7A66A]/40">
                   <WaveMonogram size="xs" variant="gold" />
-                  <span>N°1 des Ventes • Onde d&apos;Or</span>
+                  <span>{t("bestsellers.podium_rank1", "N°1 des Ventes • Onde d'Or")}</span>
                 </div>
 
                 <div className="relative w-56 h-64 my-3 overflow-hidden rounded-2xl border border-[#541B28]/20 dark:border-[#C7A66A]/30 bg-[#FAF7F2] dark:bg-[#0E0709] shadow-inner">

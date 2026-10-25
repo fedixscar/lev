@@ -78,10 +78,91 @@ const PYRAMID_ACTS: PyramidAct[] = [
   },
 ];
 
+function getLocalizedActs(locale: "fr" | "ar" | "en", t: (k: string, f?: string) => string): PyramidAct[] {
+  const ingredientsMap: Record<"head" | "heart" | "base", Record<"fr" | "ar" | "en", { name: string; origin: string; role: string }[]>> = {
+    head: {
+      fr: [
+        { name: "Safran Pur", origin: "Méditerranée", role: "Éclat doré & chaleur vive" },
+        { name: "Néroli Distillé", origin: "Nabeul, Cap Bon", role: "Fraîcheur florale cristalline" },
+        { name: "Bergamote Noble", origin: "Calabre", role: "Zeste solaire pétillant" },
+        { name: "Baies Roses", origin: "Océan Indien", role: "Vibration épicée subtile" },
+      ],
+      ar: [
+        { name: "زعفران نقي", origin: "حوض المتوسط", role: "بريق ذهبي ودفء حيوي" },
+        { name: "نيرولي مقطر", origin: "نابل، الوطن القبلي", role: "انتعاش زهري نقي" },
+        { name: "برغموت راقٍ", origin: "كالابريا", role: "حمضيات شمسية فوارة" },
+        { name: "توت وردي", origin: "المحيط الهندي", role: "نفحة تابلية لطيفة" },
+      ],
+      en: [
+        { name: "Pure Saffron", origin: "Mediterranean", role: "Golden radiance & lively warmth" },
+        { name: "Distilled Neroli", origin: "Nabeul, Cap Bon", role: "Crystalline floral freshness" },
+        { name: "Noble Bergamot", origin: "Calabria", role: "Sparkling solar zest" },
+        { name: "Pink Peppercorn", origin: "Indian Ocean", role: "Subtle spicy vibration" },
+      ],
+    },
+    heart: {
+      fr: [
+        { name: "Bois d'Olivier", origin: "Cap Bon centenaire", role: "Texture boisée chaleureuse" },
+        { name: "Rose Centifolia", origin: "Damas", role: "Élégance florale noble" },
+        { name: "Fleur d'Oranger", origin: "Cap Bon", role: "Douceur solaire envoûtante" },
+        { name: "Cèdre de l'Atlas", origin: "Atlas marocain", role: "Structure boisée raffinée" },
+      ],
+      ar: [
+        { name: "خشب الزيتون", origin: "أشجار معمرة من نابل", role: "قوام خشبي دافئ" },
+        { name: "ورد جوري", origin: "دمشق", role: "أناقة زهرية نبيلة" },
+        { name: "زهر البرتقال", origin: "الوطن القبلي", role: "عذوبة شمسية ساحرة" },
+        { name: "أرز الأطلس", origin: "جبال الأطلس", role: "بنية خشبية فاخرة" },
+      ],
+      en: [
+        { name: "Olive Wood", origin: "Centenary Cap Bon", role: "Warm woody texture" },
+        { name: "Rose Centifolia", origin: "Damascus", role: "Noble floral elegance" },
+        { name: "Orange Blossom", origin: "Cap Bon", role: "Enchanting solar softness" },
+        { name: "Atlas Cedar", origin: "Moroccan Atlas", role: "Refined woody structure" },
+      ],
+    },
+    base: {
+      fr: [
+        { name: "Oud Sauvage", origin: "Orient rare", role: "Puissance & caractère" },
+        { name: "Ambre Gris Solaire", origin: "Méditerranée", role: "Chaleur & tenue exceptionnelle" },
+        { name: "Muscs Blancs Coton", origin: "Haute Parfumerie", role: "Douceur soyeuse et propre" },
+        { name: "Vanille Bourbon", origin: "Madagascar", role: "Rondeur délicate et gourmande" },
+      ],
+      ar: [
+        { name: "عود طبيعي", origin: "الشرق النادر", role: "قوة وهيبة خالدة" },
+        { name: "عنبر رمادي شمسي", origin: "المتوسط", role: "دفء وثبات فائق" },
+        { name: "مسك أبيض قطني", origin: "العطور الراقية", role: "نعومة حريرية نقية" },
+        { name: "فانيليا بوربون", origin: "مدغشقر", role: "استدارة عطرية لذيذة" },
+      ],
+      en: [
+        { name: "Wild Oud", origin: "Rare Orient", role: "Power & commanding character" },
+        { name: "Solar Ambergris", origin: "Mediterranean", role: "Exceptional warmth & longevity" },
+        { name: "Cotton White Musks", origin: "Haute Parfumerie", role: "Silken clean softness" },
+        { name: "Bourbon Vanilla", origin: "Madagascar", role: "Delicate gourmand roundness" },
+      ],
+    },
+  };
+
+  return PYRAMID_ACTS.map((act, idx) => {
+    const actKey = idx === 0 ? "act1" : idx === 1 ? "act2" : "act3";
+    return {
+      ...act,
+      actNumber: t(`pyramid.${actKey}_num`, act.actNumber),
+      title: t(`pyramid.${actKey}_title`, act.title),
+      subtitle: t(`pyramid.${actKey}_subtitle`, act.subtitle),
+      timeframe: t(`pyramid.${actKey}_time`, act.timeframe),
+      description: t(`pyramid.${actKey}_desc`, act.description),
+      sensation: t(`pyramid.${actKey}_sensation`, act.sensation),
+      badge: t(`pyramid.${actKey}_badge`, act.badge),
+      keyIngredients: ingredientsMap[act.id]?.[locale] || act.keyIngredients,
+    };
+  });
+}
+
 export function OlfactoryPyramidStage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [activeAct, setActiveAct] = useState<"head" | "heart" | "base">("heart");
-  const act = PYRAMID_ACTS.find((a) => a.id === activeAct) || PYRAMID_ACTS[1];
+  const localizedActs = getLocalizedActs(locale, t);
+  const act = localizedActs.find((a) => a.id === activeAct) || localizedActs[1];
 
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden bg-white dark:bg-[#12080D] text-[#23181A] dark:text-[#FAF7F2] border-y border-[#541B28]/15 dark:border-[#C7A66A]/20">
@@ -108,7 +189,7 @@ export function OlfactoryPyramidStage() {
 
         {/* 3 Interactive Act Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 max-w-4xl mx-auto">
-          {PYRAMID_ACTS.map((item) => {
+          {localizedActs.map((item) => {
             const isSelected = activeAct === item.id;
             return (
               <button
@@ -188,7 +269,7 @@ export function OlfactoryPyramidStage() {
 
               <div className="p-4 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm space-y-1">
                 <span className="text-[10px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold block">
-                  Empreinte Sensorielle :
+                  {t("pyramid.sensory_imprint_label", "Empreinte Sensorielle :")}
                 </span>
                 <p className="font-serif italic text-sm text-[#23181A] dark:text-[#FAF7F2]">
                   &laquo; {act.sensation} &raquo;

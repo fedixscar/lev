@@ -6,6 +6,8 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import Image from "next/image";
 import { Product } from "@/types";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct } from "@/lib/i18n/catalogueLocale";
 
 interface AuthenticityCertificateModalProps {
   product: Product;
@@ -14,10 +16,12 @@ interface AuthenticityCertificateModalProps {
 }
 
 export function AuthenticityCertificateModal({
-  product,
+  product: rawProduct,
   isOpen,
   onClose,
 }: AuthenticityCertificateModalProps) {
+  const { t, locale } = useLanguage();
+  const product = getLocalizedProduct(rawProduct, locale);
   const [copied, setCopied] = useState(false);
 
   const batchCode = `LV-2026-${product.id.slice(0, 4).toUpperCase()}-CB71`;
@@ -66,7 +70,7 @@ export function AuthenticityCertificateModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          aria-label="Fermer le certificat"
+          aria-label={t("aria.close", "Fermer")}
           className="absolute top-5 right-5 z-20 p-2 rounded-full bg-white/90 hover:bg-white text-[#541B28] border border-[#541B28]/20 transition-all cursor-pointer shadow-sm hover:scale-105"
         >
           <X className="w-4 h-4" />
@@ -78,13 +82,13 @@ export function AuthenticityCertificateModal({
             <WaveMonogram size="sm" variant="gold" />
           </div>
           <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
-            Maison Lévania • Paris • Nabeul
+            {t("cert_modal.seal_title", "Maison Lévania • Paris • Nabeul")}
           </span>
           <h2 id="cert-modal-title" className="font-serif text-2xl sm:text-4xl text-[#541B28] font-light">
-            Certificat d&apos;Authenticité &amp; de Traçabilité
+            {t("cert_modal.title", "Certificat d'Authenticité & de Traçabilité")}
           </h2>
           <p className="text-xs text-[#756B6D] max-w-md mx-auto mt-1 italic">
-            Registre officiel de haute parfumerie artisanale • Cueillette &amp; Macération certifiées
+            {t("cert_modal.subtitle", "Registre officiel de haute parfumerie artisanale • Cueillette & Macération certifiées")}
           </p>
         </div>
 
@@ -93,7 +97,7 @@ export function AuthenticityCertificateModal({
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-[#541B28]/10">
             <div>
               <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#756B6D] font-bold block">
-                Création Olfactive
+                {t("cert_modal.creation_label", "Création Olfactive")}
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl text-[#23181A] font-semibold">{product.name}</h3>
               <span className="font-cinzel text-[11px] text-[#541B28] font-medium tracking-luxury uppercase">{product.subtitle} • {product.collection}</span>
@@ -102,7 +106,7 @@ export function AuthenticityCertificateModal({
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#434B36]/10 text-[#434B36] border border-[#434B36]/30 font-cinzel text-[10px] uppercase tracking-luxury font-bold">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Vérifié Conforme
+                {t("cert_modal.verified_compliant", "Vérifié Conforme")}
               </span>
             </div>
           </div>
@@ -110,33 +114,33 @@ export function AuthenticityCertificateModal({
           {/* Technical Specifications Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 text-xs">
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Concentration</span>
-              <span className="font-serif font-bold text-[#541B28]">28% Extrait Pur</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_concentration", "Concentration")}</span>
+              <span className="font-serif font-bold text-[#541B28]">{t("cert_modal.spec_concentration_val", "28% Extrait Pur")}</span>
             </div>
 
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Macération</span>
-              <span className="font-semibold text-[#23181A]">180 Jours en Verre Obscurci</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_maceration", "Macération")}</span>
+              <span className="font-semibold text-[#23181A]">{t("cert_modal.spec_maceration_val", "180 Jours en Verre Obscurci")}</span>
             </div>
 
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Terroir Clé</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_terroir", "Terroir Clé")}</span>
               <span className="font-semibold text-[#23181A]">Cap Bon, Nabeul</span>
             </div>
 
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Cire &amp; Scellé</span>
-              <span className="font-semibold text-[#23181A]">Tampon d&apos;Artisan Manuel</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_wax", "Cire & Scellé")}</span>
+              <span className="font-semibold text-[#23181A]">{t("cert_modal.spec_wax_val", "Tampon d'Artisan Manuel")}</span>
             </div>
 
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Millésime</span>
-              <span className="font-semibold text-[#23181A]">Édition 2026</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_vintage", "Millésime")}</span>
+              <span className="font-semibold text-[#23181A]">{t("cert_modal.spec_vintage_val", "Édition 2026")}</span>
             </div>
 
             <div>
-              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">Flaconnage</span>
-              <span className="font-semibold text-[#23181A]">Verre Haute Densité</span>
+              <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">{t("cert_modal.spec_glass", "Flaconnage")}</span>
+              <span className="font-semibold text-[#23181A]">{t("cert_modal.spec_glass_val", "Verre Haute Densité")}</span>
             </div>
           </div>
         </div>
@@ -149,7 +153,7 @@ export function AuthenticityCertificateModal({
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">
-                N° de Lot Sécurisé • Clé d&apos;Authenticité
+                {t("cert_modal.batch_label", "N° de Lot Sécurisé • Clé d'Authenticité")}
               </span>
               <span className="font-mono text-sm font-bold text-[#541B28] tracking-wider">
                 {batchCode}
@@ -164,12 +168,12 @@ export function AuthenticityCertificateModal({
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-emerald-700">Copié</span>
+                <span className="text-emerald-700">{t("cert_modal.copied_btn", "Copié")}</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span>Copier le N°</span>
+                <span>{t("cert_modal.copy_btn", "Copier le N°")}</span>
               </>
             )}
           </button>
@@ -179,14 +183,14 @@ export function AuthenticityCertificateModal({
         <div className="relative z-10 flex items-center justify-between pt-4 border-t border-[#541B28]/15 text-[11px] text-[#756B6D]">
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-[#C7A66A]" />
-            <span>Formulé selon les préceptes de la Haute Parfumerie</span>
+            <span>{t("cert_modal.haute_parfumerie_vow", "Formulé selon les préceptes de la Haute Parfumerie")}</span>
           </div>
 
-          <div className="text-right">
+          <div className="text-right rtl:text-left">
             <span className="font-serif italic font-bold text-[#541B28] text-sm block">
-              Atelier Lévania
+              {t("cert_modal.atelier_title", "Atelier Lévania")}
             </span>
-            <span className="text-[10px] text-[#756B6D]">Maître Nez Parfumeur</span>
+            <span className="text-[10px] text-[#756B6D]">{t("cert_modal.master_perfumer", "Maître Nez Parfumeur")}</span>
           </div>
         </div>
       </div>

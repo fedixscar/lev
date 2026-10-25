@@ -13,9 +13,11 @@ import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { ArrowRight } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedCollections } from "@/lib/i18n/catalogueLocale";
 
 export default function CollectionsPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const collections = getLocalizedCollections(COLLECTIONS, locale);
   const [activeCollectionSlug, setActiveCollectionSlug] = useState<string>("signature");
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
 
@@ -27,7 +29,7 @@ export default function CollectionsPage() {
   }, []);
 
   const activeCollection =
-    COLLECTIONS.find((c) => c.slug === activeCollectionSlug) || COLLECTIONS[0];
+    collections.find((c) => c.slug === activeCollectionSlug) || collections[0];
   const collectionProducts = products.filter(
     (p) => p.collectionSlug === activeCollectionSlug
   );
@@ -59,7 +61,7 @@ export default function CollectionsPage() {
 
           {/* Collection Tab Selectors */}
           <div className="flex justify-center gap-3.5 sm:gap-4 mb-14 sm:mb-16 flex-wrap">
-            {COLLECTIONS.map((col) => (
+            {collections.map((col) => (
               <button
                 key={col.slug}
                 onClick={() => setActiveCollectionSlug(col.slug)}

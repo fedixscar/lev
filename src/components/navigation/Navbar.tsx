@@ -59,7 +59,7 @@ export function Navbar() {
     { href: "/discover", label: t("nav.discover", "Trouver Mon Parfum"), highlight: true, icon: Compass },
     { href: "/compose-box", label: t("nav.compose", "Composer Mon Coffret"), icon: Gift },
     { href: "/promotions", label: t("nav.promotions", "Offres du Mois") },
-    { href: "/mystery-box", label: "Mystery Box" },
+    { href: "/mystery-box", label: t("nav.mystery_box", "Mystery Box") },
     { href: "/account/luck", label: t("wheel.title", "Roue Cadeau"), badge: currentTier || undefined, icon: Flame },
   ];
 
@@ -80,7 +80,7 @@ export function Navbar() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 text-[#541B28] dark:text-[#DFC68B] hover:text-[#852538] dark:hover:text-[#FAF7F2] rounded-xl focus:outline-none transition-colors"
-                aria-label="Menu Principal"
+                aria-label={t("nav.main_menu", "Menu Principal")}
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -220,7 +220,7 @@ export function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  aria-label="Connexion"
+                  aria-label={t("nav.login", "Connexion")}
                   className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/25 dark:border-[#C7A66A]/35 text-xs text-[#541B28] dark:text-[#DFC68B] font-cinzel font-bold tracking-wider hover:bg-[#FAF7F2] dark:hover:bg-[#251019] hover:border-[#541B28] dark:hover:border-[#DFC68B] transition-all shadow-xs active:scale-98"
                 >
                   <User className="w-3.5 h-3.5" />
@@ -237,7 +237,7 @@ export function Navbar() {
                     ? "border-[#C7A66A] shadow-md shadow-[#C7A66A]/25 text-[#541B28] dark:text-[#DFC68B]"
                     : "border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] hover:border-[#541B28] dark:hover:border-[#DFC68B]"
                 )}
-                aria-label="Ouvrir le panier"
+                aria-label={t("cart.open_cart", "Ouvrir le panier")}
               >
                 <ShoppingBag className="w-4 h-4" />
                 {totalItemsCount > 0 && (
@@ -266,14 +266,14 @@ export function Navbar() {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-[#FAF7F2] dark:bg-[#0E0709] border-r border-[#541B28]/20 dark:border-[#C7A66A]/30 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
+          <div className="fixed inset-y-0 left-0 rtl:left-auto rtl:right-0 w-4/5 max-w-sm bg-[#FAF7F2] dark:bg-[#0E0709] border-r rtl:border-r-0 rtl:border-l border-[#541B28]/20 dark:border-[#C7A66A]/30 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
                 <LevaniaLogo size="sm" />
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-1 text-[#756B6D] hover:text-[#541B28] dark:hover:text-[#FAF7F2]"
-                  aria-label="Fermer"
+                  aria-label={t("common.close", "Fermer")}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -378,7 +378,7 @@ export function Navbar() {
             <div className="pt-6 border-t border-[#541B28]/10 flex flex-col items-center gap-2">
               <WaveMonogram size="sm" variant="gold" withSeal={false} />
               <div className="text-[11px] text-[#756B6D] text-center tracking-wider">
-                LÉVANIA PARFUMS • Haute Parfumerie Tunisienne
+                {t("nav.brand_subtitle", "LÉVANIA PARFUMS • Haute Parfumerie Tunisienne")}
               </div>
             </div>
           </div>

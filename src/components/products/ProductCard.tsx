@@ -12,6 +12,7 @@ import { useNotification } from "@/context/NotificationContext";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct } from "@/lib/i18n/catalogueLocale";
 
 interface ProductCardProps {
   product: Product;
@@ -19,8 +20,9 @@ interface ProductCardProps {
   priority?: boolean;
 }
 
-export function ProductCard({ product, className, priority = false }: ProductCardProps) {
-  const { t } = useLanguage();
+export function ProductCard({ product: rawProduct, className, priority = false }: ProductCardProps) {
+  const { t, locale } = useLanguage();
+  const product = getLocalizedProduct(rawProduct, locale);
   const { addItem } = useCart();
   const { showToast } = useNotification();
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("50ml");
@@ -45,7 +47,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
     });
 
     showToast(
-      "Flacon ajouté à votre panier",
+      t("toast.added_to_cart", "Flacon ajouté à votre panier"),
       `${product.name} (${selectedFormat}) — ${formatTND(activeFormat.priceTND)}`,
       "luxury"
     );
@@ -83,7 +85,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
               familyColors[product.fragranceFamily] || "bg-white dark:bg-[#180B10] text-[#541B28] dark:text-[#DFC68B] border-[#541B28]/30 dark:border-[#C7A66A]/30"
             )}
           >
-            {product.fragranceFamily}
+            {t("family." + product.fragranceFamily.toLowerCase(), product.fragranceFamily)}
           </span>
 
           <button
@@ -92,7 +94,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
               e.stopPropagation();
               setIsWishlisted(!isWishlisted);
               showToast(
-                isWishlisted ? "Retiré de vos favoris" : "Ajouté à vos favoris",
+                isWishlisted ? t("toast.removed_wishlist", "Retiré de vos favoris") : t("toast.added_wishlist", "Ajouté à vos favoris"),
                 product.name,
                 "info"
               );
@@ -103,7 +105,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
                 ? "bg-[#541B28] border-[#541B28] text-white"
                 : "bg-white/90 dark:bg-[#180B10]/90 border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2] hover:border-[#541B28]"
             )}
-            aria-label="Ajouter aux favoris"
+            aria-label={t("aria.add_wishlist", "Ajouter aux favoris")}
           >
             <Heart className={cn("w-3.5 h-3.5", isWishlisted && "fill-current text-rose-500")} />
           </button>

@@ -13,6 +13,7 @@ import { useNotification } from "@/context/NotificationContext";
 import { SignatureWave } from "@/components/brand/SignatureWave";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct } from "@/lib/i18n/catalogueLocale";
 
 interface QuestionStep {
   id: string;
@@ -237,12 +238,32 @@ export function PerfumeFinder() {
         }
 
         let reason = `Correspondance parfaite avec vos affinités pour les accords ${prod.fragranceFamily.toLowerCase()}s et une intensité ${prod.intensity.toLowerCase()}.`;
-        if (prod.bestsellerRank === 1) {
-          reason = "Notre N°1 Absolu: un accord ambré majestueux qui sublime chaque instant de prestige.";
-        } else if (prod.slug === "sillage-d-olivier") {
-          reason = "Alliance noble d'arômes boisés méditerranéens et de sérénité aristocratique.";
-        } else if (prod.slug === "neroli-flottant") {
-          reason = "Une caresse de néroli solaire et de fleurs blanches, aérienne et lumineuse.";
+        if (locale === "ar") {
+          reason = `توافق مثالي مع تفضيلاتكم لنفحات العائلة العطرية ودرجة الفوحان المختارة.`;
+          if (prod.bestsellerRank === 1) {
+            reason = "عطرنا الأكثر طلبًا وتألقًا: توليفة عنبرية ملكية تمنحك هيبة وحضورًا فائق التميز.";
+          } else if (prod.slug === "sillage-d-olivier") {
+            reason = "تناغم نبيل بين دفء أخشاب الزيتون المتوسطية وأصالة التراث التونسي الرفيع.";
+          } else if (prod.slug === "neroli-flottant") {
+            reason = "لمسة نيرولي منعشة وزهور بيضاء متفتحة، إشراقة نقية مشبعة بنسيم نابل.";
+          }
+        } else if (locale === "en") {
+          reason = `Perfect match with your affinity for ${prod.fragranceFamily.toLowerCase()} accords and ${prod.intensity.toLowerCase()} intensity.`;
+          if (prod.bestsellerRank === 1) {
+            reason = "Our Absolute #1: a majestic amber accord elevating every moment of prestige.";
+          } else if (prod.slug === "sillage-d-olivier") {
+            reason = "Noble alliance of Mediterranean olive wood and aristocratic serenity.";
+          } else if (prod.slug === "neroli-flottant") {
+            reason = "A caress of solar neroli and white blossoms, airy and radiant.";
+          }
+        } else {
+          if (prod.bestsellerRank === 1) {
+            reason = "Notre N°1 Absolu: un accord ambré majestueux qui sublime chaque instant de prestige.";
+          } else if (prod.slug === "sillage-d-olivier") {
+            reason = "Alliance noble d'arômes boisés méditerranéens et de sérénité aristocratique.";
+          } else if (prod.slug === "neroli-flottant") {
+            reason = "Une caresse de néroli solaire et de fleurs blanches, aérienne et lumineuse.";
+          }
         }
 
         return {
@@ -322,7 +343,9 @@ export function PerfumeFinder() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {recommendations.map(({ product, matchScore, reason }, idx) => (
+            {recommendations.map(({ product: rawProduct, matchScore, reason }, idx) => {
+              const product = getLocalizedProduct(rawProduct, locale);
+              return (
               <div
                 key={product.id}
                 className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 p-6 sm:p-7 flex flex-col justify-between hover:border-[#C7A66A] dark:hover:border-[#DFC68B] transition-all duration-300 shadow-sm hover:shadow-2xl group"
@@ -390,7 +413,8 @@ export function PerfumeFinder() {
                   </button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="text-center mt-12 sm:mt-16">

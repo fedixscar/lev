@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ShoppingBag, ArrowRight } from "lucide-react";
 import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedProduct } from "@/lib/i18n/catalogueLocale";
 
 interface StickyPurchaseBarProps {
   product: Product;
@@ -21,6 +23,8 @@ export function StickyPurchaseBar({
   onAddToCart,
   onBuyNow,
 }: StickyPurchaseBarProps) {
+  const { t, locale } = useLanguage();
+  const locProduct = getLocalizedProduct(product, locale);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -44,7 +48,7 @@ export function StickyPurchaseBar({
 
   return (
     <aside
-      aria-label="Barre d'achat rapide"
+      aria-label={t("sticky.quick_bar_aria", "Barre d'achat rapide")}
       className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-xl border-t border-[#541B28]/20 shadow-2xl py-3 px-4 sm:px-6 transition-transform animate-in slide-in-from-bottom duration-300"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
@@ -53,17 +57,17 @@ export function StickyPurchaseBar({
           <div className="relative w-11 h-11 rounded-xl overflow-hidden border border-[#541B28]/20 bg-white shrink-0 shadow-sm">
             <Image
               src={product.images.main}
-              alt={product.name}
+              alt={locProduct.name}
               fill
               className="object-cover"
             />
           </div>
           <div className="min-w-0">
             <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block truncate">
-              {product.collection}
+              {locProduct.collection}
             </span>
             <h4 className="font-serif text-sm sm:text-base text-[#541B28] font-bold truncate">
-              {product.name}
+              {locProduct.name}
             </h4>
           </div>
         </div>
@@ -90,7 +94,7 @@ export function StickyPurchaseBar({
           </div>
 
           {/* Price */}
-          <div className="text-right">
+          <div className="text-right rtl:text-left">
             <span className="font-serif text-base sm:text-lg text-[#541B28] font-bold block whitespace-nowrap">
               {formatTND(activeFormat.priceTND)}
             </span>
@@ -101,10 +105,10 @@ export function StickyPurchaseBar({
             type="button"
             onClick={onAddToCart}
             className="p-2.5 sm:px-4 sm:py-2.5 rounded-xl bg-white hover:bg-[#FAF7F2] text-[#541B28] border border-[#541B28]/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
-            title="Ajouter au Panier"
+            title={t("shop.add_to_cart", "Ajouter au Panier")}
           >
             <ShoppingBag className="w-4 h-4 text-[#541B28]" />
-            <span className="hidden sm:inline">Ajouter</span>
+            <span className="hidden sm:inline">{t("sticky.add", "Ajouter")}</span>
           </button>
 
           <button
@@ -112,8 +116,8 @@ export function StickyPurchaseBar({
             onClick={onBuyNow}
             className="px-4 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-md shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span className="hidden sm:inline">Commander</span>
-            <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+            <span className="hidden sm:inline">{t("sticky.order", "Commander")}</span>
+            <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
           </button>
         </div>
       </div>

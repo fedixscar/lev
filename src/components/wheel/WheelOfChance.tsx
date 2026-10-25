@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
-import { Trophy, Flame, Crown, ShieldAlert, Copy, Check } from "lucide-react";
+import { Flame, Crown, ShieldAlert, Copy, Check } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -37,8 +37,8 @@ export function WheelOfChance() {
   const handleLaunchSpin = async () => {
     if (luckBalance < 1) {
       showToast(
-        "Solde de Luck insuffisant",
-        "Passez commande sur le site pour accumuler de la Luck (1 Luck par 10 TND dépensés).",
+        t("wheel.insufficient_luck_title", "Solde de Luck insuffisant"),
+        t("wheel.insufficient_luck_desc", "Passez commande sur le site pour accumuler de la Luck (1 Luck par 10 TND dépensés)."),
         "error"
       );
       return;
@@ -46,10 +46,8 @@ export function WheelOfChance() {
 
     try {
       setAnimating(true);
-      // Determine outcome from server / loyalty context first
       const result = await spinWheel();
 
-      // Calculate dramatic spin rotation (e.g. 5 full rotations + random angle offset)
       const extraRotations = 360 * 6;
       const sliceAngle = 360 / slices.length;
       const targetAngle = Math.floor(Math.random() * slices.length) * sliceAngle;
@@ -74,14 +72,14 @@ export function WheelOfChance() {
         }
 
         showToast(
-          "Récompense Lévania Révélée !",
+          t("wheel.revealed_toast", "Récompense Lévania Révélée !"),
           `${result.rewardLabel} (${result.tier})`,
           "luxury"
         );
       }, 4500);
     } catch (err: unknown) {
       setAnimating(false);
-      showToast("Erreur", err instanceof Error ? err.message : "Erreur de lancement", "error");
+      showToast(t("common.error", "Erreur"), err instanceof Error ? err.message : "Erreur de lancement", "error");
     }
   };
 
@@ -89,34 +87,34 @@ export function WheelOfChance() {
     navigator.clipboard.writeText(code);
     setCopiedCoupon(true);
     setTimeout(() => setCopiedCoupon(false), 3000);
-    showToast("Code copié", code, "success");
+    showToast(t("wheel.code_copied_toast", "Code copié"), code, "success");
   };
 
   // Tier styling theme adapted for ivory, burgundy and gold
   const tierTheme = {
     "Normal Wave": {
-      name: "Onde Initiale (1–100 Luck)",
+      name: t("wheel.tier_initial", "Onde Initiale (1–100 Luck)"),
       border: "border-[#541B28]/20 shadow-sm",
-      accent: "text-[#541B28]",
-      bg: "bg-white",
+      accent: "text-[#541B28] dark:text-[#DFC68B]",
+      bg: "bg-white dark:bg-[#180B10]",
       icon: GoldStarLozenge,
     },
     "Fire Wave": {
-      name: "Onde Ardente (101–1,000 Luck)",
+      name: t("wheel.tier_ardent", "Onde Ardente (101–1,000 Luck)"),
       border: "border-[#852538] shadow-[0_0_25px_rgba(133,37,56,0.15)]",
-      accent: "text-[#852538]",
-      bg: "bg-gradient-to-r from-white via-rose-50/50 to-white",
+      accent: "text-[#852538] dark:text-[#EACCA0]",
+      bg: "bg-gradient-to-r from-white via-rose-50/50 to-white dark:from-[#180B10] dark:via-[#220B13] dark:to-[#180B10]",
       icon: Flame,
     },
     "Royal Wave": {
-      name: "Onde Royale (1,001–7,776 Luck)",
+      name: t("wheel.tier_royal", "Onde Royale (1,001–7,776 Luck)"),
       border: "border-[#C7A66A] shadow-[0_0_35px_rgba(199,166,106,0.25)]",
-      accent: "text-[#541B28]",
-      bg: "bg-gradient-to-r from-white via-amber-50/50 to-white",
+      accent: "text-[#541B28] dark:text-[#DFC68B]",
+      bg: "bg-gradient-to-r from-white via-amber-50/50 to-white dark:from-[#180B10] dark:via-[#251810] dark:to-[#180B10]",
       icon: Crown,
     },
     "Admin Wave": {
-      name: "Onde Impériale Suprême — Sceau 7,777",
+      name: t("wheel.tier_imperial", "Onde Impériale Suprême — Sceau 7,777"),
       border: "border-[#DFC68B] shadow-[0_0_50px_rgba(223,198,139,0.35)]",
       accent: "text-[#DFC68B]",
       bg: "bg-gradient-to-r from-[#3B121C] via-[#541B28] to-[#3B121C] text-[#FAF7F2]",
@@ -142,34 +140,36 @@ export function WheelOfChance() {
             <TierIcon className="w-9 h-9 animate-pulse text-[#C7A66A]" />
           </div>
           <div>
-            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold mb-1">
-              Votre Niveau de Fidélité
+            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold mb-1">
+              {t("wheel.tier_level_title", "Votre Niveau de Fidélité")}
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-light text-[#23181A]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-light text-[#23181A] dark:text-[#FAF7F2]">
               {currentTheme.name}
             </h2>
-            <p className="text-xs text-[#5A4B4E] opacity-80 mt-1 font-light">
-              {t("wheel.balance", "Solde Actuel")}: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Maximum: 7,777
+            <p className="text-xs text-[#5A4B4E] dark:text-[#D8CCD0] opacity-80 mt-1 font-light">
+              {t("wheel.balance", "Solde Actuel")}: <strong className="font-cinzel text-[#541B28] dark:text-[#DFC68B] text-sm font-bold">{luckBalance} Luck</strong> • Cap Maximum: 7,777
             </p>
           </div>
         </div>
 
         {/* Tier Milestones Progress */}
         <div className="w-full md:w-auto flex flex-col gap-2 min-w-[300px]">
-          <div className="flex justify-between font-cinzel text-[10px] tracking-wider text-[#756B6D] font-medium uppercase">
-            <span>Initiale (1)</span>
-            <span>Ardente (101)</span>
-            <span>Royale (1001)</span>
-            <span>Impériale (7777)</span>
+          <div className="flex justify-between font-cinzel text-[10px] tracking-wider text-[#756B6D] dark:text-[#A8989C] font-medium uppercase">
+            <span>{t("wheel.milestone_initial", "Initiale (1)")}</span>
+            <span>{t("wheel.milestone_ardent", "Ardente (101)")}</span>
+            <span>{t("wheel.milestone_royal", "Royale (1001)")}</span>
+            <span>{t("wheel.milestone_imperial", "Impériale (7777)")}</span>
           </div>
-          <div className="w-full h-3 bg-[#FAF7F2] rounded-full overflow-hidden p-0.5 border border-[#541B28]/20">
+          <div className="w-full h-3 bg-[#FAF7F2] dark:bg-[#0E0709] rounded-full overflow-hidden p-0.5 border border-[#541B28]/20 dark:border-[#C7A66A]/30">
             <div
               className="h-full bg-gradient-to-r from-[#541B28] via-[#852538] to-[#C7A66A] rounded-full transition-all duration-1000 shadow-sm"
               style={{ width: `${Math.min(100, (luckBalance / 7777) * 100)}%` }}
             />
           </div>
-          <div className="text-right font-cinzel text-[10px] tracking-luxury text-[#541B28] font-bold">
-            {luckBalance >= 7777 ? "Palier Exceptionnel Atteint !" : `Plus que ${7777 - luckBalance} Luck pour l'Onde Impériale`}
+          <div className="text-right rtl:text-left font-cinzel text-[10px] tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold">
+            {luckBalance >= 7777
+              ? t("wheel.milestone_reached", "Palier Exceptionnel Atteint !")
+              : t("wheel.milestone_remaining", "Plus que {n} Luck pour l'Onde Impériale").replace("{n}", String(7777 - luckBalance))}
           </div>
         </div>
       </div>
@@ -252,14 +252,14 @@ export function WheelOfChance() {
                 "pointer-events-auto w-24 h-24 rounded-full border-2 border-[#C7A66A] shadow-2xl flex flex-col items-center justify-center transition-all duration-300",
                 luckBalance >= 1
                   ? "bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_30px_rgba(84,27,40,0.5)]"
-                  : "bg-white text-[#756B6D] border-[#541B28]/20 cursor-not-allowed"
+                  : "bg-white dark:bg-[#180B10] text-[#756B6D] dark:text-[#A8989C] border-[#541B28]/20 dark:border-[#C7A66A]/20 cursor-not-allowed"
               )}
             >
               <div className="mb-0.5">
                 <WaveMonogram size="sm" variant="gold" withSeal={false} />
               </div>
               <span className="font-cinzel text-[11px] font-bold uppercase tracking-luxury">
-                {animating ? "Tirage..." : t("wheel.spin_btn", "TOURNER")}
+                {animating ? t("wheel.spinning", "Tirage...") : t("wheel.spin_btn", "TOURNER")}
               </span>
               <span className="font-cinzel text-[9px] opacity-90 text-[#C7A66A] tracking-wider">
                 {luckBalance >= 1 ? `${luckBalance} Luck` : "0 Luck"}
@@ -269,17 +269,10 @@ export function WheelOfChance() {
         </div>
 
         {/* Spin action explanation */}
-        <p className="text-xs sm:text-sm text-[#756B6D] mt-8 text-center max-w-md leading-relaxed font-light">
-          {luckBalance >= 1 ? (
-            <>
-              Chaque lancer consomme l&apos;intégralité de vos <strong className="font-cinzel text-[#541B28] font-bold">{luckBalance} Luck</strong>.
-              Le palier actuel garantit la table de récompenses <strong>{currentTier}</strong>.
-            </>
-          ) : (
-            <>
-              Vous avez 0 Luck actuellement. Effectuez un achat pour recharger votre balance (1 Luck par tranche de 10 TND d&apos;achat).
-            </>
-          )}
+        <p className="text-xs sm:text-sm text-[#756B6D] dark:text-[#A8989C] mt-8 text-center max-w-md leading-relaxed font-light">
+          {luckBalance >= 1
+            ? t("wheel.rules_has_luck", "Chaque lancer consomme l'intégralité de vos {n} Luck. Le palier actuel garantit la table de récompenses {tier}.").replace("{n}", String(luckBalance)).replace("{tier}", currentTier || "")
+            : t("wheel.rules_no_luck", "Vous avez 0 Luck actuellement. Effectuez un achat pour recharger votre balance (1 Luck par tranche de 10 TND d'achat).")}
         </p>
       </div>
 
@@ -295,7 +288,7 @@ export function WheelOfChance() {
               {activeResult.tier}
             </div>
 
-            <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light mt-1 mb-2">
+            <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient dark:text-[#DFC68B] font-light mt-1 mb-2">
               {activeResult.rewardLabel}
             </h3>
 
@@ -306,7 +299,7 @@ export function WheelOfChance() {
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
               <div className="p-4 rounded-xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/25 mb-6">
-                <span className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1 font-bold">
+                <span className="font-cinzel text-[10px] text-[#756B6D] dark:text-[#A8989C] uppercase tracking-luxury block mb-1 font-bold">
                   {t("wheel.coupon_label", "Votre Code Promo")}
                 </span>
                 <div className="flex items-center justify-between gap-2 bg-white dark:bg-[#180B10] p-3 rounded-lg border border-[#541B28]/20 dark:border-[#C7A66A]/25">
@@ -315,7 +308,7 @@ export function WheelOfChance() {
                   </span>
                   <button
                     onClick={() => copyCouponCode(activeResult.couponCodeGenerated!)}
-                    className="p-1.5 rounded-md hover:bg-[#FAF7F2] text-[#541B28] transition-colors"
+                    className="p-1.5 rounded-md hover:bg-[#FAF7F2] dark:hover:bg-[#251019] text-[#541B28] dark:text-[#DFC68B] transition-colors cursor-pointer"
                     title={t("wheel.copy_code", "Copier")}
                   >
                     {copiedCoupon ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
@@ -326,7 +319,7 @@ export function WheelOfChance() {
 
             <button
               onClick={() => setActiveResult(null)}
-              className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs tracking-luxury uppercase shadow-xl transition-all active:scale-98"
+              className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs tracking-luxury uppercase shadow-xl transition-all active:scale-98 cursor-pointer"
             >
               {t("wheel.enjoy_btn", "En profiter maintenant")}
             </button>
@@ -336,26 +329,26 @@ export function WheelOfChance() {
 
       {/* Spin History Ledger */}
       {spinHistory.length > 0 && (
-        <div className="mt-16 pt-8 border-t border-[#541B28]/15">
-          <h3 className="font-serif text-xl text-[#23181A] font-semibold mb-4">
+        <div className="mt-16 pt-8 border-t border-[#541B28]/15 dark:border-[#C7A66A]/20">
+          <h3 className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] font-semibold mb-4">
             {t("wheel.history_title", "Historique de Vos Récompenses")}
           </h3>
           <div className="space-y-2">
             {spinHistory.slice(0, 5).map((spin) => (
               <div
                 key={spin.id}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-[#541B28]/10 text-xs text-[#23181A] shadow-sm"
+                className="flex items-center justify-between p-3.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#541B28]/10 dark:border-[#C7A66A]/20 text-xs text-[#23181A] dark:text-[#FAF7F2] shadow-sm"
               >
                 <div>
-                  <span className="font-serif text-sm text-[#23181A] font-medium block">
+                  <span className="font-serif text-sm text-[#23181A] dark:text-[#FAF7F2] font-medium block">
                     {spin.rewardLabel}
                   </span>
-                  <span className="text-[10px] text-[#756B6D]">
+                  <span className="text-[10px] text-[#756B6D] dark:text-[#A8989C]">
                     {new Date(spin.timestamp).toLocaleDateString("fr-FR")} • Vague: {spin.tier} ({spin.luckConsumed} Luck)
                   </span>
                 </div>
                 {spin.couponCodeGenerated && (
-                  <span className="font-mono text-[11px] text-[#541B28] font-bold bg-[#FAF7F2] px-2 py-1 rounded border border-[#541B28]/20">
+                  <span className="font-mono text-[11px] text-[#541B28] dark:text-[#DFC68B] font-bold bg-[#FAF7F2] dark:bg-[#0E0709] px-2 py-1 rounded border border-[#541B28]/20 dark:border-[#C7A66A]/30">
                     {spin.couponCodeGenerated}
                   </span>
                 )}

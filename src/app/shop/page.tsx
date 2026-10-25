@@ -56,7 +56,7 @@ const WAVE_TABS = [
 ];
 
 export default function ShopPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedWave, setSelectedWave] = useState<WaveFilter>("all");
@@ -227,7 +227,7 @@ export default function ShopPage() {
                   type="button"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-2.5 rtl:right-auto rtl:left-2.5 top-1/2 -translate-y-1/2 text-[#756B6D] hover:text-[#541B28] dark:hover:text-[#DFC68B] p-1"
-                  aria-label="Effacer la recherche"
+                  aria-label={t("shop.clear_search", "Effacer la recherche")}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -248,7 +248,7 @@ export default function ShopPage() {
                         : "bg-white dark:bg-[#1A0C13] text-[#5A4B4E] dark:text-[#D8CCD0] hover:text-[#541B28] dark:hover:text-[#DFC68B] border border-[#541B28]/15 dark:border-[#C7A66A]/20 hover:border-[#541B28] dark:hover:border-[#DFC68B]"
                     }`}
                   >
-                    {fam === "all" ? t("shop.all_families", "Toutes Familles") : fam}
+                    {fam === "all" ? t("shop.all_families", "Toutes Familles") : t("family." + fam.toLowerCase(), fam)}
                   </button>
                 ))}
               </div>

@@ -118,10 +118,57 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
   },
 };
 
+function getWaveFeatureData(expr: WaveExpression, locale: "fr" | "ar" | "en", t: (k: string, f?: string) => string): WaveFeatureData {
+  const base = WAVE_EXPRESSIONS_DATA[expr];
+  const pKey = expr === "signature" ? "sig" : expr;
+  
+  const notesMap: Record<WaveExpression, Record<"fr" | "ar" | "en", string[]>> = {
+    signature: {
+      fr: ["Safran Méditerranéen", "Bois d'Olivier", "Ambre Solaire", "Vanille Bourbon"],
+      ar: ["زعفران متوسطي", "خشب الزيتون", "عنبر شمسي", "فانيليا بوربون"],
+      en: ["Mediterranean Saffron", "Olive Wood", "Solar Amber", "Bourbon Vanilla"],
+    },
+    soft: {
+      fr: ["Néroli Pur de Nabeul", "Fleur d'Oranger", "Pétales de Jasmin", "Musc Blanc Coton"],
+      ar: ["نيرولي نابل النقي", "زهر البرتقال", "بتلات الياسمين", "مسك أبيض قطني"],
+      en: ["Pure Nabeul Neroli", "Orange Blossom", "Jasmine Petals", "Cotton White Musk"],
+    },
+    intense: {
+      fr: ["Oud Sauvage", "Cuir Noble", "Encens Noir", "Patchouli Ambré"],
+      ar: ["عود طبيعي", "جلد نبيل", "بخور أسود", "باتشولي عنبري"],
+      en: ["Wild Oud", "Noble Leather", "Black Incense", "Amber Patchouli"],
+    },
+  };
+
+  const formatMap: Record<string, Record<"fr" | "ar" | "en", string>> = {
+    "100ml Extrait": { fr: "100ml Extrait", ar: "100 مل خلاصة عطرية", en: "100ml Extrait" },
+    "50ml Eau Noble": { fr: "50ml Eau Noble", ar: "50 مل ماء عطر", en: "50ml Noble Water" },
+    "Coffret Sur-Mesure": { fr: "Coffret Sur-Mesure", ar: "صندوق مخصص", en: "Bespoke Gift Box" },
+    "100ml Extrait Pur": { fr: "100ml Extrait Pur", ar: "100 مل خلاصة نقية", en: "100ml Pure Extract" },
+  };
+
+  const localizedBestSellers = base.bestSellers.map((b) => ({
+    ...b,
+    format: formatMap[b.format]?.[locale] || b.format,
+  }));
+
+  return {
+    ...base,
+    title: t(`pavilion.${pKey}_title`, base.title),
+    tagline: t(`pavilion.${pKey}_tagline`, base.tagline),
+    paletteLabel: t(`pavilion.${pKey}_palette`, base.paletteLabel),
+    description: t(`pavilion.${pKey}_desc`, base.description),
+    sillage: t(`pavilion.${pKey}_sillage`, base.sillage),
+    longevity: t(`pavilion.${pKey}_longevity`, base.longevity),
+    notes: notesMap[expr]?.[locale] || base.notes,
+    bestSellers: localizedBestSellers,
+  };
+}
+
 export function WaveExperiencePavilion() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [activeExpression, setActiveExpression] = useState<WaveExpression>("signature");
-  const activeData = WAVE_EXPRESSIONS_DATA[activeExpression];
+  const activeData = getWaveFeatureData(activeExpression, locale, t);
 
   return (
     <section className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] relative overflow-hidden border-y border-[#541B28]/15 dark:border-[#C7A66A]/20">
@@ -151,7 +198,7 @@ export function WaveExperiencePavilion() {
             ======================================================== */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 max-w-4xl mx-auto">
           {(["signature", "soft", "intense"] as WaveExpression[]).map((expr) => {
-            const data = WAVE_EXPRESSIONS_DATA[expr];
+            const data = getWaveFeatureData(expr, locale, t);
             const isActive = activeExpression === expr;
 
             return (
@@ -187,7 +234,7 @@ export function WaveExperiencePavilion() {
                         : "bg-black/5 border-black/10 text-[#756B6D]"
                     )}
                   >
-                    {expr === "signature" ? "Signature" : expr === "soft" ? "Soyeuse" : "Sombre"}
+                    {expr === "signature" ? t("pavilion.tab_signature", "Signature") : expr === "soft" ? t("pavilion.tab_soft", "Soyeuse") : t("pavilion.tab_intense", "Sombre")}
                   </span>
                 </div>
 
@@ -273,7 +320,7 @@ export function WaveExperiencePavilion() {
                     : "bg-[#23181A]/80 border-[#C7A66A]/40 text-[#DFC68B]"
                 )}
               >
-                Extrait de Parfum • 28% Concentré
+                {t("pavilion.concentration_badge", "Extrait de Parfum • 28% Concentré")}
               </span>
             </div>
 
@@ -287,8 +334,8 @@ export function WaveExperiencePavilion() {
                     : "bg-black/50 border-[#C7A66A]/30 text-[#DFC68B]"
                 )}
               >
-                <span className="sm:hidden">&sim; Touchez pour diffuser</span>
-                <span className="hidden sm:inline">&sim; Touchez ou survolez pour diffuser l&apos;onde olfactive</span>
+                <span className="sm:hidden">{t("pavilion.tap_diffuse_mobile", "~ Touchez pour diffuser")}</span>
+                <span className="hidden sm:inline">{t("pavilion.tap_diffuse_desktop", "~ Touchez ou survolez pour diffuser l'onde olfactive")}</span>
               </span>
             </div>
           </div>
