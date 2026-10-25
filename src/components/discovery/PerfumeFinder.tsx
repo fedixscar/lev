@@ -208,14 +208,14 @@ export function PerfumeFinder() {
           <div className="text-center mb-12">
             <div className="luxury-pill mb-4 inline-flex items-center gap-2.5">
               <WaveMonogram size="xs" variant="gold" />
-              <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
+              <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                 Vos Recommandations Personnalisées
               </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light">
               Votre Parfum Idéal
             </h2>
-            <p className="text-sm text-[#5A4B4E] mt-3 max-w-xl mx-auto font-light">
+            <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] mt-3 max-w-xl mx-auto font-light">
               Voici les créations Lévania sélectionnées sur mesure selon vos goûts.
             </p>
           </div>
@@ -224,11 +224,11 @@ export function PerfumeFinder() {
             {recommendations.map(({ product, matchScore, reason }, idx) => (
               <div
                 key={product.id}
-                className="rounded-3xl bg-white border border-[#541B28]/15 p-6 sm:p-7 flex flex-col justify-between hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl group"
+                className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 p-6 sm:p-7 flex flex-col justify-between hover:border-[#C7A66A] dark:hover:border-[#DFC68B] transition-all duration-300 shadow-sm hover:shadow-2xl group"
               >
                 <div>
                   <div className="flex gap-5 items-start">
-                    <div className="relative w-28 h-32 rounded-2xl overflow-hidden bg-[#FAF7F2] shrink-0 border border-[#541B28]/15 shadow-inner">
+                    <div className="relative w-28 h-32 rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-[#0E0709] shrink-0 border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-inner">
                       <Image
                         src={product.images.main}
                         alt={product.name}
@@ -239,25 +239,25 @@ export function PerfumeFinder() {
 
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] font-bold">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                           Rang #{idx + 1}
                         </span>
-                        <span className="font-cinzel text-[10px] tracking-wider px-3 py-1 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 text-[#541B28] font-bold">
+                        <span className="font-cinzel text-[10px] tracking-wider px-3 py-1 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] font-bold">
                           {matchScore}% affinité
                         </span>
                       </div>
 
-                      <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] mt-1.5 group-hover:text-[#541B28] transition-colors font-medium">
+                      <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] dark:text-[#FAF7F2] mt-1.5 group-hover:text-[#541B28] dark:group-hover:text-[#DFC68B] transition-colors font-medium">
                         {product.name}
                       </h3>
-                      <p className="text-xs text-[#756B6D] italic mt-0.5">{product.subtitle}</p>
-                      <div className="font-cinzel text-xs text-[#541B28] font-bold tracking-luxury mt-2.5">
+                      <p className="text-xs text-[#756B6D] dark:text-[#A8989C] italic mt-0.5">{product.subtitle}</p>
+                      <div className="font-cinzel text-xs text-[#541B28] dark:text-[#DFC68B] font-bold tracking-luxury mt-2.5">
                         Dès {formatTND(product.formats[0].priceTND)}
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#5A4B4E] mt-5 p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/10 leading-relaxed font-light">
+                  <p className="text-xs text-[#5A4B4E] dark:text-[#D8CCD0] mt-5 p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/10 dark:border-[#C7A66A]/20 leading-relaxed font-light">
                     &laquo; {reason} &raquo;
                   </p>
 
@@ -265,7 +265,7 @@ export function PerfumeFinder() {
                     {product.topNotes.slice(0, 3).map((note, nIdx) => (
                       <span
                         key={nIdx}
-                        className="text-[10px] px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#756B6D] border border-[#541B28]/10 font-medium"
+                        className="text-[10px] px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#0E0709] text-[#756B6D] dark:text-[#A8989C] border border-[#541B28]/10 dark:border-[#C7A66A]/20 font-medium"
                       >
                         {note}
                       </span>
@@ -306,10 +306,10 @@ export function PerfumeFinder() {
 
       {/* Step by Step Questionnaire */}
       {!isAnalyzing && !recommendations && (
-        <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-14 shadow-2xl relative">
+        <div className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 p-8 sm:p-14 shadow-2xl relative">
           {/* Progress Indicator */}
-          <div className="flex items-center justify-between mb-10 pb-5 border-b border-[#541B28]/15">
-            <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold">
+          <div className="flex items-center justify-between mb-10 pb-5 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
+            <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold">
               Étape {currentStepIndex + 1} sur {QUESTIONS.length}
             </span>
             <div className="flex gap-2">
@@ -318,10 +318,10 @@ export function PerfumeFinder() {
                   key={i}
                   className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
                     i === currentStepIndex
-                      ? "bg-[#541B28] w-12"
+                      ? "bg-[#541B28] dark:bg-[#DFC68B] w-12"
                       : i < currentStepIndex
                       ? "bg-[#C7A66A]"
-                      : "bg-[#EAE1D2]"
+                      : "bg-[#EAE1D2] dark:bg-[#2A131E]"
                   }`}
                 />
               ))}
@@ -330,10 +330,10 @@ export function PerfumeFinder() {
 
           {/* Question Title */}
           <div className="mb-10">
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#23181A] font-light leading-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl text-[#23181A] dark:text-[#FAF7F2] font-light leading-tight">
               {currentQuestion.question}
             </h2>
-            <p className="text-sm text-[#5A4B4E] mt-3 font-light leading-relaxed">{currentQuestion.subtitle}</p>
+            <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] mt-3 font-light leading-relaxed">{currentQuestion.subtitle}</p>
           </div>
 
           {/* Options Grid */}
@@ -346,23 +346,23 @@ export function PerfumeFinder() {
                   onClick={() => handleSelectOption(opt.value)}
                   className={`p-5 rounded-2xl text-left border transition-all duration-300 flex items-center justify-between group ${
                     isSelected
-                      ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-md ring-1 ring-[#541B28]/30"
-                      : "bg-[#FAF7F2] border-[#541B28]/15 text-[#23181A] hover:border-[#541B28] hover:bg-white hover:shadow-md"
+                      ? "bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border-[#541B28] dark:border-[#DFC68B] text-[#23181A] dark:text-[#FAF7F2] shadow-md ring-1 ring-[#541B28]/30 dark:ring-[#DFC68B]/30"
+                      : "bg-[#FAF7F2] dark:bg-[#14080D] border-[#541B28]/15 dark:border-[#C7A66A]/20 text-[#23181A] dark:text-[#FAF7F2] hover:border-[#541B28] dark:hover:border-[#DFC68B] hover:bg-white dark:hover:bg-[#1C0D15] hover:shadow-md"
                   }`}
                 >
                   <div className="pr-4">
-                    <h4 className="font-serif font-medium text-base text-[#23181A] group-hover:text-[#541B28] transition-colors">
+                    <h4 className="font-serif font-medium text-base text-[#23181A] dark:text-[#FAF7F2] group-hover:text-[#541B28] dark:group-hover:text-[#DFC68B] transition-colors">
                       {opt.label}
                     </h4>
                     {opt.desc && (
-                      <p className="text-xs text-[#756B6D] mt-1 font-light leading-relaxed">{opt.desc}</p>
+                      <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1 font-light leading-relaxed">{opt.desc}</p>
                     )}
                   </div>
                   <div
                     className={`w-7 h-7 rounded-full border flex items-center justify-center shrink-0 ml-4 transition-all ${
                       isSelected
-                        ? "border-[#541B28] bg-[#541B28] text-[#FAF7F2] shadow-sm"
-                        : "border-[#756B6D]/40 group-hover:border-[#541B28] group-hover:scale-105"
+                        ? "border-[#541B28] dark:border-[#DFC68B] bg-[#541B28] dark:bg-[#DFC68B] text-[#FAF7F2] dark:text-[#23181A] shadow-sm"
+                        : "border-[#756B6D]/40 dark:border-[#C7A66A]/30 group-hover:border-[#541B28] dark:group-hover:border-[#DFC68B] group-hover:scale-105"
                     }`}
                   >
                     {isSelected ? <Check className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />}
@@ -373,11 +373,11 @@ export function PerfumeFinder() {
           </div>
 
           {/* Controls: Back & Skip */}
-          <div className="flex items-center justify-between pt-6 border-t border-[#541B28]/10">
+          <div className="flex items-center justify-between pt-6 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20">
             {currentStepIndex > 0 ? (
               <button
                 onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-                className="flex items-center gap-2 text-xs text-[#756B6D] hover:text-[#541B28] font-cinzel tracking-luxury uppercase font-semibold transition-colors"
+                className="flex items-center gap-2 text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#DFC68B] font-cinzel tracking-luxury uppercase font-semibold transition-colors"
               >
                 <ArrowLeft className="w-4 h-4 text-[#C7A66A]" />
                 <span>Question précédente</span>
@@ -388,7 +388,7 @@ export function PerfumeFinder() {
 
             <button
               onClick={handleSkip}
-              className="text-xs text-[#756B6D] hover:text-[#541B28] underline underline-offset-4 transition-colors font-medium"
+              className="text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#DFC68B] underline underline-offset-4 transition-colors font-medium"
             >
               Passer cette question
             </button>

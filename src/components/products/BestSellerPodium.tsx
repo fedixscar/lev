@@ -62,21 +62,21 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
   };
 
   return (
-    <section id="best-sellers" className="py-24 relative overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#F3ECE1]/60 to-[#FAF7F2] text-[#23181A]">
+    <section id="best-sellers" className="py-24 relative overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#F3ECE1]/60 to-[#FAF7F2] dark:from-[#0E0709] dark:via-[#14080D]/60 dark:to-[#0E0709] text-[#23181A] dark:text-[#FAF7F2]">
       {/* Background radial highlight */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#541B28]/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3.5 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3.5 shadow-xs">
             <Crown className="w-3.5 h-3.5 text-[#C7A66A]" />
             <span>Les Plus Demandés</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl text-[#541B28] font-normal tracking-tight mb-4">
+          <h2 className="font-serif text-3xl sm:text-5xl text-[#541B28] dark:text-[#DFC68B] font-normal tracking-tight mb-4">
             Nos 3 Meilleurs Parfums
           </h2>
-          <p className="text-sm text-[#756B6D] leading-relaxed">
+          <p className="text-sm text-[#756B6D] dark:text-[#A8989C] leading-relaxed">
             Découvrez les parfums préférés de nos clients, reconnus pour leur élégance et leur tenue exceptionnelle.
           </p>
         </div>
@@ -340,18 +340,18 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
 
         {/* 7 Additional Bestselling Fragrances */}
         <div>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
             <div>
-              <h3 className="font-serif text-2xl text-[#541B28] font-semibold">
+              <h3 className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-semibold">
                 Les 7 Autres Signatures Incontournables
               </h3>
-              <p className="text-xs text-[#756B6D] mt-1">
+              <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1">
                 Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs
               </p>
             </div>
             <Link
               href="/shop"
-              className="text-xs text-[#541B28] hover:underline flex items-center gap-1 font-bold shrink-0"
+              className="text-xs text-[#541B28] dark:text-[#DFC68B] hover:underline flex items-center gap-1 font-bold shrink-0"
             >
               <span>Voir tout le catalogue</span>
               <ArrowRight className="w-3.5 h-3.5" />

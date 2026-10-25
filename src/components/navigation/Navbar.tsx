@@ -75,7 +75,7 @@ export function Navbar() {
             <div className="flex items-center lg:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-[#541B28] hover:text-[#852538] rounded-xl focus:outline-none transition-colors"
+                className="p-2 text-[#541B28] dark:text-[#DFC68B] hover:text-[#852538] dark:hover:text-[#FAF7F2] rounded-xl focus:outline-none transition-colors"
                 aria-label="Menu Principal"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -99,20 +99,20 @@ export function Navbar() {
                     className={cn(
                       "font-cinzel text-[11px] tracking-luxury uppercase transition-all duration-300 relative py-2 flex items-center gap-1.5 group",
                       isActive
-                        ? "text-[#541B28] font-bold"
-                        : "text-[#4A3B3E] hover:text-[#541B28]",
-                      link.highlight && "text-[#541B28] font-semibold"
+                        ? "text-[#541B28] dark:text-[#DFC68B] font-bold"
+                        : "text-[#4A3B3E] hover:text-[#541B28] dark:text-[#D8CCD0] dark:hover:text-[#DFC68B]",
+                      link.highlight && "text-[#541B28] dark:text-[#DFC68B] font-semibold"
                     )}
                   >
-                    {Icon && <Icon className="w-3.5 h-3.5 text-[#541B28] group-hover:scale-110 transition-transform" />}
+                    {Icon && <Icon className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B] group-hover:scale-110 transition-transform" />}
                     <span>{link.label}</span>
                     {link.badge && (
-                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold tracking-wider shadow-xs">
+                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] dark:bg-[#C7A66A]/20 text-[#FAF7F2] dark:text-[#DFC68B] border border-[#C7A66A]/40 font-bold tracking-wider shadow-xs">
                         {link.badge}
                       </span>
                     )}
                     {isActive ? (
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-[#541B28] shadow-[0_0_8px_rgba(84,27,40,0.5)] animate-in zoom-in-75 duration-300" />
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-[#541B28] dark:bg-[#DFC68B] shadow-[0_0_8px_rgba(84,27,40,0.5)] dark:shadow-[0_0_8px_rgba(223,198,139,0.5)] animate-in zoom-in-75 duration-300" />
                     ) : (
                       <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] rounded-full bg-[#C7A66A] transition-all duration-300 group-hover:w-4" />
                     )}
@@ -131,39 +131,39 @@ export function Navbar() {
                 <div className="relative">
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-white border border-[#541B28]/20 text-xs text-[#541B28] hover:border-[#541B28] transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-xs text-[#541B28] dark:text-[#DFC68B] hover:border-[#541B28] dark:hover:border-[#DFC68B] transition-colors shadow-sm"
                   >
-                    {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />}
-                    {role === "reseller" && <Briefcase className="w-3.5 h-3.5 text-[#434B36]" />}
-                    {role === "customer" && <User className="w-3.5 h-3.5 text-[#541B28]" />}
+                    {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />}
+                    {role === "reseller" && <Briefcase className="w-3.5 h-3.5 text-[#434B36] dark:text-[#DFC68B]" />}
+                    {role === "customer" && <User className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />}
 
                     <span className="hidden sm:inline font-semibold">
                       {user.name.split(" ")[0]}
                     </span>
 
                     {role !== "customer" && (
-                      <span className="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold uppercase">
+                      <span className="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-[#541B28]/10 dark:bg-[#C7A66A]/20 text-[#541B28] dark:text-[#DFC68B] font-bold uppercase">
                         {role === "admin" ? "DG" : "Master"}
                       </span>
                     )}
 
-                    <ChevronDown className="w-3 h-3 text-[#756B6D]" />
+                    <ChevronDown className="w-3 h-3 text-[#756B6D] dark:text-[#A8989C]" />
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#541B28]/20 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2">
-                      <div className="px-3 py-2 border-b border-[#541B28]/10">
-                        <p className="text-xs font-semibold text-[#23181A] truncate">{user.name}</p>
-                        <p className="text-[10px] text-[#756B6D] truncate">{user.email}</p>
+                    <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2">
+                      <div className="px-3 py-2 border-b border-[#541B28]/10 dark:border-[#C7A66A]/20">
+                        <p className="text-xs font-semibold text-[#23181A] dark:text-[#FAF7F2] truncate">{user.name}</p>
+                        <p className="text-[10px] text-[#756B6D] dark:text-[#A8989C] truncate">{user.email}</p>
                       </div>
 
                       <div className="py-1">
                         {role === "admin" && (
                           <Link
                             href="/admin"
-                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#541B28] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-semibold transition-colors"
                           >
-                            <ShieldCheck className="w-4 h-4 text-[#541B28]" />
+                            <ShieldCheck className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
                             <span>Administration Centrale</span>
                           </Link>
                         )}
@@ -171,37 +171,37 @@ export function Navbar() {
                         {role === "reseller" && (
                           <Link
                             href="/reseller"
-                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#434B36] hover:bg-[#FAF7F2] font-semibold transition-colors"
+                            className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#434B36] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-semibold transition-colors"
                           >
-                            <Briefcase className="w-4 h-4 text-[#434B36]" />
+                            <Briefcase className="w-4 h-4 text-[#434B36] dark:text-[#DFC68B]" />
                             <span>Portail Revendeur</span>
                           </Link>
                         )}
 
                         <Link
                           href="/account"
-                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] hover:bg-[#FAF7F2] font-medium transition-colors"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] dark:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-medium transition-colors"
                         >
-                          <User className="w-4 h-4 text-[#756B6D]" />
+                          <User className="w-4 h-4 text-[#756B6D] dark:text-[#A8989C]" />
                           <span>Mon Espace Client</span>
                         </Link>
 
                         <Link
                           href="/account/luck"
-                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] hover:bg-[#FAF7F2] font-medium transition-colors"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] dark:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-medium transition-colors"
                         >
-                          <Flame className="w-4 h-4 text-[#541B28]" />
+                          <Flame className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
                           <span>La Roue du Destin</span>
                         </Link>
                       </div>
 
-                      <div className="pt-1 border-t border-[#541B28]/10">
+                      <div className="pt-1 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20">
                         <button
                           onClick={() => {
                             signOut();
                             setUserMenuOpen(false);
                           }}
-                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-rose-700 hover:bg-rose-50 font-medium transition-colors"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition-colors"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Se Déconnecter</span>
@@ -214,7 +214,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   aria-label="Connexion"
-                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white border border-[#541B28]/25 text-xs text-[#541B28] font-cinzel font-bold tracking-wider hover:bg-[#FAF7F2] hover:border-[#541B28] transition-all shadow-xs active:scale-98"
+                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/25 dark:border-[#C7A66A]/35 text-xs text-[#541B28] dark:text-[#DFC68B] font-cinzel font-bold tracking-wider hover:bg-[#FAF7F2] dark:hover:bg-[#251019] hover:border-[#541B28] dark:hover:border-[#DFC68B] transition-all shadow-xs active:scale-98"
                 >
                   <User className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Connexion</span>
@@ -225,10 +225,10 @@ export function Navbar() {
               <button
                 onClick={() => setIsCartOpen(true)}
                 className={cn(
-                  "relative p-2 sm:p-2.5 rounded-full bg-white border transition-all duration-300 shadow-xs active:scale-95 cursor-pointer",
+                  "relative p-2 sm:p-2.5 rounded-full bg-white dark:bg-[#180B10] border transition-all duration-300 shadow-xs active:scale-95 cursor-pointer",
                   totalItemsCount > 0
-                    ? "border-[#C7A66A] shadow-md shadow-[#C7A66A]/25 text-[#541B28]"
-                    : "border-[#541B28]/20 text-[#541B28] hover:border-[#541B28]"
+                    ? "border-[#C7A66A] shadow-md shadow-[#C7A66A]/25 text-[#541B28] dark:text-[#DFC68B]"
+                    : "border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] hover:border-[#541B28] dark:hover:border-[#DFC68B]"
                 )}
                 aria-label="Ouvrir le panier"
               >
@@ -285,11 +285,11 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="font-cinzel text-xs tracking-luxury uppercase text-[#23181A] hover:text-[#541B28] py-2.5 flex items-center justify-between border-b border-[#541B28]/10 font-bold"
+                    className="font-cinzel text-xs tracking-luxury uppercase text-[#23181A] dark:text-[#FAF7F2] hover:text-[#541B28] dark:hover:text-[#DFC68B] py-2.5 flex items-center justify-between border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 font-bold"
                   >
                     <span>{link.label}</span>
                     {link.badge && (
-                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] text-white font-bold tracking-wider">
+                      <span className="font-cinzel text-[9px] px-2 py-0.5 rounded-full bg-[#541B28] dark:bg-[#C7A66A]/20 text-white dark:text-[#DFC68B] font-bold tracking-wider">
                         {link.badge}
                       </span>
                     )}
@@ -298,20 +298,20 @@ export function Navbar() {
               </div>
 
               {/* User Account / Auth Section in Mobile Menu */}
-              <div className="mt-8 pt-6 border-t border-[#541B28]/15 space-y-3">
+              <div className="mt-8 pt-6 border-t border-[#541B28]/15 dark:border-[#C7A66A]/25 space-y-3">
                 {isAuthenticated && user ? (
                   <>
-                    <div className="p-3 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm">
-                      <p className="text-xs font-semibold text-[#23181A]">{user.name}</p>
-                      <p className="text-[10px] text-[#756B6D]">{user.email}</p>
+                    <div className="p-3 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm">
+                      <p className="text-xs font-semibold text-[#23181A] dark:text-[#FAF7F2]">{user.name}</p>
+                      <p className="text-[10px] text-[#756B6D] dark:text-[#A8989C]">{user.email}</p>
                     </div>
 
                     {role === "admin" && (
                       <Link
                         href="/admin"
-                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#541B28]/20 text-[#541B28] text-xs font-semibold shadow-sm"
+                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] text-xs font-semibold shadow-sm"
                       >
-                        <ShieldCheck className="w-4 h-4 text-[#541B28]" />
+                        <ShieldCheck className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
                         <span>Panneau d&apos;Administration</span>
                       </Link>
                     )}
@@ -319,24 +319,24 @@ export function Navbar() {
                     {role === "reseller" && (
                       <Link
                         href="/reseller"
-                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#434B36]/20 text-[#434B36] text-xs font-semibold shadow-sm"
+                        className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#434B36]/20 dark:border-[#C7A66A]/30 text-[#434B36] dark:text-[#DFC68B] text-xs font-semibold shadow-sm"
                       >
-                        <Briefcase className="w-4 h-4 text-[#434B36]" />
+                        <Briefcase className="w-4 h-4 text-[#434B36] dark:text-[#DFC68B]" />
                         <span>Portail Revendeur</span>
                       </Link>
                     )}
 
                     <Link
                       href="/account"
-                      className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#541B28]/15 text-[#23181A] text-xs font-medium shadow-sm"
+                      className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 text-[#23181A] dark:text-[#FAF7F2] text-xs font-medium shadow-sm"
                     >
-                      <User className="w-4 h-4 text-[#756B6D]" />
+                      <User className="w-4 h-4 text-[#756B6D] dark:text-[#A8989C]" />
                       <span>Mon Compte Client</span>
                     </Link>
 
                     <button
                       onClick={() => signOut()}
-                      className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-medium"
+                      className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 text-xs font-medium"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Se Déconnecter</span>

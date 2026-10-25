@@ -83,7 +83,7 @@ export default function PromotionsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
       <Navbar />
 
@@ -138,10 +138,10 @@ export default function PromotionsPage() {
             {OFFERS.map((pack) => (
               <div
                 key={pack.id}
-                className="rounded-3xl bg-white border border-[#541B28]/15 p-8 sm:p-12 hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center group"
+                className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-8 sm:p-12 hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center group"
               >
                 {/* Image */}
-                <div className="lg:col-span-5 relative aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-[#541B28]/15 shadow-md">
+                <div className="lg:col-span-5 relative aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-[#12080D] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-md">
                   <Image src={pack.image} alt={pack.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                   <span className="absolute top-4 left-4 font-cinzel text-[10px] tracking-luxury uppercase px-4 py-1.5 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 font-bold shadow-md">
                     {pack.badge}
@@ -151,24 +151,24 @@ export default function PromotionsPage() {
                 {/* Content */}
                 <div className="lg:col-span-7 space-y-5">
                   <div>
-                    <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold block mb-1">
+                    <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block mb-1">
                       Thématique : {pack.theme}
                     </span>
-                    <h3 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
+                    <h3 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient dark:text-[#DFC68B] font-light">
                       {pack.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#756B6D] italic mt-1 font-light">{pack.tagline}</p>
+                    <p className="text-xs sm:text-sm text-[#756B6D] dark:text-[#C5B5B8] italic mt-1 font-light">{pack.tagline}</p>
                   </div>
 
-                  <p className="text-sm text-[#5A4B4E] leading-relaxed font-light">
+                  <p className="text-sm text-[#5A4B4E] dark:text-[#D5C4C7] leading-relaxed font-light">
                     {pack.description}
                   </p>
 
-                  <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/10 space-y-2">
+                  <div className="p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/10 dark:border-[#C7A66A]/20 space-y-2">
                     <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold block mb-2">
                       Contenu Spécial Inclus :
                     </span>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-[#23181A]">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-[#23181A] dark:text-[#FAF7F2]">
                       {pack.contents.map((item, idx) => (
                         <li key={idx} className="flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#C7A66A] shrink-0" />
@@ -179,12 +179,12 @@ export default function PromotionsPage() {
                   </div>
 
                   {/* Pricing and Action */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-4 border-t border-[#541B28]/15">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-4 border-t border-[#541B28]/15 dark:border-[#C7A66A]/20">
                     <div>
                       <span className="font-cinzel text-xs text-[#756B6D] line-through block tracking-luxury">
                         {formatTND(pack.originalPriceTND)}
                       </span>
-                      <span className="font-serif text-3xl text-[#541B28] font-medium">
+                      <span className="font-serif text-3xl text-[#541B28] dark:text-[#DFC68B] font-medium">
                         {formatTND(pack.promoPriceTND)}
                       </span>
                     </div>

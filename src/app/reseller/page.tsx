@@ -156,7 +156,7 @@ export default function ResellerDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2]">
+      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2]">
         <div className="text-center space-y-4">
           <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs uppercase tracking-widest text-[#541B28] font-bold">Vérification de l&apos;accréditation revendeur...</p>
@@ -167,7 +167,7 @@ export default function ResellerDashboardPage() {
 
   if (!user || (user.role !== "reseller" && user.role !== "admin")) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A]">
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2]">
         <Navbar />
         <main className="flex-1 flex items-center justify-center px-4 py-28">
           <div className="max-w-md w-full bg-white rounded-3xl border border-[#541B28]/20 p-8 text-center shadow-xl">
@@ -205,7 +205,7 @@ export default function ResellerDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2]">
       <Navbar />
 
       <main className="flex-1 pt-28 pb-20">

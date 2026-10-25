@@ -191,7 +191,7 @@ export function WheelOfChance() {
 
         <div className="relative w-80 h-80 sm:w-96 sm:h-96 z-10">
           {/* Wheel Outer Border with Gold Bezel */}
-          <div className="absolute inset-0 rounded-full border-4 border-[#C7A66A]/40 shadow-2xl p-2 bg-white" />
+          <div className="absolute inset-0 rounded-full border-4 border-[#C7A66A]/40 shadow-2xl p-2 bg-white dark:bg-[#180B10]" />
 
           {/* Indicator Arrow at Top */}
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center">
@@ -284,12 +284,12 @@ export function WheelOfChance() {
       {/* Result Modal */}
       {activeResult && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
-          <div className="max-w-md w-full rounded-3xl bg-white border-2 border-[#541B28] p-8 text-center shadow-2xl relative animate-in zoom-in-95">
+          <div className="max-w-md w-full rounded-3xl bg-white dark:bg-[#180B10] border-2 border-[#541B28] dark:border-[#C7A66A]/40 p-8 text-center shadow-2xl relative animate-in zoom-in-95">
             <div className="flex justify-center mb-4">
               <WaveMonogram size="md" variant="gold" withSeal />
             </div>
 
-            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
+            <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold">
               Révélation {activeResult.tier}
             </div>
 
@@ -297,18 +297,18 @@ export function WheelOfChance() {
               {activeResult.rewardLabel}
             </h3>
 
-            <p className="text-xs sm:text-sm text-[#5A4B4E] mb-6 font-light">
+            <p className="text-xs sm:text-sm text-[#5A4B4E] dark:text-[#D5C4C7] mb-6 font-light">
               Félicitations ! Votre cadeau est débloqué et prêt à être utilisé.
             </p>
 
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
-              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 mb-6">
+              <div className="p-4 rounded-xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/25 mb-6">
                 <span className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1 font-bold">
                   Votre Code Promo
                 </span>
-                <div className="flex items-center justify-between gap-2 bg-white p-3 rounded-lg border border-[#541B28]/20">
-                  <span className="font-mono text-base font-bold text-[#541B28] tracking-wider">
+                <div className="flex items-center justify-between gap-2 bg-white dark:bg-[#180B10] p-3 rounded-lg border border-[#541B28]/20 dark:border-[#C7A66A]/25">
+                  <span className="font-mono text-base font-bold text-[#541B28] dark:text-[#DFC68B] tracking-wider">
                     {activeResult.couponCodeGenerated}
                   </span>
                   <button

@@ -34,10 +34,10 @@ export function LevaniaLogo({
       {variant !== "wordmark-only" && (
         <div
           className={cn(
-            "relative rounded-full overflow-hidden border p-0.5 shadow-sm transition-all duration-300 bg-white",
+            "relative rounded-full overflow-hidden border p-0.5 shadow-sm transition-all duration-300 bg-white dark:bg-[#180B10]",
             tone === "light"
               ? "border-[#C7A66A]/40 shadow-black/20 group-hover:border-[#C7A66A] group-hover:shadow-[0_0_15px_rgba(199,166,106,0.25)]"
-              : "border-[#541B28]/20 shadow-[#541B28]/10 group-hover:border-[#541B28] group-hover:shadow-[0_0_15px_rgba(84,27,40,0.15)]"
+              : "border-[#541B28]/20 dark:border-[#C7A66A]/40 shadow-[#541B28]/10 dark:shadow-black/40 group-hover:border-[#541B28] dark:group-hover:border-[#DFC68B]"
           )}
           style={{ width: config.emblem, height: config.emblem }}
         >
@@ -59,7 +59,7 @@ export function LevaniaLogo({
               "font-serif font-normal leading-tight tracking-[0.2em] uppercase transition-colors",
               tone === "light"
                 ? "text-[#FAF7F2] group-hover:text-[#DFC68B]"
-                : "text-[#541B28] group-hover:text-[#7A263B]",
+                : "text-[#541B28] dark:text-[#DFC68B] group-hover:text-[#7A263B] dark:group-hover:text-[#FAF7F2]",
               config.text
             )}
           >
@@ -70,7 +70,7 @@ export function LevaniaLogo({
             <span
               className={cn(
                 "font-sans font-semibold uppercase",
-                tone === "light" ? "text-[#DFC68B]" : "text-[#852538]",
+                tone === "light" ? "text-[#DFC68B]" : "text-[#852538] dark:text-[#EACCA0]",
                 config.sub
               )}
             >

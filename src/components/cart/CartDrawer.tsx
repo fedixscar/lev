@@ -99,12 +99,12 @@ export function CartDrawer() {
           {/* Items list */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {items.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center text-[#756B6D] py-12">
-                <div className="w-16 h-16 rounded-full border border-[#541B28]/20 flex items-center justify-center mb-4 text-[#541B28] bg-white shadow-sm">
+              <div className="h-full flex flex-col items-center justify-center text-center text-[#756B6D] dark:text-[#A8989C] py-12">
+                <div className="w-16 h-16 rounded-full border border-[#541B28]/20 dark:border-[#C7A66A]/30 flex items-center justify-center mb-4 text-[#541B28] dark:text-[#DFC68B] bg-white dark:bg-[#180B10] shadow-sm">
                   <WaveMonogram size="md" variant="burgundy" />
                 </div>
-                <p className="font-serif text-xl text-[#23181A] mb-2">Votre panier est vide</p>
-                <p className="text-sm max-w-xs text-[#756B6D] mb-6">
+                <p className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] mb-2">Votre panier est vide</p>
+                <p className="text-sm max-w-xs text-[#756B6D] dark:text-[#A8989C] mb-6">
                   Explorez nos créations olfactives artisanales et laissez-vous transporter.
                 </p>
                 <Link
@@ -119,9 +119,9 @@ export function CartDrawer() {
               items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 p-4 rounded-2xl bg-white border border-[#541B28]/15 hover:border-[#541B28]/35 transition-all shadow-sm"
+                  className="flex gap-4 p-4 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 hover:border-[#541B28]/35 dark:hover:border-[#C7A66A]/45 transition-all shadow-sm"
                 >
-                  <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-[#FAF7F2] shrink-0 border border-[#541B28]/15">
+                  <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-[#FAF7F2] dark:bg-[#0E0709] shrink-0 border border-[#541B28]/15 dark:border-[#C7A66A]/20">
                     <Image
                       src={item.image}
                       alt={item.productName}
@@ -133,23 +133,23 @@ export function CartDrawer() {
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-serif text-base text-[#23181A] font-medium leading-tight">
+                        <h4 className="font-serif text-base text-[#23181A] dark:text-[#FAF7F2] font-medium leading-tight">
                           {item.productName}
                         </h4>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-[#756B6D] hover:text-rose-600 p-1 transition-colors"
+                          className="text-[#756B6D] dark:text-[#A8989C] hover:text-rose-600 p-1 transition-colors"
                           aria-label="Supprimer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs px-2 py-0.5 rounded bg-[#541B28]/10 text-[#541B28] font-bold">
+                        <span className="text-xs px-2 py-0.5 rounded bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] font-bold">
                           {item.formatSize}
                         </span>
                         {item.giftBoxDetails && (
-                          <span className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] text-[#852538] border border-[#852538]/30 font-medium">
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#0E0709] text-[#852538] dark:text-[#EACCA0] border border-[#852538]/30 dark:border-[#C7A66A]/30 font-medium">
                             Coffret Cadeau
                           </span>
                         )}
@@ -157,27 +157,27 @@ export function CartDrawer() {
                     </div>
 
                     <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center gap-2 border border-[#541B28]/25 rounded-lg p-1 bg-[#FAF7F2]">
+                      <div className="flex items-center gap-2 border border-[#541B28]/25 dark:border-[#C7A66A]/30 rounded-lg p-1 bg-[#FAF7F2] dark:bg-[#0E0709]">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-6 h-6 flex items-center justify-center text-[#756B6D] hover:text-[#541B28]"
+                          className="w-6 h-6 flex items-center justify-center text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#DFC68B]"
                           aria-label="Diminuer"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="text-xs font-bold px-1 text-[#23181A]">
+                        <span className="text-xs font-bold px-1 text-[#23181A] dark:text-[#FAF7F2]">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-6 h-6 flex items-center justify-center text-[#756B6D] hover:text-[#541B28]"
+                          className="w-6 h-6 flex items-center justify-center text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#DFC68B]"
                           aria-label="Augmenter"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
 
-                      <span className="font-serif text-sm text-[#541B28] font-bold">
+                      <span className="font-serif text-sm text-[#541B28] dark:text-[#DFC68B] font-bold">
                         {formatTND(item.unitPriceTND * item.quantity)}
                       </span>
                     </div>
@@ -211,19 +211,19 @@ export function CartDrawer() {
               </form>
 
               {couponMessage && (
-                <p className={`text-xs ${couponMessage.error ? "text-rose-600" : "text-emerald-700"}`}>
+                <p className={`text-xs ${couponMessage.error ? "text-rose-600" : "text-emerald-700 dark:text-emerald-400"}`}>
                   {couponMessage.text}
                 </p>
               )}
 
               {appliedCoupon && (
-                <div className="flex items-center justify-between p-2 rounded-xl bg-[#541B28]/10 border border-[#541B28]/20 text-xs">
-                  <span className="text-[#541B28] font-bold">
+                <div className="flex items-center justify-between p-2 rounded-xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-xs">
+                  <span className="text-[#541B28] dark:text-[#DFC68B] font-bold">
                     Code activé: {appliedCoupon.code} (-{appliedCoupon.discountValue}{appliedCoupon.discountType === "percent" ? "%" : " TND"})
                   </span>
                   <button
                     onClick={removeCoupon}
-                    className="text-xs text-[#756B6D] hover:text-rose-600 underline"
+                    className="text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-rose-600 underline"
                   >
                     Retirer
                   </button>
@@ -231,37 +231,37 @@ export function CartDrawer() {
               )}
 
               {/* Price Breakdown */}
-              <div className="space-y-1.5 text-xs text-[#756B6D] pt-2 border-t border-neutral-100">
+              <div className="space-y-1.5 text-xs text-[#756B6D] dark:text-[#A8989C] pt-2 border-t border-neutral-100 dark:border-[#C7A66A]/15">
                 <div className="flex justify-between">
                   <span>Sous-total</span>
-                  <span className="text-[#23181A] font-medium">{formatTND(subtotalTND)}</span>
+                  <span className="text-[#23181A] dark:text-[#FAF7F2] font-medium">{formatTND(subtotalTND)}</span>
                 </div>
                 {discountTND > 0 && (
-                  <div className="flex justify-between text-emerald-700 font-medium">
+                  <div className="flex justify-between text-emerald-700 dark:text-emerald-400 font-medium">
                     <span>Remise</span>
                     <span>-{formatTND(discountTND)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span>Livraison (Tunisie)</span>
-                  <span className="text-[#23181A] font-medium">
+                  <span className="text-[#23181A] dark:text-[#FAF7F2] font-medium">
                     {deliveryFeeTND === 0 ? "Offerte" : formatTND(deliveryFeeTND)}
                   </span>
                 </div>
 
-                <div className="flex justify-between text-base font-serif text-[#23181A] pt-2 border-t border-[#541B28]/20">
+                <div className="flex justify-between text-base font-serif text-[#23181A] dark:text-[#FAF7F2] pt-2 border-t border-[#541B28]/20 dark:border-[#C7A66A]/25">
                   <span className="font-normal">Total Estimé</span>
-                  <span className="text-[#541B28] font-bold text-lg">{formatMillimes(totalMillimes)}</span>
+                  <span className="text-[#541B28] dark:text-[#DFC68B] font-bold text-lg">{formatMillimes(totalMillimes)}</span>
                 </div>
               </div>
 
               {/* Projected Luck Badge */}
               {projectedLuck > 0 && (
-                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAF7F2] border border-[#541B28]/20 text-xs text-[#23181A]">
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/25 text-xs text-[#23181A] dark:text-[#FAF7F2]">
                   <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>
                     Cette commande vous offre{" "}
-                    <strong className="text-[#541B28]">+{projectedLuck} points</strong> pour la Roue Cadeau !
+                    <strong className="text-[#541B28] dark:text-[#DFC68B]">+{projectedLuck} points</strong> pour la Roue Cadeau !
                   </span>
                 </div>
               )}
@@ -271,7 +271,7 @@ export function CartDrawer() {
                 <Link
                   href="/cart"
                   onClick={() => setIsCartOpen(false)}
-                  className="flex-1 py-3 text-center rounded-xl border border-[#541B28]/30 text-xs font-semibold text-[#541B28] hover:bg-[#FAF7F2] transition-colors"
+                  className="flex-1 py-3 text-center rounded-xl border border-[#541B28]/30 dark:border-[#C7A66A]/30 text-xs font-semibold text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#1E0D15] transition-colors"
                 >
                   Voir Panier
                 </Link>

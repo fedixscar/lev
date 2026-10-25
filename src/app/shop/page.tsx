@@ -98,7 +98,7 @@ export default function ShopPage() {
   const activeWaveTab = WAVE_TABS.find((t) => t.id === selectedWave) || WAVE_TABS[0];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
       {/* Dynamic Ambient Fluid Wave flowing in the background matching selected wave filter */}
       <AmbientWaveBackdrop expression={activeWaveTab.canvasExpr} opacity={0.28} />
 
@@ -108,20 +108,20 @@ export default function ShopPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 font-cinzel text-[11px] text-[#541B28] uppercase tracking-luxury font-bold mb-3 shadow-sm">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[11px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3 shadow-sm">
               <GoldStarLozenge size={11} className="text-[#C7A66A]" />
               <span>Boutique Haute Parfumerie</span>
             </div>
             <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mb-3">
               Le Catalogue des Fragrances
             </h1>
-            <p className="text-xs sm:text-sm text-[#5A4B4E] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed">
               Explorez nos extraits et eaux de parfum artisanales, disponibles en flacons 50ml et 100ml scellés dans leur écrin cylindrique.
             </p>
           </div>
 
           {/* Interactive Wave Banner Header */}
-          <div className="mb-10 rounded-3xl bg-white border border-[#541B28]/20 p-5 shadow-lg relative overflow-hidden">
+          <div className="mb-10 rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 p-5 shadow-lg relative overflow-hidden">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-3">
                 <WaveMonogram
@@ -136,24 +136,24 @@ export default function ShopPage() {
                   withSeal
                 />
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block">
+                  <span className="text-[10px] uppercase tracking-widest text-[#541B28] dark:text-[#DFC68B] font-bold block">
                     Sillage Ondulatoire Sélectionné
                   </span>
-                  <h3 className="font-serif text-lg text-[#23181A] font-semibold">
+                  <h3 className="font-serif text-lg text-[#23181A] dark:text-[#FAF7F2] font-semibold">
                     {activeWaveTab.label} • {activeWaveTab.sub}
                   </h3>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-xs text-[#541B28] font-bold px-3 py-1 rounded-full bg-[#FAF7F2] border border-[#541B28]/15 shadow-sm">
+                <span className="text-xs text-[#541B28] dark:text-[#DFC68B] font-bold px-3 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-sm">
                   {filteredProducts.length} flacon(s) affiché(s)
                 </span>
               </div>
             </div>
 
             {/* Live Wave Canvas reacting to active wave filter */}
-            <div className="h-24 sm:h-28 rounded-2xl overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-white to-[#FAF7F2] border border-[#541B28]/10 relative">
+            <div className="h-24 sm:h-28 rounded-2xl overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-white to-[#FAF7F2] dark:from-[#0E0709] dark:via-[#180B10] dark:to-[#0E0709] border border-[#541B28]/10 dark:border-[#C7A66A]/20 relative">
               <WaveCanvas
                 expression={activeWaveTab.canvasExpr}
                 interactive={true}
@@ -161,7 +161,7 @@ export default function ShopPage() {
                 className="w-full h-full"
               />
               <div className="absolute bottom-2 left-3 right-3 sm:right-auto pointer-events-none">
-                <span className="inline-block max-w-full text-[9px] uppercase tracking-wider text-[#756B6D] font-mono bg-white/80 px-2 py-0.5 rounded-full border border-[#541B28]/15 leading-relaxed">
+                <span className="inline-block max-w-full text-[9px] uppercase tracking-wider text-[#756B6D] dark:text-[#A8989C] font-mono bg-white/80 dark:bg-[#180B10]/80 px-2 py-0.5 rounded-full border border-[#541B28]/15 dark:border-[#C7A66A]/20 leading-relaxed">
                   <span className="sm:hidden">&sim; Touchez la vague</span>
                   <span className="hidden sm:inline">&sim; Cliquez ou survolez la vague pour diffuser les effluves</span>
                 </span>
@@ -169,7 +169,7 @@ export default function ShopPage() {
             </div>
 
             {/* Wave Tabs Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-4 pt-3 border-t border-[#541B28]/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-4 pt-3 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20">
               {WAVE_TABS.map((tab) => {
                 const isSelected = selectedWave === tab.id;
                 return (
@@ -180,7 +180,7 @@ export default function ShopPage() {
                       "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between",
                       isSelected
                         ? "bg-[#541B28] text-[#FAF7F2] border-[#541B28] shadow-md shadow-[#541B28]/25 scale-[1.02]"
-                        : "bg-[#FAF7F2] text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]"
+                        : "bg-[#FAF7F2] dark:bg-[#14080D] text-[#23181A] dark:text-[#FAF7F2] border-[#541B28]/15 dark:border-[#C7A66A]/20 hover:border-[#541B28] dark:hover:border-[#DFC68B]"
                     )}
                   >
                     <span className="font-serif text-xs font-bold tracking-wide">
@@ -189,7 +189,7 @@ export default function ShopPage() {
                     <span
                       className={cn(
                         "text-[10px] mt-0.5",
-                        isSelected ? "text-[#DFC68B]" : "text-[#756B6D]"
+                        isSelected ? "text-[#DFC68B]" : "text-[#756B6D] dark:text-[#A8989C]"
                       )}
                     >
                       {tab.sub}
@@ -201,22 +201,22 @@ export default function ShopPage() {
           </div>
 
           {/* Search & Olfactory Family Toolbar */}
-          <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 shadow-sm mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-sm mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center">
             {/* Search */}
             <div className="relative w-full lg:w-72">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D]" />
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D] dark:text-[#A8989C]" />
               <input
                 type="text"
                 placeholder="Rechercher par note, nom..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl pl-9 pr-8 py-2 text-xs text-[#23181A] placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
+                className="w-full bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/30 rounded-xl pl-9 pr-8 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] placeholder:text-[#756B6D] dark:placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#756B6D] hover:text-[#541B28] p-1"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#756B6D] hover:text-[#541B28] dark:hover:text-[#DFC68B] p-1"
                   aria-label="Effacer la recherche"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -235,7 +235,7 @@ export default function ShopPage() {
                     className={`px-3.5 py-1.5 rounded-full text-xs transition-colors whitespace-nowrap font-medium ${
                       selectedFamily === fam
                         ? "bg-[#541B28] text-[#FAF7F2] shadow-sm font-semibold"
-                        : "bg-white text-[#5A4B4E] hover:text-[#541B28] border border-[#541B28]/15 hover:border-[#541B28]"
+                        : "bg-white dark:bg-[#1A0C13] text-[#5A4B4E] dark:text-[#D8CCD0] hover:text-[#541B28] dark:hover:text-[#DFC68B] border border-[#541B28]/15 dark:border-[#C7A66A]/20 hover:border-[#541B28] dark:hover:border-[#DFC68B]"
                     }`}
                   >
                     {fam === "all" ? "Toutes Familles" : fam}
@@ -245,11 +245,11 @@ export default function ShopPage() {
 
               {/* Sort selector */}
               <div className="flex items-center gap-1.5 ml-auto">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-[#541B28]" />
+                <SlidersHorizontal className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-2.5 py-1.5 text-xs text-[#23181A] font-medium focus:outline-none focus:border-[#541B28]"
+                  className="bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/30 rounded-lg px-2.5 py-1.5 text-xs text-[#23181A] dark:text-[#FAF7F2] font-medium focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"
                 >
                   <option value="featured">Sélection Vedette</option>
                   <option value="bestseller">Classement Bestsellers</option>
@@ -287,29 +287,29 @@ export default function ShopPage() {
           )}
 
           {/* Luxury Reassurance Bar */}
-          <div className="mt-16 rounded-3xl bg-white border border-[#541B28]/15 p-6 sm:p-8 shadow-xs">
+          <div className="mt-16 rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-6 sm:p-8 shadow-xs">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
               <div className="space-y-1">
-                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] block">
                   Flacons Scellés à la Main
                 </span>
-                <p className="text-[11px] text-[#756B6D]">
+                <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">
                   Chaque création est numérotée et scellée à la cire dans notre atelier de Nabeul.
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] block">
                   Certificat Numérique QR
                 </span>
-                <p className="text-[11px] text-[#756B6D]">
+                <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">
                   Accédez au certificat dédié à votre nom et à la vidéo de mise en flacon.
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] block">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] block">
                   Livraison Sécurisée en Tunisie
                 </span>
-                <p className="text-[11px] text-[#756B6D]">
+                <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">
                   Expédition soignée 24-48h avec paiement à la livraison (espèces ou carte).
                 </p>
               </div>

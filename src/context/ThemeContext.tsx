@@ -17,8 +17,28 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const STORAGE_KEY = "levania_theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemePreference>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
+  const [theme, setThemeState] = useState<ThemePreference>(() => {
+    if (typeof window === "undefined") return "system";
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY) as ThemePreference | null;
+      return stored === "light" || stored === "dark" ? stored : "system";
+    } catch {
+      return "system";
+    }
+  });
+
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
+    if (typeof window === "undefined") return "light";
+    try {
+      const isDark =
+        document.documentElement.classList.contains("dark") ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return isDark ? "dark" : "light";
+    } catch {
+      return "light";
+    }
+  });
+
   const [mounted, setMounted] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -37,9 +57,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (isDark) {
       root.classList.add("dark");
       root.setAttribute("data-theme", "dark");
+      root.style.colorScheme = "dark";
     } else {
       root.classList.remove("dark");
       root.setAttribute("data-theme", "light");
+      root.style.colorScheme = "light";
     }
 
     // Update <meta name="color-scheme"> per Modern Web Guidance
@@ -102,8 +124,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Smart 2-state toggle adhering to modern-web-guidance
   const toggleTheme = () => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const systemScheme: ResolvedTheme = mediaQuery.matches ? "dark" : "light";
     const nextResolved: ResolvedTheme = resolvedTheme === "dark" ? "light" : "dark";
-    setTheme(nextResolved);
+
+    if (nextResolved === systemScheme) {
+      // Revert to system default without hard pinning
+      setTheme("system");
+    } else {
+      // Explicit override
+      setTheme(nextResolved);
+    }
   };
 
   return (

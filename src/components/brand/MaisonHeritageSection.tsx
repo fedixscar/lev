@@ -9,7 +9,7 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export function MaisonHeritageSection() {
   return (
-    <section className="py-24 sm:py-32 bg-[#FAF7F2] text-[#23181A] relative overflow-hidden">
+    <section className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] relative overflow-hidden">
       {/* Background soft ambient accents */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#C7A66A]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#541B28]/8 rounded-full blur-[140px] pointer-events-none" />
@@ -18,7 +18,7 @@ export function MaisonHeritageSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
           {/* Left Column: Authentic Dual Cylinder Imagery & Craft Pedestal */}
           <div className="lg:col-span-6 relative">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-[#541B28]/20 shadow-2xl group">
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 shadow-2xl group">
               <Image
                 src="/brand/cylinders-dual.jpg"
                 alt="Écrins cylindriques Lévania Parfums"

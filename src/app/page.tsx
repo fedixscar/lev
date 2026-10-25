@@ -33,7 +33,7 @@ import { GoldParticlesCanvas } from "@/components/brand/GoldParticlesCanvas";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] overflow-x-hidden">
       <Navbar />
 
       <main className="flex-1">
@@ -135,42 +135,42 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 flex items-center justify-center text-[#541B28] shrink-0">
-                  <Truck className="w-5 h-5 text-[#541B28]" />
+                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
+                  <Truck className="w-5 h-5 text-[#541B28] dark:text-[#DFC68B]" />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A]">Livraison 24-48h</h4>
-                  <p className="text-[11px] text-[#756B6D]">Partout en Tunisie</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Livraison 24-48h</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">Partout en Tunisie</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 flex items-center justify-center text-[#541B28] shrink-0">
-                  <ShieldCheck className="w-5 h-5 text-[#541B28]" />
+                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-[#541B28] dark:text-[#DFC68B]" />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A]">Paiement à la Livraison</h4>
-                  <p className="text-[11px] text-[#756B6D]">En espèces ou par carte</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Paiement à la Livraison</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">En espèces ou par carte</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 flex items-center justify-center text-[#541B28] shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
                   <Gift className="w-5 h-5 text-[#C7A66A]" />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A]">Écrin Cadeau Offert</h4>
-                  <p className="text-[11px] text-[#756B6D]">Boîte cylindrique luxe</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Écrin Cadeau Offert</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">Boîte cylindrique luxe</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 flex items-center justify-center text-[#541B28] shrink-0">
-                  <QrCode className="w-5 h-5 text-[#434B36]" />
+                <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
+                  <QrCode className="w-5 h-5 text-[#434B36] dark:text-[#C7A66A]" />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A]">Flacon Personnalisé</h4>
-                  <p className="text-[11px] text-[#756B6D]">QR Code &amp; Vidéo à votre nom</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Flacon Personnalisé</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">QR Code &amp; Vidéo à votre nom</p>
                 </div>
               </div>
             </div>
@@ -200,13 +200,13 @@ export default function HomePage() {
         {/* ========================================================
             6. L'ART D'OFFRIR : LE COFFRET CADEAU SUR MESURE
             ======================================================== */}
-        <section className="py-20 sm:py-28 bg-[#FAF7F2] relative">
+        <section className="py-20 sm:py-28 bg-[#FAF7F2] dark:bg-[#0E0709] relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-gradient-to-b from-[#F3ECE1] to-white border border-[#541B28]/20 p-8 sm:p-14 shadow-xl relative overflow-hidden">
+            <div className="rounded-3xl bg-gradient-to-b from-[#F3ECE1] to-white dark:from-[#1C0D15] dark:to-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/30 p-8 sm:p-14 shadow-xl relative overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                 <div className="space-y-6">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold shadow-xs">
-                    <Gift className="w-3.5 h-3.5 text-[#541B28]" />
+                  <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold shadow-xs">
+                    <Gift className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />
                     <span>Idée Cadeau Idéale</span>
                   </div>
 
@@ -214,7 +214,7 @@ export default function HomePage() {
                     Offrez un Coffret Cadeau Personnalisé
                   </h2>
 
-                  <p className="text-sm text-[#5A4B4E] leading-relaxed">
+                  <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed">
                     Choisissez votre flacon préféré (50ml ou 100ml) et ajoutez un mot doux personnalisé écrit à la main.
                     Chaque parfum est livré dans son élégant coffret cylindrique vert olive et or, prêt à être offert.
                   </p>
@@ -309,14 +309,14 @@ export default function HomePage() {
         <section className="py-20 sm:py-28 bg-[#FAF7F2] dark:bg-[#0E0709] border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#541B28]/20 shadow-xs font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold mb-3">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-xs font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3">
                 <Star className="w-3.5 h-3.5 fill-[#C7A66A] text-[#C7A66A]" />
                 <span>Avis Clients Vérifiés • 4.9 / 5</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
                 Ce Que Disent Nos Clients
               </h2>
-              <p className="text-xs sm:text-sm text-[#756B6D] mt-2">
+              <p className="text-xs sm:text-sm text-[#756B6D] dark:text-[#A8989C] mt-2">
                 Plus de 1 200 flacons livrés avec soin partout en Tunisie.
               </p>
             </div>

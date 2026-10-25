@@ -177,7 +177,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.2} />
       <Navbar />
 
@@ -185,12 +185,12 @@ export default function CheckoutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Confirmed Order Screen */}
           {confirmedOrder ? (
-            <div className="max-w-2xl mx-auto py-14 px-8 rounded-3xl bg-white border-2 border-[#541B28] text-center shadow-2xl animate-in zoom-in-95 relative overflow-hidden">
+            <div className="max-w-2xl mx-auto py-14 px-8 rounded-3xl bg-white dark:bg-[#180B10] border-2 border-[#541B28] dark:border-[#C7A66A]/40 text-center shadow-2xl animate-in zoom-in-95 relative overflow-hidden">
               <div className="flex justify-center mb-6">
                 <WaveMonogram size="lg" variant="gold" withSeal />
               </div>
 
-              <div className="h-14 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15 mb-6 max-w-sm mx-auto">
+              <div className="h-14 rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/15 dark:border-[#C7A66A]/20 mb-6 max-w-sm mx-auto">
                 <WaveCanvas expression="signature" interactive={false} height="100%" />
               </div>
 
@@ -201,13 +201,13 @@ export default function CheckoutPage() {
                 </span>
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light mt-1 mb-4">
+              <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient dark:text-[#DFC68B] font-light mt-1 mb-4">
                 Merci, Votre Commande est Confirmée
               </h1>
 
-              <p className="text-sm text-[#5A4B4E] max-w-md mx-auto mb-8 font-light leading-relaxed">
+              <p className="text-sm text-[#5A4B4E] dark:text-[#D5C4C7] max-w-md mx-auto mb-8 font-light leading-relaxed">
                 Votre référence officielle est{" "}
-                <strong className="text-[#541B28] font-mono font-bold text-base">
+                <strong className="text-[#541B28] dark:text-[#EACCA0] font-mono font-bold text-base">
                   {confirmedOrder.orderNumber}
                 </strong>
                 . Nos maîtres artisans préparent vos flacons avec le plus grand soin.
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
 
               {/* Generated QR Bottle Certificates */}
               {confirmedOrder.certificates && confirmedOrder.certificates.length > 0 && (
-                <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 mb-8 max-w-lg mx-auto text-left space-y-4">
+                <div className="p-6 rounded-2xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/20 mb-8 max-w-lg mx-auto text-left space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/15">
                     <div className="flex items-center gap-2">
                       <QrCode className="w-4 h-4 text-[#541B28]" />
@@ -232,7 +232,7 @@ export default function CheckoutPage() {
                     {confirmedOrder.certificates.map((cert) => (
                       <div
                         key={cert.token}
-                        className="p-3.5 rounded-xl bg-white border border-[#541B28]/15 flex items-center justify-between gap-3 shadow-xs"
+                        className="p-3.5 rounded-xl bg-white dark:bg-[#1C0D15] border border-[#541B28]/15 dark:border-[#C7A66A]/20 flex items-center justify-between gap-3 shadow-xs"
                       >
                         <div className="flex items-center gap-3">
                           {cert.qrDataUrl ? (

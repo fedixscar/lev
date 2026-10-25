@@ -9,7 +9,7 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export default function ComposeBoxPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
       <Navbar />
 
@@ -18,7 +18,7 @@ export default function ComposeBoxPage() {
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
+              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                 Atelier Cadeaux d&apos;Exception
               </span>
             </div>
@@ -27,7 +27,7 @@ export default function ComposeBoxPage() {
               Composer Mon Coffret
             </h1>
 
-            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
               Choisissez votre format d&apos;écrin cylindrique ou coffret prestige, associez les élixirs de votre choix et personnalisez votre message calligraphié sur parchemin.
             </p>
           </div>

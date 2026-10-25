@@ -346,10 +346,10 @@ export default function AdminDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2]">
+      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2] dark:bg-[#0E0709]">
         <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs uppercase tracking-widest text-[#541B28] font-bold">Vérification des accréditations...</p>
+          <div className="w-10 h-10 border-2 border-[#541B28] dark:border-[#DFC68B] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs uppercase tracking-widest text-[#541B28] dark:text-[#DFC68B] font-bold">Vérification des accréditations...</p>
         </div>
       </div>
     );
@@ -357,7 +357,7 @@ export default function AdminDashboardPage() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A]">
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2]">
         <Navbar />
         <main className="flex-1 flex items-center justify-center px-4 py-28">
           <div className="max-w-md w-full bg-white rounded-3xl border border-[#541B28]/20 p-8 text-center shadow-xl">
@@ -395,29 +395,29 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2]">
       <Navbar />
 
       <main className="flex-1 pt-28 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-[#541B28]/15">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-2 shadow-sm">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#541B28]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/25 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] text-xs font-bold mb-2 shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />
                 <span>Panneau de Contrôle • Direction Générale</span>
               </div>
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
                 Administration Centrale Lévania Parfums
               </h1>
-              <p className="text-xs text-[#756B6D] mt-1">
+              <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1">
                 Supervision des ventes, gestion des stocks, validation des commissions revendeurs et configuration des Vagues.
               </p>
             </div>
           </div>
 
           {/* Nav Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#541B28]/10 no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 no-scrollbar">
             {[
               { id: "overview", label: "Vue Générale", icon: TrendingUp },
               { id: "products", label: "Produits & Podium", icon: Package },
@@ -434,7 +434,7 @@ export default function AdminDashboardPage() {
                   className={`px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all whitespace-nowrap shadow-sm ${
                     activeTab === tab.id
                       ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25"
-                      : "bg-white text-[#5A4B4E] hover:text-[#541B28] border border-[#541B28]/15"
+                      : "bg-white dark:bg-[#180B10] text-[#5A4B4E] dark:text-[#D8CCD0] hover:text-[#541B28] dark:hover:text-[#DFC68B] border border-[#541B28]/15 dark:border-[#C7A66A]/20"
                   }`}
                 >
                   <Icon className="w-4 h-4" />

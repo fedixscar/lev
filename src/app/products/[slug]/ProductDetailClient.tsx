@@ -129,7 +129,7 @@ export function ProductDetailClient({
   ).slice(0, 3);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
       {/* Specific Transparent Fluid Wave flowing in the background */}
       <AmbientWaveBackdrop expression={waveExpression} opacity={0.32} />
 
@@ -139,17 +139,17 @@ export function ProductDetailClient({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs & Active Transparent Wave Indicator */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
-            <nav className="font-cinzel text-[11px] tracking-luxury text-[#756B6D] flex items-center gap-2 uppercase font-medium">
-              <Link href="/" className="hover:text-[#541B28]">Accueil</Link>
+            <nav className="font-cinzel text-[11px] tracking-luxury text-[#756B6D] dark:text-[#A8989C] flex items-center gap-2 uppercase font-medium">
+              <Link href="/" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">Accueil</Link>
               <span>/</span>
-              <Link href="/shop" className="hover:text-[#541B28]">Boutique</Link>
+              <Link href="/shop" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">Boutique</Link>
               <span>/</span>
-              <span className="text-[#541B28] font-bold">{product.name}</span>
+              <span className="text-[#541B28] dark:text-[#DFC68B] font-bold">{product.name}</span>
             </nav>
 
             <div className="luxury-pill inline-flex items-center gap-2.5 self-start sm:self-auto">
               <WaveMonogram size="xs" variant={waveExpression === "soft" ? "burgundy" : "gold"} />
-              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] font-bold">
+              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                 Onde en Fond :{" "}
                 <span className="text-[#C7A66A]">
                   {waveExpression === "soft"
@@ -165,7 +165,7 @@ export function ProductDetailClient({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-24">
             {/* Left: Product Images Gallery */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-[#541B28]/20 shadow-2xl">
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl">
                 <Image
                   src={selectedImage}
                   alt={product.name}
@@ -176,7 +176,7 @@ export function ProductDetailClient({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/40 via-transparent to-transparent pointer-events-none" />
 
-                <span className="absolute top-5 left-5 font-cinzel text-[10px] uppercase tracking-luxury font-bold px-4 py-1.5 rounded-full bg-white/95 border border-[#541B28]/25 text-[#541B28] shadow-sm backdrop-blur-md">
+                <span className="absolute top-5 left-5 font-cinzel text-[10px] uppercase tracking-luxury font-bold px-4 py-1.5 rounded-full bg-white/95 dark:bg-[#180B10]/95 border border-[#541B28]/25 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] shadow-sm backdrop-blur-md">
                   {product.collection}
                 </span>
 
@@ -214,45 +214,45 @@ export function ProductDetailClient({
             {/* Right: Product Details & Purchase Controls */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <span className="font-cinzel text-[11px] uppercase tracking-grand text-[#541B28] font-bold block mb-1">
+                <span className="font-cinzel text-[11px] uppercase tracking-grand text-[#541B28] dark:text-[#DFC68B] font-bold block mb-1">
                   {product.subtitle}
                 </span>
                 <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mt-1 mb-3">
                   {product.name}
                 </h1>
-                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 border border-[#541B28]/15 shadow-xs">
+                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-xs">
                   <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-                  <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] font-bold">
+                  <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                     Haute Parfumerie Artisanale • Flacon Scellé &amp; Traçable
                   </span>
                 </div>
               </div>
 
               {/* Price & Stock */}
-              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 shadow-sm flex items-center justify-between">
+              <div className="p-5 rounded-2xl bg-white/90 dark:bg-[#180B10]/90 backdrop-blur-md border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm flex items-center justify-between">
                 <div>
-                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] block">Prix Flacon</span>
-                  <span className="font-serif text-2xl sm:text-3xl text-[#541B28] font-medium">
+                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] dark:text-[#A8989C] block">Prix Flacon</span>
+                  <span className="font-serif text-2xl sm:text-3xl text-[#541B28] dark:text-[#DFC68B] font-medium">
                     {formatTND(activeFormat.priceTND)}
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="font-cinzel text-xs text-[#434B36] flex items-center gap-1.5 font-bold uppercase tracking-luxury">
-                    <Check className="w-4 h-4 text-[#434B36]" />
+                  <span className="font-cinzel text-xs text-[#434B36] dark:text-[#C7A66A] flex items-center gap-1.5 font-bold uppercase tracking-luxury">
+                    <Check className="w-4 h-4 text-[#434B36] dark:text-[#C7A66A]" />
                     En stock ({activeFormat.stock} disponibles)
                   </span>
-                  <span className="font-mono text-[10px] text-[#756B6D] mt-0.5 block">SKU: {activeFormat.sku}</span>
+                  <span className="font-mono text-[10px] text-[#756B6D] dark:text-[#A8989C] mt-0.5 block">SKU: {activeFormat.sku}</span>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-sm text-[#5A4B4E] leading-relaxed font-light">
+              <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light">
                 {product.description}
               </p>
 
               {/* Format Selection (50ml / 100ml) */}
               <div className="space-y-2.5">
-                <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold block">
+                <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block">
                   Contenance du Flacon
                 </span>
                 <div className="grid grid-cols-2 gap-3.5">
@@ -263,12 +263,12 @@ export function ProductDetailClient({
                       className={cn(
                         "p-4 rounded-2xl border text-center transition-all cursor-pointer",
                         selectedSize === fmt.size
-                          ? "bg-[#541B28]/10 border-[#541B28] text-[#23181A] shadow-md ring-1 ring-[#541B28]/30 backdrop-blur-sm"
-                          : "bg-white/80 backdrop-blur-sm border-[#541B28]/15 text-[#5A4B4E] hover:border-[#541B28] hover:bg-white"
+                          ? "bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border-[#541B28] dark:border-[#DFC68B] text-[#23181A] dark:text-[#FAF7F2] shadow-md ring-1 ring-[#541B28]/30 dark:ring-[#DFC68B]/30 backdrop-blur-sm"
+                          : "bg-white/80 dark:bg-[#180B10]/80 backdrop-blur-sm border-[#541B28]/15 dark:border-[#C7A66A]/20 text-[#5A4B4E] dark:text-[#D8CCD0] hover:border-[#541B28] dark:hover:border-[#DFC68B] hover:bg-white dark:hover:bg-[#1C0D15]"
                       )}
                     >
                       <span className="font-cinzel text-sm font-bold tracking-luxury block">{fmt.size}</span>
-                      <span className="font-serif text-sm text-[#541B28] font-bold mt-1 block">{formatTND(fmt.priceTND)}</span>
+                      <span className="font-serif text-sm text-[#541B28] dark:text-[#DFC68B] font-bold mt-1 block">{formatTND(fmt.priceTND)}</span>
                     </button>
                   ))}
                 </div>

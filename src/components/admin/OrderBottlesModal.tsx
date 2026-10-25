@@ -267,15 +267,15 @@ export function OrderBottlesModal({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="relative bg-[#FAF7F2] w-full max-w-4xl rounded-3xl shadow-2xl border border-[#541B28]/20 overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative bg-[#FAF7F2] dark:bg-[#0E0709] w-full max-w-4xl rounded-3xl shadow-2xl border border-[#541B28]/20 dark:border-[#C7A66A]/30 overflow-hidden flex flex-col max-h-[92vh] text-[#23181A] dark:text-[#FAF7F2]">
         {/* Top Header */}
-        <div className="px-6 py-5 bg-white border-b border-[#541B28]/15 flex items-center justify-between shrink-0">
+        <div className="px-6 py-5 bg-white dark:bg-[#180B10] border-b border-[#541B28]/15 dark:border-[#C7A66A]/20 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center border border-[#541B28]/20">
-              <QrCode className="w-5 h-5 text-[#541B28]" />
+            <div className="w-10 h-10 rounded-2xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] flex items-center justify-center border border-[#541B28]/20 dark:border-[#C7A66A]/30">
+              <QrCode className="w-5 h-5 text-[#541B28] dark:text-[#DFC68B]" />
             </div>
             <div>
-              <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold block">
+              <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] dark:text-[#DFC68B] font-bold block">
                 Traçabilité & Vidéo Dédicace Client
               </span>
               <h2 className="font-serif text-2xl text-burgundy-gradient font-light">
@@ -285,7 +285,7 @@ export function OrderBottlesModal({
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-[#756B6D] hover:text-[#541B28] hover:bg-[#541B28]/10 transition-colors"
+            className="p-2 rounded-xl text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#DFC68B] hover:bg-[#541B28]/10 dark:hover:bg-[#C7A66A]/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -294,27 +294,27 @@ export function OrderBottlesModal({
         {/* Content Body */}
         <div className="overflow-y-auto p-6 sm:p-8 space-y-6 flex-1">
           {/* Client summary pill */}
-          <div className="p-4 rounded-2xl bg-white border border-[#541B28]/15 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 flex flex-wrap items-center justify-between gap-4 shadow-xs">
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">Client Destinataire</span>
-              <span className="font-serif text-lg font-bold text-[#23181A]">{order.customer}</span>
-              <span className="text-xs text-[#756B6D] block">{order.email} &bull; {order.phone || "Sans téléphone"}</span>
+              <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#A8989C] font-bold block">Client Destinataire</span>
+              <span className="font-serif text-lg font-bold text-[#23181A] dark:text-[#FAF7F2]">{order.customer}</span>
+              <span className="text-xs text-[#756B6D] dark:text-[#A8989C] block">{order.email} &bull; {order.phone || "Sans téléphone"}</span>
             </div>
             <div className="text-right">
-              <span className="text-[10px] uppercase tracking-wider text-[#756B6D] font-bold block">Total Flacons Détectés</span>
-              <span className="font-serif text-lg font-bold text-[#541B28]">{certificates.length} Flacon(s)</span>
+              <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#A8989C] font-bold block">Total Flacons Détectés</span>
+              <span className="font-serif text-lg font-bold text-[#541B28] dark:text-[#DFC68B]">{certificates.length} Flacon(s)</span>
             </div>
           </div>
 
           {/* If no certificates yet */}
           {certificates.length === 0 ? (
-            <div className="text-center py-12 px-6 rounded-3xl bg-white border border-[#541B28]/15 space-y-4">
-              <QrCode className="w-12 h-12 text-[#541B28]/40 mx-auto" />
+            <div className="text-center py-12 px-6 rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 space-y-4">
+              <QrCode className="w-12 h-12 text-[#541B28]/40 dark:text-[#DFC68B]/40 mx-auto" />
               <div>
-                <h3 className="font-serif text-xl text-[#23181A] font-semibold mb-1">
+                <h3 className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] font-semibold mb-1">
                   Aucun Certificat QR encore généré pour cette commande
                 </h3>
-                <p className="text-xs text-[#756B6D] max-w-md mx-auto">
+                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] max-w-md mx-auto">
                   Générez automatiquement les jetons cryptographiques et étiquettes QR dédiés au nom de <strong>{order.customer}</strong>.
                 </p>
               </div>

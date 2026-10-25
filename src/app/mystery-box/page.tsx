@@ -84,7 +84,7 @@ export default function MysteryBoxPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
       <Navbar />
 
@@ -94,29 +94,29 @@ export default function MysteryBoxPage() {
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
+              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
                 Surprise de Prestige & Transparence
               </span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-4">
               Les Mystery Boxes Lévania
             </h1>
-            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
               Le frisson du hasard allié à la rigueur de la haute parfumerie. Chaque boîte garantit une valeur marchande strictement supérieure au prix d&apos;achat.
             </p>
           </div>
 
           {/* Ethics & Guarantee Notice */}
-          <div className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm mb-14 flex flex-col sm:flex-row items-center justify-between gap-5 text-xs">
+          <div className="p-6 rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-sm mb-14 flex flex-col sm:flex-row items-center justify-between gap-5 text-xs">
             <div className="flex items-center gap-3.5">
-              <ShieldCheck className="w-5 h-5 text-[#434B36] shrink-0" />
-              <span className="text-[#23181A] font-light">
-                <strong className="font-semibold text-[#541B28]">Transparence Totale :</strong> Aucun produit périmé ni générique. Exclusivement des flacons officiels Lévania neufs et scellés.
+              <ShieldCheck className="w-5 h-5 text-[#434B36] dark:text-[#C7A66A] shrink-0" />
+              <span className="text-[#23181A] dark:text-[#FAF7F2] font-light">
+                <strong className="font-semibold text-[#541B28] dark:text-[#DFC68B]">Transparence Totale :</strong> Aucun produit périmé ni générique. Exclusivement des flacons officiels Lévania neufs et scellés.
               </span>
             </div>
             <div className="flex items-center gap-2.5 shrink-0">
               <WaveMonogram size="sm" variant="gold" withSeal={false} />
-              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] font-bold">Valeur Marchande Garantie</span>
+              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">Valeur Marchande Garantie</span>
             </div>
           </div>
 
@@ -125,7 +125,7 @@ export default function MysteryBoxPage() {
             {MYSTERY_BOXES.map((box) => (
               <div
                 key={box.id}
-                className="rounded-3xl bg-white border border-[#541B28]/15 p-7 flex flex-col justify-between hover:border-[#C7A66A] transition-all duration-300 shadow-sm hover:shadow-2xl group relative overflow-hidden"
+                className="rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 p-7 flex flex-col justify-between hover:border-[#C7A66A] dark:hover:border-[#DFC68B] transition-all duration-300 shadow-sm hover:shadow-2xl group relative overflow-hidden"
               >
                 <div>
                   <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-[#541B28]/15 shadow-sm mb-6">

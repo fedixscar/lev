@@ -9,7 +9,7 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 
 export default function LuckPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
       <Navbar />
 
