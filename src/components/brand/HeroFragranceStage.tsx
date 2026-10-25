@@ -18,6 +18,9 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { Card3DTilt } from "@/components/ui/Card3DTilt";
+import { GoldParticlesCanvas } from "./GoldParticlesCanvas";
+import { Sparkles, Wind } from "lucide-react";
 
 interface HeroStageItem {
   id: string;
@@ -86,11 +89,24 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
 export function HeroFragranceStage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("100ml");
+  const [isSpraying, setIsSpraying] = useState(false);
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
   const activeItem = HERO_STAGE_ITEMS[activeIndex];
   const activePrice = selectedFormat === "50ml" ? activeItem.price50ml : activeItem.price100ml;
+
+  const handleSprayMist = () => {
+    setIsSpraying(true);
+    showToast(
+      "Sillage Libéré",
+      `Notes de ${activeItem.name} en diffusion active...`,
+      "luxury"
+    );
+    setTimeout(() => {
+      setIsSpraying(false);
+    }, 2800);
+  };
 
   const handleQuickAdd = () => {
     const product = getAllProducts().find((p) => p.slug === activeItem.slug) || PRODUCTS[0];
@@ -119,6 +135,14 @@ export function HeroFragranceStage() {
       {/* Ambient Pedestal Glow */}
       <div className="absolute -bottom-6 left-10 right-10 h-12 bg-gradient-to-r from-transparent via-[#C7A66A]/35 to-transparent blur-2xl rounded-full pointer-events-none" />
 
+      {/* 3D Interactive Helper Tag */}
+      <div className="flex items-center justify-center mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 dark:bg-[#180B10]/70 backdrop-blur-md border border-[#C7A66A]/30 text-[10px] font-cinzel uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] shadow-xs">
+          <Sparkles className="w-3 h-3 text-[#C7A66A] animate-pulse" />
+          <span>Scène 3D Interactive • Déplacez le curseur</span>
+        </div>
+      </div>
+
       {/* 3-Flacon Switcher Tabs */}
       <div className="flex items-center justify-center gap-2 mb-5 bg-white/80 dark:bg-[#180B10]/80 backdrop-blur-md p-1.5 rounded-full border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-sm">
         {HERO_STAGE_ITEMS.map((item, idx) => {
@@ -128,7 +152,7 @@ export function HeroFragranceStage() {
               key={item.id}
               onClick={() => setActiveIndex(idx)}
               className={cn(
-                "px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5",
+                "px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer",
                 isSelected
                   ? "bg-[#541B28] text-[#FAF7F2] shadow-md shadow-[#541B28]/25 scale-105 border border-[#C7A66A]/40"
                   : "text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#FAF7F2]"
@@ -144,46 +168,84 @@ export function HeroFragranceStage() {
         })}
       </div>
 
-      {/* Main Flacon Pedestal Frame */}
-      <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 dark:border-[#C7A66A]/30 hover:border-[#C7A66A]/50 transition-all duration-500 shadow-2xl bg-white dark:bg-[#170B10] group">
-        {/* Aspect Ratio Box with Product Image */}
-        <div className="relative aspect-[4/5] sm:aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F3ECE1] dark:from-[#170B10] dark:to-[#0E0709]">
-          <Image
-            key={activeItem.slug}
-            src={activeItem.image}
-            alt={activeItem.name}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-1000 group-hover:scale-105"
-          />
-
-          {/* Cinematic Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/80 via-[#23181A]/20 to-transparent opacity-70" />
-
-          {/* Live Mini Wave Canvas on bottle base */}
-          <div className="absolute bottom-0 left-0 right-0 h-28 opacity-45 pointer-events-none">
-            <WaveCanvas
-              expression={activeItem.expression}
-              speedMultiplier={0.9}
-              amplitudeMultiplier={0.8}
-              showParticles={true}
-              height="100%"
-              className="w-full h-full"
+      {/* Main Flacon Pedestal Frame with 3D Tilt */}
+      <Card3DTilt
+        maxTilt={8}
+        perspective={1200}
+        scale={1.02}
+        enableGlare={true}
+        glareOpacity={0.25}
+        className="rounded-3xl"
+      >
+        <div className="relative rounded-3xl overflow-hidden border border-[#541B28]/20 dark:border-[#C7A66A]/30 hover:border-[#C7A66A]/50 transition-all duration-500 shadow-2xl bg-white dark:bg-[#170B10] group">
+          {/* Aspect Ratio Box with Product Image */}
+          <div className="relative aspect-[4/5] sm:aspect-[4/5] overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F3ECE1] dark:from-[#170B10] dark:to-[#0E0709]">
+            <Image
+              key={activeItem.slug}
+              src={activeItem.image}
+              alt={activeItem.name}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-          </div>
 
-          {/* Top Floating Badge */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#170B10]/90 backdrop-blur-md border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[10px] uppercase tracking-luxury font-bold text-[#541B28] dark:text-[#DFC68B] shadow-sm">
-              <GoldStarLozenge size={10} className="text-[#C7A66A]" />
-              <span>{activeItem.tag}</span>
+            {/* Cinematic Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/80 via-[#23181A]/20 to-transparent opacity-70" />
+
+            {/* Live Gold Stardust Particles inside bottle atmosphere */}
+            <GoldParticlesCanvas particleCount={25} className="opacity-80" />
+
+            {/* Live Mini Wave Canvas on bottle base */}
+            <div className="absolute bottom-0 left-0 right-0 h-28 opacity-45 pointer-events-none">
+              <WaveCanvas
+                expression={activeItem.expression}
+                speedMultiplier={0.9}
+                amplitudeMultiplier={0.8}
+                showParticles={true}
+                height="100%"
+                className="w-full h-full"
+              />
             </div>
 
-            <span className="hidden min-[360px]:inline-block font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
-              {activeItem.expression.toUpperCase()} WAVE
-            </span>
-          </div>
+            {/* Atomizer Mist Vapor Effect on click */}
+            {isSpraying && (
+              <div className="absolute inset-0 pointer-events-none z-30 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-500">
+                <div className="absolute w-80 h-80 rounded-full bg-gradient-to-r from-[#C7A66A]/45 via-[#DFC68B]/35 to-transparent blur-3xl animate-ping" />
+                <div className="relative z-40 flex flex-col items-center gap-2 p-4 text-center">
+                  <span className="font-cinzel text-xs font-bold uppercase tracking-luxury text-[#FAF7F2] bg-[#541B28]/95 px-5 py-2 rounded-full border border-[#C7A66A] shadow-2xl backdrop-blur-md animate-bounce">
+                    ✨ Sillage : {activeItem.topNotes[0]} &amp; {activeItem.heartNotes[0]}
+                  </span>
+                  <span className="font-cinzel text-[10px] uppercase tracking-wider text-[#DFC68B] bg-black/75 px-3 py-1 rounded-full backdrop-blur-md border border-[#DFC68B]/30">
+                    Tenue 14h+ Garantie • Extrait Absolu
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Top Floating Badge & Spray Mist Button */}
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#170B10]/90 backdrop-blur-md border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[10px] uppercase tracking-luxury font-bold text-[#541B28] dark:text-[#DFC68B] shadow-sm">
+                <GoldStarLozenge size={10} className="text-[#C7A66A]" />
+                <span>{activeItem.tag}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleSprayMist}
+                  disabled={isSpraying}
+                  className="pointer-events-auto px-3 py-1.5 rounded-full bg-[#541B28]/90 hover:bg-[#66182C] text-[#FAF7F2] text-[10px] font-cinzel font-bold uppercase tracking-wider flex items-center gap-1.5 border border-[#C7A66A]/40 shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+                  title="Vaporiser pour diffuser les notes olfactives"
+                >
+                  <Wind className={cn("w-3 h-3 text-[#DFC68B]", isSpraying && "animate-spin")} />
+                  <span>{isSpraying ? "Diffusion..." : "Vaporiser"}</span>
+                </button>
+
+                <span className="hidden min-[360px]:inline-block font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
+                  {activeItem.expression.toUpperCase()}
+                </span>
+              </div>
+            </div>
 
           {/* Floating Luxury Details Card */}
           <div className="absolute bottom-4 left-4 right-4 p-5 rounded-2xl bg-white/95 dark:bg-[#170B10]/95 backdrop-blur-xl border border-[#541B28]/25 dark:border-[#C7A66A]/35 shadow-xl transition-all duration-300">
@@ -275,6 +337,7 @@ export function HeroFragranceStage() {
           </div>
         </div>
       </div>
+      </Card3DTilt>
     </div>
   );
 }

@@ -337,6 +337,79 @@ p, .prose-luxury {
 }
 
 /* ========================================================
+   SCROLL-DRIVEN ANIMATIONS (MODERN WEB GUIDANCE)
+   ======================================================== */
+@supports ((animation-timeline: view()) and (animation-range: entry)) {
+  @keyframes scrollRevealFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(35px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes scrollParallaxLayer {
+    from {
+      transform: translateY(25px);
+    }
+    to {
+      transform: translateY(-25px);
+    }
+  }
+
+  .scroll-reveal {
+    view-timeline: --reveal block;
+    animation: scrollRevealFadeUp ease-out both;
+    animation-timeline: --reveal;
+    animation-range: entry 10% cover 30%;
+  }
+
+  .scroll-parallax {
+    view-timeline: --parallax block;
+    animation: scrollParallaxLayer linear both;
+    animation-timeline: --parallax;
+    animation-range: entry 0% exit 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-parallax {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* 3D Transform & Depth Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Ambient Gold Luminescence */
+.glow-gold-subtle {
+  box-shadow: 0 0 35px rgba(199, 166, 106, 0.18);
+}
+
+.glow-gold-intense {
+  box-shadow: 0 0 50px rgba(223, 198, 139, 0.32);
+}
+
+/* ========================================================
    HAUTE PARFUMERIE LUXURY DARK MODE (NOIR IMPÉRIAL & OR)
    ======================================================== */
 

@@ -27,6 +27,9 @@ import { MaisonHeritageSection } from "@/components/brand/MaisonHeritageSection"
 import { OlfactoryPyramidStage } from "@/components/discovery/OlfactoryPyramidStage";
 import { BestSellerPodium } from "@/components/products/BestSellerPodium";
 import { PRODUCTS } from "@/lib/catalogue";
+import { Card3DTilt } from "@/components/ui/Card3DTilt";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { GoldParticlesCanvas } from "@/components/brand/GoldParticlesCanvas";
 
 export default function HomePage() {
   return (
@@ -41,6 +44,9 @@ export default function HomePage() {
           {/* Ambient background glows in Imperial Burgundy and Champagne Gold */}
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[750px] bg-[#541B28]/8 rounded-full blur-[160px] pointer-events-none" />
           <div className="absolute top-1/2 right-10 w-[450px] h-[450px] bg-[#C7A66A]/12 rounded-full blur-[140px] pointer-events-none" />
+
+          {/* Golden Floating Stardust Particles */}
+          <GoldParticlesCanvas particleCount={32} className="opacity-75" />
 
           {/* Background Signature Wave */}
           <div className="absolute bottom-0 left-0 right-0 h-96 opacity-35 pointer-events-none">
@@ -66,23 +72,27 @@ export default function HomePage() {
                   Chaque flacon est préparé avec soin et livré avec son certificat d&apos;authenticité à votre nom.
                 </p>
 
-                {/* Refined Luxury CTAs */}
+                {/* Refined Luxury CTAs with Magnetic Motion */}
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                  <Link
-                    href="/shop"
-                    className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-primary flex items-center justify-center gap-2.5"
-                  >
-                    <span>Découvrir nos Parfums</span>
-                    <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
-                  </Link>
+                  <MagneticButton strength={0.2} className="w-full sm:w-auto">
+                    <Link
+                      href="/shop"
+                      className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-primary flex items-center justify-center gap-2.5 shadow-xl"
+                    >
+                      <span>Découvrir nos Parfums</span>
+                      <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                    </Link>
+                  </MagneticButton>
 
-                  <Link
-                    href="/discover"
-                    className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-secondary flex items-center justify-center gap-2"
-                  >
-                    <Compass className="w-4 h-4 text-[#C7A66A]" />
-                    <span>Trouver Mon Parfum (Quiz 2 min)</span>
-                  </Link>
+                  <MagneticButton strength={0.2} className="w-full sm:w-auto">
+                    <Link
+                      href="/discover"
+                      className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-secondary flex items-center justify-center gap-2 shadow-md"
+                    >
+                      <Compass className="w-4 h-4 text-[#C7A66A]" />
+                      <span>Trouver Mon Parfum (Quiz 2 min)</span>
+                    </Link>
+                  </MagneticButton>
                 </div>
 
                 {/* Subtle Editorial Signature Line */}
@@ -121,7 +131,7 @@ export default function HomePage() {
         {/* ========================================================
             REASSURANCE & TRUST BAR
             ======================================================== */}
-        <section className="bg-white dark:bg-[#180B10] border-y border-[#541B28]/10 dark:border-[#C7A66A]/20 py-6 relative z-20 shadow-xs">
+        <section className="bg-white dark:bg-[#180B10] border-y border-[#541B28]/10 dark:border-[#C7A66A]/20 py-6 relative z-20 shadow-xs scroll-reveal">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <div className="flex items-center justify-center gap-3">
@@ -220,20 +230,22 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#541B28]/20 bg-white shadow-md group">
-                  <Image
-                    src="/brand/cylinders-dual.jpg"
-                    alt="Coffrets cylindriques Lévania"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 text-center">
-                    <span className="font-cinzel text-[11px] text-[#FAF7F2] font-medium bg-[#541B28]/90 px-4 py-1.5 rounded-full border border-[#C7A66A]/40 backdrop-blur-md shadow-md tracking-luxury uppercase">
-                      Écrins Cylindriques 50ml &amp; 100ml • Sceau Officiel Inclus
-                    </span>
+                <Card3DTilt maxTilt={7} scale={1.02} enableGlare={true} className="rounded-2xl">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#541B28]/20 dark:border-[#C7A66A]/30 bg-white dark:bg-[#180B10] shadow-md group">
+                    <Image
+                      src="/brand/cylinders-dual.jpg"
+                      alt="Coffrets cylindriques Lévania"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4 text-center">
+                      <span className="font-cinzel text-[11px] text-[#FAF7F2] font-medium bg-[#541B28]/90 px-4 py-1.5 rounded-full border border-[#C7A66A]/40 backdrop-blur-md shadow-md tracking-luxury uppercase">
+                        Écrins Cylindriques 50ml &amp; 100ml • Sceau Officiel Inclus
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Card3DTilt>
               </div>
             </div>
           </div>
@@ -272,19 +284,21 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Visual preview card with gentle wave */}
-              <div className="relative rounded-3xl bg-white border border-[#541B28]/20 p-8 shadow-xl">
-                <div className="h-44 rounded-2xl overflow-hidden border border-[#541B28]/10 bg-[#FAF7F2] mb-6 flex items-center justify-center">
-                  <SignatureWave expression="soft" intensity="gentle" />
+              {/* Visual preview card with 3D Tilt & gentle wave */}
+              <Card3DTilt maxTilt={8} scale={1.02} enableGlare={true} className="rounded-3xl">
+                <div className="relative rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 p-8 shadow-xl">
+                  <div className="h-44 rounded-2xl overflow-hidden border border-[#541B28]/10 dark:border-[#C7A66A]/20 bg-[#FAF7F2] dark:bg-[#0E0709] mb-6 flex items-center justify-center">
+                    <SignatureWave expression="soft" intensity="gentle" />
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-[#541B28] dark:text-[#DFC68B] font-semibold pb-3 border-b border-[#541B28]/10 dark:border-[#C7A66A]/20">
+                    <span>Recommandations Personnalisées</span>
+                    <span>Simple &amp; Gratuit</span>
+                  </div>
+                  <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-3">
+                    Découvrez en quelques clics le parfum qui sublimera votre quotidien.
+                  </p>
                 </div>
-                <div className="flex items-center justify-between text-xs text-[#541B28] font-semibold pb-3 border-b border-[#541B28]/10">
-                  <span>Recommandations Personnalisées</span>
-                  <span>Simple &amp; Gratuit</span>
-                </div>
-                <p className="text-xs text-[#756B6D] mt-3">
-                  Découvrez en quelques clics le parfum qui sublimera votre quotidien.
-                </p>
-              </div>
+              </Card3DTilt>
             </div>
           </div>
         </section>
@@ -331,31 +345,30 @@ export default function HomePage() {
                   rating: 5,
                 },
               ].map((rev, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm hover:border-[#541B28]/35 transition-all flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-1 text-[#C7A66A]">
-                      {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-[#C7A66A]" />
-                      ))}
+                <Card3DTilt key={idx} maxTilt={6} scale={1.02} enableGlare={false} className="h-full">
+                  <div className="p-6 rounded-3xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm hover:border-[#541B28]/35 dark:hover:border-[#C7A66A]/40 transition-all flex flex-col justify-between h-full">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-1 text-[#C7A66A]">
+                        {[...Array(rev.rating)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-[#C7A66A]" />
+                        ))}
+                      </div>
+                      <p className="text-xs text-[#5A4B4E] dark:text-[#DCD0D3] leading-relaxed italic">
+                        &ldquo;{rev.comment}&rdquo;
+                      </p>
                     </div>
-                    <p className="text-xs text-[#5A4B4E] leading-relaxed italic">
-                      &ldquo;{rev.comment}&rdquo;
-                    </p>
-                  </div>
 
-                  <div className="pt-4 mt-4 border-t border-[#541B28]/10 flex items-center justify-between">
-                    <div>
-                      <span className="font-semibold text-xs text-[#23181A] block">{rev.name}</span>
-                      <span className="text-[10px] text-[#756B6D]">{rev.city} • Client Vérifié</span>
+                    <div className="pt-4 mt-4 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20 flex items-center justify-between">
+                      <div>
+                        <span className="font-semibold text-xs text-[#23181A] dark:text-[#FAF7F2] block">{rev.name}</span>
+                        <span className="text-[10px] text-[#756B6D] dark:text-[#A8989C]">{rev.city} • Client Vérifié</span>
+                      </div>
+                      <span className="font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] font-bold bg-[#541B28]/5 dark:bg-[#C7A66A]/10 px-2.5 py-1 rounded-full border border-[#541B28]/10 dark:border-[#C7A66A]/20">
+                        {rev.perfume}
+                      </span>
                     </div>
-                    <span className="font-cinzel text-[10px] text-[#541B28] font-bold bg-[#541B28]/5 px-2.5 py-1 rounded-full border border-[#541B28]/10">
-                      {rev.perfume}
-                    </span>
                   </div>
-                </div>
+                </Card3DTilt>
               ))}
             </div>
           </div>
@@ -369,6 +382,9 @@ export default function HomePage() {
           <div className="absolute inset-0 opacity-25 pointer-events-none">
             <WaveCanvas expression="intense" interactive={false} height="100%" />
           </div>
+
+          {/* Golden Celebration Stardust */}
+          <GoldParticlesCanvas particleCount={25} className="opacity-60" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-12">
@@ -389,13 +405,15 @@ export default function HomePage() {
             </div>
 
             <div className="flex justify-center">
-              <Link
-                href="/account/luck"
-                className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C7A66A] via-[#DFC68B] to-[#C7A66A] text-[#2A0B12] font-cinzel font-bold text-xs uppercase tracking-luxury hover:scale-105 transition-transform shadow-xl flex items-center gap-2.5"
-              >
-                <GoldStarLozenge size={14} className="text-[#2A0B12]" />
-                <span>Tourner la Roue Cadeau</span>
-              </Link>
+              <MagneticButton strength={0.25}>
+                <Link
+                  href="/account/luck"
+                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C7A66A] via-[#DFC68B] to-[#C7A66A] text-[#2A0B12] font-cinzel font-bold text-xs uppercase tracking-luxury hover:scale-105 transition-transform shadow-xl flex items-center gap-2.5"
+                >
+                  <GoldStarLozenge size={14} className="text-[#2A0B12]" />
+                  <span>Tourner la Roue Cadeau</span>
+                </Link>
+              </MagneticButton>
             </div>
           </div>
         </section>
