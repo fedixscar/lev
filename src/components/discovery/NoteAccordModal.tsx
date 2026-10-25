@@ -3,7 +3,7 @@
 import React, { useEffect, useCallback } from "react";
 import { X, MapPin, Droplets, Clock, ShieldCheck } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
-import { getOlfactoryNoteDetail } from "@/lib/olfactoryNotes";
+import { getOlfactoryNoteDetail, OlfactoryNoteDetail } from "@/lib/olfactoryNotes";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -13,8 +13,92 @@ interface NoteAccordModalProps {
   onClose: () => void;
 }
 
+const LOCALIZED_NOTES: Record<string, Record<"ar" | "en", Partial<OlfactoryNoteDetail>>> = {
+  "bergamote": {
+    ar: { name: "برغموت كالابريا", family: "حمضيات مشعة", origin: "هضاب كالابريا المشمسة، إيطاليا", extraction: "عصر ميكانيكي بارد لقشور الثمار الطازجة", description: "انطلاقة منعشة فوارة وحمضية تمنح إشراقة شمسية فورية.", holdingTime: "1 إلى 2 ساعة في الافتتاحية", resonance: "تناغم شمسي وحيوي" },
+    en: { name: "Calabrian Bergamot", family: "Luminous Citrus", origin: "Sunny plateaus of Calabria, Italy", extraction: "Cold mechanical expression of fresh peels", description: "A sparkling, zesty burst imparting immediate solar radiance.", holdingTime: "1 to 2 hours in head notes", resonance: "Solar & Lively Accord" },
+  },
+  "néroli": {
+    ar: { name: "نيرولي الوطن القبلي النفيس", family: "زهري حمضي وعسلي", origin: "بساتين نابل العريقة، تونس", extraction: "تقطير لطيف ببخار الماء لزهور النارنج المقطوفة فجرًا", description: "زهر أبيض ناصع النقاء تداعبه نسائم البحر المتوسط بنفحات عذبة وأثيرية.", holdingTime: "2 إلى 3 ساعات", resonance: "موجة حريرية نقية" },
+    en: { name: "Precious Cap Bon Neroli", family: "Citrus Floral & Honeyed", origin: "Centenary groves of Nabeul, Tunisia", extraction: "Gentle steam distillation of dawn-harvested bitter orange blossom", description: "White flower of pristine purity caressed by Mediterranean sea breezes.", holdingTime: "2 to 3 hours", resonance: "Pure Silken Wave" },
+  },
+  "fleur d'oranger": {
+    ar: { name: "خلاصة زهر البرتقال", family: "زهري أبيض حسي", origin: "حوض نابل والوطن القبلي، تونس", extraction: "استخلاص نقي بالمذيبات العضوية ثم التصفية في كحول نقي", description: "قلب دافئ ومحيط يمنح البشرة راحة وجاذبية لا تُقاوم.", holdingTime: "4 إلى 6 ساعات في القلب", resonance: "تناغم ذهبي سماوي" },
+    en: { name: "Orange Blossom Absolu", family: "Sensual White Floral", origin: "Nabeul & Cap Bon basin, Tunisia", extraction: "Solvent extraction followed by pure alcohol refinement", description: "Enveloping and generous, offering a warm comforting heart notes.", holdingTime: "4 to 6 hours in heart", resonance: "Celestial Golden Harmony" },
+  },
+  "rose": {
+    ar: { name: "ورد دمشقي ملكي", family: "زهري خشبي عميق", origin: "هضاب دمشق العريقة والمرتفعات", extraction: "تقطير مزدوج في أوانٍ نحاسية تقليدية", description: "ملكة العطور بلا منازع: بتلات مخملية بنفحات عسلية وتوابل لطيفة.", holdingTime: "6 إلى 8 ساعات في القلب", resonance: "أثر إمبراطوري فاخر" },
+    en: { name: "Royal Damascus Rose", family: "Dark Woody Floral", origin: "Damascus plateaus & highlands", extraction: "Double distillation in traditional copper alembics", description: "The undisputed queen of perfumery: velvety petals with honeyed accents.", holdingTime: "6 to 8 hours in heart", resonance: "Imperial Sillage" },
+  },
+  "oud": {
+    ar: { name: "عود كمبودي نادر وطبيعي", family: "خشبي مدخن مهيب", origin: "غابات كمبوديا العتيقة", extraction: "تقطير تقليدي طويل الأمد لأخشاب العود المعمرة", description: "خشب أسطوري مهيب بلمسات جلدية وبخورية تمنح حضورًا لا يُنسى.", holdingTime: "18+ ساعة في القاعدة", resonance: "الموجة الداكنة الأسطورية" },
+    en: { name: "Wild Cambodian Oud", family: "Majestic Smoky Woody", origin: "Ancient Cambodian forests", extraction: "Traditional long-maceration distillation of aged agarwood", description: "Legendary majestic wood with leather and incense facets.", holdingTime: "18+ hours in base", resonance: "Monumental Dark Wave" },
+  },
+  "ambre": {
+    ar: { name: "عنبر شمسي دافئ", family: "عنبري راتنجي غني", origin: "شواطئ البحر الأبيض المتوسط", extraction: "نقع وتعتيق بطيء للمواد العنبرية الطبيعية", description: "دفء مغناطيسي مشع يندمج مع البشرة ليمنح ثباتًا استثنائيًا.", holdingTime: "14 إلى 18 ساعة", resonance: "الموجة التوقيع الذهبية" },
+    en: { name: "Solar Amber", family: "Rich Resinous Amber", origin: "Mediterranean shores", extraction: "Slow infusion and aging of natural amber resins", description: "Magnetic radiant warmth that merges intimately with the skin.", holdingTime: "14 to 18 hours", resonance: "Golden Signature Wave" },
+  },
+  "safran": {
+    ar: { name: "زعفران شرقي نقي", family: "تابلي دافئ ومذهب", origin: "واحات الشرق وحوض المتوسط", extraction: "تجفيف يدوي دقيق للشعيرات الحمراء الذهبية", description: "الذهب الأحمر للشرق يضفي لمسة توابل راقية ودفئًا ملكيًا.", holdingTime: "3 إلى 5 ساعات", resonance: "بريق ذهبي شرقي" },
+    en: { name: "Eastern Saffron", family: "Warm Golden Spicy", origin: "Eastern oases & Mediterranean", extraction: "Artisanal hand-drying of red-gold stigmas", description: "Red gold of the Orient imparting spicy luxury and regal warmth.", holdingTime: "3 to 5 hours", resonance: "Eastern Golden Radiance" },
+  },
+  "olivier": {
+    ar: { name: "خشب الزيتون المعمر", family: "خشبي نبيل وأخضر", origin: "أشجار زيتون معمرة من الساحل والوطن القبلي", extraction: "استخلاص ميكانيكي لزيوت الخشب الصمغي", description: "تحية إجلال لأشجار الزيتون التونسية، قوام خشبي دافئ وأصيل.", holdingTime: "10 إلى 14 ساعة", resonance: "أصالة تونسية خالدة" },
+    en: { name: "Centenary Olive Wood", family: "Noble Green Woody", origin: "Centenary olive trees of Cap Bon & Sahel", extraction: "Mechanical extraction of resinous wood essences", description: "Tribute to Tunisian heritage: structured, warm, textured wood.", holdingTime: "10 to 14 hours", resonance: "Timeless Tunisian Nobility" },
+  },
+  "vanille": {
+    ar: { name: "فانيليا بوربون مدغشقر", family: "بلسمي ناعم وغورماند", origin: "مزارع مدغشقر الاستوائية", extraction: "استخلاص بطيء لقرون الفانيليا السوداء الناضجة", description: "حلاوة راقية ومستديرة تخفف من حدة الأخشاب وتزيد الجاذبية.", holdingTime: "12 إلى 16 ساعة", resonance: "عذوبة حريرية آسرة" },
+    en: { name: "Bourbon Vanilla", family: "Gourmand Soft Balsamic", origin: "Tropical plantations of Madagascar", extraction: "Slow extraction of mature black vanilla pods", description: "Sophisticated sweetness tempering woods and heightening allure.", holdingTime: "12 to 16 hours", resonance: "Enchanting Silken Sweetness" },
+  },
+  "musc": {
+    ar: { name: "مسك أبيض قطني نقي", family: "مسكي بودري ناعم", origin: "مختبرات العطور الراقية", extraction: "جزيئات مسكية نقية عالية الثبات", description: "شعور لا يُقاوم بالنظافة والأناقة، كالحرير المغسول تحت أشعة الشمس.", holdingTime: "14+ ساعة في القاعدة", resonance: "صفاء حريري مستدام" },
+    en: { name: "Cotton White Musk", family: "Soft Powdery Musky", origin: "Haute Parfumerie laboratories", extraction: "Pure high-fixation musk molecules", description: "Irresistible clean-skin sensation, reminiscent of fresh linen in the sun.", holdingTime: "14+ hours in base", resonance: "Enduring Silken Serenity" },
+  },
+};
+
+function getLocalizedNoteDetail(rawNote: string, locale: "fr" | "ar" | "en"): OlfactoryNoteDetail {
+  const base = getOlfactoryNoteDetail(rawNote);
+  if (locale === "fr") return base;
+
+  const lower = rawNote.toLowerCase();
+  for (const [key, locMap] of Object.entries(LOCALIZED_NOTES)) {
+    if (lower.includes(key)) {
+      const match = locMap[locale];
+      if (match) {
+        return {
+          ...base,
+          ...match,
+          name: match.name || base.name,
+        };
+      }
+    }
+  }
+
+  if (locale === "ar") {
+    return {
+      ...base,
+      family: "توليفة نادرة من العطور الراقية",
+      origin: "مختارات نادرة من بساتين المتوسط والشرق",
+      extraction: "تقطير يدوي فائق الدقة في أوانٍ معتقة",
+      description: "مادة أولية اختارها كبير صانعي عطور ليفانيا لبريقها الاستثنائي وتناغمها التام مع تركيبة العطر.",
+      holdingTime: "6 إلى 14 ساعة من الفوحان النشط",
+      resonance: "تناغم ليفانيا الحصري",
+    };
+  }
+
+  return {
+    ...base,
+    family: "Rare Haute Parfumerie Accord",
+    origin: "Exclusive selection from Mediterranean & Oriental terroirs",
+    extraction: "Precision artisanal distillation in noble barrels",
+    description: "Raw essence handpicked by Lévania Master Perfumer for singular radiance and harmonious synergy.",
+    holdingTime: "6 to 14 hours active diffusion",
+    resonance: "Exclusive Lévania Harmony",
+  };
+}
+
 export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   // Handle Escape key
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -38,7 +122,7 @@ export function NoteAccordModal({ note, layer, onClose }: NoteAccordModalProps) 
 
   if (!note) return null;
 
-  const detail = getOlfactoryNoteDetail(note);
+  const detail = getLocalizedNoteDetail(note, locale);
 
   const layerLabel =
     layer === "tête"

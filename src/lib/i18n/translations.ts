@@ -2105,6 +2105,91 @@ export const translations: Translations = {
     ar: "إغلاق",
     en: "Close",
   },
+  "concierge.btn": {
+    fr: "Concierge Olfactif IA",
+    ar: "مستشار العطور الذكي",
+    en: "AI Olfactory Concierge",
+  },
+  "concierge.open_aria": {
+    fr: "Ouvrir le Concierge Olfactif IA",
+    ar: "فتح مستشار العطور الذكي",
+    en: "Open AI Olfactory Concierge",
+  },
+  "concierge.title": {
+    fr: "Concierge Olfactif",
+    ar: "مستشار العطور الخاص",
+    en: "Olfactory Concierge",
+  },
+  "concierge.online_status": {
+    fr: "Maison Lévania • En ligne",
+    ar: "دار ليفانيا • متصل الآن",
+    en: "Maison Lévania • Online",
+  },
+  "concierge.welcome": {
+    fr: "Bienvenue chez Lévania Parfums. Je suis votre Concierge Olfactif privé. Comment puis-je vous guider aujourd'hui dans le choix de votre sillage ?",
+    ar: "مرحبًا بكم في دار ليفانيا للعطور. أنا مستشاركم العطري الخاص. كيف يمكنني مساعدتكم اليوم في اختيار بصمتكم العطرية الفريدة؟",
+    en: "Welcome to Lévania Parfums. I am your private Olfactory Concierge. How may I assist you today in finding your signature fragrance?",
+  },
+  "concierge.typing": {
+    fr: "Lévania analyse vos désirs...",
+    ar: "ليفانيا تستحضر التوليفة المثالية لك...",
+    en: "Lévania is analyzing your preferences...",
+  },
+  "concierge.discover_creation": {
+    fr: "Découvrir la création",
+    ar: "استكشف هذا العطر",
+    en: "Discover creation",
+  },
+  "concierge.input_placeholder": {
+    fr: "Posez votre question au Maître Parfumeur...",
+    ar: "اطرح سؤالك على خبير العطور...",
+    en: "Ask your question to our Master Perfumer...",
+  },
+  "concierge.q_onde_dor": {
+    fr: "N°1 Onde d'Or",
+    ar: "العطر رقم 1 أوند دور",
+    en: "#1 Onde d'Or",
+  },
+  "concierge.q_wheel": {
+    fr: "La Roue Cadeau",
+    ar: "عجلة الهدايا والجوائز",
+    en: "Wheel of Chance",
+  },
+  "concierge.q_delivery": {
+    fr: "Livraison",
+    ar: "الشحن والتوصيل",
+    en: "Delivery & Shipping",
+  },
+  "spray.btn": {
+    fr: "Vaporiser l'Élixir",
+    ar: "رش العطر",
+    en: "Spray Fragrance",
+  },
+  "spray.spraying": {
+    fr: "Vaporisation...",
+    ar: "جاري الرش...",
+    en: "Diffusing...",
+  },
+  "spray.aria": {
+    fr: "Vaporiser l'élixir pour révéler le sillage",
+    ar: "رش العطر لتجربة فوحان الأثير",
+    en: "Spray fragrance to release the olfactory sillage",
+  },
+  "spray.toast_title": {
+    fr: "Élixir Vaporisé",
+    ar: "تم إطلاق الأثير العطري",
+    en: "Fragrance Diffused",
+  },
+  "spray.toast_prefix": {
+    fr: "Sillage de",
+    ar: "عبير",
+    en: "Sillage of",
+  },
+  "spray.toast_suffix": {
+    fr: "libéré • Rayonnement 2.5m & tenue active 14h",
+    ar: "في حالة انتشار • فوحان 2.5 متر وثبات 14+ ساعة",
+    en: "released • 2.5m sillage & 14h active longevity",
+  },
   "product.wave_bg_label": {
     fr: "Onde en Fond :",
     ar: "الموجة في الخلفية :",

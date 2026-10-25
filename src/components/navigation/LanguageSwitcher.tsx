@@ -106,7 +106,7 @@ export function LanguageSwitcher({ variant = "segmented", className }: LanguageS
   // Variant 3: Floating quick switcher button (fixed at bottom-right or bottom-left)
   if (variant === "floating") {
     return (
-      <div className={cn("fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40", className)}>
+      <div className={cn("fixed bottom-20 sm:bottom-6 right-4 sm:right-6 rtl:right-auto rtl:left-4 rtl:sm:left-6 z-40", className)}>
         <div className="flex items-center gap-1 p-1 rounded-full bg-white/95 dark:bg-[#180B10]/95 border-2 border-[#541B28] dark:border-[#C7A66A]/60 shadow-2xl backdrop-blur-xl">
           <div className="px-2 text-[#C7A66A] flex items-center">
             <Globe className="w-4 h-4 animate-spin-slow" />

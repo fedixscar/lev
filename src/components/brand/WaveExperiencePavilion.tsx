@@ -104,8 +104,8 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
         image: "/brand/bottle-and-cylinder.jpg",
       },
       {
-        name: "Mystic Noir Extrait",
-        slug: "sillage-d-olivier",
+        name: "Oud Impérial",
+        slug: "oud-imperial",
         format: "100ml Extrait Pur",
         price: 310,
         image: "/brand/bottle-and-cylinder.jpg",
@@ -147,8 +147,18 @@ function getWaveFeatureData(expr: WaveExpression, locale: "fr" | "ar" | "en", t:
     "100ml Extrait Pur": { fr: "100ml Extrait Pur", ar: "100 مل خلاصة نقية", en: "100ml Pure Extract" },
   };
 
+  const nameMap: Record<string, Record<"fr" | "ar" | "en", string>> = {
+    "onde-d-or": { fr: "Onde d'Or", ar: "أوند دور", en: "Onde d'Or" },
+    "sillage-d-olivier": { fr: "Sillage d'Olivier", ar: "سيّاج دوليفيي", en: "Sillage d'Olivier" },
+    "neroli-flottant": { fr: "Néroli Flottant", ar: "نيرولي فلوتان", en: "Néroli Flottant" },
+    "coffret-prestige": { fr: "Écrin Duo Soyeux", ar: "صندوق ثنائي حريري", en: "Silken Duo Box" },
+    "rose-d-hiver": { fr: "Rose d'Hiver", ar: "روز ديفر", en: "Rose d'Hiver" },
+    "oud-imperial": { fr: "Oud Impérial", ar: "عود إمبريال", en: "Oud Impérial" },
+  };
+
   const localizedBestSellers = base.bestSellers.map((b) => ({
     ...b,
+    name: nameMap[b.slug]?.[locale] || b.name,
     format: formatMap[b.format]?.[locale] || b.format,
   }));
 
@@ -294,7 +304,7 @@ export function WaveExperiencePavilion() {
             />
 
             {/* In-Canvas Floating Badge */}
-            <div className="absolute top-5 left-5 z-20 flex items-center gap-3">
+            <div className="absolute top-5 left-5 rtl:left-auto rtl:right-5 z-20 flex items-center gap-3">
               <div
                 className={cn(
                   "p-2.5 rounded-2xl backdrop-blur-md border shadow-lg flex items-center gap-2",
@@ -311,7 +321,7 @@ export function WaveExperiencePavilion() {
             </div>
 
             {/* Top-Right Concentration Badge */}
-            <div className="hidden sm:block absolute top-5 right-5 z-20">
+            <div className="hidden sm:block absolute top-5 right-5 rtl:right-auto rtl:left-5 z-20">
               <span
                 className={cn(
                   "px-3 py-1.5 rounded-2xl backdrop-blur-md border text-[10px] font-serif uppercase tracking-widest font-bold",
@@ -325,7 +335,7 @@ export function WaveExperiencePavilion() {
             </div>
 
             {/* Bottom Interaction Guide */}
-            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-6 sm:right-auto z-20 pointer-events-none">
+            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-6 sm:right-auto rtl:sm:left-auto rtl:sm:right-6 z-20 pointer-events-none">
               <span
                 className={cn(
                   "inline-block max-w-full text-[9px] sm:text-[10px] uppercase tracking-widest font-mono px-3 py-1 rounded-full backdrop-blur-md border leading-relaxed",

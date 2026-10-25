@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Wind } from "lucide-react";
 import { LuxuryAtomizer } from "@/components/ui/LuxuryIcons";
 import { useNotification } from "@/context/NotificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface AtomizerSprayProps {
   productName: string;
@@ -24,6 +25,7 @@ interface Particle {
 }
 
 export function AtomizerSpray({ productName, onSpray, className = "" }: AtomizerSprayProps) {
+  const { t } = useLanguage();
   const [isSpraying, setIsSpraying] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>([]);
@@ -82,8 +84,8 @@ export function AtomizerSpray({ productName, onSpray, className = "" }: Atomizer
     if (onSpray) onSpray();
 
     showToast(
-      "Élixir Vaporisé",
-      `Sillage de ${productName} libéré • Rayonnement 2.5m & tenue active 14h`,
+      t("spray.toast_title", "Élixir Vaporisé"),
+      `${t("spray.toast_prefix", "Sillage de")} ${productName} ${t("spray.toast_suffix", "libéré • Rayonnement 2.5m & tenue active 14h")}`,
       "luxury"
     );
 
@@ -202,7 +204,7 @@ export function AtomizerSpray({ productName, onSpray, className = "" }: Atomizer
         type="button"
         onClick={triggerSpray}
         disabled={isSpraying}
-        aria-label="Vaporiser l'élixir pour révéler le sillage"
+        aria-label={t("spray.aria", "Vaporiser l'élixir pour révéler le sillage")}
         className={`group relative inline-flex items-center gap-3 px-5 sm:px-6 py-3 rounded-full backdrop-blur-md border transition-all cursor-pointer shadow-lg select-none ${
           isSpraying
             ? "bg-[#541B28] border-[#DFC68B] text-[#DFC68B] scale-95 shadow-[#541B28]/40"
@@ -216,7 +218,7 @@ export function AtomizerSpray({ productName, onSpray, className = "" }: Atomizer
         )}
 
         <span className="font-cinzel text-[11px] uppercase tracking-luxury font-bold">
-          {isSpraying ? "Vaporisation..." : "Vaporiser l'Élixir"}
+          {isSpraying ? t("spray.spraying", "Vaporisation...") : t("spray.btn", "Vaporiser l'Élixir")}
         </span>
 
         <span className="w-1.5 h-1.5 rounded-full bg-[#C7A66A] animate-ping" />

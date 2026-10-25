@@ -97,7 +97,12 @@ export default function CollectionsPage() {
                   withSeal
                 />
                 <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                  {t("collections.expression_wave", "Expression Olfactive :")} {activeCollection.waveExpression.toUpperCase()} WAVE
+                  {t("collections.expression_wave", "Expression Olfactive :")}{" "}
+                  {activeCollection.waveExpression === "signature"
+                    ? t("pavilion.tab_signature", "Signature")
+                    : activeCollection.waveExpression === "soft"
+                    ? t("pavilion.tab_soft", "Soyeuse")
+                    : t("pavilion.tab_intense", "Sombre")}
                 </span>
               </div>
 

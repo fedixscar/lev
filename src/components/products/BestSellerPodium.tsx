@@ -121,7 +121,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                   </span>
                 </div>
                 <h3 className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] font-medium">{second.name}</h3>
-                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-0.5 italic">{second.fragranceFamily}</p>
+                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-0.5 italic">{t("family." + second.fragranceFamily.toLowerCase(), second.fragranceFamily)}</p>
 
                 {/* Notes Chips */}
                 <div className="flex flex-wrap justify-center gap-1 mt-2">
@@ -293,7 +293,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                   </span>
                 </div>
                 <h3 className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] font-medium">{third.name}</h3>
-                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-0.5 italic">{third.fragranceFamily}</p>
+                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-0.5 italic">{t("family." + third.fragranceFamily.toLowerCase(), third.fragranceFamily)}</p>
 
                 {/* Notes Chips */}
                 <div className="flex flex-wrap justify-center gap-1 mt-2">

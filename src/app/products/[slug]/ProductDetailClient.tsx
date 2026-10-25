@@ -107,7 +107,7 @@ export function ProductDetailClient({
       quantity,
     });
     showToast(
-      "Flacon ajouté à votre panier",
+      t("toast.added_to_cart", "Flacon ajouté à votre panier"),
       `${product.name} (${selectedSize}) x${quantity} — ${formatTND(activeFormat.priceTND * quantity)}`,
       "luxury"
     );
