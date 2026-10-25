@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useLoyalty } from "@/context/LoyaltyContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { generateCertificatesForOrder, BottleCertificate } from "@/lib/certificates";
@@ -40,6 +41,7 @@ export default function CheckoutPage() {
     useCart();
   const { awardLuck, awardLoyaltyPoints } = useLoyalty();
   const { showToast } = useNotification();
+  const { t } = useLanguage();
 
   const { user } = useAuth();
 
@@ -202,25 +204,24 @@ export default function CheckoutPage() {
               </div>
 
               <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient dark:text-[#DFC68B] font-light mt-1 mb-4">
-                Merci, Votre Commande est Confirmée
+                {t("checkout.success_title", "Merci, Votre Commande est Confirmée")}
               </h1>
 
               <p className="text-sm text-[#5A4B4E] dark:text-[#D5C4C7] max-w-md mx-auto mb-8 font-light leading-relaxed">
-                Votre référence officielle est{" "}
-                <strong className="text-[#541B28] dark:text-[#EACCA0] font-mono font-bold text-base">
+                {t("checkout.success_desc", "Votre commande a été enregistrée avec succès. Nos maîtres artisans préparent vos flacons avec le plus grand soin.")}{" "}
+                <strong className="text-[#541B28] dark:text-[#EACCA0] font-mono font-bold text-base block mt-2">
                   {confirmedOrder.orderNumber}
                 </strong>
-                . Nos maîtres artisans préparent vos flacons avec le plus grand soin.
               </p>
 
               {/* Generated QR Bottle Certificates */}
               {confirmedOrder.certificates && confirmedOrder.certificates.length > 0 && (
-                <div className="p-6 rounded-2xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/20 mb-8 max-w-lg mx-auto text-left space-y-4">
+                <div className="p-6 rounded-2xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/20 mb-8 max-w-lg mx-auto text-left rtl:text-right space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/15">
                     <div className="flex items-center gap-2">
                       <QrCode className="w-4 h-4 text-[#541B28]" />
                       <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold">
-                        Certificats QR Flacons Dédiés ({confirmedOrder.certificates.length})
+                        {t("checkout.cert_title", "Certificats QR Flacons Dédiés")} ({confirmedOrder.certificates.length})
                       </span>
                     </div>
                     <span className="text-[10px] text-[#434B36] font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
@@ -314,10 +315,10 @@ export default function CheckoutPage() {
                   </span>
                 </div>
                 <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-3">
-                  Finaliser Votre Commande
+                  {t("checkout.title", "Finaliser Votre Commande")}
                 </h1>
                 <p className="text-sm text-[#5A4B4E] font-light">
-                  Expédition sous 24h à 48h partout en Tunisie avec suivi par SMS.
+                  {t("checkout.subtitle", "Expédition sous 24h à 48h partout en Tunisie avec suivi par SMS.")}
                 </p>
               </div>
 
@@ -328,12 +329,12 @@ export default function CheckoutPage() {
                     {/* 1. Contact Info */}
                     <div className="p-7 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm space-y-5">
                       <h2 className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold flex items-center gap-2 pb-3 border-b border-[#541B28]/10">
-                        <span>1. Coordonnées du Destinataire</span>
+                        <span>{t("checkout.contact_section", "1. Coordonnées du Destinataire")}</span>
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Nom Complet
+                            {t("checkout.full_name", "Nom Complet")}
                           </label>
                           <input
                             type="text"
@@ -346,7 +347,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Numéro de Téléphone (Tunisie)
+                            {t("checkout.phone", "Numéro de Téléphone (Tunisie)")}
                           </label>
                           <input
                             type="tel"
@@ -359,7 +360,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="sm:col-span-2">
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Adresse Email pour la Confirmation
+                            {t("checkout.email", "Adresse Email pour la Confirmation")}
                           </label>
                           <input
                             type="email"
@@ -377,7 +378,7 @@ export default function CheckoutPage() {
                     <div className="p-7 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm space-y-5">
                       <h2 className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold flex items-center gap-2 pb-3 border-b border-[#541B28]/10">
                         <Truck className="w-4 h-4 text-[#C7A66A]" />
-                        <span>2. Adresse de Livraison (Tunisie)</span>
+                        <span>{t("checkout.shipping_section", "2. Adresse de Livraison (Tunisie)")}</span>
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="sm:col-span-2">
@@ -427,7 +428,7 @@ export default function CheckoutPage() {
                     <div className="p-7 rounded-3xl bg-white border border-[#541B28]/15 shadow-sm space-y-5">
                       <h2 className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold flex items-center gap-2 pb-3 border-b border-[#541B28]/10">
                         <Lock className="w-4 h-4 text-[#C7A66A]" />
-                        <span>3. Mode de Règlement</span>
+                        <span>{t("checkout.payment_section", "3. Mode de Règlement")}</span>
                       </h2>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -448,9 +449,9 @@ export default function CheckoutPage() {
                           <Banknote className="w-5 h-5 text-[#541B28] shrink-0" />
                           <div>
                             <span className="font-cinzel text-xs font-bold text-[#23181A] block tracking-luxury uppercase">
-                              Paiement à la Livraison
+                              {t("checkout.payment_cod", "Paiement à la Livraison")}
                             </span>
-                            <span className="text-[10px] text-[#756B6D]">Espèces au livreur</span>
+                            <span className="text-[10px] text-[#756B6D]">{t("checkout.payment_cod_desc", "Espèces au livreur")}</span>
                           </div>
                         </label>
 
@@ -471,9 +472,9 @@ export default function CheckoutPage() {
                           <CreditCard className="w-5 h-5 text-[#541B28] shrink-0" />
                           <div>
                             <span className="font-cinzel text-xs font-bold text-[#23181A] block tracking-luxury uppercase">
-                              Carte Bancaire
+                              {t("checkout.payment_card", "Carte Bancaire")}
                             </span>
-                            <span className="text-[10px] text-[#756B6D]">Paiement crypté SSL (Flouci/Konnect)</span>
+                            <span className="text-[10px] text-[#756B6D]">{t("checkout.payment_card_desc", "Paiement crypté SSL (Flouci/Konnect)")}</span>
                           </div>
                         </label>
                       </div>
@@ -544,8 +545,8 @@ export default function CheckoutPage() {
                         <span>Validation en cours...</span>
                       ) : (
                         <>
-                          <span>Confirmer la Commande</span>
-                          <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
+                          <span>{t("checkout.confirm_btn", "Confirmer la Commande")}</span>
+                          <ArrowRight className="w-4 h-4 text-[#C7A66A] rtl:rotate-180" />
                         </>
                       )}
                     </button>

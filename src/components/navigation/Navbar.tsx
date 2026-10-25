@@ -24,12 +24,15 @@ import { useLoyalty } from "@/context/LoyaltyContext";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageSwitcher } from "@/components/navigation/LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Navbar() {
   const pathname = usePathname();
   const { totalItemsCount, setIsCartOpen } = useCart();
   const { role, user, isAuthenticated, signOut } = useAuth();
   const { currentTier } = useLoyalty();
+  const { t } = useLanguage();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -50,13 +53,13 @@ export function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { href: "/shop", label: "Boutique" },
-    { href: "/collections", label: "Collections" },
-    { href: "/discover", label: "Trouver Mon Parfum", highlight: true, icon: Compass },
-    { href: "/compose-box", label: "Composer Mon Coffret", icon: Gift },
-    { href: "/promotions", label: "Offres du Mois" },
+    { href: "/shop", label: t("nav.shop", "Boutique") },
+    { href: "/collections", label: t("nav.collections", "Collections") },
+    { href: "/discover", label: t("nav.discover", "Trouver Mon Parfum"), highlight: true, icon: Compass },
+    { href: "/compose-box", label: t("nav.compose", "Composer Mon Coffret"), icon: Gift },
+    { href: "/promotions", label: t("nav.promotions", "Offres du Mois") },
     { href: "/mystery-box", label: "Mystery Box" },
-    { href: "/account/luck", label: "Roue Cadeau", badge: currentTier || "Cadeaux", icon: Flame },
+    { href: "/account/luck", label: t("wheel.title", "Roue Cadeau"), badge: currentTier || undefined, icon: Flame },
   ];
 
   return (
@@ -121,8 +124,11 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Right Controls: Theme Toggle, User Profile & Cart */}
+            {/* Right Controls: Language Selector, Theme Toggle, User Profile & Cart */}
             <div className="flex items-center gap-2 sm:gap-3">
+              {/* Language Selector */}
+              <LanguageSwitcher />
+
               {/* Theme Toggle Button */}
               <ThemeToggle />
 
@@ -272,10 +278,18 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Theme switcher pill in mobile drawer */}
+              {/* Language switcher pills in mobile drawer */}
               <div className="mt-5 p-3 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 flex items-center justify-between">
                 <span className="font-cinzel text-[11px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold">
-                  Thème Visuel
+                  {t("nav.lang_select", "Langue")}
+                </span>
+                <LanguageSwitcher variant="pills" />
+              </div>
+
+              {/* Theme switcher pill in mobile drawer */}
+              <div className="mt-3 p-3 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 flex items-center justify-between">
+                <span className="font-cinzel text-[11px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold">
+                  {t("nav.theme_toggle", "Thème Visuel")}
                 </span>
                 <ThemeToggle variant="pill" />
               </div>

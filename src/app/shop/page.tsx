@@ -11,6 +11,7 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 type WaveFilter = "all" | "signature" | "soyeuse" | "intense";
@@ -47,6 +48,7 @@ const WAVE_TABS = [
 ];
 
 export default function ShopPage() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedWave, setSelectedWave] = useState<WaveFilter>("all");
@@ -110,13 +112,13 @@ export default function ShopPage() {
           <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[11px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3 shadow-sm">
               <GoldStarLozenge size={11} className="text-[#C7A66A]" />
-              <span>Boutique Haute Parfumerie</span>
+              <span>{t("nav.brand_subtitle", "Boutique Haute Parfumerie")}</span>
             </div>
             <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mb-3">
-              Le Catalogue des Fragrances
+              {t("shop.title", "Le Catalogue des Fragrances")}
             </h1>
             <p className="text-xs sm:text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed">
-              Explorez nos extraits et eaux de parfum artisanales, disponibles en flacons 50ml et 100ml scellés dans leur écrin cylindrique.
+              {t("shop.subtitle", "Explorez nos extraits et eaux de parfum artisanales, disponibles en flacons 50ml et 100ml scellés dans leur écrin cylindrique.")}
             </p>
           </div>
 
@@ -207,7 +209,7 @@ export default function ShopPage() {
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D] dark:text-[#A8989C]" />
               <input
                 type="text"
-                placeholder="Rechercher par note, nom..."
+                placeholder={t("shop.search_placeholder", "Rechercher par note, nom...")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/30 rounded-xl pl-9 pr-8 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] placeholder:text-[#756B6D] dark:placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"

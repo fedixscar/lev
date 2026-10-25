@@ -30,8 +30,10 @@ import { PRODUCTS } from "@/lib/catalogue";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { GoldParticlesCanvas } from "@/components/brand/GoldParticlesCanvas";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function HomePage() {
+  const { t, isArabic } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] overflow-x-hidden">
       <Navbar />
@@ -56,31 +58,39 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
               {/* Text Editorial Column */}
-              <div className="lg:col-span-7 min-w-0 space-y-7 text-center lg:text-left">
+              <div className="lg:col-span-7 min-w-0 space-y-7 text-center lg:text-left rtl:lg:text-right">
                 <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-white/95 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold backdrop-blur-md shadow-xs">
                   <WaveMonogram size="xs" variant="gold" />
-                  <span>Haute Parfumerie Artisanale • Nabeul, Tunisie</span>
+                  <span>{t("hero.badge", "Haute Parfumerie Artisanale • Nabeul, Tunisie")}</span>
                 </div>
 
                 <h1 className="font-serif text-fluid-hero font-light text-burgundy-gradient tracking-tight">
-                  L&apos;Élégance d&apos;un Parfum{" "}
-                  <span className="italic font-normal text-gold-gradient">Unique &amp; Longue Tenue.</span>
+                  {isArabic ? (
+                    <>
+                      {t("hero.title_part1")}{" "}
+                      <span className="italic font-normal text-gold-gradient">{t("hero.title_highlight")}</span>
+                    </>
+                  ) : (
+                    <>
+                      L&apos;Élégance d&apos;un Parfum{" "}
+                      <span className="italic font-normal text-gold-gradient">Unique &amp; Longue Tenue.</span>
+                    </>
+                  )}
                 </h1>
 
                 <p className="text-base sm:text-lg text-[#5A4B4E] font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  Créés en Tunisie avec les plus belles essences méditerranéennes : fleur d&apos;oranger, bois précieux et ambre solaire.
-                  Chaque flacon est préparé avec soin et livré avec son certificat d&apos;authenticité à votre nom.
+                  {t("hero.subtitle", "Créés en Tunisie avec les plus belles essences méditerranéennes : fleur d'oranger, bois précieux et ambre solaire. Chaque flacon est préparé avec soin et livré avec son certificat d'authenticité à votre nom.")}
                 </p>
 
                 {/* Refined Luxury CTAs with Magnetic Motion */}
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start rtl:lg:justify-start gap-4 pt-2">
                   <MagneticButton strength={0.2} className="w-full sm:w-auto">
                     <Link
                       href="/shop"
                       className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-primary flex items-center justify-center gap-2.5 shadow-xl"
                     >
-                      <span>Découvrir nos Parfums</span>
-                      <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                      <span>{t("hero.cta_explore", "Découvrir nos Parfums")}</span>
+                      <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
                     </Link>
                   </MagneticButton>
 
@@ -90,7 +100,7 @@ export default function HomePage() {
                       className="w-full sm:w-auto px-8 py-4 rounded-full luxury-btn-secondary flex items-center justify-center gap-2 shadow-md"
                     >
                       <Compass className="w-4 h-4 text-[#C7A66A]" />
-                      <span>Trouver Mon Parfum (Quiz 2 min)</span>
+                      <span>{t("hero.cta_finder", "Trouver Mon Parfum (Quiz 2 min)")}</span>
                     </Link>
                   </MagneticButton>
                 </div>
@@ -138,9 +148,9 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
                   <Truck className="w-5 h-5 text-[#541B28] dark:text-[#DFC68B]" />
                 </div>
-                <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Livraison 24-48h</h4>
-                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">Partout en Tunisie</p>
+                <div className="text-left rtl:text-right">
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.delivery", "Livraison 24-48h")}</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.delivery_sub", "Partout en Tunisie")}</p>
                 </div>
               </div>
 
@@ -148,9 +158,9 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
                   <ShieldCheck className="w-5 h-5 text-[#541B28] dark:text-[#DFC68B]" />
                 </div>
-                <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Paiement à la Livraison</h4>
-                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">En espèces ou par carte</p>
+                <div className="text-left rtl:text-right">
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.payment", "Paiement à la Livraison")}</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.payment_sub", "En espèces ou par carte")}</p>
                 </div>
               </div>
 
@@ -158,8 +168,8 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
                   <Gift className="w-5 h-5 text-[#C7A66A]" />
                 </div>
-                <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Écrin Cadeau Offert</h4>
+                <div className="text-left rtl:text-right">
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("heritage.pedestal_title", "Écrin Cadeau Offert")}</h4>
                   <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">Boîte cylindrique luxe</p>
                 </div>
               </div>
@@ -168,9 +178,9 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 flex items-center justify-center text-[#541B28] dark:text-[#DFC68B] shrink-0">
                   <QrCode className="w-5 h-5 text-[#434B36] dark:text-[#C7A66A]" />
                 </div>
-                <div className="text-left">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">Flacon Personnalisé</h4>
-                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">QR Code &amp; Vidéo à votre nom</p>
+                <div className="text-left rtl:text-right">
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.authenticity", "Flacon Personnalisé")}</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.authenticity_sub", "QR Code & Vidéo à votre nom")}</p>
                 </div>
               </div>
             </div>

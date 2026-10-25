@@ -13,12 +13,14 @@ import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { ProductCard } from "./ProductCard";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface BestSellerPodiumProps {
   products: Product[];
 }
 
 export function BestSellerPodium({ products: initialProducts }: BestSellerPodiumProps) {
+  const { t } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
@@ -71,10 +73,10 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
         <div className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/25 font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3.5 shadow-xs">
             <Crown className="w-3.5 h-3.5 text-[#C7A66A]" />
-            <span>Les Plus Demandés</span>
+            <span>{t("bestsellers.tag", "Les Plus Demandés")}</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-5xl text-[#541B28] dark:text-[#DFC68B] font-normal tracking-tight mb-4">
-            Nos 3 Meilleurs Parfums
+            {t("bestsellers.title", "Nos 3 Meilleurs Parfums")}
           </h2>
           <p className="text-sm text-[#756B6D] dark:text-[#A8989C] leading-relaxed">
             Découvrez les parfums préférés de nos clients, reconnus pour leur élégance et leur tenue exceptionnelle.

@@ -7,8 +7,10 @@ import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { ArrowRight, Check } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -31,13 +33,13 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <LevaniaLogo size="lg" tone="light" />
             <p className="text-sm text-[#D5C4C7] leading-relaxed max-w-sm mt-3">
-              Parfums d&apos;exception longue tenue créés en Tunisie. Chaque flacon est livré dans son écrin de luxe avec certificat d&apos;authenticité personnalisé.
+              {t("footer.tagline", "Parfums d'exception longue tenue créés en Tunisie. Chaque flacon est livré dans son écrin de luxe avec certificat d'authenticité personnalisé.")}
             </p>
 
             {/* Newsletter */}
             <div className="pt-2">
               <h4 className="text-xs uppercase tracking-widest text-[#DFC68B] font-semibold mb-2">
-                Le Cercle Privilège Lévania
+                {t("footer.newsletter_title", "Le Cercle Privilège Lévania")}
               </h4>
               {subscribed ? (
                 <div className="flex items-center gap-2 text-xs text-amber-200 bg-amber-950/60 p-2.5 rounded-lg border border-[#C7A66A]/40">
@@ -49,7 +51,7 @@ export function Footer() {
                   <input
                     type="email"
                     required
-                    placeholder="Votre adresse email privée..."
+                    placeholder={t("footer.newsletter_placeholder", "Votre adresse email privée...")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="min-w-0 flex-1 bg-[#3B121C] border border-[#C7A66A]/30 rounded-lg px-3.5 py-2 text-xs text-[#FAF7F2] placeholder:text-[#C4B2B6] focus:outline-none focus:border-[#C7A66A]"
@@ -58,7 +60,7 @@ export function Footer() {
                     type="submit"
                     className="shrink-0 px-4 py-2 rounded-lg bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-md"
                   >
-                    <span>Rejoindre</span>
+                    <span>{t("footer.newsletter_btn", "Rejoindre")}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </form>
@@ -74,28 +76,28 @@ export function Footer() {
             <ul className="space-y-2 text-xs text-[#D5C4C7]">
               <li>
                 <Link href="/shop" className="hover:text-[#DFC68B] transition-colors">
-                  Toutes les Fragrances
+                  {t("nav.shop", "Toutes les Fragrances")}
                 </Link>
               </li>
               <li>
                 <Link href="/collections" className="hover:text-[#DFC68B] transition-colors">
-                  Les 3 Collections
+                  {t("nav.collections", "Les 3 Collections")}
                 </Link>
               </li>
               <li>
                 <Link href="/discover" className="hover:text-[#DFC68B] transition-colors flex items-center gap-1.5">
                   <GoldStarLozenge size={10} className="text-[#DFC68B]" />
-                  <span>Trouver Mon Parfum (Quiz)</span>
+                  <span>{t("nav.discover", "Trouver Mon Parfum (Quiz)")}</span>
                 </Link>
               </li>
               <li>
                 <Link href="/compose-box" className="hover:text-[#DFC68B] transition-colors">
-                  Composer Mon Coffret
+                  {t("nav.compose", "Composer Mon Coffret")}
                 </Link>
               </li>
               <li>
                 <Link href="/promotions" className="hover:text-[#DFC68B] transition-colors">
-                  Offres & Coffrets du Mois
+                  {t("nav.promotions", "Offres & Coffrets du Mois")}
                 </Link>
               </li>
               <li>
@@ -186,8 +188,8 @@ export function Footer() {
 
         {/* Bottom copyright and legal */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D5C4C7] gap-4">
-          <div className="text-center sm:text-left font-cinzel text-[11px] tracking-wider">
-            &copy; 2026 LÉVANIA PARFUMS. Tous droits réservés. Maison de Haute Parfumerie Artisanale.
+          <div className="text-center sm:text-left rtl:sm:text-right font-cinzel text-[11px] tracking-wider">
+            &copy; 2026 LÉVANIA PARFUMS. {t("footer.rights", "Tous droits réservés. Haute Parfumerie Tunisienne.")}
           </div>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6 text-[11px]">
             <span>Paiement Sécurisé &bull; Espèces &amp; Carte</span>

@@ -11,6 +11,7 @@ import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className, priority = false }: ProductCardProps) {
+  const { t } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("50ml");
@@ -198,7 +200,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
               className="w-full py-3 px-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#1C0D14] hover:bg-[#541B28] dark:hover:bg-[#541B28] text-[#541B28] dark:text-[#DFC68B] hover:text-[#FAF7F2] dark:hover:text-[#FAF7F2] border border-[#541B28]/30 dark:border-[#C7A66A]/35 hover:border-[#C7A66A]/50 font-cinzel text-[11px] font-bold tracking-luxury uppercase transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-md hover:shadow-[#541B28]/20 active:scale-98 cursor-pointer relative overflow-hidden"
             >
               <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:scale-110 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
-              <span>Ajouter au Panier</span>
+              <span>{t("shop.add_to_cart", "Ajouter au Panier")}</span>
             </button>
           </div>
         </div>

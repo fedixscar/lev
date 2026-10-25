@@ -8,8 +8,10 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { useCart } from "@/context/CartContext";
 import { formatTND, formatMillimes } from "@/lib/utils";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function CartDrawer() {
+  const { t } = useLanguage();
   const {
     items,
     removeItem,
@@ -58,7 +60,7 @@ export function CartDrawer() {
             <div className="flex items-center gap-2.5">
               <WaveMonogram size="xs" variant="gold" />
               <span className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-normal">
-                Votre Panier
+                {t("cart.drawer_title", "Votre Panier")}
               </span>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/20 dark:border-[#C7A66A]/30">
                 {items.reduce((sum, i) => sum + i.quantity, 0)}
@@ -233,7 +235,7 @@ export function CartDrawer() {
               {/* Price Breakdown */}
               <div className="space-y-1.5 text-xs text-[#756B6D] dark:text-[#A8989C] pt-2 border-t border-neutral-100 dark:border-[#C7A66A]/15">
                 <div className="flex justify-between">
-                  <span>Sous-total</span>
+                  <span>{t("cart.subtotal", "Sous-total")}</span>
                   <span className="text-[#23181A] dark:text-[#FAF7F2] font-medium">{formatTND(subtotalTND)}</span>
                 </div>
                 {discountTND > 0 && (
@@ -243,14 +245,14 @@ export function CartDrawer() {
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Livraison (Tunisie)</span>
+                  <span>{t("cart.shipping", "Livraison (Tunisie)")}</span>
                   <span className="text-[#23181A] dark:text-[#FAF7F2] font-medium">
-                    {deliveryFeeTND === 0 ? "Offerte" : formatTND(deliveryFeeTND)}
+                    {deliveryFeeTND === 0 ? t("cart.free", "Offerte") : formatTND(deliveryFeeTND)}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-base font-serif text-[#23181A] dark:text-[#FAF7F2] pt-2 border-t border-[#541B28]/20 dark:border-[#C7A66A]/25">
-                  <span className="font-normal">Total Estimé</span>
+                  <span className="font-normal">{t("cart.total", "Total Estimé")}</span>
                   <span className="text-[#541B28] dark:text-[#DFC68B] font-bold text-lg">{formatMillimes(totalMillimes)}</span>
                 </div>
               </div>
@@ -273,15 +275,15 @@ export function CartDrawer() {
                   onClick={() => setIsCartOpen(false)}
                   className="flex-1 py-3 text-center rounded-xl border border-[#541B28]/30 dark:border-[#C7A66A]/30 text-xs font-semibold text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#1E0D15] transition-colors"
                 >
-                  Voir Panier
+                  {t("nav.cart", "Voir Panier")}
                 </Link>
                 <Link
                   href="/checkout"
                   onClick={() => setIsCartOpen(false)}
                   className="flex-[2] py-3 text-center rounded-xl bg-[#541B28] text-white text-xs font-bold tracking-wider uppercase hover:bg-[#66182C] transition-colors shadow-lg shadow-[#541B28]/20 flex items-center justify-center gap-2"
                 >
-                  <span>Commander</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{t("cart.checkout_btn", "Commander")}</span>
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                 </Link>
               </div>
             </div>

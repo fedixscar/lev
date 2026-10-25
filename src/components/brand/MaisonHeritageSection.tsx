@@ -6,8 +6,10 @@ import Link from "next/link";
 import { WaveMonogram } from "./WaveMonogram";
 import { ArrowRight, ShieldCheck, Award } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function MaisonHeritageSection() {
+  const { t } = useLanguage();
   return (
     <section className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] relative overflow-hidden">
       {/* Background soft ambient accents */}
@@ -56,17 +58,15 @@ export function MaisonHeritageSection() {
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 font-cinzel text-[11px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold shadow-xs">
               <Award className="w-3.5 h-3.5 text-[#C7A66A]" />
-              <span>Artisanat &amp; Savoir-Faire • Nabeul</span>
+              <span>{t("heritage.tag", "Artisanat & Savoir-Faire • Nabeul")}</span>
             </div>
 
             <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-              L&apos;Excellence du Parfum Artisanal en Tunisie.
+              {t("heritage.title", "L'Héritage Artisanal Lévania")}
             </h2>
 
             <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#DCD0D3] leading-relaxed">
-              Née à Nabeul au cœur des vergers du Cap Bon, la <strong>Maison LÉVANIA PARFUMS</strong> crée des fragrances
-              uniques à haute concentration. Nous allions la fraîcheur du néroli et de la fleur d&apos;oranger à la noblesse
-              des bois d&apos;olivier et des résines orientales pour une tenue remarquable.
+              {t("heritage.p1", "Lévania célèbre les richesses de la Méditerranée et la splendeur des traditions parfumées tunisiennes. De l'oranger de Nabeul aux oliveraies séculaires du Sahel, chaque accord est façonné avec une précision d'orfèvre.")}
             </p>
 
             <blockquote className="p-5 rounded-2xl bg-white dark:bg-[#180B10] border-l-4 border-[#541B28] dark:border-[#C7A66A] shadow-xs font-serif italic text-sm text-[#23181A] dark:text-[#FAF7F2] leading-relaxed">

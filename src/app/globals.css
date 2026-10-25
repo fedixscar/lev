@@ -693,3 +693,30 @@ p, .prose-luxury {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #C7A66A;
 }
+
+/* ========================================================
+   ARABIC TYPOGRAPHY & RTL SUPPORT (HAUTE PARFUMERIE)
+   ======================================================== */
+[dir="rtl"],
+html.rtl {
+  font-family: var(--font-amiri), "Scheherazade New", "Amiri", "Traditional Arabic", "Cairo", serif, system-ui;
+}
+
+[dir="rtl"] .font-serif,
+html.rtl .font-serif {
+  font-family: var(--font-amiri), "Scheherazade New", "Amiri", serif;
+  letter-spacing: normal !important;
+}
+
+[dir="rtl"] .font-cinzel,
+html.rtl .font-cinzel {
+  font-family: var(--font-amiri), "Scheherazade New", "Amiri", serif;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+[dir="rtl"] .tracking-luxury,
+[dir="rtl"] .tracking-grand,
+[dir="rtl"] .tracking-widest {
+  letter-spacing: normal !important;
+}

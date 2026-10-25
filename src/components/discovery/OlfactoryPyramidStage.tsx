@@ -6,6 +6,7 @@ import { Clock, Compass, ArrowRight, ShieldCheck } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PyramidAct {
   id: "head" | "heart" | "base";
@@ -78,6 +79,7 @@ const PYRAMID_ACTS: PyramidAct[] = [
 ];
 
 export function OlfactoryPyramidStage() {
+  const { t } = useLanguage();
   const [activeAct, setActiveAct] = useState<"head" | "heart" | "base">("heart");
   const act = PYRAMID_ACTS.find((a) => a.id === activeAct) || PYRAMID_ACTS[1];
 
@@ -92,16 +94,15 @@ export function OlfactoryPyramidStage() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/25 dark:border-[#C7A66A]/30 font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-4 shadow-xs">
             <Compass className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />
-            <span>Guide Olfactif &bull; Comprendre les Parfums</span>
+            <span>{t("pyramid.tag", "L'Art de la Pyramide")}</span>
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-            Comment Évolue Votre Parfum ?
+            {t("pyramid.title", "La Symphonie Olfactive en Trois Actes")}
           </h2>
 
           <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed mt-3">
-            Un parfum de qualité vit et change au cours de la journée. Voici les <strong>trois temps</strong> qui composent
-            chaque flacon Lévania pour vous offrir une tenue exceptionnelle.
+            {t("pyramid.subtitle", "Chaque fragrance Lévania évolue au fil des heures sur votre peau pour dévoiler toute sa richesse.")}
           </p>
         </div>
 

@@ -7,19 +7,22 @@ import { CartProvider } from "./CartContext";
 import { LoyaltyProvider } from "./LoyaltyContext";
 import { NotificationProvider } from "./NotificationContext";
 import { ThemeProvider } from "./ThemeContext";
+import { LanguageProvider } from "./LanguageContext";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
-      <SeasonalProvider>
-        <AuthProvider>
-          <CartProvider>
-            <LoyaltyProvider>
-              <NotificationProvider>{children}</NotificationProvider>
-            </LoyaltyProvider>
-          </CartProvider>
-        </AuthProvider>
-      </SeasonalProvider>
+      <LanguageProvider>
+        <SeasonalProvider>
+          <AuthProvider>
+            <CartProvider>
+              <LoyaltyProvider>
+                <NotificationProvider>{children}</NotificationProvider>
+              </LoyaltyProvider>
+            </CartProvider>
+          </AuthProvider>
+        </SeasonalProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

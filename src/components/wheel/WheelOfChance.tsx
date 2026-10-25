@@ -10,8 +10,10 @@ import { WheelSpinRecord } from "@/types";
 import { cn } from "@/lib/utils";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function WheelOfChance() {
+  const { t } = useLanguage();
   const { luckBalance, currentTier, spinWheel, isSpinning, spinHistory } = useLoyalty();
   const { showToast } = useNotification();
 
@@ -257,7 +259,7 @@ export function WheelOfChance() {
                 <WaveMonogram size="sm" variant="gold" withSeal={false} />
               </div>
               <span className="font-cinzel text-[11px] font-bold uppercase tracking-luxury">
-                {animating ? "Tirage..." : "TOURNER"}
+                {animating ? "Tirage..." : t("wheel.spin_btn", "TOURNER")}
               </span>
               <span className="font-cinzel text-[9px] opacity-90 text-[#C7A66A] tracking-wider">
                 {luckBalance >= 1 ? `${luckBalance} Luck` : "0 Luck"}
