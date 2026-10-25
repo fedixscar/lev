@@ -11,6 +11,7 @@ import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { formatTND } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PromoOffer {
   id: string;
@@ -65,6 +66,7 @@ const OFFERS: PromoOffer[] = [
 ];
 
 export default function PromotionsPage() {
+  const { t } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
@@ -94,14 +96,14 @@ export default function PromotionsPage() {
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
-                Campagnes & Offres Spéciales
+                {t("promotions.pill", "Campagnes & Offres Spéciales")}
               </span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-4">
-              Les Offres du Mois
+              {t("promotions.title", "Les Offres du Mois")}
             </h1>
             <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
-              Des compositions thématiques créées pour célébrer les moments majeurs de votre vie : mariages, retours d&apos;Omra, anniversaires et présents prestigieux.
+              {t("promotions.subtitle", "Des compositions thématiques créées pour célébrer les moments majeurs de votre vie : mariages, retours d'Omra, anniversaires et présents prestigieux.")}
             </p>
           </div>
 
@@ -113,13 +115,13 @@ export default function PromotionsPage() {
               </div>
               <div>
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#DFC68B] font-bold block mb-1">
-                  Vente Flash Privilège (24 Heures)
+                  {t("promotions.flash_tag", "Vente Flash Privilège (24 Heures)")}
                 </span>
                 <h3 className="font-serif text-2xl sm:text-3xl text-[#FAF7F2] font-light">
-                  -15% Supplémentaire avec le code : <span className="text-gold-gradient font-bold font-mono">WAVE20</span>
+                  {t("promotions.flash_title", "-15% Supplémentaire avec le code :")} <span className="text-gold-gradient font-bold font-mono">WAVE20</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-[#D5C4C7] mt-1 font-light">
-                  Dès 250 TND d&apos;achat sur tout le panier • Valable sur les flacons et les coffrets.
+                  {t("promotions.flash_desc", "Dès 250 TND d'achat sur tout le panier • Valable sur les flacons et les coffrets.")}
                 </p>
               </div>
             </div>
@@ -128,7 +130,7 @@ export default function PromotionsPage() {
               href="/shop"
               className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C7A66A] to-[#DFC68B] text-[#2A0B12] font-cinzel text-xs font-bold uppercase tracking-luxury hover:brightness-110 transition-all shrink-0 flex items-center gap-2.5 shadow-xl active:scale-98"
             >
-              <span>Profiter de la Vente Flash</span>
+              <span>{t("promotions.flash_cta", "Profiter de la Vente Flash")}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -152,7 +154,7 @@ export default function PromotionsPage() {
                 <div className="lg:col-span-7 space-y-5">
                   <div>
                     <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block mb-1">
-                      Thématique : {pack.theme}
+                      {t("promotions.theme_label", "Thématique :")} {pack.theme}
                     </span>
                     <h3 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient dark:text-[#DFC68B] font-light">
                       {pack.title}

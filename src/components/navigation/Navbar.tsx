@@ -171,7 +171,7 @@ export function Navbar() {
                             className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-semibold transition-colors"
                           >
                             <ShieldCheck className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
-                            <span>Administration Centrale</span>
+                            <span>{t("nav.admin_panel", "Administration Centrale")}</span>
                           </Link>
                         )}
 
@@ -181,7 +181,7 @@ export function Navbar() {
                             className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#434B36] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-semibold transition-colors"
                           >
                             <Briefcase className="w-4 h-4 text-[#434B36] dark:text-[#DFC68B]" />
-                            <span>Portail Revendeur</span>
+                            <span>{t("nav.reseller_portal", "Portail Revendeur")}</span>
                           </Link>
                         )}
 
@@ -190,7 +190,7 @@ export function Navbar() {
                           className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] dark:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-medium transition-colors"
                         >
                           <User className="w-4 h-4 text-[#756B6D] dark:text-[#A8989C]" />
-                          <span>Mon Espace Client</span>
+                          <span>{t("nav.account", "Mon Espace Client")}</span>
                         </Link>
 
                         <Link
@@ -198,7 +198,7 @@ export function Navbar() {
                           className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-[#23181A] dark:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#251019] font-medium transition-colors"
                         >
                           <Flame className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
-                          <span>La Roue du Destin</span>
+                          <span>{t("wheel.title", "La Roue du Destin")}</span>
                         </Link>
                       </div>
 
@@ -208,10 +208,10 @@ export function Navbar() {
                             signOut();
                             setUserMenuOpen(false);
                           }}
-                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition-colors"
+                          className="w-full flex items-center gap-2 p-2 rounded-xl text-xs text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition-colors cursor-pointer"
                         >
                           <LogOut className="w-4 h-4" />
-                          <span>Se Déconnecter</span>
+                          <span>{t("nav.logout", "Se Déconnecter")}</span>
                         </button>
                       </div>
                     </div>
@@ -224,7 +224,7 @@ export function Navbar() {
                   className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/25 dark:border-[#C7A66A]/35 text-xs text-[#541B28] dark:text-[#DFC68B] font-cinzel font-bold tracking-wider hover:bg-[#FAF7F2] dark:hover:bg-[#251019] hover:border-[#541B28] dark:hover:border-[#DFC68B] transition-all shadow-xs active:scale-98"
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Connexion</span>
+                  <span className="hidden sm:inline">{t("nav.login", "Connexion")}</span>
                 </Link>
               )}
 
@@ -333,7 +333,7 @@ export function Navbar() {
                         className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] text-xs font-semibold shadow-sm"
                       >
                         <ShieldCheck className="w-4 h-4 text-[#541B28] dark:text-[#DFC68B]" />
-                        <span>Panneau d&apos;Administration</span>
+                        <span>{t("nav.admin_panel", "Panneau d'Administration")}</span>
                       </Link>
                     )}
 
@@ -343,7 +343,7 @@ export function Navbar() {
                         className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#434B36]/20 dark:border-[#C7A66A]/30 text-[#434B36] dark:text-[#DFC68B] text-xs font-semibold shadow-sm"
                       >
                         <Briefcase className="w-4 h-4 text-[#434B36] dark:text-[#DFC68B]" />
-                        <span>Portail Revendeur</span>
+                        <span>{t("nav.reseller_portal", "Portail Revendeur")}</span>
                       </Link>
                     )}
 
@@ -352,15 +352,15 @@ export function Navbar() {
                       className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 text-[#23181A] dark:text-[#FAF7F2] text-xs font-medium shadow-sm"
                     >
                       <User className="w-4 h-4 text-[#756B6D] dark:text-[#A8989C]" />
-                      <span>Mon Compte Client</span>
+                      <span>{t("nav.account", "Mon Compte Client")}</span>
                     </Link>
 
                     <button
                       onClick={() => signOut()}
-                      className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 text-xs font-medium"
+                      className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 text-xs font-medium cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
-                      <span>Se Déconnecter</span>
+                      <span>{t("nav.logout", "Se Déconnecter")}</span>
                     </button>
                   </>
                 ) : (
@@ -369,7 +369,7 @@ export function Navbar() {
                     className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#541B28] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-md"
                   >
                     <User className="w-4 h-4 text-[#DFC68B]" />
-                    <span>Se Connecter / S&apos;inscrire</span>
+                    <span>{t("nav.login", "Se Connecter / S'inscrire")}</span>
                   </Link>
                 )}
               </div>

@@ -8,6 +8,7 @@ import { WaveMonogram } from "./WaveMonogram";
 import { ArrowRight, Layers, Flame, Compass, Wind } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { formatTND, cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface WaveFeatureData {
   title: string;
@@ -118,6 +119,7 @@ const WAVE_EXPRESSIONS_DATA: Record<WaveExpression, WaveFeatureData> = {
 };
 
 export function WaveExperiencePavilion() {
+  const { t } = useLanguage();
   const [activeExpression, setActiveExpression] = useState<WaveExpression>("signature");
   const activeData = WAVE_EXPRESSIONS_DATA[activeExpression];
 
@@ -132,16 +134,15 @@ export function WaveExperiencePavilion() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/25 shadow-xs font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-4">
             <WaveMonogram size="xs" variant="gold" />
-            <span>Trois Styles de Parfums</span>
+            <span>{t("pavilion.tag", "Trois Styles de Parfums")}</span>
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-            Choisissez Votre Style de Sillage
+            {t("pavilion.title", "Choisissez Votre Style de Sillage")}
           </h2>
 
           <p className="text-sm text-[#5A4B4E] dark:text-[#DCD0D3] leading-relaxed mt-3">
-            Chaque personne a sa personnalité. Découvrez nos <strong>trois univers de créations</strong>,
-            du plus frais et délicat au plus boisé et intense.
+            {t("pavilion.desc", "Chaque personne a sa personnalité. Découvrez nos trois univers de créations, du plus frais et délicat au plus boisé et intense.")}
           </p>
         </div>
 
@@ -333,7 +334,7 @@ export function WaveExperiencePavilion() {
                       activeExpression === "soft" ? "text-[#756B6D]" : "text-[#C4B2B6]"
                     )}
                   >
-                    Accords Majeurs de cette Vague
+                    {t("pavilion.notes_lead", "Accords Majeurs de cette Vague")}
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {activeData.notes.map((note, idx) => (
@@ -363,13 +364,13 @@ export function WaveExperiencePavilion() {
                 >
                   <div>
                     <span className="text-[10px] uppercase tracking-widest opacity-60 block font-bold">
-                      Rayonnement du Sillage
+                      {t("pavilion.sillage_label", "Rayonnement du Sillage")}
                     </span>
                     <span className="text-xs font-semibold mt-0.5 block">{activeData.sillage}</span>
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-widest opacity-60 block font-bold">
-                      Concentration & Tenue
+                      {t("pavilion.longevity_label", "Concentration & Tenue")}
                     </span>
                     <span className="text-xs font-semibold mt-0.5 block">{activeData.longevity}</span>
                   </div>
@@ -385,14 +386,14 @@ export function WaveExperiencePavilion() {
                       activeExpression === "soft" ? "text-[#541B28]" : "text-[#DFC68B]"
                     )}
                   >
-                    Flacons Porteurs de l&apos;Onde
+                    {t("pavilion.bottles_label", "Flacons Porteurs de l'Onde")}
                   </span>
                   <Link
                     href={`/collections`}
                     className="text-xs hover:underline flex items-center gap-1 font-semibold"
                   >
-                    <span>Voir les 3 collections</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>{t("pavilion.view_all_collections", "Voir les 3 collections")}</span>
+                    <ArrowRight className="w-3 h-3 rtl:rotate-180" />
                   </Link>
                 </div>
 
@@ -421,7 +422,7 @@ export function WaveExperiencePavilion() {
                         </span>
                       </div>
                       <div className="w-8 h-8 rounded-full border border-[#C7A66A]/40 flex items-center justify-center shrink-0 group-hover:bg-[#C7A66A] group-hover:text-[#2A0B12] transition-colors">
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                       </div>
                     </Link>
                   ))}
@@ -438,8 +439,8 @@ export function WaveExperiencePavilion() {
                         : "bg-gradient-to-r from-[#C7A66A] via-[#DFC68B] to-[#C7A66A] hover:brightness-110 text-[#2A0B12]"
                     )}
                   >
-                    <span>Explorer Toutes les Fragrances {activeData.title}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span>{t("pavilion.discover_collection", "Explorer Toutes les Fragrances")} • {activeData.title}</span>
+                    <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                   </Link>
                 </div>
               </div>

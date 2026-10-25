@@ -80,12 +80,12 @@ export function CartDrawer() {
             {subtotalTND >= 200 ? (
               <div className="flex items-center gap-2 text-[#434B36] font-semibold">
                 <GoldStarLozenge size={13} className="text-[#C7A66A]" />
-                <span>Livraison Express Offerte partout en Tunisie !</span>
+                <span>{t("cart.free_shipping_achieved", "Livraison Express Offerte partout en Tunisie !")}</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center justify-between mb-1.5 text-[11px]">
-                  <span>Plus que <strong className="text-[#541B28]">{formatTND(200 - subtotalTND)}</strong> pour la livraison offerte</span>
+                  <span>{t("cart.free_shipping_prefix", "Plus que")} <strong className="text-[#541B28]">{formatTND(200 - subtotalTND)}</strong> {t("cart.free_shipping_suffix", "pour la livraison offerte")}</span>
                   <span className="font-mono text-[#541B28] font-bold">{Math.min(100, Math.round((subtotalTND / 200) * 100))}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-[#FAF7F2] rounded-full overflow-hidden border border-[#541B28]/10">
@@ -105,16 +105,16 @@ export function CartDrawer() {
                 <div className="w-16 h-16 rounded-full border border-[#541B28]/20 dark:border-[#C7A66A]/30 flex items-center justify-center mb-4 text-[#541B28] dark:text-[#DFC68B] bg-white dark:bg-[#180B10] shadow-sm">
                   <WaveMonogram size="md" variant="burgundy" />
                 </div>
-                <p className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] mb-2">Votre panier est vide</p>
+                <p className="font-serif text-xl text-[#23181A] dark:text-[#FAF7F2] mb-2">{t("cart.empty_title", "Votre panier est vide")}</p>
                 <p className="text-sm max-w-xs text-[#756B6D] dark:text-[#A8989C] mb-6">
-                  Explorez nos créations olfactives artisanales et laissez-vous transporter.
+                  {t("cart.empty_desc", "Explorez nos créations olfactives artisanales et laissez-vous transporter.")}
                 </p>
                 <Link
                   href="/shop"
                   onClick={() => setIsCartOpen(false)}
                   className="px-6 py-2.5 rounded-full bg-[#541B28] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#66182C] transition-all shadow-md"
                 >
-                  Découvrir la Collection
+                  {t("cart.explore_btn", "Découvrir la Collection")}
                 </Link>
               </div>
             ) : (
@@ -152,7 +152,7 @@ export function CartDrawer() {
                         </span>
                         {item.giftBoxDetails && (
                           <span className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#0E0709] text-[#852538] dark:text-[#EACCA0] border border-[#852538]/30 dark:border-[#C7A66A]/30 font-medium">
-                            Coffret Cadeau
+                            {t("cart.order_gift_box", "Coffret Cadeau")}
                           </span>
                         )}
                       </div>
@@ -198,7 +198,7 @@ export function CartDrawer() {
                   <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D] dark:text-[#A8989C]" />
                   <input
                     type="text"
-                    placeholder="Code Promo (ex: LEVANIA10)"
+                    placeholder={t("cart.coupon_placeholder", "Code Promo (ex: LEVANIA10)")}
                     value={couponCodeInput}
                     onChange={(e) => setCouponCodeInput(e.target.value)}
                     className="w-full bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/25 dark:border-[#C7A66A]/30 rounded-xl pl-8 pr-3 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] uppercase tracking-wider placeholder:text-[#756B6D] dark:placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B]"
@@ -208,7 +208,7 @@ export function CartDrawer() {
                   type="submit"
                   className="px-4 py-2 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer"
                 >
-                  Appliquer
+                  {t("cart.coupon_apply", "Appliquer")}
                 </button>
               </form>
 
@@ -225,9 +225,9 @@ export function CartDrawer() {
                   </span>
                   <button
                     onClick={removeCoupon}
-                    className="text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-rose-600 underline"
+                    className="text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-rose-600 underline cursor-pointer"
                   >
-                    Retirer
+                    {t("cart.coupon_remove", "Retirer")}
                   </button>
                 </div>
               )}
@@ -240,7 +240,7 @@ export function CartDrawer() {
                 </div>
                 {discountTND > 0 && (
                   <div className="flex justify-between text-emerald-700 dark:text-emerald-400 font-medium">
-                    <span>Remise</span>
+                    <span>{t("cart.coupon_discount", "Remise")}</span>
                     <span>-{formatTND(discountTND)}</span>
                   </div>
                 )}
@@ -262,8 +262,8 @@ export function CartDrawer() {
                 <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0E0709] border border-[#541B28]/20 dark:border-[#C7A66A]/25 text-xs text-[#23181A] dark:text-[#FAF7F2]">
                   <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
                   <span>
-                    Cette commande vous offre{" "}
-                    <strong className="text-[#541B28] dark:text-[#DFC68B]">+{projectedLuck} points</strong> pour la Roue Cadeau !
+                    {t("product.luck_points_prefix", "Cette commande vous offre")}{" "}
+                    <strong className="text-[#541B28] dark:text-[#DFC68B]">+{projectedLuck} points</strong> {t("wheel_promo.tag", "pour la Roue Cadeau !")}
                   </span>
                 </div>
               )}

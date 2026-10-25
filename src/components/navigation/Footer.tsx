@@ -44,7 +44,7 @@ export function Footer() {
               {subscribed ? (
                 <div className="flex items-center gap-2 text-xs text-amber-200 bg-amber-950/60 p-2.5 rounded-lg border border-[#C7A66A]/40">
                   <Check className="w-4 h-4 text-[#DFC68B]" />
-                  <span>Bienvenue dans notre cercle. Votre code de bienvenue exclusif a été envoyé.</span>
+                  <span>{t("footer.subscribed_msg", "Bienvenue dans notre cercle. Votre code de bienvenue exclusif a été envoyé.")}</span>
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe} className="flex gap-2 max-w-md">
@@ -71,7 +71,7 @@ export function Footer() {
           {/* Quick Links */}
           <div className="space-y-3">
             <h4 className="text-xs font-serif uppercase tracking-widest text-[#DFC68B] font-semibold">
-              Créations & Univers
+              {t("footer.creations_title", "Créations & Univers")}
             </h4>
             <ul className="space-y-2 text-xs text-[#D5C4C7]">
               <li>
@@ -102,7 +102,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/mystery-box" className="hover:text-[#DFC68B] transition-colors">
-                  Mystery Box Prestige
+                  {t("footer.mystery_box", "Mystery Box Prestige")}
                 </Link>
               </li>
             </ul>
@@ -111,27 +111,27 @@ export function Footer() {
           {/* Privileges & Loyalty */}
           <div className="space-y-3">
             <h4 className="text-xs font-serif uppercase tracking-widest text-[#DFC68B] font-semibold">
-              Fidélité & Privilèges
+              {t("footer.fidelity_title", "Fidélité & Privilèges")}
             </h4>
             <ul className="space-y-2 text-xs text-[#D5C4C7]">
               <li>
                 <Link href="/account/luck" className="hover:text-[#DFC68B] transition-colors">
-                  La Roue Cadeau Lévania
+                  {t("footer.wheel_link", "La Roue Cadeau Lévania")}
                 </Link>
               </li>
               <li>
                 <Link href="/account/loyalty" className="hover:text-[#DFC68B] transition-colors">
-                  Programme Fidélité & Points
+                  {t("footer.loyalty_program", "Programme Fidélité & Points")}
                 </Link>
               </li>
               <li>
                 <Link href="/account" className="hover:text-[#DFC68B] transition-colors">
-                  Parrainage d&apos;Amis (50% Points)
+                  {t("footer.referral", "Parrainage d'Amis (50% Points)")}
                 </Link>
               </li>
               <li>
                 <Link href="/p/cert-2026-or" className="hover:text-[#DFC68B] transition-colors">
-                  Certificat d&apos;Authenticité QR
+                  {t("footer.authenticity_qr", "Certificat d'Authenticité QR")}
                 </Link>
               </li>
             </ul>
@@ -145,10 +145,10 @@ export function Footer() {
             <WaveMonogram size="md" variant="gold" withSeal />
             <div>
               <span className="text-[10px] uppercase tracking-[0.2em] text-[#DFC68B] font-bold block">
-                La Signature Ondulatoire Lévania
+                {t("footer.wave_signature_title", "La Signature Ondulatoire Lévania")}
               </span>
               <p className="text-xs text-[#E5D7D9] max-w-sm">
-                Trois expressions liquides sculptées par nos maîtres parfumeurs.
+                {t("footer.wave_signature_sub", "Trois expressions liquides sculptées par nos maîtres parfumeurs.")}
               </p>
             </div>
           </div>
@@ -159,9 +159,11 @@ export function Footer() {
               className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
             >
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
-                Onde Signature
+                {t("footer.wave_sig_name", "Onde Signature")}
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Or • Olive • Bourgogne</span>
+              <span className="text-[9px] text-[#C4B2B6] block">
+                {t("footer.wave_sig_sub", "Or • Olive • Bourgogne")}
+              </span>
             </Link>
 
             <Link
@@ -169,9 +171,11 @@ export function Footer() {
               className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
             >
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
-                Onde Soyeuse
+                {t("footer.wave_silky_name", "Onde Soyeuse")}
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Ivoire • Fleur • Néroli</span>
+              <span className="text-[9px] text-[#C4B2B6] block">
+                {t("footer.wave_silky_sub", "Ivoire • Fleur • Néroli")}
+              </span>
             </Link>
 
             <Link
@@ -179,9 +183,11 @@ export function Footer() {
               className="p-2.5 rounded-xl bg-[#3B121C] border border-[#C7A66A]/30 hover:border-[#C7A66A] transition-all group"
             >
               <span className="text-[10px] text-[#DFC68B] font-serif uppercase tracking-wider block font-semibold group-hover:underline">
-                Onde Sombre
+                {t("footer.wave_dark_name", "Onde Sombre")}
               </span>
-              <span className="text-[9px] text-[#C4B2B6] block">Ébène • Oud • Ambre</span>
+              <span className="text-[9px] text-[#C4B2B6] block">
+                {t("footer.wave_dark_sub", "Ébène • Oud • Ambre")}
+              </span>
             </Link>
           </div>
         </div>
@@ -192,9 +198,9 @@ export function Footer() {
             &copy; 2026 LÉVANIA PARFUMS. {t("footer.rights", "Tous droits réservés. Haute Parfumerie Tunisienne.")}
           </div>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-6 text-[11px]">
-            <span>Paiement Sécurisé &bull; Espèces &amp; Carte</span>
-            <span>Livraison Express Tunisie 24-48h</span>
-            <span>Certifié Authentique</span>
+            <span>{t("footer.bullet_payment", "Paiement Sécurisé • Espèces & Carte")}</span>
+            <span>{t("footer.bullet_shipping", "Livraison Express Tunisie 24-48h")}</span>
+            <span>{t("footer.bullet_certified", "Certifié Authentique")}</span>
           </div>
         </div>
       </div>

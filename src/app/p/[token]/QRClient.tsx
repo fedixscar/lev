@@ -20,12 +20,14 @@ import {
   QrCode,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface QRClientProps {
   token: string;
 }
 
 export function QRClient({ token }: QRClientProps) {
+  const { t } = useLanguage();
   const [cert, setCert] = useState<BottleCertificate | null>(null);
   const [resolvedVideoUrl, setResolvedVideoUrl] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -76,13 +78,13 @@ export function QRClient({ token }: QRClientProps) {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold mb-3 shadow-sm">
               <WaveMonogram size="xs" variant="gold" />
-              <span>Flacon Authentifié & Scellé Lévania</span>
+              <span>{t("cert.badge", "Flacon Authentifié & Scellé Lévania")}</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light">
-              Certificat Numérique d&apos;Authenticité
+              {t("cert.title", "Certificat Numérique d'Authenticité")}
             </h1>
             <p className="text-xs text-[#756B6D] mt-1 font-mono">
-              Jeton : {token} &bull; {serialNumber}
+              {t("cert.token_label", "Jeton")} : {token} &bull; {serialNumber}
             </p>
           </div>
 
@@ -94,15 +96,15 @@ export function QRClient({ token }: QRClientProps) {
             <div className="inline-flex items-center gap-2 mb-2">
               <GoldStarLozenge size={14} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] uppercase tracking-grand text-[#541B28] font-bold">
-                Exemplaire Nominatif d&apos;Exception
+                {t("cert.dedicated_pill", "Exemplaire Nominatif d'Exception")}
               </span>
             </div>
             <div className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light">
-              Flacon Dédié à {customerName}
+              {t("cert.dedicated_to", "Flacon Dédié à")} {customerName}
             </div>
             <div className="text-xs text-[#756B6D] font-mono mt-1">
-              {orderNumber ? `Commande Officielle : ${orderNumber} • ` : ""}
-              Mise en flacon scellée à la cire artisanale
+              {orderNumber ? `${t("cert.official_order", "Commande Officielle :")} ${orderNumber} • ` : ""}
+              {t("cert.bottling_wax", "Mise en flacon scellée à la cire artisanale")}
             </div>
           </div>
 
@@ -113,11 +115,11 @@ export function QRClient({ token }: QRClientProps) {
                 <div className="flex items-center gap-2">
                   <Film className="w-4 h-4 text-[#541B28]" />
                   <h3 className="font-serif text-lg text-[#23181A] font-semibold">
-                    {videoTitle || "Vidéo de Mise en Flacon & Dédicace Artisanale"}
+                    {videoTitle || t("cert.video_title_default", "Vidéo de Mise en Flacon & Dédicace Artisanale")}
                   </h3>
                 </div>
                 <span className="text-[10px] text-[#434B36] font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  Certifié par le Maître Artisan
+                  {t("cert.master_certified", "Certifié par le Maître Artisan")}
                 </span>
               </div>
 
@@ -182,26 +184,26 @@ export function QRClient({ token }: QRClientProps) {
 
                 <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-1.5 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-[#756B6D]">Destinataire :</span>
+                    <span className="text-[#756B6D]">{t("cert.recipient_label", "Destinataire :")}</span>
                     <span className="text-[#541B28] font-bold">{customerName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#756B6D]">N° de Série Flacon :</span>
+                    <span className="text-[#756B6D]">{t("cert.serial_label", "N° de Série Flacon :")}</span>
                     <span className="font-mono text-[#23181A] font-bold">{serialNumber}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#756B6D]">Code Lot de Fabrication :</span>
+                    <span className="text-[#756B6D]">{t("cert.batch_label", "Code Lot de Fabrication :")}</span>
                     <span className="font-mono text-[#541B28] font-bold">{batchCode}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#756B6D]">Mise en Flacon :</span>
+                    <span className="text-[#756B6D]">{t("cert.bottling_date_label", "Mise en Flacon :")}</span>
                     <span className="text-[#23181A]">{bottlingDate}</span>
                   </div>
                 </div>
 
                 <div className="text-xs text-[#434B36] flex items-center gap-1.5 pt-1 font-bold">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Sceau monogrammé bordeaux et or validé par le laboratoire.</span>
+                  <span>{t("cert.seal_valid", "Sceau monogrammé bordeaux et or validé par le laboratoire.")}</span>
                 </div>
               </div>
             </div>
@@ -209,14 +211,16 @@ export function QRClient({ token }: QRClientProps) {
 
           {/* Scent Notes & Guidance */}
           <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 sm:p-8 shadow-sm mb-8 space-y-4">
-            <h3 className="font-serif text-xl text-[#23181A] font-semibold">Conseils d&apos;Application & Diffusion</h3>
+            <h3 className="font-serif text-xl text-[#23181A] font-semibold">
+              {t("cert.advice_title", "Conseils d'Application & Diffusion")}
+            </h3>
             <p className="text-xs text-[#5A4B4E] leading-relaxed">
-              Pour sublimer le sillage de votre fragrance, vaporisez à 15 cm sur les points de pulsation : creux du cou, poignets et derrière les oreilles. Ne frottez pas le parfum pour préserver la délicatesse des molécules de tête.
+              {t("cert.advice_text", "Pour sublimer le sillage de votre fragrance, vaporisez à 15 cm sur les points de pulsation : creux du cou, poignets et derrière les oreilles. Ne frottez pas le parfum pour préserver la délicatesse des molécules de tête.")}
             </p>
 
             <div className="pt-2">
               <span className="text-[10px] uppercase tracking-wider text-[#541B28] font-bold block mb-2">
-                Accords Olfactifs Clés :
+                {t("cert.key_accords", "Accords Olfactifs Clés :")}
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {[...product.topNotes, ...product.heartNotes, ...product.baseNotes].map((n, i) => (
@@ -234,8 +238,8 @@ export function QRClient({ token }: QRClientProps) {
               href={`/products/${product.slug}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md"
             >
-              <span>Découvrir la Fiche Produit Complète</span>
-              <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+              <span>{t("cert.view_product", "Découvrir la Fiche Produit Complète")}</span>
+              <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
             </Link>
           </div>
         </div>

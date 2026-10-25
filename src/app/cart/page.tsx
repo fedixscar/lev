@@ -10,8 +10,10 @@ import { formatTND, formatMillimes } from "@/lib/utils";
 import { Trash2, Plus, Minus, ArrowRight, Tag, ShoppingBag } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function CartPage() {
+  const { t } = useLanguage();
   const {
     items,
     removeItem,
@@ -47,26 +49,28 @@ export default function CartPage() {
           <div className="luxury-pill mb-4 inline-flex items-center gap-2.5">
             <GoldStarLozenge size={12} className="text-[#C7A66A]" />
             <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
-              Votre Sélection Haute Parfumerie
+              {t("cart.page_pill", "Votre Sélection Haute Parfumerie")}
             </span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mb-12 sm:mb-14">
-            Votre Panier Lévania
+            {t("cart.drawer_title", "Votre Panier Lévania")}
           </h1>
 
           {items.length === 0 ? (
             <div className="py-24 text-center rounded-3xl bg-white border border-[#541B28]/15 p-8 sm:p-14 shadow-sm">
               <ShoppingBag className="w-16 h-16 text-[#541B28] mx-auto mb-4 opacity-50" />
-              <h2 className="font-serif text-2xl sm:text-3xl text-[#23181A] mb-2 font-light">Votre panier est actuellement vide</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl text-[#23181A] mb-2 font-light">
+                {t("cart.empty", "Votre panier est actuellement vide")}
+              </h2>
               <p className="text-sm text-[#756B6D] max-w-md mx-auto mb-8 font-light">
-                Découvrez nos collections d&apos;exception et laissez l&apos;Onde olfactive vous guider vers votre sillage idéal.
+                {t("cart.empty_desc", "Découvrez nos collections d'exception et laissez l'Onde olfactive vous guider vers votre sillage idéal.")}
               </p>
               <Link
                 href="/shop"
                 className="inline-block px-9 py-4 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury transition-all shadow-xl shadow-[#541B28]/20"
               >
-                Explorer la Boutique
+                {t("cart.explore_btn", "Explorer la Boutique")}
               </Link>
             </div>
           ) : (
@@ -90,12 +94,12 @@ export default function CartPage() {
                           </span>
                           {item.giftBoxDetails && (
                             <span className="font-cinzel text-[10px] tracking-luxury uppercase px-3 py-1 rounded-full bg-[#FAF7F2] text-[#852538] font-bold border border-[#852538]/20">
-                              Coffret Cadeau
+                              {t("cart.gift_box_badge", "Coffret Cadeau")}
                             </span>
                           )}
                         </div>
                         <span className="font-cinzel text-xs text-[#541B28] font-bold tracking-luxury block mt-2.5">
-                          {formatTND(item.unitPriceTND)} l&apos;unité
+                          {formatTND(item.unitPriceTND)} {t("cart.per_unit", "l'unité")}
                         </span>
                       </div>
                     </div>
@@ -125,7 +129,7 @@ export default function CartPage() {
                       <button
                         onClick={() => removeItem(item.id)}
                         className="p-2 text-[#756B6D] hover:text-rose-600 transition-colors"
-                        title="Supprimer du panier"
+                        title={t("cart.delete_title", "Supprimer du panier")}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -138,7 +142,11 @@ export default function CartPage() {
                   <div className="p-5 rounded-2xl bg-[#541B28]/8 border border-[#541B28]/20 flex items-center gap-3.5">
                     <GoldStarLozenge size={18} className="text-[#C7A66A] shrink-0" />
                     <span className="text-xs sm:text-sm text-[#23181A] font-light">
-                      Cette commande vous attribuera <strong className="font-cinzel text-[#541B28] font-bold">+{projectedLuck} points de Luck</strong> pour la Roue du Destin (1 Luck par 10 TND).
+                      {t("cart.luck_notice_pre", "Cette commande vous attribuera")}{" "}
+                      <strong className="font-cinzel text-[#541B28] font-bold">
+                        +{projectedLuck} {t("cart.luck_notice_points", "points de Luck")}
+                      </strong>{" "}
+                      {t("cart.luck_notice_post", "pour la Roue du Destin (1 Luck par 10 TND).")}
                     </span>
                   </div>
                 )}
@@ -147,7 +155,7 @@ export default function CartPage() {
               {/* Order Summary (4 cols) */}
               <div className="lg:col-span-4 rounded-3xl bg-white border border-[#541B28]/20 p-7 shadow-xl h-fit space-y-6">
                 <h3 className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold pb-4 border-b border-[#541B28]/15">
-                  Récapitulatif de Commande
+                  {t("cart.order_summary", "Récapitulatif de Commande")}
                 </h3>
 
                 {/* Coupon Input */}
@@ -156,7 +164,7 @@ export default function CartPage() {
                     <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#756B6D]" />
                     <input
                       type="text"
-                      placeholder="Code privilège"
+                      placeholder={t("cart.coupon_input_placeholder", "Code privilège")}
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
                       className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl pl-9 pr-3 py-2.5 text-xs text-[#23181A] uppercase placeholder:text-[#756B6D] focus:outline-none focus:border-[#541B28]"
@@ -164,9 +172,9 @@ export default function CartPage() {
                   </div>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-colors"
+                    className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-[10px] tracking-luxury uppercase font-bold transition-colors cursor-pointer"
                   >
-                    Valider
+                    {t("cart.coupon_validate", "Valider")}
                   </button>
                 </form>
 
@@ -179,10 +187,10 @@ export default function CartPage() {
                 {appliedCoupon && (
                   <div className="flex items-center justify-between p-3 rounded-xl bg-[#541B28]/10 border border-[#541B28]/20 text-xs">
                     <span className="text-[#541B28] font-bold">
-                      Code {appliedCoupon.code} appliqué (-{appliedCoupon.discountValue}{appliedCoupon.discountType === "percent" ? "%" : " TND"})
+                      Code {appliedCoupon.code} {t("cart.coupon_applied", "appliqué")} (-{appliedCoupon.discountValue}{appliedCoupon.discountType === "percent" ? "%" : " TND"})
                     </span>
-                    <button onClick={removeCoupon} className="text-xs text-[#756B6D] hover:text-rose-600 underline">
-                      Retirer
+                    <button onClick={removeCoupon} className="text-xs text-[#756B6D] hover:text-rose-600 underline cursor-pointer">
+                      {t("cart.coupon_remove_btn", "Retirer")}
                     </button>
                   </div>
                 )}
@@ -190,21 +198,23 @@ export default function CartPage() {
                 {/* Breakdown */}
                 <div className="space-y-3 text-xs text-[#5A4B4E] pt-4 border-t border-[#541B28]/10">
                   <div className="flex justify-between">
-                    <span>Sous-total</span>
+                    <span>{t("cart.subtotal", "Sous-total")}</span>
                     <span className="text-[#23181A] font-semibold">{formatTND(subtotalTND)}</span>
                   </div>
                   {discountTND > 0 && (
                     <div className="flex justify-between text-emerald-600 font-semibold">
-                      <span>Remise</span>
+                      <span>{t("cart.coupon_discount", "Remise")}</span>
                       <span>-{formatTND(discountTND)}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span>Frais de Livraison (Tunisie)</span>
-                    <span className="text-[#23181A] font-semibold">{deliveryFeeTND === 0 ? "Offerte" : formatTND(deliveryFeeTND)}</span>
+                    <span>{t("cart.delivery_tunisia", "Frais de Livraison (Tunisie)")}</span>
+                    <span className="text-[#23181A] font-semibold">
+                      {deliveryFeeTND === 0 ? t("cart.free", "Offerte") : formatTND(deliveryFeeTND)}
+                    </span>
                   </div>
                   <div className="pt-4 border-t border-[#541B28]/15 flex justify-between items-baseline text-lg font-serif text-[#23181A]">
-                    <span>Total Net</span>
+                    <span>{t("cart.total", "Total Net")}</span>
                     <span className="text-[#541B28] font-bold text-2xl">{formatMillimes(totalMillimes)}</span>
                   </div>
                 </div>
@@ -213,8 +223,8 @@ export default function CartPage() {
                   href="/checkout"
                   className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 transition-all flex items-center justify-center gap-2.5 active:scale-98"
                 >
-                  <span>Passer la Commande</span>
-                  <ArrowRight className="w-4 h-4 text-[#C7A66A]" />
+                  <span>{t("cart.checkout_btn", "Passer la Commande")}</span>
+                  <ArrowRight className="w-4 h-4 text-[#C7A66A] rtl:rotate-180" />
                 </Link>
               </div>
             </div>

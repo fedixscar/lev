@@ -128,7 +128,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
             <span className="px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-[#180B10]/95 border border-[#541B28]/30 dark:border-[#C7A66A]/40 text-[#541B28] dark:text-[#DFC68B] text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 shadow-md">
               <Eye className="w-3.5 h-3.5 text-[#C7A66A]" />
-              <span>Découvrir</span>
+              <span>{t("product.consult", "Découvrir")}</span>
             </span>
           </div>
         </Link>

@@ -38,10 +38,10 @@ export function MaisonHeritageSection() {
                     Architecture &amp; Conservation
                   </span>
                   <h4 className="font-serif text-base text-[#23181A] dark:text-[#FAF7F2] font-semibold">
-                    L&apos;Écrin Cylindrique Vert Olive &amp; Or
+                    {t("heritage.pedestal_title", "L'Écrin Cylindrique Vert Olive & Or")}
                   </h4>
                   <p className="text-[11px] text-[#756B6D] dark:text-[#B0A0A4] mt-0.5">
-                    Protection absolue contre la lumière pour préserver la macération des huiles.
+                    {t("heritage.pedestal_desc", "Protection absolue contre la lumière pour préserver la macération des huiles.")}
                   </p>
                 </div>
               </div>
@@ -50,7 +50,7 @@ export function MaisonHeritageSection() {
             {/* Accent Floating Badge Top Right */}
             <div className="absolute -top-4 -right-4 hidden sm:flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#541B28] text-[#FAF7F2] border border-[#C7A66A]/40 shadow-xl font-cinzel text-[11px] tracking-luxury uppercase">
               <GoldStarLozenge size={12} className="text-[#DFC68B]" />
-              <span>Artisanat du Cap Bon • 2026</span>
+              <span>{t("heritage.craft_badge", "Artisanat du Cap Bon • 2026")}</span>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export function MaisonHeritageSection() {
             </p>
 
             <blockquote className="p-5 rounded-2xl bg-white dark:bg-[#180B10] border-l-4 border-[#541B28] dark:border-[#C7A66A] shadow-xs font-serif italic text-sm text-[#23181A] dark:text-[#FAF7F2] leading-relaxed">
-              &laquo; Nous créons des parfums authentiques qui marquent les esprits et durent toute la journée, protégés dans un écrin digne des plus grands noms. &raquo;
+              &laquo; {t("heritage.quote", "Nous créons des parfums authentiques qui marquent les esprits et durent toute la journée, protégés dans un écrin digne des plus grands noms.")} &raquo;
               <span className="block text-[10px] uppercase font-sans font-bold text-[#852538] dark:text-[#DFC68B] tracking-widest mt-2 not-italic">
                 &mdash; L&apos;Atelier Lévania Parfums
               </span>
@@ -84,10 +84,10 @@ export function MaisonHeritageSection() {
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
-                    Ingrédients Purs &amp; Longue Tenue (14h+)
+                    {t("heritage.pillar1_title", "Ingrédients Purs & Longue Tenue (14h+)")}
                   </h4>
                   <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
-                    Néroli pur de Nabeul, safran, bois d&apos;olivier et oud. Forte concentration en huiles parfumées pour un sillage durable.
+                    {t("heritage.pillar1_desc", "Néroli pur de Nabeul, safran, bois d'olivier et oud. Forte concentration en huiles parfumées pour un sillage durable.")}
                   </p>
                 </div>
               </div>
@@ -98,10 +98,10 @@ export function MaisonHeritageSection() {
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
-                    Écrin Cylindrique Offert pour Chaque Flacon
+                    {t("heritage.pillar2_title", "Écrin Cylindrique Offert pour Chaque Flacon")}
                   </h4>
                   <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
-                    Boîte rigide vert olive et or qui protège le parfum de la lumière. Idéal et prêt à offrir en cadeau.
+                    {t("heritage.pillar2_desc", "Boîte rigide vert olive et or qui protège le parfum de la lumière. Idéal et prêt à offrir en cadeau.")}
                   </p>
                 </div>
               </div>
@@ -112,10 +112,10 @@ export function MaisonHeritageSection() {
                 </div>
                 <div>
                   <h4 className="font-serif text-sm font-bold text-[#23181A] dark:text-[#FAF7F2]">
-                    Flacon Dédié avec Certificat QR &amp; Nom du Client
+                    {t("heritage.pillar3_title", "Flacon Dédié avec Certificat QR & Nom du Client")}
                   </h4>
                   <p className="text-xs text-[#756B6D] dark:text-[#B0A0A4] mt-0.5 leading-relaxed">
-                    Chaque bouteille porte un QR code exclusif qui affiche sur votre téléphone votre certificat nominatif officiel.
+                    {t("heritage.pillar3_desc", "Chaque bouteille porte un QR code exclusif qui affiche sur votre téléphone votre certificat nominatif officiel.")}
                   </p>
                 </div>
               </div>
@@ -126,15 +126,15 @@ export function MaisonHeritageSection() {
                 href="/collections"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full luxury-btn-primary flex items-center justify-center gap-2"
               >
-                <span>Découvrir nos Collections</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#DFC68B]" />
+                <span>{t("heritage.cta_collections", "Découvrir nos Collections")}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#DFC68B] rtl:rotate-180" />
               </Link>
 
               <Link
                 href="/compose-box"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full luxury-btn-secondary flex items-center justify-center gap-2"
               >
-                <span>Composer un Coffret Cadeau</span>
+                <span>{t("heritage.cta_gift", "Composer un Coffret Cadeau")}</span>
               </Link>
             </div>
           </div>

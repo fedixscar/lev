@@ -6,8 +6,10 @@ import { Footer } from "@/components/navigation/Footer";
 import { ComposeBox } from "@/components/giftbox/ComposeBox";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ComposeBoxPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
@@ -19,16 +21,16 @@ export default function ComposeBoxPage() {
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                Atelier Cadeaux d&apos;Exception
+                {t("compose.pill", "Atelier Cadeaux d'Exception")}
               </span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light tracking-tight mt-2 mb-5">
-              Composer Mon Coffret
+              {t("compose.title", "Composer Mon Coffret")}
             </h1>
 
             <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
-              Choisissez votre format d&apos;écrin cylindrique ou coffret prestige, associez les élixirs de votre choix et personnalisez votre message calligraphié sur parchemin.
+              {t("compose.subtitle", "Choisissez votre format d'écrin cylindrique ou coffret prestige, associez les élixirs de votre choix et personnalisez votre message calligraphié sur parchemin.")}
             </p>
           </div>
 

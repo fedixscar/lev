@@ -12,8 +12,10 @@ import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { ArrowRight } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function CollectionsPage() {
+  const { t } = useLanguage();
   const [activeCollectionSlug, setActiveCollectionSlug] = useState<string>("signature");
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
 
@@ -44,14 +46,14 @@ export default function CollectionsPage() {
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                Les Univers Olfactifs
+                {t("collections.pill", "Les Univers Olfactifs")}
               </span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-2 mb-5">
-              Les 3 Collections Lévania
+              {t("collections.title", "Les 3 Collections Lévania")}
             </h1>
             <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
-              Trois expressions poétiques et sculpturales de la Vague. Des matières premières d&apos;exception travaillées dans le respect absolu de la tradition méditerranéenne.
+              {t("collections.subtitle", "Trois expressions poétiques et sculpturales de la Vague. Des matières premières d'exception travaillées dans le respect absolu de la tradition méditerranéenne.")}
             </p>
           </div>
 
@@ -93,7 +95,7 @@ export default function CollectionsPage() {
                   withSeal
                 />
                 <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                  Expression Olfactive : {activeCollection.waveExpression.toUpperCase()} WAVE
+                  {t("collections.expression_wave", "Expression Olfactive :")} {activeCollection.waveExpression.toUpperCase()} WAVE
                 </span>
               </div>
 
@@ -107,8 +109,8 @@ export default function CollectionsPage() {
 
               <div className="pt-2">
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#756B6D] dark:text-[#A8989C] block font-semibold">
-                  <span className="sm:hidden">&sim; Touchez la vague</span>
-                  <span className="hidden sm:inline">&sim; Cliquez ou survolez la vague pour éveiller le mouvement du fluide</span>
+                  <span className="sm:hidden">&sim; {t("shop.wave_interact_mobile", "Touchez la vague")}</span>
+                  <span className="hidden sm:inline">&sim; {t("shop.wave_interact_desktop", "Cliquez ou survolez la vague pour éveiller le mouvement du fluide")}</span>
                 </span>
               </div>
             </div>
@@ -118,11 +120,11 @@ export default function CollectionsPage() {
           <div>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 pb-4 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
               <h3 className="font-serif text-2xl sm:text-3xl text-[#23181A] dark:text-[#FAF7F2] font-light">
-                Flacons de la Collection ({collectionProducts.length})
+                {t("collections.bottles_in_collection", "Flacons de la Collection")} ({collectionProducts.length})
               </h3>
               <Link href="/shop" className="font-cinzel text-xs tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] hover:text-[#66182C] dark:hover:text-[#FAF7F2] flex items-center gap-2 font-bold transition-colors shrink-0">
-                <span>Voir tout le catalogue</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#C7A66A]" />
+                <span>{t("collections.view_catalogue", "Voir tout le catalogue")}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#C7A66A] rtl:rotate-180" />
               </Link>
             </div>
 

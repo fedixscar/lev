@@ -24,14 +24,14 @@ export function WheelOfChance() {
 
   // Wheel slices labels for visual presentation in authentic brand colors
   const slices = [
-    { label: "Points Fidélité", color: "#541B28" },
-    { label: "Coupon -10%", color: "#7A263B" },
-    { label: "Échantillon Luxe", color: "#434B36" },
-    { label: "Bon d'Achat", color: "#66182C" },
-    { label: "Coupon -20%", color: "#7A263B" },
-    { label: "Flacon Offert", color: "#C7A66A" },
-    { label: "Coffret Cadeau", color: "#541B28" },
-    { label: "Double XP", color: "#434B36" },
+    { label: t("wheel.slice_points", "Points Fidélité"), color: "#541B28" },
+    { label: t("wheel.slice_c10", "Coupon -10%"), color: "#7A263B" },
+    { label: t("wheel.slice_sample", "Échantillon Luxe"), color: "#434B36" },
+    { label: t("wheel.slice_voucher", "Bon d'Achat"), color: "#66182C" },
+    { label: t("wheel.slice_c20", "Coupon -20%"), color: "#7A263B" },
+    { label: t("wheel.slice_bottle", "Flacon Offert"), color: "#C7A66A" },
+    { label: t("wheel.slice_box", "Coffret Cadeau"), color: "#541B28" },
+    { label: t("wheel.slice_xp", "Double XP"), color: "#434B36" },
   ];
 
   const handleLaunchSpin = async () => {
@@ -149,7 +149,7 @@ export function WheelOfChance() {
               {currentTheme.name}
             </h2>
             <p className="text-xs text-[#5A4B4E] opacity-80 mt-1 font-light">
-              Solde Actuel: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Maximum: 7,777
+              {t("wheel.balance", "Solde Actuel")}: <strong className="font-cinzel text-[#541B28] text-sm font-bold">{luckBalance} Luck</strong> • Cap Maximum: 7,777
             </p>
           </div>
         </div>
@@ -292,7 +292,7 @@ export function WheelOfChance() {
             </div>
 
             <div className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold">
-              Révélation {activeResult.tier}
+              {activeResult.tier}
             </div>
 
             <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light mt-1 mb-2">
@@ -300,14 +300,14 @@ export function WheelOfChance() {
             </h3>
 
             <p className="text-xs sm:text-sm text-[#5A4B4E] dark:text-[#D5C4C7] mb-6 font-light">
-              Félicitations ! Votre cadeau est débloqué et prêt à être utilisé.
+              {t("wheel.revealed_title", "Félicitations ! Votre cadeau est débloqué et prêt à être utilisé.")}
             </p>
 
             {/* Generated coupon display */}
             {activeResult.couponCodeGenerated && (
               <div className="p-4 rounded-xl bg-[#FAF7F2] dark:bg-[#12080D] border border-[#541B28]/20 dark:border-[#C7A66A]/25 mb-6">
                 <span className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1 font-bold">
-                  Votre Code Promo
+                  {t("wheel.coupon_label", "Votre Code Promo")}
                 </span>
                 <div className="flex items-center justify-between gap-2 bg-white dark:bg-[#180B10] p-3 rounded-lg border border-[#541B28]/20 dark:border-[#C7A66A]/25">
                   <span className="font-mono text-base font-bold text-[#541B28] dark:text-[#DFC68B] tracking-wider">
@@ -316,7 +316,7 @@ export function WheelOfChance() {
                   <button
                     onClick={() => copyCouponCode(activeResult.couponCodeGenerated!)}
                     className="p-1.5 rounded-md hover:bg-[#FAF7F2] text-[#541B28] transition-colors"
-                    title="Copier"
+                    title={t("wheel.copy_code", "Copier")}
                   >
                     {copiedCoupon ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   </button>
@@ -328,7 +328,7 @@ export function WheelOfChance() {
               onClick={() => setActiveResult(null)}
               className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel font-bold text-xs tracking-luxury uppercase shadow-xl transition-all active:scale-98"
             >
-              En profiter maintenant
+              {t("wheel.enjoy_btn", "En profiter maintenant")}
             </button>
           </div>
         </div>
@@ -338,7 +338,7 @@ export function WheelOfChance() {
       {spinHistory.length > 0 && (
         <div className="mt-16 pt-8 border-t border-[#541B28]/15">
           <h3 className="font-serif text-xl text-[#23181A] font-semibold mb-4">
-            Historique de Vos Récompenses
+            {t("wheel.history_title", "Historique de Vos Récompenses")}
           </h3>
           <div className="space-y-2">
             {spinHistory.slice(0, 5).map((spin) => (

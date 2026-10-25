@@ -6,8 +6,10 @@ import { Footer } from "@/components/navigation/Footer";
 import { WheelOfChance } from "@/components/wheel/WheelOfChance";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LuckPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <AmbientWaveBackdrop expression="signature" opacity={0.25} />
@@ -18,15 +20,15 @@ export default function LuckPage() {
           <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] font-bold">
-                Le Sanctuaire des Privilèges
+              <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
+                {t("wheel.tag", "Le Sanctuaire des Privilèges")}
               </span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-4">
-              La Roue du Destin Lévania
+              {t("wheel.title", "La Roue du Destin Lévania")}
             </h1>
-            <p className="text-sm sm:text-base text-[#5A4B4E] leading-relaxed font-light max-w-2xl mx-auto">
-              Consommez votre solde de Luck pour déclencher la Vague correspondante et révéler votre récompense immédiate : flacons offerts, bons d&apos;achat ou points privilège.
+            <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
+              {t("wheel.subtitle", "Consommez votre solde de Luck pour déclencher la Vague et remporter des flacons ou cadeaux précieux.")}
             </p>
           </div>
 

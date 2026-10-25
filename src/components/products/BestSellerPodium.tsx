@@ -79,7 +79,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
             {t("bestsellers.title", "Nos 3 Meilleurs Parfums")}
           </h2>
           <p className="text-sm text-[#756B6D] dark:text-[#A8989C] leading-relaxed">
-            Découvrez les parfums préférés de nos clients, reconnus pour leur élégance et leur tenue exceptionnelle.
+            {t("bestsellers.subtitle", "Découvrez les parfums préférés de nos clients, reconnus pour leur élégance et leur tenue exceptionnelle.")}
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     href={`/products/${second.slug}`}
                     className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#1E0D15] font-semibold transition-colors text-center"
                   >
-                    Découvrir
+                    {t("product.consult", "Découvrir")}
                   </Link>
                   <button
                     onClick={() => handleQuickAdd(second, secondFormat)}
@@ -242,8 +242,8 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     href={`/products/${first.slug}`}
                     className="flex-[2] py-3 text-xs rounded-xl bg-[#541B28] hover:bg-[#66182C] text-white font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-lg shadow-[#541B28]/20"
                   >
-                    <span>Commander le N°1</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>{t("bestsellers.order_n1", "Commander le N°1")}</span>
+                    <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                   </Link>
                   <button
                     onClick={() => handleQuickAdd(first, firstFormat)}
@@ -325,7 +325,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     href={`/products/${third.slug}`}
                     className="flex-1 py-2 text-xs rounded-xl border border-[#541B28]/25 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] hover:bg-[#FAF7F2] dark:hover:bg-[#1E0D15] font-semibold transition-colors text-center"
                   >
-                    Découvrir
+                    {t("product.consult", "Découvrir")}
                   </Link>
                   <button
                     onClick={() => handleQuickAdd(third, thirdFormat)}
@@ -345,18 +345,18 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
             <div>
               <h3 className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-semibold">
-                Les 7 Autres Signatures Incontournables
+                {t("bestsellers.other_title", "Les 7 Autres Signatures Incontournables")}
               </h3>
               <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1">
-                Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs
+                {t("bestsellers.other_sub", "Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs")}
               </p>
             </div>
             <Link
               href="/shop"
               className="text-xs text-[#541B28] dark:text-[#DFC68B] hover:underline flex items-center gap-1 font-bold shrink-0"
             >
-              <span>Voir tout le catalogue</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>{t("bestsellers.view_all", "Voir tout le catalogue")}</span>
+              <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
             </Link>
           </div>
 

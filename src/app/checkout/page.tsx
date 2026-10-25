@@ -199,7 +199,7 @@ export default function CheckoutPage() {
               <div className="luxury-pill mb-4 inline-flex items-center gap-2">
                 <GoldStarLozenge size={12} className="text-[#C7A66A]" />
                 <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
-                  Haute Parfumerie Lévania • Sillage Garanti
+                  {t("checkout.success_pill", "Haute Parfumerie Lévania • Sillage Garanti")}
                 </span>
               </div>
 
@@ -225,7 +225,7 @@ export default function CheckoutPage() {
                       </span>
                     </div>
                     <span className="text-[10px] text-[#434B36] font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      Scellés &amp; Numérotés
+                      {t("checkout.sealed_and_numbered", "Scellés & Numérotés")}
                     </span>
                   </div>
 
@@ -246,14 +246,14 @@ export default function CheckoutPage() {
                             </div>
                           )}
                           <div>
-                            <span className="font-serif text-sm font-semibold text-[#23181A] block">
+                            <span className="font-serif text-sm font-semibold text-[#23181A] dark:text-[#FAF7F2] block">
                               {cert.productName} ({cert.formatSize})
                             </span>
-                            <span className="text-[11px] text-[#541B28] font-medium block">
-                              Flacon dédié à : <strong>{cert.customerName}</strong>
+                            <span className="text-[11px] text-[#541B28] dark:text-[#DFC68B] font-medium block">
+                              {t("checkout.bottle_dedicated_to", "Flacon dédié à :")} <strong>{cert.customerName}</strong>
                             </span>
-                            <span className="font-mono text-[10px] text-[#756B6D] block">
-                              Série : {cert.serialNumber}
+                            <span className="font-mono text-[10px] text-[#756B6D] dark:text-[#A8989C] block">
+                              {t("checkout.series_label", "Série :")} {cert.serialNumber}
                             </span>
                           </div>
                         </div>
@@ -263,7 +263,7 @@ export default function CheckoutPage() {
                           target="_blank"
                           className="px-3 py-1.5 rounded-lg bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-[10px] font-bold uppercase tracking-wider transition-colors shrink-0"
                         >
-                          Certificat &rarr;
+                          {t("checkout.view_cert", "Certificat")} &rarr;
                         </Link>
                       </div>
                     ))}
@@ -276,16 +276,16 @@ export default function CheckoutPage() {
                 <div className="p-6 rounded-2xl bg-[#541B28]/10 border border-[#541B28]/30 mb-8 max-w-md mx-auto text-center">
                   <div className="flex items-center justify-center gap-2 text-sm text-[#541B28] font-bold mb-1.5 font-cinzel">
                     <GoldStarLozenge size={14} className="text-[#C7A66A]" />
-                    <span>+{confirmedOrder.luckAwarded} Points Gagnés !</span>
+                    <span>+{confirmedOrder.luckAwarded} {t("checkout.points_won", "Points Gagnés !")}</span>
                   </div>
                   <p className="text-xs text-[#756B6D] font-light">
-                    Vos points sont disponibles. Vous pouvez dès à présent tenter votre chance sur la Roue Cadeau Lévania.
+                    {t("checkout.points_won_desc", "Vos points sont disponibles. Vous pouvez dès à présent tenter votre chance sur la Roue Cadeau Lévania.")}
                   </p>
                   <Link
                     href="/account/luck"
                     className="inline-block mt-3 text-xs uppercase font-cinzel font-bold text-[#541B28] hover:underline tracking-luxury"
                   >
-                    Tourner la Roue Cadeau &rarr;
+                    {t("checkout.spin_wheel_btn", "Tourner la Roue Cadeau")} &rarr;
                   </Link>
                 </div>
               )}
@@ -295,13 +295,13 @@ export default function CheckoutPage() {
                   href="/shop"
                   className="px-8 py-3.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury transition-all shadow-md"
                 >
-                  Continuer mes Achats
+                  {t("checkout.continue_shopping", "Continuer mes Achats")}
                 </Link>
                 <Link
                   href="/account"
                   className="px-8 py-3.5 rounded-full border border-[#541B28]/30 text-[#541B28] font-cinzel text-xs font-semibold hover:bg-white tracking-luxury transition-all"
                 >
-                  Voir Mon Compte & Commandes
+                  {t("checkout.view_account", "Voir Mon Compte & Commandes")}
                 </Link>
               </div>
             </div>
@@ -311,7 +311,7 @@ export default function CheckoutPage() {
                 <div className="luxury-pill mb-4 inline-flex items-center gap-2">
                   <GoldStarLozenge size={12} className="text-[#C7A66A]" />
                   <span className="font-cinzel text-[10px] tracking-grand uppercase text-[#541B28] font-bold">
-                    Paiement & Livraison Sécurisée
+                    {t("checkout.pill", "Paiement & Livraison Sécurisée")}
                   </span>
                 </div>
                 <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light mt-1 mb-3">
@@ -383,7 +383,7 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="sm:col-span-2">
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Rue, Résidence, Appartement
+                            {t("checkout.address", "Rue, Résidence, Appartement")}
                           </label>
                           <input
                             type="text"
@@ -396,7 +396,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Gouvernorat (24 Régions)
+                            {t("checkout.governorate", "Gouvernorat (24 Régions)")}
                           </label>
                           <select
                             value={governorate}
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className="font-cinzel text-[10px] text-[#756B6D] uppercase tracking-luxury block mb-1.5 font-bold">
-                            Ville / Délégation
+                            {t("checkout.city", "Ville / Délégation")}
                           </label>
                           <input
                             type="text"
@@ -485,7 +485,7 @@ export default function CheckoutPage() {
                   <div className="lg:col-span-5 rounded-3xl bg-white border border-[#541B28]/20 p-7 shadow-xl h-fit space-y-6">
                     <div className="flex items-center justify-between pb-4 border-b border-[#541B28]/10">
                       <h3 className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] font-bold">
-                        Articles Commandés ({items.length})
+                        {t("checkout.ordered_items", "Articles Commandés")} ({items.length})
                       </h3>
                       <WaveMonogram size="sm" variant="gold" withSeal={false} />
                     </div>
@@ -512,23 +512,23 @@ export default function CheckoutPage() {
                     {/* Breakdown */}
                     <div className="space-y-3 text-xs text-[#5A4B4E] pt-4 border-t border-[#541B28]/10">
                       <div className="flex justify-between">
-                        <span>Sous-total</span>
+                        <span>{t("cart.subtotal", "Sous-total")}</span>
                         <span className="text-[#23181A] font-semibold">{formatTND(subtotalTND)}</span>
                       </div>
                       {discountTND > 0 && (
                         <div className="flex justify-between text-emerald-600 font-semibold">
-                          <span>Remise Code Promo</span>
+                          <span>{t("checkout.promo_discount", "Remise Code Promo")}</span>
                           <span>-{formatTND(discountTND)}</span>
                         </div>
                       )}
                       <div className="flex justify-between">
-                        <span>Frais de Port (Tunisie)</span>
+                        <span>{t("checkout.delivery_label", "Frais de Port (Tunisie)")}</span>
                         <span className="text-[#23181A] font-semibold">
-                          {deliveryFeeTND === 0 ? "Offerte" : formatTND(deliveryFeeTND)}
+                          {deliveryFeeTND === 0 ? t("cart.free", "Offerte") : formatTND(deliveryFeeTND)}
                         </span>
                       </div>
                       <div className="pt-4 border-t border-[#541B28]/15 flex justify-between items-baseline text-lg font-serif text-[#23181A]">
-                        <span>Total Net à Régler</span>
+                        <span>{t("checkout.total_to_pay", "Total Net à Régler")}</span>
                         <span className="text-[#541B28] font-bold text-2xl">
                           {formatMillimes(totalMillimes)}
                         </span>
@@ -539,10 +539,10 @@ export default function CheckoutPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting || items.length === 0}
-                      className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 disabled:opacity-40 flex items-center justify-center gap-2.5 transition-all active:scale-98"
+                      className="w-full py-4 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-luxury shadow-xl shadow-[#541B28]/25 disabled:opacity-40 flex items-center justify-center gap-2.5 transition-all active:scale-98 cursor-pointer"
                     >
                       {isSubmitting ? (
-                        <span>Validation en cours...</span>
+                        <span>{t("checkout.submitting", "Validation en cours...")}</span>
                       ) : (
                         <>
                           <span>{t("checkout.confirm_btn", "Confirmer la Commande")}</span>
@@ -553,7 +553,7 @@ export default function CheckoutPage() {
 
                     <div className="text-center text-[10px] text-[#756B6D] pt-2">
                       <ShieldCheck className="w-3.5 h-3.5 inline mr-1.5 text-[#434B36]" />
-                      <span className="font-cinzel tracking-luxury uppercase">Garantie Haute Parfumerie • Paiement Sécurisé</span>
+                      <span className="font-cinzel tracking-luxury uppercase">{t("checkout.guarantee_badge", "Garantie Haute Parfumerie • Paiement Sécurisé")}</span>
                     </div>
                   </div>
                 </div>

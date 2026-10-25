@@ -27,6 +27,7 @@ import { AtomizerSpray } from "@/components/brand/AtomizerSpray";
 import { NoteAccordModal } from "@/components/discovery/NoteAccordModal";
 import { AuthenticityCertificateModal } from "@/components/products/AuthenticityCertificateModal";
 import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProductDetailClientProps {
   product?: Product;
@@ -53,6 +54,7 @@ export function ProductDetailClient({
   }, [slug, product]);
 
   const router = useRouter();
+  const { t } = useLanguage();
   const { addItem, setIsCartOpen } = useCart();
   const { showToast } = useNotification();
 
@@ -140,9 +142,9 @@ export function ProductDetailClient({
           {/* Breadcrumbs & Active Transparent Wave Indicator */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
             <nav className="font-cinzel text-[11px] tracking-luxury text-[#756B6D] dark:text-[#A8989C] flex items-center gap-2 uppercase font-medium">
-              <Link href="/" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">Accueil</Link>
+              <Link href="/" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">{t("nav.home", "Accueil")}</Link>
               <span>/</span>
-              <Link href="/shop" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">Boutique</Link>
+              <Link href="/shop" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">{t("nav.shop", "Boutique")}</Link>
               <span>/</span>
               <span className="text-[#541B28] dark:text-[#DFC68B] font-bold">{product.name}</span>
             </nav>
@@ -223,7 +225,7 @@ export function ProductDetailClient({
                 <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-xs">
                   <GoldStarLozenge size={12} className="text-[#C7A66A]" />
                   <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                    Haute Parfumerie Artisanale • Flacon Scellé &amp; Traçable
+                    {t("product.certified_badge", "Haute Parfumerie Artisanale • Flacon Scellé & Traçable")}
                   </span>
                 </div>
               </div>
@@ -231,7 +233,7 @@ export function ProductDetailClient({
               {/* Price & Stock */}
               <div className="p-5 rounded-2xl bg-white/90 dark:bg-[#180B10]/90 backdrop-blur-md border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm flex items-center justify-between">
                 <div>
-                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] dark:text-[#A8989C] block">Prix Flacon</span>
+                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] dark:text-[#A8989C] block">{t("product.price_label", "Prix Flacon")}</span>
                   <span className="font-serif text-2xl sm:text-3xl text-[#541B28] dark:text-[#DFC68B] font-medium">
                     {formatTND(activeFormat.priceTND)}
                   </span>
@@ -239,7 +241,7 @@ export function ProductDetailClient({
                 <div className="text-right">
                   <span className="font-cinzel text-xs text-[#434B36] dark:text-[#C7A66A] flex items-center gap-1.5 font-bold uppercase tracking-luxury">
                     <Check className="w-4 h-4 text-[#434B36] dark:text-[#C7A66A]" />
-                    En stock ({activeFormat.stock} disponibles)
+                    {t("product.in_stock", "En stock")} ({activeFormat.stock} {t("product.available", "disponibles")})
                   </span>
                   <span className="font-mono text-[10px] text-[#756B6D] dark:text-[#A8989C] mt-0.5 block">SKU: {activeFormat.sku}</span>
                 </div>
@@ -253,7 +255,7 @@ export function ProductDetailClient({
               {/* Format Selection (50ml / 100ml) */}
               <div className="space-y-2.5">
                 <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block">
-                  Contenance du Flacon
+                  {t("product.size_label", "Contenance du Flacon")}
                 </span>
                 <div className="grid grid-cols-2 gap-3.5">
                   {product.formats.map((fmt) => (
@@ -282,15 +284,15 @@ export function ProductDetailClient({
                     className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-secondary flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
-                    <span>Ajouter au Panier</span>
+                    <span>{t("nav.cart", "Ajouter au Panier")}</span>
                   </button>
 
                   <button
                     onClick={handleBuyNow}
                     className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-primary flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Acheter Immédiatement</span>
-                    <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                    <span>{t("product.buy_now", "Acheter Immédiatement")}</span>
+                    <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
                   </button>
                 </div>
               </div>
@@ -299,7 +301,7 @@ export function ProductDetailClient({
               <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2.5 text-xs text-[#5A4B4E] shadow-sm">
                 <div className="flex items-center gap-2 text-[#23181A]">
                   <Truck className="w-4 h-4 text-[#541B28] shrink-0" />
-                  <span>Livraison express en Tunisie sous 24h • 48h (Offerte dès 200 TND)</span>
+                  <span>{t("product.free_delivery_notice", "Livraison express en Tunisie sous 24h • 48h (Offerte dès 200 TND)")}</span>
                 </div>
                 
                 {/* Interactive Certificate Trigger */}
@@ -310,16 +312,16 @@ export function ProductDetailClient({
                 >
                   <div className="flex items-center gap-2 text-[#23181A]">
                     <QrCode className="w-4 h-4 text-[#541B28] shrink-0" />
-                    <span>Flacon certifié avec QR Code de traçabilité officiel Lévania</span>
+                    <span>{t("product.certified_notice", "Flacon certifié avec QR Code de traçabilité officiel Lévania")}</span>
                   </div>
                   <span className="text-[11px] font-bold text-[#541B28] underline underline-offset-2 group-hover:text-[#66182C] shrink-0">
-                    Consulter
+                    {t("product.consult", "Consulter")}
                   </span>
                 </button>
 
                 <div className="flex items-center gap-2.5 text-[#23181A]">
                   <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
-                  <span>Rapporte +{Math.floor(activeFormat.priceTND / 10)} Luck pour la Roue du Destin</span>
+                  <span>{t("product.luck_points_prefix", "Rapporte")} +{Math.floor(activeFormat.priceTND / 10)} {t("product.luck_points_suffix", "Luck pour la Roue du Destin")}</span>
                 </div>
               </div>
             </div>
@@ -336,7 +338,7 @@ export function ProductDetailClient({
                 />
                 <div>
                   <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block">
-                    Signature Ondulatoire du Flacon
+                    {t("product.wave_signature_title", "Signature Ondulatoire du Flacon")}
                   </span>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">
                     {waveExpression === "soft"
@@ -379,10 +381,10 @@ export function ProductDetailClient({
                 Architecture Harmonique
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light">
-                La Pyramide Olfactive
+                {t("product.interactive_pyramid", "La Pyramide Olfactive")}
               </h3>
               <p className="text-xs text-[#756B6D] mt-2">
-                Touchez ou cliquez sur une note pour révéler son terroir d&apos;origine, sa méthode de distillation et son rayonnement.
+                {t("product.click_note", "Touchez ou cliquez sur une note pour révéler son terroir d'origine, sa méthode de distillation et son rayonnement.")}
               </p>
             </div>
 
@@ -390,7 +392,7 @@ export function ProductDetailClient({
               {/* Top Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
-                  Notes de Tête (Première Impression)
+                  {t("product.head_notes", "Notes de Tête (Première Impression)")}
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Éveil</h4>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -403,7 +405,7 @@ export function ProductDetailClient({
                         setSelectedLayer("tête");
                       }}
                       className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
-                      title="Découvrir l'accord"
+                      title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
                       <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
@@ -415,7 +417,7 @@ export function ProductDetailClient({
               {/* Heart Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 text-center">
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
-                  Notes de Cœur (Signature Centrale)
+                  {t("product.heart_notes", "Notes de Cœur (Signature Centrale)")}
                 </span>
                 <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">L&apos;Âme du Sillage</h4>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -428,7 +430,7 @@ export function ProductDetailClient({
                         setSelectedLayer("cœur");
                       }}
                       className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/25 text-[#541B28] font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
-                      title="Découvrir l'accord"
+                      title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
                       <LuxuryDrop size={12} className="text-[#DFC68B] opacity-80 group-hover/tag:opacity-100 transition-opacity" />
@@ -440,7 +442,7 @@ export function ProductDetailClient({
               {/* Base Notes */}
               <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
                 <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
-                  Notes de Fond (Tenue Inoubliable)
+                  {t("product.base_notes", "Notes de Fond (Tenue Inoubliable)")}
                 </span>
                 <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">L&apos;Empreinte</h4>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -453,7 +455,7 @@ export function ProductDetailClient({
                         setSelectedLayer("fond");
                       }}
                       className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
-                      title="Découvrir l'accord"
+                      title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
                       <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
@@ -468,7 +470,7 @@ export function ProductDetailClient({
           {relatedProducts.length > 0 && (
             <div>
               <h3 className="font-serif text-2xl text-[#23181A] font-semibold mb-6">
-                Dans la Même Collection
+                {t("product.related_title", "Dans la Même Collection")}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {relatedProducts.map((p) => (

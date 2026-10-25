@@ -6,8 +6,10 @@ import { Footer } from "@/components/navigation/Footer";
 import { PerfumeFinder } from "@/components/discovery/PerfumeFinder";
 import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DiscoverPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative overflow-x-hidden">
       <Navbar />
@@ -21,16 +23,16 @@ export default function DiscoverPage() {
             <div className="luxury-pill mb-6 inline-flex items-center gap-2.5">
               <GoldStarLozenge size={12} className="text-[#C7A66A]" />
               <span className="font-cinzel text-[10px] sm:text-[11px] tracking-grand uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                Quiz Parfum Lévania (2 min)
+                {t("quiz.tag", "Diagnostic Olfactif Sur Mesure")}
               </span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-6xl text-burgundy-gradient font-light tracking-tight mt-2 mb-5">
-              Trouvez Votre Parfum Idéal
+              {t("quiz_section.title", "Trouvez Votre Parfum Idéal")}
             </h1>
 
             <p className="text-sm sm:text-base text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light max-w-2xl mx-auto">
-              Répondez à 4 questions simples. Découvrez immédiatement les créations Lévania qui correspondent parfaitement à vos goûts et à votre style.
+              {t("quiz_section.desc", "Répondez à 4 questions simples. Découvrez immédiatement les créations Lévania qui correspondent parfaitement à vos goûts et à votre style.")}
             </p>
           </div>
 

@@ -65,17 +65,10 @@ export default function HomePage() {
                 </div>
 
                 <h1 className="font-serif text-fluid-hero font-light text-burgundy-gradient tracking-tight">
-                  {isArabic ? (
-                    <>
-                      {t("hero.title_part1")}{" "}
-                      <span className="italic font-normal text-gold-gradient">{t("hero.title_highlight")}</span>
-                    </>
-                  ) : (
-                    <>
-                      L&apos;Élégance d&apos;un Parfum{" "}
-                      <span className="italic font-normal text-gold-gradient">Unique &amp; Longue Tenue.</span>
-                    </>
-                  )}
+                  {t("hero.title_part1", "L'Élégance d'un Parfum")}{" "}
+                  <span className="italic font-normal text-gold-gradient">
+                    {t("hero.title_highlight", "Unique & Longue Tenue.")}
+                  </span>
                 </h1>
 
                 <p className="text-base sm:text-lg text-[#5A4B4E] font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
@@ -110,15 +103,15 @@ export default function HomePage() {
                   <div className="flex flex-col items-start gap-2.5 lg:flex-row lg:items-center lg:gap-6">
                     <div className="flex items-center gap-2 whitespace-nowrap">
                       <span className="w-2 h-2 rounded-full bg-[#C7A66A] shadow-xs" />
-                      <span>Longue Tenue Garantie (14h+)</span>
+                      <span>{t("hero.feature_longevity", "Longue Tenue Garantie (14h+)")}</span>
                     </div>
                     <div className="flex items-center gap-2 whitespace-nowrap">
                       <span className="w-2 h-2 rounded-full bg-[#541B28] shadow-xs" />
-                      <span>Écrin Cadeau Cylindrique Offert</span>
+                      <span>{t("hero.feature_case", "Écrin Cadeau Cylindrique Offert")}</span>
                     </div>
                     <div className="flex items-center gap-2 whitespace-nowrap">
                       <span className="w-2 h-2 rounded-full bg-[#434B36] shadow-xs" />
-                      <span>Flacon Dédié avec QR Code</span>
+                      <span>{t("hero.feature_qr", "Flacon Dédié avec QR Code")}</span>
                     </div>
                   </div>
                 </div>
@@ -133,7 +126,7 @@ export default function HomePage() {
 
           {/* Scroll Down Indicator */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#756B6D] text-[10px] uppercase tracking-widest gap-1 animate-bounce opacity-80 pointer-events-none">
-            <span>Découvrir</span>
+            <span>{t("hero.discover_scroll", "Découvrir")}</span>
             <ChevronDown className="w-3.5 h-3.5 text-[#541B28]" />
           </div>
         </section>
@@ -169,8 +162,8 @@ export default function HomePage() {
                   <Gift className="w-5 h-5 text-[#C7A66A]" />
                 </div>
                 <div className="text-left rtl:text-right">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("heritage.pedestal_title", "Écrin Cadeau Offert")}</h4>
-                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">Boîte cylindrique luxe</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.gift_box", "Écrin Cadeau Offert")}</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.gift_sub", "Boîte cylindrique luxe")}</p>
                 </div>
               </div>
 
@@ -179,8 +172,8 @@ export default function HomePage() {
                   <QrCode className="w-5 h-5 text-[#434B36] dark:text-[#C7A66A]" />
                 </div>
                 <div className="text-left rtl:text-right">
-                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.authenticity", "Flacon Personnalisé")}</h4>
-                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.authenticity_sub", "QR Code & Vidéo à votre nom")}</p>
+                  <h4 className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#23181A] dark:text-[#FAF7F2]">{t("reassurance.custom_bottle", "Flacon Personnalisé")}</h4>
+                  <p className="text-[11px] text-[#756B6D] dark:text-[#A8989C]">{t("reassurance.custom_bottle_sub", "QR Code & Vidéo à votre nom")}</p>
                 </div>
               </div>
             </div>
@@ -217,16 +210,15 @@ export default function HomePage() {
                 <div className="space-y-6">
                   <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border border-[#541B28]/20 dark:border-[#C7A66A]/30 font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold shadow-xs">
                     <Gift className="w-3.5 h-3.5 text-[#541B28] dark:text-[#DFC68B]" />
-                    <span>Idée Cadeau Idéale</span>
+                    <span>{t("gift_section.tag", "Idée Cadeau Idéale")}</span>
                   </div>
 
                   <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-                    Offrez un Coffret Cadeau Personnalisé
+                    {t("gift_section.title", "Offrez un Coffret Cadeau Personnalisé")}
                   </h2>
 
                   <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed">
-                    Choisissez votre flacon préféré (50ml ou 100ml) et ajoutez un mot doux personnalisé écrit à la main.
-                    Chaque parfum est livré dans son élégant coffret cylindrique vert olive et or, prêt à être offert.
+                    {t("gift_section.desc", "Choisissez votre flacon préféré (50ml ou 100ml) et ajoutez un mot doux personnalisé écrit à la main. Chaque parfum est livré dans son élégant coffret cylindrique vert olive et or, prêt à être offert.")}
                   </p>
 
                   <div className="flex flex-wrap gap-4 pt-2">
@@ -235,7 +227,7 @@ export default function HomePage() {
                       className="px-8 py-4 rounded-full luxury-btn-primary flex items-center gap-2.5"
                     >
                       <Gift className="w-4 h-4 text-[#DFC68B]" />
-                      <span>Créer Mon Coffret Cadeau</span>
+                      <span>{t("gift_section.btn", "Créer Mon Coffret Cadeau")}</span>
                     </Link>
                   </div>
                 </div>
@@ -251,7 +243,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/60 via-transparent to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4 text-center">
                       <span className="font-cinzel text-[11px] text-[#FAF7F2] font-medium bg-[#541B28]/90 px-4 py-1.5 rounded-full border border-[#C7A66A]/40 backdrop-blur-md shadow-md tracking-luxury uppercase">
-                        Écrins Cylindriques 50ml &amp; 100ml • Sceau Officiel Inclus
+                        {t("gift_section.badge", "Écrins Cylindriques 50ml & 100ml • Sceau Officiel Inclus")}
                       </span>
                     </div>
                   </div>
@@ -270,17 +262,15 @@ export default function HomePage() {
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#541B28]/10 border border-[#541B28]/20 font-cinzel text-[10px] text-[#541B28] uppercase tracking-luxury font-bold shadow-xs">
                   <Compass className="w-3.5 h-3.5 text-[#541B28]" />
-                  <span>Conseil Parfum Rapide</span>
+                  <span>{t("quiz_section.tag", "Conseil Parfum Rapide")}</span>
                 </div>
 
                 <h2 className="font-serif text-3xl sm:text-5xl text-burgundy-gradient font-light leading-tight">
-                  Vous Hésitez ? Trouvez Votre Parfum en 2 Minutes
+                  {t("quiz_section.title", "Vous Hésitez ? Trouvez Votre Parfum en 2 Minutes")}
                 </h2>
 
                 <p className="text-sm text-[#5A4B4E] leading-relaxed">
-                  Vous ne savez pas quel parfum choisir ? Répondez à 4 questions simples selon vos préférences
-                  (notes fraîches, boisées, florales ou intenses) et notre conseiller virtuel vous recommande instantanément
-                  les <strong>parfums faits pour vous</strong>.
+                  {t("quiz_section.desc", "Vous ne savez pas quel parfum choisir ? Répondez à 4 questions simples selon vos préférences (notes fraîches, boisées, florales ou intenses) et notre conseiller virtuel vous recommande instantanément les parfums faits pour vous.")}
                 </p>
 
                 <div className="pt-2">
@@ -288,8 +278,8 @@ export default function HomePage() {
                     href="/discover"
                     className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full luxury-btn-primary"
                   >
-                    <span>Faire le Quiz Parfum (2 min)</span>
-                    <ArrowRight className="w-4 h-4 text-[#DFC68B]" />
+                    <span>{t("quiz_section.btn", "Faire le Quiz Parfum (2 min)")}</span>
+                    <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
                   </Link>
                 </div>
               </div>
@@ -301,11 +291,11 @@ export default function HomePage() {
                     <SignatureWave expression="soft" intensity="gentle" />
                   </div>
                   <div className="flex items-center justify-between text-xs text-[#541B28] dark:text-[#DFC68B] font-semibold pb-3 border-b border-[#541B28]/10 dark:border-[#C7A66A]/20">
-                    <span>Recommandations Personnalisées</span>
-                    <span>Simple &amp; Gratuit</span>
+                    <span>{t("quiz_section.recom_title", "Recommandations Personnalisées")}</span>
+                    <span>{t("quiz_section.recom_sub", "Simple & Gratuit")}</span>
                   </div>
                   <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-3">
-                    Découvrez en quelques clics le parfum qui sublimera votre quotidien.
+                    {t("quiz_section.recom_desc", "Découvrez en quelques clics le parfum qui sublimera votre quotidien.")}
                   </p>
                 </div>
               </Card3DTilt>
@@ -321,13 +311,13 @@ export default function HomePage() {
             <div className="text-center max-w-2xl mx-auto mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-xs font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] uppercase tracking-luxury font-bold mb-3">
                 <Star className="w-3.5 h-3.5 fill-[#C7A66A] text-[#C7A66A]" />
-                <span>Avis Clients Vérifiés • 4.9 / 5</span>
+                <span>{t("reviews.tag", "Avis Clients Vérifiés • 4.9 / 5")}</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl text-burgundy-gradient font-light">
-                Ce Que Disent Nos Clients
+                {t("reviews.title", "Ce Que Disent Nos Clients")}
               </h2>
               <p className="text-xs sm:text-sm text-[#756B6D] dark:text-[#A8989C] mt-2">
-                Plus de 1 200 flacons livrés avec soin partout en Tunisie.
+                {t("reviews.subtitle", "Plus de 1 200 flacons livrés avec soin partout en Tunisie.")}
               </p>
             </div>
 
@@ -371,7 +361,7 @@ export default function HomePage() {
                     <div className="pt-4 mt-4 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20 flex items-center justify-between">
                       <div>
                         <span className="font-semibold text-xs text-[#23181A] dark:text-[#FAF7F2] block">{rev.name}</span>
-                        <span className="text-[10px] text-[#756B6D] dark:text-[#A8989C]">{rev.city} • Client Vérifié</span>
+                        <span className="text-[10px] text-[#756B6D] dark:text-[#A8989C]">{rev.city} • {t("reviews.verified_badge", "Client Vérifié")}</span>
                       </div>
                       <span className="font-cinzel text-[10px] text-[#541B28] dark:text-[#DFC68B] font-bold bg-[#541B28]/5 dark:bg-[#C7A66A]/10 px-2.5 py-1 rounded-full border border-[#541B28]/10 dark:border-[#C7A66A]/20">
                         {rev.perfume}
@@ -403,14 +393,13 @@ export default function HomePage() {
               </div>
               <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#C7A66A]/20 border border-[#C7A66A]/40 font-cinzel text-[10px] text-[#DFC68B] uppercase tracking-luxury font-bold mb-3.5 shadow-sm">
                 <Flame className="w-3.5 h-3.5 text-[#DFC68B]" />
-                <span>Cadeaux &amp; Récompenses</span>
+                <span>{t("wheel_promo.tag", "Cadeaux & Récompenses")}</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-5xl text-gold-gradient font-light">
-                La Roue Cadeau Lévania
+                {t("wheel_promo.title", "La Roue Cadeau Lévania")}
               </h2>
               <p className="text-xs sm:text-sm text-[#D5C4C7] mt-2 leading-relaxed">
-                Gagnez 1 point de chance à chaque tranche de 10 DT d&apos;achat.
-                Tournez la roue pour tenter de remporter des réductions immédiates, des échantillons ou des flacons offerts !
+                {t("wheel_promo.desc", "Gagnez 1 point de chance à chaque tranche de 10 DT d'achat. Tournez la roue pour tenter de remporter des réductions immédiates, des échantillons ou des flacons offerts !")}
               </p>
             </div>
 
@@ -421,7 +410,7 @@ export default function HomePage() {
                   className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C7A66A] via-[#DFC68B] to-[#C7A66A] text-[#2A0B12] font-cinzel font-bold text-xs uppercase tracking-luxury hover:scale-105 transition-transform shadow-xl flex items-center gap-2.5"
                 >
                   <GoldStarLozenge size={14} className="text-[#2A0B12]" />
-                  <span>Tourner la Roue Cadeau</span>
+                  <span>{t("wheel_promo.btn", "Tourner la Roue Cadeau")}</span>
                 </Link>
               </MagneticButton>
             </div>

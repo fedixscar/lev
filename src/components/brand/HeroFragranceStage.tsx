@@ -9,6 +9,7 @@ import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   ShoppingBag,
   ArrowRight,
@@ -87,6 +88,7 @@ const HERO_STAGE_ITEMS: HeroStageItem[] = [
 ];
 
 export function HeroFragranceStage() {
+  const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("100ml");
   const [isSpraying, setIsSpraying] = useState(false);
@@ -124,7 +126,7 @@ export function HeroFragranceStage() {
     });
 
     showToast(
-      "Ajouté au panier !",
+      t("hero.added_toast", "Ajouté au panier !"),
       `${activeItem.name} (${selectedFormat}) — ${formatTND(activePrice)}`,
       "luxury"
     );
@@ -139,7 +141,7 @@ export function HeroFragranceStage() {
       <div className="flex items-center justify-center mb-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 dark:bg-[#180B10]/70 backdrop-blur-md border border-[#C7A66A]/30 text-[10px] font-cinzel uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] shadow-xs">
           <Sparkles className="w-3 h-3 text-[#C7A66A] animate-pulse" />
-          <span>Scène 3D Interactive • Déplacez le curseur</span>
+          <span>{t("hero.scene_3d", "Scène 3D Interactive • Déplacez le curseur")}</span>
         </div>
       </div>
 
@@ -217,7 +219,7 @@ export function HeroFragranceStage() {
                     ✨ Sillage : {activeItem.topNotes[0]} &amp; {activeItem.heartNotes[0]}
                   </span>
                   <span className="font-cinzel text-[10px] uppercase tracking-wider text-[#DFC68B] bg-black/75 px-3 py-1 rounded-full backdrop-blur-md border border-[#DFC68B]/30">
-                    Tenue 14h+ Garantie • Extrait Absolu
+                    {t("hero.spray_longevity", "Tenue 14h+ Garantie • Extrait Absolu")}
                   </span>
                 </div>
               </div>
@@ -235,10 +237,10 @@ export function HeroFragranceStage() {
                   onClick={handleSprayMist}
                   disabled={isSpraying}
                   className="pointer-events-auto px-3 py-1.5 rounded-full bg-[#541B28]/90 hover:bg-[#66182C] text-[#FAF7F2] text-[10px] font-cinzel font-bold uppercase tracking-wider flex items-center gap-1.5 border border-[#C7A66A]/40 shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
-                  title="Vaporiser pour diffuser les notes olfactives"
+                  title={t("hero.spray_title", "Vaporiser pour diffuser les notes olfactives")}
                 >
                   <Wind className={cn("w-3 h-3 text-[#DFC68B]", isSpraying && "animate-spin")} />
-                  <span>{isSpraying ? "Diffusion..." : "Vaporiser"}</span>
+                  <span>{isSpraying ? t("hero.spraying", "Diffusion...") : t("hero.spray_btn", "Vaporiser")}</span>
                 </button>
 
                 <span className="hidden min-[360px]:inline-block font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3 py-1.5 rounded-full bg-[#541B28]/90 text-white backdrop-blur-md border border-[#C7A66A]/30">
@@ -309,7 +311,7 @@ export function HeroFragranceStage() {
             <div className="flex items-center justify-between gap-3 pt-1">
               <div>
                 <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#A8989C] block">
-                  Prix Flacon ({selectedFormat})
+                  {t("product.price_label", "Prix Flacon")} ({selectedFormat})
                 </span>
                 <span className="font-serif text-xl font-bold text-[#541B28] dark:text-[#DFC68B]">
                   {formatTND(activePrice)}
@@ -322,15 +324,15 @@ export function HeroFragranceStage() {
                   className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#541B28] via-[#66182C] to-[#541B28] hover:brightness-110 text-[#FAF7F2] font-cinzel text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md shadow-[#541B28]/25 border border-[#C7A66A]/40 active:scale-95 cursor-pointer"
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>Ajouter</span>
+                  <span>{t("hero.add_btn", "Ajouter")}</span>
                 </button>
 
                 <Link
                   href={`/products/${activeItem.slug}`}
                   className="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#14080D] hover:bg-white dark:hover:bg-[#220E16] text-[#541B28] dark:text-[#DFC68B] border border-[#541B28]/25 dark:border-[#C7A66A]/30 hover:border-[#541B28] transition-all active:scale-95"
-                  title="Voir la fiche détaillée"
+                  title={t("product.consult", "Voir la fiche détaillée")}
                 >
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                 </Link>
               </div>
             </div>

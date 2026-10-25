@@ -200,8 +200,8 @@ export function OlfactoryPyramidStage() {
                   href="/shop"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider shadow-md transition-all"
                 >
-                  <span>Explorer les Parfums en Boutique</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#DFC68B]" />
+                  <span>{t("pyramid.cta", "Explorer les Parfums en Boutique")}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#DFC68B] rtl:rotate-180" />
                 </Link>
               </div>
             </div>
@@ -209,7 +209,7 @@ export function OlfactoryPyramidStage() {
             {/* Right Ingredients Grid Column */}
             <div className="lg:col-span-6 space-y-3">
               <span className="text-xs uppercase tracking-widest text-[#541B28] dark:text-[#DFC68B] font-bold block mb-1">
-                Absolus & Matières Premières Révélées :
+                {t("pyramid.ingredients_title", "Absolus & Matières Premières Révélées :")}
               </span>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -233,7 +233,7 @@ export function OlfactoryPyramidStage() {
 
               <div className="p-3 rounded-xl bg-white/70 dark:bg-[#180B10]/70 border border-[#541B28]/10 dark:border-[#C7A66A]/20 text-[11px] text-[#756B6D] dark:text-[#A8989C] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#434B36] dark:text-[#C7A66A] shrink-0" />
-                <span>Macération prolongée en cuve inox thermorégulée selon les préceptes de Grasse et de Tunis.</span>
+                <span>{t("pyramid.maceration_note", "Macération prolongée en cuve inox thermorégulée selon les préceptes de Grasse et de Tunis.")}</span>
               </div>
             </div>
           </div>
