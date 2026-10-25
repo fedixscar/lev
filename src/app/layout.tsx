@@ -45,6 +45,7 @@ export const metadata: Metadata = {
 
 import { AppProviders } from "@/context/Providers";
 import { AiConciergeModal } from "@/components/chat/AiConciergeModal";
+import { LanguageSwitcher } from "@/components/navigation/LanguageSwitcher";
 
 export default function RootLayout({
   children,
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] font-sans selection:bg-[#541B28] selection:text-[#FAF7F2] transition-colors duration-300">
         <AppProviders>
           {children}
+          <LanguageSwitcher variant="floating" />
           <AiConciergeModal />
         </AppProviders>
       </body>

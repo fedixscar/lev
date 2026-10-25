@@ -15,6 +15,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  Globe,
 } from "lucide-react";
 import { LevaniaLogo } from "@/components/brand/LevaniaLogo";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
@@ -32,7 +33,7 @@ export function Navbar() {
   const { totalItemsCount, setIsCartOpen } = useCart();
   const { role, user, isAuthenticated, signOut } = useAuth();
   const { currentTier } = useLoyalty();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -126,8 +127,8 @@ export function Navbar() {
 
             {/* Right Controls: Language Selector, Theme Toggle, User Profile & Cart */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Language Selector */}
-              <LanguageSwitcher />
+              {/* Language Selector (Segmented FR | عربي | EN) */}
+              <LanguageSwitcher variant="segmented" />
 
               {/* Theme Toggle Button */}
               <ThemeToggle />
@@ -278,11 +279,17 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Language switcher pills in mobile drawer */}
-              <div className="mt-5 p-3 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 flex items-center justify-between">
-                <span className="font-cinzel text-[11px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold">
-                  {t("nav.lang_select", "Langue")}
-                </span>
+              {/* Language switcher in mobile drawer */}
+              <div className="mt-5 p-3.5 rounded-2xl bg-white dark:bg-[#180B10] border border-[#541B28]/15 dark:border-[#C7A66A]/25 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-cinzel text-[11px] uppercase tracking-wider text-[#541B28] dark:text-[#DFC68B] font-bold flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-[#C7A66A]" />
+                    <span>{t("nav.lang_select", "Langue / اللغة / Language")}</span>
+                  </span>
+                  <span className="text-[10px] text-[#756B6D] dark:text-[#A8989C] uppercase font-bold">
+                    {locale.toUpperCase()}
+                  </span>
+                </div>
                 <LanguageSwitcher variant="pills" />
               </div>
 
