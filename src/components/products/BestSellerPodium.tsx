@@ -102,7 +102,16 @@ export function BestSellerPodium({ products: initialProducts = [] }: BestSellerP
         </div>
 
         {/* 3-Product Podium with 3D Tilt */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-20">
+        <div
+          className={cn(
+            "grid gap-8 items-end mx-auto mb-16",
+            !second && !third
+              ? "grid-cols-1 max-w-md justify-center"
+              : second && !third
+              ? "grid-cols-1 md:grid-cols-2 max-w-3xl"
+              : "grid-cols-1 md:grid-cols-3 max-w-5xl"
+          )}
+        >
           {/* Rank 2 (Left) */}
           {second && (
             <Card3DTilt
@@ -193,7 +202,7 @@ export function BestSellerPodium({ products: initialProducts = [] }: BestSellerP
               scale={1.03}
               enableGlare={true}
               glareOpacity={0.3}
-              className="order-1 md:order-2 md:-translate-y-6"
+              className={cn("order-1", second ? "md:order-2 md:-translate-y-6" : "w-full")}
             >
               <div className="relative rounded-3xl bg-white dark:bg-[#180B10] border-2 border-[#541B28] dark:border-[#C7A66A] p-8 flex flex-col items-center text-center shadow-2xl shadow-[#541B28]/15 dark:shadow-black/70 group">
                 {/* Glowing Pedestal Base Contour */}
@@ -389,6 +398,16 @@ export function BestSellerPodium({ products: initialProducts = [] }: BestSellerP
             </div>
           </div>
         )}
+        {/* Bottom CTA to Boutique */}
+        <div className="text-center mt-12">
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full luxury-btn-secondary shadow-md hover:shadow-lg transition-all"
+          >
+            <span>{t("bestsellers.view_all", "Voir tout le catalogue de la boutique")}</span>
+            <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
+          </Link>
+        </div>
       </div>
     </section>
   );

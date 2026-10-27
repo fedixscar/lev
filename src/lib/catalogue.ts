@@ -411,11 +411,13 @@ export function getAllProducts(): Product[] {
 }
 
 /**
- * Saves a new product or updates an existing one (matching by id).
+ * Saves a new product or updates an existing one (matching by id or slug).
  */
-export function saveProduct(product: Product): Product[] {
+export async function saveProductAsync(product: Product): Promise<Product[]> {
   const current = getAllProducts();
-  const existingIdx = current.findIndex((p) => p.id === product.id);
+  const existingIdx = current.findIndex(
+    (p) => p.id === product.id || (p.slug && product.slug && p.slug === product.slug)
+  );
   let updated: Product[];
 
   if (existingIdx >= 0) {
@@ -447,6 +449,72 @@ export function saveProduct(product: Product): Product[] {
     }
 
     // Sync to remote database via /api/products
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product }),
+      });
+      if (res.ok) {
+        const resData = await res.json();
+        // If DB returned assigned UUID
+        if (resData.productId && resData.productId !== product.id) {
+          product.id = resData.productId;
+        }
+      }
+    } catch (err) {
+      console.warn("Sync to /api/products failed:", err);
+    }
+
+    try {
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+    } catch {
+      // ignore
+    }
+  }
+
+  return updated;
+}
+
+/**
+ * Saves a new product or updates an existing one (synchronous wrapper).
+ */
+export function saveProduct(product: Product): Product[] {
+  const current = getAllProducts();
+  const existingIdx = current.findIndex(
+    (p) => p.id === product.id || (p.slug && product.slug && p.slug === product.slug)
+  );
+  let updated: Product[];
+
+  if (existingIdx >= 0) {
+    updated = [...current];
+    updated[existingIdx] = product;
+  } else {
+    updated = [product, ...current];
+  }
+
+  memoryProducts = updated;
+
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+    } catch (err) {
+      console.warn("localStorage quota reached, attempting storage with compressed records:", err);
+      try {
+        const streamlined = updated.map((p) => ({
+          ...p,
+          images: {
+            main: p.images.main,
+            packaging: p.images.packaging || p.images.main,
+          },
+        }));
+        localStorage.setItem("levania_custom_products", JSON.stringify(streamlined));
+      } catch (innerErr) {
+        console.error("Critical storage error:", innerErr);
+      }
+    }
+
+    // Sync to remote database via /api/products in background
     fetch("/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

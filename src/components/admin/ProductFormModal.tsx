@@ -23,7 +23,7 @@ import { Product, FragranceFamily, FragranceIntensity } from "@/types";
 interface ProductFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (product: Product) => void;
+  onSave: (product: Product) => void | Promise<void>;
   initialProduct?: Product | null;
   mode?: "create" | "edit";
 }
@@ -113,6 +113,7 @@ export function ProductFormModal({
   const [isBestseller, setIsBestseller] = useState(false);
   const [bestsellerRank, setBestsellerRank] = useState<number>(1);
   const [imageUploadLoading, setImageUploadLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Fragrantica AI Auto-fill state
   const [fragranticaUrl, setFragranticaUrl] = useState("");
@@ -290,90 +291,98 @@ export function ProductFormModal({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       alert("Veuillez renseigner le nom du parfum.");
       return;
     }
 
-    const slug = initialProduct
-      ? initialProduct.slug
-      : name
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-|-$/g, "");
+    setIsSaving(true);
+    try {
+      const slug = initialProduct
+        ? initialProduct.slug
+        : name
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
 
-    const id = initialProduct ? initialProduct.id : `lev-${Date.now()}`;
+      const id = initialProduct ? initialProduct.id : `lev-${Date.now()}`;
 
-    const topArr = topNotes
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const heartArr = heartNotes
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const baseArr = baseNotes
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
+      const topArr = topNotes
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const heartArr = heartNotes
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const baseArr = baseNotes
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
 
-    const productPayload: Product = {
-      id,
-      slug,
-      name: name.trim(),
-      subtitle: subtitle.trim(),
-      frenchName: name.trim(),
-      collection,
-      collectionSlug,
-      gender,
-      waveExpression,
-      wavePalette,
-      fragranceFamily,
-      intensity,
-      description:
-        description.trim() ||
-        `Création haute parfumerie de la maison Lévania. ${name} déploie un sillage raffiné et mémorable.`,
-      sensoryProfile: sensoryProfile.trim() || "Noble, raffiné et d'une tenue remarquable.",
-      topNotes: topArr.length > 0 ? topArr : ["Bergamote", "Baies Roses"],
-      heartNotes: heartArr.length > 0 ? heartArr : ["Rose Précieuse", "Bois Ciselé"],
-      baseNotes: baseArr.length > 0 ? baseArr : ["Ambre", "Musc Blanc"],
-      occasions: ["Signature Personnelle", "Moments d'Exception"],
-      images: {
-        main: mainImage,
-        packaging: "/brand/cylinders-dual.jpg",
-        lifestyle: mainImage,
-        bottleOnly: "/brand/logo-emblem.jpg",
-      },
-      formats: [
-        {
-          size: "50ml",
-          priceTND: Number(price50) || 195,
-          priceMillimes: Math.round((Number(price50) || 195) * 1000),
-          stock: Number(stock50) || 0,
-          sku: `LEV-${slug.slice(0, 4).toUpperCase()}-50`,
+      const productPayload: Product = {
+        id,
+        slug,
+        name: name.trim(),
+        subtitle: subtitle.trim(),
+        frenchName: name.trim(),
+        collection,
+        collectionSlug,
+        gender,
+        waveExpression,
+        wavePalette,
+        fragranceFamily,
+        intensity,
+        description:
+          description.trim() ||
+          `Création haute parfumerie de la maison Lévania. ${name} déploie un sillage raffiné et mémorable.`,
+        sensoryProfile: sensoryProfile.trim() || "Noble, raffiné et d'une tenue remarquable.",
+        topNotes: topArr.length > 0 ? topArr : ["Bergamote", "Baies Roses"],
+        heartNotes: heartArr.length > 0 ? heartArr : ["Rose Précieuse", "Bois Ciselé"],
+        baseNotes: baseArr.length > 0 ? baseArr : ["Ambre", "Musc Blanc"],
+        occasions: ["Signature Personnelle", "Moments d'Exception"],
+        images: {
+          main: mainImage,
+          packaging: "/brand/cylinders-dual.jpg",
+          lifestyle: mainImage,
+          bottleOnly: "/brand/logo-emblem.jpg",
         },
-        {
-          size: "100ml",
-          priceTND: Number(price100) || 295,
-          priceMillimes: Math.round((Number(price100) || 295) * 1000),
-          stock: Number(stock100) || 0,
-          sku: `LEV-${slug.slice(0, 4).toUpperCase()}-100`,
-        },
-      ],
-      isFeatured,
-      isBestseller,
-      bestsellerRank: isBestseller ? Number(bestsellerRank) : undefined,
-      rating: initialProduct?.rating || 5.0,
-      reviewCount: initialProduct?.reviewCount || 0,
-      qrEligible: true,
-      createdAt: initialProduct?.createdAt || new Date().toISOString(),
-    };
+        formats: [
+          {
+            size: "50ml",
+            priceTND: Number(price50) || 195,
+            priceMillimes: Math.round((Number(price50) || 195) * 1000),
+            stock: Number(stock50) || 0,
+            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-50`,
+          },
+          {
+            size: "100ml",
+            priceTND: Number(price100) || 295,
+            priceMillimes: Math.round((Number(price100) || 295) * 1000),
+            stock: Number(stock100) || 0,
+            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-100`,
+          },
+        ],
+        isFeatured,
+        isBestseller,
+        bestsellerRank: isBestseller ? Number(bestsellerRank) : undefined,
+        rating: initialProduct?.rating || 5.0,
+        reviewCount: initialProduct?.reviewCount || 0,
+        qrEligible: true,
+        createdAt: initialProduct?.createdAt || new Date().toISOString(),
+      };
 
-    onSave(productPayload);
+      await onSave(productPayload);
+    } catch (err: any) {
+      console.error("Save error:", err);
+      alert(err.message || "Erreur lors de l'enregistrement");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -917,16 +926,27 @@ export function ProductFormModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-[#541B28]/20 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider transition-colors shadow-xs cursor-pointer"
+              disabled={isSaving}
+              className="px-5 py-2.5 rounded-xl border border-[#541B28]/20 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider transition-colors shadow-xs cursor-pointer disabled:opacity-50"
             >
               Annuler
             </button>
             <button
               type="submit"
-              className="px-7 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 cursor-pointer"
+              disabled={isSaving}
+              className="px-7 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-60"
             >
-              <Check className="w-4 h-4 text-[#DFC68B]" />
-              <span>{mode === "edit" ? "Mettre à Jour le Flacon" : "Enregistrer & Publier"}</span>
+              {isSaving ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-[#FAF7F2] border-t-transparent rounded-full animate-spin" />
+                  <span>Enregistrement & Publication...</span>
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4 text-[#DFC68B]" />
+                  <span>{mode === "edit" ? "Mettre à Jour le Flacon" : "Enregistrer & Publier"}</span>
+                </>
+              )}
             </button>
           </div>
         </form>

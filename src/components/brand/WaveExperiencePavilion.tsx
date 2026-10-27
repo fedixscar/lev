@@ -9,6 +9,8 @@ import { ArrowRight, Layers, Flame, Compass, Wind } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { formatTND, cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import { getAllProducts, fetchRemoteProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { Product } from "@/types";
 
 interface WaveFeatureData {
   title: string;
@@ -178,7 +180,44 @@ function getWaveFeatureData(expr: WaveExpression, locale: "fr" | "ar" | "en", t:
 export function WaveExperiencePavilion() {
   const { t, locale } = useLanguage();
   const [activeExpression, setActiveExpression] = useState<WaveExpression>("signature");
+  const [catalogue, setCatalogue] = useState<Product[]>([]);
   const activeData = getWaveFeatureData(activeExpression, locale, t);
+
+  React.useEffect(() => {
+    setCatalogue(getAllProducts());
+    fetchRemoteProducts().then((p) => {
+      if (Array.isArray(p)) setCatalogue(p);
+    });
+    const handleUpdate = () => setCatalogue(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+  }, []);
+
+  const matchingCatalogueProducts = catalogue.filter((p) =>
+    p.waveExpression === activeExpression ||
+    (activeExpression === "signature" && (p.collectionSlug === "signature" || !p.collectionSlug)) ||
+    (activeExpression === "soft" && p.collectionSlug === "soyeuse") ||
+    (activeExpression === "intense" && p.collectionSlug === "intense")
+  );
+
+  const displayedFlacons =
+    matchingCatalogueProducts.length > 0
+      ? matchingCatalogueProducts.slice(0, 2).map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          format: p.formats?.[0]?.size ? `${p.formats[0].size} Extrait` : "100ml Extrait",
+          price: p.formats?.[0]?.priceTND || 195,
+          image: p.images?.main || "/brand/bottle-and-cylinder.jpg",
+        }))
+      : catalogue.length > 0
+      ? catalogue.slice(0, 2).map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          format: p.formats?.[0]?.size ? `${p.formats[0].size} Extrait` : "100ml Extrait",
+          price: p.formats?.[0]?.priceTND || 195,
+          image: p.images?.main || "/brand/bottle-and-cylinder.jpg",
+        }))
+      : activeData.bestSellers;
 
   return (
     <section className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] relative overflow-hidden border-y border-[#541B28]/15 dark:border-[#C7A66A]/20">
@@ -455,7 +494,7 @@ export function WaveExperiencePavilion() {
                 </div>
 
                 <div className="space-y-3">
-                  {activeData.bestSellers.map((item, i) => (
+                  {displayedFlacons.map((item, i) => (
                     <Link
                       key={i}
                       href={`/products/${item.slug}`}

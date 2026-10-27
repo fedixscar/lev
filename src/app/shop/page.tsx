@@ -77,15 +77,19 @@ export default function ShopPage() {
   const families = ["all", "Amber", "Woody", "Floral", "Citrus", "Spicy"];
 
   const filteredProducts = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
     return products.filter((product) => {
       const matchesSearch =
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.topNotes.some((n) => n.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        product.baseNotes.some((n) => n.toLowerCase().includes(searchQuery.toLowerCase()));
+        !q ||
+        (product.name || "").toLowerCase().includes(q) ||
+        (product.description || "").toLowerCase().includes(q) ||
+        (product.topNotes || []).some((n) => (n || "").toLowerCase().includes(q)) ||
+        (product.baseNotes || []).some((n) => (n || "").toLowerCase().includes(q));
 
       const matchesWave =
-        selectedWave === "all" || product.collectionSlug === selectedWave;
+        selectedWave === "all" ||
+        product.collectionSlug === selectedWave ||
+        (!product.collectionSlug && selectedWave === "signature");
 
       const matchesFamily =
         selectedFamily === "all" || product.fragranceFamily === selectedFamily;
@@ -99,14 +103,14 @@ export default function ShopPage() {
         return (a.bestsellerRank || 99) - (b.bestsellerRank || 99);
       }
       if (sortBy === "price-asc") {
-        return a.formats[0].priceTND - b.formats[0].priceTND;
+        return (a.formats?.[0]?.priceTND || 0) - (b.formats?.[0]?.priceTND || 0);
       }
       if (sortBy === "price-desc") {
-        return b.formats[0].priceTND - a.formats[0].priceTND;
+        return (b.formats?.[0]?.priceTND || 0) - (a.formats?.[0]?.priceTND || 0);
       }
       return 0;
     });
-  }, [searchQuery, selectedWave, selectedFamily, selectedIntensity, sortBy]);
+  }, [products, searchQuery, selectedWave, selectedFamily, selectedIntensity, sortBy]);
 
   const activeWaveTab = WAVE_TABS.find((t) => t.id === selectedWave) || WAVE_TABS[0];
 

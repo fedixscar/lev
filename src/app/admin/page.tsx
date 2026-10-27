@@ -10,6 +10,7 @@ import {
   getAllProducts,
   fetchRemoteProducts,
   saveProduct,
+  saveProductAsync,
   deleteProduct,
   clearAllProducts,
   resetDefaultProducts,
@@ -327,15 +328,21 @@ export default function AdminDashboardPage() {
     setIsDeleteModalOpen(true);
   };
 
-  const handleSaveProduct = (prod: Product) => {
-    const updated = saveProduct(prod);
-    setProductList(updated);
-    setIsProductModalOpen(false);
-    showToast(
-      editingProduct ? "Flacon Modifié" : "Flacon Ajouté au Catalogue",
-      `${prod.name} est maintenant disponible sur la boutique.`,
-      "luxury"
-    );
+  const handleSaveProduct = async (prod: Product) => {
+    try {
+      const updated = await saveProductAsync(prod);
+      setProductList(updated);
+      setIsProductModalOpen(false);
+      showToast(
+        editingProduct ? "Flacon Modifié" : "Flacon Ajouté au Catalogue",
+        `${prod.name} est maintenant synchronisé et disponible sur la boutique.`,
+        "luxury"
+      );
+    } catch {
+      const updated = saveProduct(prod);
+      setProductList(updated);
+      setIsProductModalOpen(false);
+    }
   };
 
   const handleConfirmDelete = () => {

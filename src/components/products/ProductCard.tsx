@@ -29,7 +29,9 @@ export function ProductCard({ product: rawProduct, className, priority = false }
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const activeFormat = product.formats.find((f) => f.size === selectedFormat) || product.formats[0];
+  const activeFormat = (product.formats && product.formats.length > 0)
+    ? (product.formats.find((f) => f.size === selectedFormat) || product.formats[0])
+    : { size: "50ml" as const, priceTND: 195, priceMillimes: 195000, stock: 40, sku: `LEV-${product.slug}-50` };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -157,7 +159,7 @@ export function ProductCard({ product: rawProduct, className, priority = false }
 
             {/* Notes Preview */}
             <div className="flex flex-wrap gap-1.5 mt-3.5">
-              {product.topNotes.slice(0, 2).map((note, idx) => (
+              {(product.topNotes || []).slice(0, 2).map((note, idx) => (
                 <span
                   key={idx}
                   className="text-[10px] px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#0E0709] text-[#4A3B3E] dark:text-[#FAF7F2] border border-[#541B28]/15 dark:border-[#C7A66A]/20 font-medium"
@@ -165,7 +167,7 @@ export function ProductCard({ product: rawProduct, className, priority = false }
                   {note}
                 </span>
               ))}
-              {product.baseNotes.length > 0 && (
+              {(product.baseNotes || []).length > 0 && (
                 <span className="text-[10px] px-2.5 py-1 rounded-full bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#DFC68B] border border-[#541B28]/25 dark:border-[#C7A66A]/30 font-semibold">
                   {product.baseNotes[0]}
                 </span>
@@ -177,10 +179,13 @@ export function ProductCard({ product: rawProduct, className, priority = false }
           <div className="mt-5 pt-4 border-t border-[#541B28]/10 dark:border-[#C7A66A]/20">
             <div className="flex items-center justify-between mb-3.5">
               <div className="flex items-center gap-1 bg-[#FAF7F2] dark:bg-[#0E0709] p-1 rounded-xl border border-[#541B28]/15 dark:border-[#C7A66A]/20">
-                {product.formats.map((fmt) => (
+                {(product.formats && product.formats.length > 0
+                  ? product.formats
+                  : [{ size: "50ml" as const, priceTND: 195 }]
+                ).map((fmt) => (
                   <button
                     key={fmt.size}
-                    onClick={() => setSelectedFormat(fmt.size)}
+                    onClick={() => setSelectedFormat(fmt.size as "50ml" | "100ml")}
                     className={cn(
                       "px-3 py-1 text-xs rounded-lg transition-all font-cinzel cursor-pointer",
                       selectedFormat === fmt.size
