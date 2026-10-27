@@ -5,7 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
-import { PRODUCTS, getAllProducts, saveProduct, deleteProduct, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import {
+  PRODUCTS,
+  getAllProducts,
+  saveProduct,
+  deleteProduct,
+  clearAllProducts,
+  resetDefaultProducts,
+  PRODUCTS_UPDATED_EVENT,
+} from "@/lib/catalogue";
 import { formatTND } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -65,6 +73,8 @@ import {
   Gift,
   Ticket,
   Clock,
+  RotateCcw,
+  Wand2,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -78,8 +88,14 @@ export default function AdminDashboardPage() {
   const [productList, setProductList] = useState<Product[]>([]);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [productModalMode, setProductModalMode] = useState<"create" | "edit">("create");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
+  // Quick Fragrantica AI Import
+  const [quickFragranticaUrl, setQuickFragranticaUrl] = useState("");
+  const [isQuickScraping, setIsQuickScraping] = useState(false);
+  const [quickScrapeError, setQuickScrapeError] = useState<string | null>(null);
 
   const [orders, setOrders] = useState<Array<{
     id: string;
@@ -289,11 +305,13 @@ export default function AdminDashboardPage() {
   };
 
   const handleOpenCreateProduct = () => {
+    setProductModalMode("create");
     setEditingProduct(null);
     setIsProductModalOpen(true);
   };
 
   const handleOpenEditProduct = (prod: Product) => {
+    setProductModalMode("edit");
     setEditingProduct(prod);
     setIsProductModalOpen(true);
   };
@@ -316,15 +334,138 @@ export default function AdminDashboardPage() {
 
   const handleConfirmDelete = () => {
     if (!productToDelete) return;
-    const updated = deleteProduct(productToDelete.id);
+    const targetId = productToDelete.id || productToDelete.slug;
+    const updated = deleteProduct(targetId);
     setProductList(updated);
     setIsDeleteModalOpen(false);
     showToast(
       "Flacon Retiré du Catalogue",
-      `${productToDelete.name} a été supprimé.`,
+      `${productToDelete.name} a été supprimé du catalogue.`,
       "info"
     );
     setProductToDelete(null);
+  };
+
+  const handleClearAllCatalogue = () => {
+    if (
+      window.confirm(
+        "Êtes-vous sûr de vouloir supprimer tous les flacons du catalogue ? Cette action vide entièrement la boutique pour vous permettre d'ajouter vos propres parfums."
+      )
+    ) {
+      const updated = clearAllProducts();
+      setProductList(updated);
+      showToast("Catalogue Vidé", "Tous les flacons ont été retirés de la boutique.", "info");
+    }
+  };
+
+  const handleRestoreDefaults = () => {
+    if (
+      window.confirm(
+        "Souhaitez-vous restaurer les 10 flacons originaux de la Maison Lévania ?"
+      )
+    ) {
+      const updated = resetDefaultProducts();
+      setProductList(updated);
+      showToast(
+        "Catalogue Initial Restauré",
+        "Les 10 créations d'origine ont été réactivées.",
+        "luxury"
+      );
+    }
+  };
+
+  const handleQuickFragranticaImport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickFragranticaUrl.trim() || isQuickScraping) return;
+
+    setIsQuickScraping(true);
+    setQuickScrapeError(null);
+
+    try {
+      const res = await fetch("/api/admin/scrape-perfume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: quickFragranticaUrl.trim() }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || "Impossible d'extraire les données du parfum.");
+      }
+
+      const rawName = data.name || "Nouveau Parfum";
+      const slug = rawName
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+      const newProduct: Product = {
+        id: `lev-${Date.now()}`,
+        name: rawName,
+        slug,
+        frenchName: rawName,
+        subtitle: data.subtitle || (data.brand ? `${data.brand} • Eau de Parfum` : "Extrait de Parfum Absolu"),
+        collection: data.collection || "La Collection Signature",
+        collectionSlug: "signature",
+        gender: data.gender || "Unisexe",
+        waveExpression: "signature",
+        wavePalette: "gold",
+        fragranceFamily: data.fragranceFamily || "Amber",
+        intensity: data.intensity || "Intense",
+        occasions: ["Signature Personnelle", "Moments d'Exception"],
+        description: data.description || "",
+        sensoryProfile: data.sensoryProfile || "",
+        topNotes: Array.isArray(data.topNotes) && data.topNotes.length > 0 ? data.topNotes : ["Bergamote"],
+        heartNotes: Array.isArray(data.heartNotes) && data.heartNotes.length > 0 ? data.heartNotes : ["Rose"],
+        baseNotes: Array.isArray(data.baseNotes) && data.baseNotes.length > 0 ? data.baseNotes : ["Ambre"],
+        formats: [
+          {
+            size: "50ml",
+            priceTND: Number(data.price50) || 195,
+            priceMillimes: Math.round((Number(data.price50) || 195) * 1000),
+            stock: Number(data.stock50) || 40,
+            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-50`,
+          },
+          {
+            size: "100ml",
+            priceTND: Number(data.price100) || 295,
+            priceMillimes: Math.round((Number(data.price100) || 295) * 1000),
+            stock: Number(data.stock100) || 25,
+            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-100`,
+          },
+        ],
+        images: {
+          main: "/brand/bottle-and-cylinder.jpg",
+          packaging: "/brand/cylinders-dual.jpg",
+          lifestyle: "/brand/bottle-and-cylinder.jpg",
+          bottleOnly: "/brand/logo-emblem.jpg",
+        },
+        isFeatured: false,
+        isBestseller: false,
+        rating: 5.0,
+        reviewCount: 0,
+        qrEligible: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      setProductModalMode("create");
+      setEditingProduct(newProduct);
+      setIsProductModalOpen(true);
+      setQuickFragranticaUrl("");
+      showToast(
+        "Extraction IA Réussie !",
+        `${newProduct.name} a été importé depuis Fragrantica. Toutes les notes ont été pré-remplies.`,
+        "luxury"
+      );
+    } catch (err: any) {
+      setQuickScrapeError(
+        err.message || "Erreur lors de l'extraction. Vérifiez le lien ou le nom."
+      );
+    } finally {
+      setIsQuickScraping(false);
+    }
   };
 
   const handleUpdateOrderStatus = (orderId: string, newStatus: string) => {
@@ -728,90 +869,203 @@ export default function AdminDashboardPage() {
                     {productList.length} flacon{productList.length > 1 ? "s" : ""} référencé{productList.length > 1 ? "s" : ""} • Créez, modifiez ou supprimez vos parfums avec synchronisation instantanée sur la boutique.
                   </p>
                 </div>
-                <button
-                  onClick={handleOpenCreateProduct}
-                  className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-98"
-                >
-                  <Plus className="w-4 h-4 text-[#DFC68B]" />
-                  <span>Nouveau Flacon</span>
-                </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={handleOpenCreateProduct}
+                    className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-98 cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 text-[#DFC68B]" />
+                    <span>Nouveau Flacon</span>
+                  </button>
+
+                  {productList.length > 0 && (
+                    <button
+                      onClick={handleClearAllCatalogue}
+                      className="px-4 py-2.5 rounded-xl border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+                      title="Supprimer tous les flacons du catalogue"
+                    >
+                      <Trash2 className="w-4 h-4 text-rose-600" />
+                      <span className="hidden sm:inline">Vider le catalogue</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={handleRestoreDefaults}
+                    className="px-4 py-2.5 rounded-xl border border-[#541B28]/25 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+                    title="Restaurer les 10 créations par défaut de Lévania"
+                  >
+                    <RotateCcw className="w-4 h-4 text-[#C7A66A]" />
+                    <span>Restaurer par défaut</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead>
-                    <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
-                      <th className="pb-3">Visuel</th>
-                      <th className="pb-3">Nom & Collection</th>
-                      <th className="pb-3">Genre / Famille</th>
-                      <th className="pb-3">Prix (50ml / 100ml)</th>
-                      <th className="pb-3">Stock Actuel</th>
-                      <th className="pb-3">Rang Podium</th>
-                      <th className="pb-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#541B28]/5">
-                    {productList.map((prod) => (
-                      <tr key={prod.id} className="hover:bg-[#FAF7F2]">
-                        <td className="py-3">
-                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15 shadow-xs">
-                            <Image
-                              src={prod.images.main}
-                              alt={prod.name}
-                              fill
-                              className="object-cover"
-                              unoptimized={prod.images.main.startsWith("data:")}
-                            />
-                          </div>
-                        </td>
-                        <td className="py-3">
-                          <span className="font-serif text-sm text-[#23181A] font-semibold block">
-                            {prod.name}
-                          </span>
-                          <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
-                        </td>
-                        <td className="py-3">
-                          <span className="text-[#23181A] font-medium block">{prod.gender || "Unisexe"}</span>
-                          <span className="text-[10px] text-[#756B6D]">{prod.fragranceFamily}</span>
-                        </td>
-                        <td className="py-3 font-serif text-[#541B28] font-bold">
-                          {formatTND(prod.formats[0]?.priceTND || 0)} / {formatTND(prod.formats[1]?.priceTND || 0)}
-                        </td>
-                        <td className="py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            (prod.formats[0]?.stock || 0) < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                          }`}>
-                            {prod.formats[0]?.stock || 0} ex. (50ml) • {prod.formats[1]?.stock || 0} ex. (100ml)
-                          </span>
-                        </td>
-                        <td className="py-3">
-                          <span className="px-2.5 py-1 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold">
-                            #{prod.bestsellerRank || "—"}
-                          </span>
-                        </td>
-                        <td className="py-3 text-right">
-                          <div className="inline-flex items-center gap-1.5">
-                            <button
-                              onClick={() => handleOpenEditProduct(prod)}
-                              className="p-1.5 rounded-lg bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] transition-colors border border-[#541B28]/20"
-                              title="Modifier ce flacon"
-                            >
-                              <Pencil className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleOpenDeleteModal(prod)}
-                              className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-700 text-rose-700 hover:text-white transition-colors border border-rose-200"
-                              title="Supprimer ce flacon"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              {/* BARRE D'IMPORTATION RAPIDE FRAGRANTICA (IA) */}
+              <div className="rounded-2xl bg-gradient-to-r from-[#FAF5EC] via-[#F6EDE0] to-[#FAF5EC] border-2 border-[#C7A66A]/60 p-5 shadow-sm space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#541B28] text-[#DFC68B] flex items-center justify-center shrink-0 shadow-sm">
+                      <Wand2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-serif text-base font-bold text-[#541B28]">
+                          Importation Magique Fragrantica (IA)
+                        </h4>
+                        <span className="text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-[#541B28]/10 text-[#541B28] border border-[#541B28]/25">
+                          Direct
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#756B6D]">
+                        Collez ci-dessous le lien Fragrantica d&apos;un parfum pour extraire et ajouter automatiquement toutes ses notes olfactives.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <form onSubmit={handleQuickFragranticaImport} className="flex flex-col sm:flex-row gap-2.5 pt-1">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      value={quickFragranticaUrl}
+                      onChange={(e) => setQuickFragranticaUrl(e.target.value)}
+                      placeholder="Ex: https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Scandal-45651.html ou 'Scandal Jean Paul Gaultier'"
+                      className="w-full bg-white border-2 border-[#C7A66A]/60 focus:border-[#541B28] rounded-xl px-4 py-3 text-xs sm:text-sm text-[#23181A] placeholder:text-[#8C7B80] shadow-inner outline-none transition-all"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isQuickScraping || !quickFragranticaUrl.trim()}
+                    className="px-6 py-3 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer shrink-0"
+                  >
+                    {isQuickScraping ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-[#FAF7F2] border-t-transparent rounded-full animate-spin" />
+                        <span>Extraction IA en cours...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 text-[#DFC68B]" />
+                        <span>Importer & Remplir</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+
+                {quickScrapeError && (
+                  <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 px-3.5 py-2 rounded-xl font-medium animate-in fade-in">
+                    ⚠️ {quickScrapeError}
+                  </div>
+                )}
               </div>
+
+              {productList.length === 0 ? (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-12 text-center shadow-sm space-y-4">
+                  <div className="w-16 h-16 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto">
+                    <Package className="w-8 h-8 text-[#541B28]" />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-xl text-[#23181A] font-semibold">
+                      Le catalogue boutique est actuellement vide
+                    </h4>
+                    <p className="text-xs text-[#756B6D] max-w-md mx-auto mt-1 leading-relaxed">
+                      Tous les flacons factices ont été retirés. Vous pouvez désormais ajouter vos propres créations en collant directement un lien Fragrantica, ou restaurer les 10 flacons d&apos;origine à tout moment.
+                    </p>
+                  </div>
+                  <div className="flex justify-center gap-3 pt-2">
+                    <button
+                      onClick={handleOpenCreateProduct}
+                      className="px-6 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-md cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 text-[#DFC68B]" />
+                      <span>Ajouter un Parfum (Fragrantica IA)</span>
+                    </button>
+                    <button
+                      onClick={handleRestoreDefaults}
+                      className="px-5 py-2.5 rounded-xl border border-[#541B28]/20 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+                    >
+                      <RotateCcw className="w-4 h-4 text-[#C7A66A]" />
+                      <span>Restaurer par défaut</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] uppercase tracking-wider border-b border-[#541B28]/10 pb-2 font-bold">
+                        <th className="pb-3">Visuel</th>
+                        <th className="pb-3">Nom & Collection</th>
+                        <th className="pb-3">Genre / Famille</th>
+                        <th className="pb-3">Prix (50ml / 100ml)</th>
+                        <th className="pb-3">Stock Actuel</th>
+                        <th className="pb-3">Rang Podium</th>
+                        <th className="pb-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5">
+                      {productList.map((prod) => (
+                        <tr key={prod.id} className="hover:bg-[#FAF7F2]">
+                          <td className="py-3">
+                            <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/15 shadow-xs">
+                              <Image
+                                src={prod.images.main}
+                                alt={prod.name}
+                                fill
+                                className="object-cover"
+                                unoptimized={prod.images.main.startsWith("data:")}
+                              />
+                            </div>
+                          </td>
+                          <td className="py-3">
+                            <span className="font-serif text-sm text-[#23181A] font-semibold block">
+                              {prod.name}
+                            </span>
+                            <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
+                          </td>
+                          <td className="py-3">
+                            <span className="text-[#23181A] font-medium block">{prod.gender || "Unisexe"}</span>
+                            <span className="text-[10px] text-[#756B6D]">{prod.fragranceFamily}</span>
+                          </td>
+                          <td className="py-3 font-serif text-[#541B28] font-bold">
+                            {formatTND(prod.formats[0]?.priceTND || 0)} / {formatTND(prod.formats[1]?.priceTND || 0)}
+                          </td>
+                          <td className="py-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              (prod.formats[0]?.stock || 0) < 15 ? "bg-rose-50 text-rose-800 border border-rose-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                            }`}>
+                              {prod.formats[0]?.stock || 0} ex. (50ml) • {prod.formats[1]?.stock || 0} ex. (100ml)
+                            </span>
+                          </td>
+                          <td className="py-3">
+                            <span className="px-2.5 py-1 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold">
+                              #{prod.bestsellerRank || "—"}
+                            </span>
+                          </td>
+                          <td className="py-3 text-right">
+                            <div className="inline-flex items-center gap-1.5">
+                              <button
+                                onClick={() => handleOpenEditProduct(prod)}
+                                className="p-1.5 rounded-lg bg-[#FAF7F2] hover:bg-[#541B28] text-[#541B28] hover:text-[#FAF7F2] transition-colors border border-[#541B28]/20 cursor-pointer"
+                                title="Modifier ce flacon"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleOpenDeleteModal(prod)}
+                                className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-700 text-rose-700 hover:text-white transition-colors border border-rose-200 cursor-pointer"
+                                title="Supprimer ce flacon"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
@@ -1758,6 +2012,7 @@ export default function AdminDashboardPage() {
         onClose={() => setIsProductModalOpen(false)}
         onSave={handleSaveProduct}
         initialProduct={editingProduct}
+        mode={productModalMode}
       />
 
       <DeleteProductModal

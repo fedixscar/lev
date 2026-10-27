@@ -368,9 +368,9 @@ export function getAllProducts(): Product[] {
   if (typeof window === "undefined") return PRODUCTS;
   try {
     const stored = localStorage.getItem("levania_custom_products");
-    if (stored) {
+    if (stored !== null) {
       const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     }
@@ -426,17 +426,34 @@ export function saveProduct(product: Product): Product[] {
 }
 
 /**
- * Deletes a product by id.
+ * Deletes a product by id or slug.
  */
-export function deleteProduct(productId: string): Product[] {
+export function deleteProduct(productIdOrSlug: string): Product[] {
   const current = getAllProducts();
-  const updated = current.filter((p) => p.id !== productId);
+  const target = String(productIdOrSlug || "").trim().toLowerCase();
+  const updated = current.filter(
+    (p) =>
+      String(p.id).trim().toLowerCase() !== target &&
+      String(p.slug).trim().toLowerCase() !== target
+  );
 
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
     } catch (err) {
       console.error("Error saving after delete:", err);
+      try {
+        const streamlined = updated.map((p) => ({
+          ...p,
+          images: {
+            main: p.images.main,
+            packaging: p.images.packaging || p.images.main,
+          },
+        }));
+        localStorage.setItem("levania_custom_products", JSON.stringify(streamlined));
+      } catch (innerErr) {
+        console.error("Critical storage error on delete:", innerErr);
+      }
     }
 
     try {
@@ -447,4 +464,35 @@ export function deleteProduct(productId: string): Product[] {
   }
 
   return updated;
+}
+
+/**
+ * Clears all products from custom catalogue.
+ */
+export function clearAllProducts(): Product[] {
+  const updated: Product[] = [];
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem("levania_custom_products", JSON.stringify(updated));
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+    } catch (err) {
+      console.error("Error clearing catalogue:", err);
+    }
+  }
+  return updated;
+}
+
+/**
+ * Restores original 10 mock products.
+ */
+export function resetDefaultProducts(): Product[] {
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.removeItem("levania_custom_products");
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+    } catch (err) {
+      console.error("Error resetting catalogue:", err);
+    }
+  }
+  return PRODUCTS;
 }

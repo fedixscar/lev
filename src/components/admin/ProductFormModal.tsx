@@ -15,6 +15,7 @@ import {
   Palette,
   Heart,
   Droplets,
+  Wand2,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { Product, FragranceFamily, FragranceIntensity } from "@/types";
@@ -24,6 +25,7 @@ interface ProductFormModalProps {
   onClose: () => void;
   onSave: (product: Product) => void;
   initialProduct?: Product | null;
+  mode?: "create" | "edit";
 }
 
 const PRESET_IMAGES = [
@@ -84,6 +86,7 @@ export function ProductFormModal({
   onClose,
   onSave,
   initialProduct,
+  mode = "create",
 }: ProductFormModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -110,6 +113,12 @@ export function ProductFormModal({
   const [isBestseller, setIsBestseller] = useState(false);
   const [bestsellerRank, setBestsellerRank] = useState<number>(1);
   const [imageUploadLoading, setImageUploadLoading] = useState(false);
+
+  // Fragrantica AI Auto-fill state
+  const [fragranticaUrl, setFragranticaUrl] = useState("");
+  const [isScraping, setIsScraping] = useState(false);
+  const [scrapeError, setScrapeError] = useState<string | null>(null);
+  const [scrapeSuccess, setScrapeSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialProduct) {
@@ -158,8 +167,57 @@ export function ProductFormModal({
       setIsFeatured(false);
       setIsBestseller(false);
       setBestsellerRank(1);
+      setFragranticaUrl("");
+      setScrapeError(null);
+      setScrapeSuccess(null);
     }
   }, [initialProduct, isOpen]);
+
+  const handleScrapeFragrantica = async () => {
+    if (!fragranticaUrl.trim() || isScraping) return;
+    setIsScraping(true);
+    setScrapeError(null);
+    setScrapeSuccess(null);
+
+    try {
+      const res = await fetch("/api/admin/scrape-perfume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: fragranticaUrl.trim() }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Impossible d'extraire les données du parfum");
+      }
+
+      const p = data.data;
+      if (p.name) {
+        setName(p.brand ? `${p.name} (${p.brand})` : p.name);
+      }
+      if (p.subtitle) setSubtitle(p.subtitle);
+      if (p.collection) setCollection(p.collection);
+      if (p.gender && GENDERS.includes(p.gender)) setGender(p.gender);
+      if (p.fragranceFamily) setFragranceFamily(p.fragranceFamily);
+      if (p.intensity) setIntensity(p.intensity);
+      if (p.topNotes) setTopNotes(Array.isArray(p.topNotes) ? p.topNotes.join(", ") : p.topNotes);
+      if (p.heartNotes) setHeartNotes(Array.isArray(p.heartNotes) ? p.heartNotes.join(", ") : p.heartNotes);
+      if (p.baseNotes) setBaseNotes(Array.isArray(p.baseNotes) ? p.baseNotes.join(", ") : p.baseNotes);
+      if (p.description) setDescription(p.description);
+      if (p.sensoryProfile) setSensoryProfile(p.sensoryProfile);
+      if (p.price50) setPrice50(Number(p.price50));
+      if (p.price100) setPrice100(Number(p.price100));
+      if (p.stock50 !== undefined) setStock50(Number(p.stock50));
+      if (p.stock100 !== undefined) setStock100(Number(p.stock100));
+
+      setScrapeSuccess(`Notes et profil olfactif de "${p.name}" importés avec succès !`);
+    } catch (err: any) {
+      console.error("Erreur scrape:", err);
+      setScrapeError(err.message || "Erreur de connexion lors de l'extraction Fragrantica.");
+    } finally {
+      setIsScraping(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -319,7 +377,7 @@ export function ProductFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
       <div className="relative bg-[#FAF7F2] w-full max-w-4xl rounded-3xl shadow-2xl border border-[#541B28]/20 overflow-hidden flex flex-col max-h-[92vh]">
         {/* Top Header */}
         <div className="px-6 py-5 bg-white border-b border-[#541B28]/15 flex items-center justify-between shrink-0">
@@ -332,20 +390,84 @@ export function ProductFormModal({
                 Haute Parfumerie • Atelier de Création
               </span>
               <h2 className="font-serif text-2xl text-burgundy-gradient font-light">
-                {initialProduct ? `Modifier ${initialProduct.name}` : "Nouveau Flacon Lévania"}
+                {mode === "edit"
+                  ? `Modifier ${initialProduct?.name || name}`
+                  : name
+                  ? `Nouveau Flacon : ${name}`
+                  : "Nouveau Flacon Lévania"}
               </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-[#756B6D] hover:text-[#541B28] hover:bg-[#541B28]/10 transition-colors"
+            className="p-2 rounded-xl text-[#756B6D] hover:text-[#541B28] hover:bg-[#541B28]/10 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Form Body - Scrollable */}
-        <form onSubmit={handleSubmit} className="overflow-y-auto p-6 sm:p-8 space-y-8 flex-1">
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <div className="overflow-y-auto p-6 sm:p-8 space-y-6 flex-1">
+            {/* FRAGRANTICA AI AUTO-FILL WIDGET */}
+          <div className="bg-gradient-to-br from-[#FAF5EC] via-[#F8EFE0] to-[#F3E5D0] dark:from-[#231219] dark:to-[#1B0C12] rounded-2xl p-5 border-2 border-[#C7A66A]/50 shadow-md space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-[#541B28] text-[#DFC68B] flex items-center justify-center shrink-0 shadow-sm">
+                  <Wand2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-serif text-sm font-bold text-[#541B28] dark:text-[#DFC68B]">
+                    Remplissage Magique Fragrantica (IA)
+                  </h4>
+                  <p className="text-[11px] text-[#5A4B4E] dark:text-[#C5A48A] leading-tight">
+                    Collez le lien Fragrantica ou le nom du parfum pour extraire automatiquement les notes, la famille et la description.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-2 pt-1">
+              <input
+                type="text"
+                value={fragranticaUrl}
+                onChange={(e) => setFragranticaUrl(e.target.value)}
+                placeholder="Ex: https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Scandal-45651.html ou 'Scandal Jean Paul Gaultier'"
+                className="flex-1 bg-white dark:bg-[#14080D] border border-[#C7A66A]/50 rounded-xl px-4 py-2.5 text-xs text-[#23181A] dark:text-[#FAF7F2] placeholder:text-[#8C7B80] focus:outline-none focus:border-[#541B28] dark:focus:border-[#DFC68B] shadow-inner"
+              />
+              <button
+                type="button"
+                onClick={handleScrapeFragrantica}
+                disabled={isScraping || !fragranticaUrl.trim()}
+                className="px-5 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-50 cursor-pointer shrink-0"
+              >
+                {isScraping ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Extraction en cours...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 text-[#DFC68B]" />
+                    <span>Importer & Remplir</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {scrapeError && (
+              <p className="text-[11px] text-rose-600 dark:text-rose-400 font-semibold bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900">
+                {scrapeError}
+              </p>
+            )}
+            {scrapeSuccess && (
+              <p className="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-200 dark:border-emerald-900 flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                {scrapeSuccess}
+              </p>
+            )}
+          </div>
+
           {/* SECTION 1: IDENTITÉ & COLLECTION */}
           <div className="bg-white rounded-2xl p-6 border border-[#541B28]/15 shadow-sm space-y-4">
             <div className="flex items-center gap-2 pb-2 border-b border-[#541B28]/10">
@@ -788,22 +910,23 @@ export function ProductFormModal({
               )}
             </div>
           </div>
+        </div>
 
-          {/* Footer Submit */}
-          <div className="pt-4 border-t border-[#541B28]/15 flex items-center justify-end gap-3 sticky bottom-0 bg-[#FAF7F2] py-4">
+        {/* Docked Footer Actions */}
+          <div className="px-6 py-4 bg-white border-t border-[#541B28]/15 flex items-center justify-end gap-3 shrink-0 shadow-sm">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-[#541B28]/20 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+              className="px-5 py-2.5 rounded-xl border border-[#541B28]/20 bg-white hover:bg-[#FAF7F2] text-[#541B28] text-xs font-bold uppercase tracking-wider transition-colors shadow-xs cursor-pointer"
             >
               Annuler
             </button>
             <button
               type="submit"
-              className="px-7 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2"
+              className="px-7 py-2.5 rounded-xl bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 cursor-pointer"
             >
               <Check className="w-4 h-4 text-[#DFC68B]" />
-              <span>{initialProduct ? "Mettre à Jour le Flacon" : "Enregistrer & Publier"}</span>
+              <span>{mode === "edit" ? "Mettre à Jour le Flacon" : "Enregistrer & Publier"}</span>
             </button>
           </div>
         </form>

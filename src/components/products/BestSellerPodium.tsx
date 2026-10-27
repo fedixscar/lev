@@ -36,23 +36,32 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
 
   // Top 3 Podium: rank 1, 2, 3
   const rawFirst = productsList.find((p) => p.bestsellerRank === 1) || productsList[0];
-  const rawSecond = productsList.find((p) => p.bestsellerRank === 2) || productsList[1];
-  const rawThird = productsList.find((p) => p.bestsellerRank === 3) || productsList[2];
+  const rawSecond =
+    productsList.find((p) => p.bestsellerRank === 2 && p.id !== rawFirst?.id) ||
+    productsList.filter((p) => p.id !== rawFirst?.id)[0];
+  const rawThird =
+    productsList.find((p) => p.bestsellerRank === 3 && p.id !== rawFirst?.id && p.id !== rawSecond?.id) ||
+    productsList.filter((p) => p.id !== rawFirst?.id && p.id !== rawSecond?.id)[0];
 
-  const first = rawFirst ? getLocalizedProduct(rawFirst, locale) : rawFirst;
-  const second = rawSecond ? getLocalizedProduct(rawSecond, locale) : rawSecond;
-  const third = rawThird ? getLocalizedProduct(rawThird, locale) : rawThird;
+  const first = rawFirst ? getLocalizedProduct(rawFirst, locale) : undefined;
+  const second = rawSecond ? getLocalizedProduct(rawSecond, locale) : undefined;
+  const third = rawThird ? getLocalizedProduct(rawThird, locale) : undefined;
 
   // Selected formats for podium
   const [firstFormat, setFirstFormat] = useState<"50ml" | "100ml">("100ml");
   const [secondFormat, setSecondFormat] = useState<"50ml" | "100ml">("50ml");
   const [thirdFormat, setThirdFormat] = useState<"50ml" | "100ml">("50ml");
 
-  // Remaining 7 bestsellers
+  // Remaining bestsellers (excluding items already displayed on podium)
+  const podiumIds = new Set([rawFirst?.id, rawSecond?.id, rawThird?.id].filter(Boolean));
   const otherBestsellers = getLocalizedProducts(
-    productsList.filter((p) => p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10),
+    productsList.filter((p) => !podiumIds.has(p.id) && ((p.bestsellerRank && p.bestsellerRank > 3 && p.bestsellerRank <= 10) || !p.bestsellerRank)).slice(0, 7),
     locale
   );
+
+  if (!productsList || productsList.length === 0) {
+    return null;
+  }
 
   const handleQuickAdd = (p: Product, size: "50ml" | "100ml") => {
     const fmt = p.formats.find((f) => f.size === size) || p.formats[0];
@@ -347,31 +356,33 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
         </div>
 
         {/* 7 Additional Bestselling Fragrances */}
-        <div>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
-            <div>
-              <h3 className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-semibold">
-                {t("bestsellers.other_title", "Les 7 Autres Signatures Incontournables")}
-              </h3>
-              <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1">
-                {t("bestsellers.other_sub", "Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs")}
-              </p>
+        {otherBestsellers.length > 0 && (
+          <div>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-4 border-b border-[#541B28]/15 dark:border-[#C7A66A]/20">
+              <div>
+                <h3 className="font-serif text-2xl text-[#541B28] dark:text-[#DFC68B] font-semibold">
+                  {t("bestsellers.other_title", "Les 7 Autres Signatures Incontournables")}
+                </h3>
+                <p className="text-xs text-[#756B6D] dark:text-[#A8989C] mt-1">
+                  {t("bestsellers.other_sub", "Du rang 4 au rang 10 • Sélectionnées par nos maîtres parfumeurs")}
+                </p>
+              </div>
+              <Link
+                href="/shop"
+                className="text-xs text-[#541B28] dark:text-[#DFC68B] hover:underline flex items-center gap-1 font-bold shrink-0"
+              >
+                <span>{t("bestsellers.view_all", "Voir tout le catalogue")}</span>
+                <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+              </Link>
             </div>
-            <Link
-              href="/shop"
-              className="text-xs text-[#541B28] dark:text-[#DFC68B] hover:underline flex items-center gap-1 font-bold shrink-0"
-            >
-              <span>{t("bestsellers.view_all", "Voir tout le catalogue")}</span>
-              <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {otherBestsellers.map((prod) => (
-              <ProductCard key={prod.id} product={prod} />
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {otherBestsellers.map((prod) => (
+                <ProductCard key={prod.id} product={prod} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
