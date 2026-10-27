@@ -26,7 +26,6 @@ import { HeroFragranceStage } from "@/components/brand/HeroFragranceStage";
 import { MaisonHeritageSection } from "@/components/brand/MaisonHeritageSection";
 import { OlfactoryPyramidStage } from "@/components/discovery/OlfactoryPyramidStage";
 import { BestSellerPodium } from "@/components/products/BestSellerPodium";
-import { PRODUCTS } from "@/lib/catalogue";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { GoldParticlesCanvas } from "@/components/brand/GoldParticlesCanvas";
@@ -198,7 +197,7 @@ export default function HomePage() {
         {/* ========================================================
             5. LE PANTHÉON DES CRÉATIONS (Best-Seller Podium & Galerie)
             ======================================================== */}
-        <BestSellerPodium products={PRODUCTS} />
+        <BestSellerPodium />
 
         {/* ========================================================
             6. L'ART D'OFFRIR : LE COFFRET CADEAU SUR MESURE

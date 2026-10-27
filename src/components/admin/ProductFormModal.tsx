@@ -223,9 +223,9 @@ export function ProductFormModal({
 
   const compressImageFile = (
     file: File,
-    maxWidth = 800,
-    maxHeight = 1000,
-    quality = 0.84
+    maxWidth = 600,
+    maxHeight = 750,
+    quality = 0.75
   ): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -273,7 +273,7 @@ export function ProductFormModal({
 
     setImageUploadLoading(true);
     try {
-      const compressedDataUrl = await compressImageFile(file, 800, 1000, 0.84);
+      const compressedDataUrl = await compressImageFile(file, 600, 750, 0.75);
       setMainImage(compressedDataUrl);
     } catch {
       alert("Erreur lors de la compression de la photo. Veuillez réessayer.");

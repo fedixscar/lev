@@ -177,11 +177,24 @@ export function HeroFragranceStage() {
     return { ...item, ...loc };
   });
 
-  // Filter against active catalogue
-  const activeSlugs = new Set(catalogue.map((p) => p.slug));
-  const heroItems =
+  // Dynamic Hero items from live catalogue
+  const heroItems: HeroStageItem[] =
     catalogue.length > 0
-      ? rawHeroItems.filter((item) => activeSlugs.has(item.slug))
+      ? catalogue.slice(0, 4).map((p) => ({
+          id: p.id,
+          slug: p.slug,
+          name: p.name,
+          subtitle: p.subtitle || "Extrait de Parfum Absolu",
+          collectionName: p.collection || "La Collection Signature",
+          expression: (p.waveExpression as WaveExpression) || "signature",
+          image: p.images.main || "/brand/bottle-and-cylinder.jpg",
+          price50ml: p.formats[0]?.priceTND || 195,
+          price100ml: p.formats[1]?.priceTND || 295,
+          topNotes: p.topNotes || [],
+          heartNotes: p.heartNotes || [],
+          baseNotes: p.baseNotes || [],
+          tag: `${p.fragranceFamily} • ${p.collection}`,
+        }))
       : rawHeroItems;
 
   const activeItem = heroItems[activeIndex] || heroItems[0];
@@ -279,6 +292,7 @@ export function HeroFragranceStage() {
               alt={activeItem.name}
               fill
               priority
+              unoptimized={(activeItem.image || "").startsWith("data:")}
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />

@@ -361,6 +361,8 @@ export const PRODUCTS: Product[] = [
 
 export const PRODUCTS_UPDATED_EVENT = "levania_products_updated";
 
+let memoryProducts: Product[] | null = null;
+
 /**
  * Fetches the latest live catalogue from the database via /api/products,
  * updates localStorage, and notifies subscribers.
@@ -372,7 +374,12 @@ export async function fetchRemoteProducts(): Promise<Product[]> {
     if (!res.ok) throw new Error("Failed to fetch products");
     const data = await res.json();
     if (data && Array.isArray(data.products)) {
-      localStorage.setItem("levania_custom_products", JSON.stringify(data.products));
+      memoryProducts = data.products;
+      try {
+        localStorage.setItem("levania_custom_products", JSON.stringify(data.products));
+      } catch (storageErr) {
+        console.warn("Storage quota reached, cached in-memory:", storageErr);
+      }
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
       return data.products;
     }
@@ -386,12 +393,14 @@ export async function fetchRemoteProducts(): Promise<Product[]> {
  * Returns either custom stored products from localStorage (if any exist) or default PRODUCTS.
  */
 export function getAllProducts(): Product[] {
+  if (memoryProducts !== null) return memoryProducts;
   if (typeof window === "undefined") return PRODUCTS;
   try {
     const stored = localStorage.getItem("levania_custom_products");
     if (stored !== null) {
       const parsed = JSON.parse(stored);
       if (Array.isArray(parsed)) {
+        memoryProducts = parsed;
         return parsed;
       }
     }
@@ -415,6 +424,8 @@ export function saveProduct(product: Product): Product[] {
   } else {
     updated = [product, ...current];
   }
+
+  memoryProducts = updated;
 
   if (typeof window !== "undefined") {
     try {
@@ -464,6 +475,8 @@ export function deleteProduct(productIdOrSlug: string): Product[] {
       String(p.slug).trim().toLowerCase() !== target
   );
 
+  memoryProducts = updated;
+
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
@@ -503,6 +516,7 @@ export function deleteProduct(productIdOrSlug: string): Product[] {
  */
 export function clearAllProducts(): Product[] {
   const updated: Product[] = [];
+  memoryProducts = updated;
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
@@ -522,6 +536,7 @@ export function clearAllProducts(): Product[] {
  * Restores original 10 mock products.
  */
 export function resetDefaultProducts(): Product[] {
+  memoryProducts = PRODUCTS;
   if (typeof window !== "undefined") {
     try {
       localStorage.removeItem("levania_custom_products");

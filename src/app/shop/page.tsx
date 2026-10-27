@@ -57,7 +57,7 @@ const WAVE_TABS = [
 
 export default function ShopPage() {
   const { t, locale } = useLanguage();
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedWave, setSelectedWave] = useState<WaveFilter>("all");
   const [selectedFamily, setSelectedFamily] = useState<string>("all");

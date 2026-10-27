@@ -118,7 +118,10 @@ export function ProductCard({ product: rawProduct, className, priority = false }
             alt={product.name}
             fill
             priority={priority}
-            unoptimized={(product.images.main || "").startsWith("data:")}
+            unoptimized={
+              (product.images.main || "").startsWith("data:") ||
+              (product.images.packaging || "").startsWith("data:")
+            }
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-all duration-700 group-hover:scale-105"
           />

@@ -19,7 +19,7 @@ export default function CollectionsPage() {
   const { t, locale } = useLanguage();
   const collections = getLocalizedCollections(COLLECTIONS, locale);
   const [activeCollectionSlug, setActiveCollectionSlug] = useState<string>("signature");
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
 
   React.useEffect(() => {
     setProducts(getAllProducts());

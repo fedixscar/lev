@@ -169,7 +169,7 @@ export function ProductDetailClient({
   };
 
   const relatedProducts = getLocalizedProducts(
-    PRODUCTS.filter(
+    getAllProducts().filter(
       (p) => p.id !== product.id && p.collectionSlug === product.collectionSlug
     ).slice(0, 3),
     locale

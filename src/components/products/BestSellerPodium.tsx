@@ -17,10 +17,10 @@ import { useLanguage } from "@/context/LanguageContext";
 import { getLocalizedProduct, getLocalizedProducts } from "@/lib/i18n/catalogueLocale";
 
 interface BestSellerPodiumProps {
-  products: Product[];
+  products?: Product[];
 }
 
-export function BestSellerPodium({ products: initialProducts }: BestSellerPodiumProps) {
+export function BestSellerPodium({ products: initialProducts = [] }: BestSellerPodiumProps) {
   const { t, locale } = useLanguage();
   const { addItem } = useCart();
   const { showToast } = useNotification();
@@ -122,6 +122,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     src={second.images.main}
                     alt={second.name}
                     fill
+                    unoptimized={(second.images.main || "").startsWith("data:")}
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -209,6 +210,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     alt={first.name}
                     fill
                     priority
+                    unoptimized={(first.images.main || "").startsWith("data:")}
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -294,6 +296,7 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
                     src={third.images.main}
                     alt={third.name}
                     fill
+                    unoptimized={(third.images.main || "").startsWith("data:")}
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
