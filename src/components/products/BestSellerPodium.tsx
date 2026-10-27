@@ -10,7 +10,7 @@ import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
-import { getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { getAllProducts, fetchRemoteProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { ProductCard } from "./ProductCard";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { useLanguage } from "@/context/LanguageContext";
@@ -29,6 +29,9 @@ export function BestSellerPodium({ products: initialProducts }: BestSellerPodium
 
   React.useEffect(() => {
     setProductsList(getAllProducts());
+    fetchRemoteProducts().then((remote) => {
+      if (Array.isArray(remote)) setProductsList(remote);
+    });
     const handleUpdate = () => setProductsList(getAllProducts());
     window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
     return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);

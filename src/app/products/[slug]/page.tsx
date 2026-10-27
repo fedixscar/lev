@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { PRODUCTS } from "@/lib/catalogue";
 import { ProductDetailClient } from "./ProductDetailClient";
 
@@ -14,7 +13,8 @@ export function generateStaticParams() {
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const resolvedParams = await params;
-  const product = PRODUCTS.find((p) => p.slug === resolvedParams.slug);
+  const targetSlug = resolvedParams.slug;
+  const fallbackProduct = PRODUCTS.find((p) => p.slug === targetSlug);
 
-  return <ProductDetailClient initialProduct={product} slug={resolvedParams.slug} />;
+  return <ProductDetailClient initialProduct={fallbackProduct} slug={targetSlug} />;
 }

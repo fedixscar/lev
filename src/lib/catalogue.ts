@@ -362,6 +362,27 @@ export const PRODUCTS: Product[] = [
 export const PRODUCTS_UPDATED_EVENT = "levania_products_updated";
 
 /**
+ * Fetches the latest live catalogue from the database via /api/products,
+ * updates localStorage, and notifies subscribers.
+ */
+export async function fetchRemoteProducts(): Promise<Product[]> {
+  if (typeof window === "undefined") return PRODUCTS;
+  try {
+    const res = await fetch("/api/products", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch products");
+    const data = await res.json();
+    if (data && Array.isArray(data.products)) {
+      localStorage.setItem("levania_custom_products", JSON.stringify(data.products));
+      window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
+      return data.products;
+    }
+  } catch (err) {
+    console.warn("Could not fetch remote products, fallback to local storage:", err);
+  }
+  return getAllProducts();
+}
+
+/**
  * Returns either custom stored products from localStorage (if any exist) or default PRODUCTS.
  */
 export function getAllProducts(): Product[] {
@@ -401,7 +422,6 @@ export function saveProduct(product: Product): Product[] {
     } catch (err) {
       console.warn("localStorage quota reached, attempting storage with compressed records:", err);
       try {
-        // Fallback: prune non-essential fields if storage quota is tight
         const streamlined = updated.map((p) => ({
           ...p,
           images: {
@@ -414,6 +434,13 @@ export function saveProduct(product: Product): Product[] {
         console.error("Critical storage error:", innerErr);
       }
     }
+
+    // Sync to remote database via /api/products
+    fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product }),
+    }).catch((err) => console.warn("Background sync to /api/products failed:", err));
 
     try {
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
@@ -456,6 +483,11 @@ export function deleteProduct(productIdOrSlug: string): Product[] {
       }
     }
 
+    // Sync deletion to remote database via /api/products
+    fetch(`/api/products?id=${encodeURIComponent(productIdOrSlug)}&slug=${encodeURIComponent(productIdOrSlug)}`, {
+      method: "DELETE",
+    }).catch((err) => console.warn("Background delete to /api/products failed:", err));
+
     try {
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
     } catch {
@@ -478,6 +510,10 @@ export function clearAllProducts(): Product[] {
     } catch (err) {
       console.error("Error clearing catalogue:", err);
     }
+
+    // Sync clear to remote database via /api/products
+    fetch("/api/products?all=true", { method: "DELETE" })
+      .catch((err) => console.warn("Background clear to /api/products failed:", err));
   }
   return updated;
 }
@@ -493,6 +529,10 @@ export function resetDefaultProducts(): Product[] {
     } catch (err) {
       console.error("Error resetting catalogue:", err);
     }
+
+    // Sync reset to remote database via /api/products
+    fetch("/api/products?reset=true", { method: "POST" })
+      .catch((err) => console.warn("Background reset to /api/products failed:", err));
   }
   return PRODUCTS;
 }

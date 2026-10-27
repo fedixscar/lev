@@ -42,17 +42,33 @@ export function ProductDetailClient({
   slug,
 }: ProductDetailClientProps) {
   const [baseProduct, setBaseProduct] = useState<Product | null>(directProduct || initialProduct || null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   React.useEffect(() => {
-    if (!baseProduct && slug) {
-      const all = getAllProducts();
-      const found = all.find((p) => p.slug === slug);
-      if (found) {
-        setBaseProduct(found);
-        setSelectedImage(found.images.main);
-      }
+    if (!slug) return;
+    const local = getAllProducts();
+    const foundLocal = local.find((p) => p.slug === slug);
+    if (foundLocal) {
+      setBaseProduct(foundLocal);
+      setSelectedImage(foundLocal.images.main);
+      setIsLoaded(true);
+    } else {
+      fetch(`/api/products?slug=${encodeURIComponent(slug)}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.product) {
+            setBaseProduct(data.product);
+            setSelectedImage(data.product.images.main);
+          } else {
+            setBaseProduct(null);
+          }
+          setIsLoaded(true);
+        })
+        .catch(() => {
+          setIsLoaded(true);
+        });
     }
-  }, [slug, baseProduct]);
+  }, [slug]);
 
   const router = useRouter();
   const { t, locale } = useLanguage();
@@ -70,10 +86,34 @@ export function ProductDetailClient({
   const [isCertOpen, setIsCertOpen] = useState(false);
 
   if (!product) {
+    if (!isLoaded) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-[#23181A]">
+          <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28]">Chargement du flacon...</p>
+        </div>
+      );
+    }
+
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-[#23181A]">
-        <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28]">Chargement du flacon...</p>
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A]">
+        <Navbar />
+        <main className="flex-1 flex flex-col items-center justify-center p-6 text-center pt-32 pb-24">
+          <div className="w-16 h-16 rounded-full bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mb-4">
+            <GoldStarLozenge size={24} className="text-[#C7A66A]" />
+          </div>
+          <h1 className="font-serif text-3xl text-[#541B28] mb-2">Flacon Non Référencé</h1>
+          <p className="text-sm text-[#756B6D] max-w-md mb-6">
+            Ce parfum n&apos;est plus disponible dans le catalogue actuel de la Maison Lévania.
+          </p>
+          <Link
+            href="/shop"
+            className="px-6 py-3 rounded-full bg-[#541B28] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#66182C] transition-all shadow-md"
+          >
+            Découvrir nos créations
+          </Link>
+        </main>
+        <Footer />
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { Footer } from "@/components/navigation/Footer";
 import {
   PRODUCTS,
   getAllProducts,
+  fetchRemoteProducts,
   saveProduct,
   deleteProduct,
   clearAllProducts,
@@ -148,6 +149,11 @@ export default function AdminDashboardPage() {
   // Load real orders, products, certificates, coupons, events, and reseller sales on client mount
   React.useEffect(() => {
     setProductList(getAllProducts());
+    fetchRemoteProducts().then((remoteProds) => {
+      if (Array.isArray(remoteProds)) {
+        setProductList(remoteProds);
+      }
+    });
     setAllCertificates(getAllCertificates());
     setCouponsList(getAllCoupons());
     setEventsList(getAllEvents());

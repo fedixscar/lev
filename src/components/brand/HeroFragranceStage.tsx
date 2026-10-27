@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { WaveCanvas, WaveExpression } from "./WaveCanvas";
 import { WaveMonogram } from "./WaveMonogram";
-import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts, fetchRemoteProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -152,20 +153,40 @@ const LOCALIZED_HERO_DATA: Record<string, Record<"ar" | "en", Partial<HeroStageI
 
 export function HeroFragranceStage() {
   const { t, locale } = useLanguage();
+  const [catalogue, setCatalogue] = useState<Product[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("100ml");
   const [isSpraying, setIsSpraying] = useState(false);
   const { addItem } = useCart();
   const { showToast } = useNotification();
 
-  const heroItems = HERO_STAGE_ITEMS.map((item) => {
+  React.useEffect(() => {
+    setCatalogue(getAllProducts());
+    fetchRemoteProducts().then((p) => {
+      if (Array.isArray(p)) setCatalogue(p);
+    });
+    const handleUpdate = () => setCatalogue(getAllProducts());
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
+  }, []);
+
+  const rawHeroItems = HERO_STAGE_ITEMS.map((item) => {
     if (locale === "fr") return item;
     const loc = LOCALIZED_HERO_DATA[item.id]?.[locale];
     if (!loc) return item;
     return { ...item, ...loc };
   });
 
-  const activeItem = heroItems[activeIndex];
+  // Filter against active catalogue
+  const activeSlugs = new Set(catalogue.map((p) => p.slug));
+  const heroItems =
+    catalogue.length > 0
+      ? rawHeroItems.filter((item) => activeSlugs.has(item.slug))
+      : rawHeroItems;
+
+  const activeItem = heroItems[activeIndex] || heroItems[0];
+  if (!activeItem) return null;
+
   const activePrice = selectedFormat === "50ml" ? activeItem.price50ml : activeItem.price100ml;
 
   const handleSprayMist = () => {

@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
-import { PRODUCTS, getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts, fetchRemoteProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { Product } from "@/types";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
@@ -66,6 +66,9 @@ export default function ShopPage() {
 
   React.useEffect(() => {
     setProducts(getAllProducts());
+    fetchRemoteProducts().then((remote) => {
+      if (Array.isArray(remote)) setProducts(remote);
+    });
     const handleUpdate = () => setProducts(getAllProducts());
     window.addEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
     return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleUpdate);
