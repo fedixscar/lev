@@ -13,6 +13,26 @@ import { Product } from "@/types";
 import { ProductFormModal } from "@/components/admin/ProductFormModal";
 import { DeleteProductModal } from "@/components/admin/DeleteProductModal";
 import { OrderBottlesModal } from "@/components/admin/OrderBottlesModal";
+import { CreateCouponModal } from "@/components/admin/CreateCouponModal";
+import { PrintCouponVoucherModal } from "@/components/admin/PrintCouponVoucherModal";
+import { EditEventModal } from "@/components/admin/EditEventModal";
+import { DEFAULT_ACCOUNTS } from "@/context/AuthContext";
+import {
+  PromoCode,
+  getAllCoupons,
+  deleteCoupon,
+  toggleCouponActive,
+  getRemainingTimeLabel,
+  COUPONS_UPDATED_EVENT,
+} from "@/lib/coupons";
+import {
+  SeasonalEvent,
+  getAllEvents,
+  getActiveEvent,
+  toggleEventActive,
+  deleteEvent,
+  EVENTS_UPDATED_EVENT,
+} from "@/lib/events";
 import {
   BottleCertificate,
   getAllCertificates,
@@ -37,12 +57,22 @@ import {
   Printer,
   Search,
   Sparkles,
+  Tag,
+  Copy,
+  Calendar,
+  Snowflake,
+  Power,
+  Gift,
+  Ticket,
+  Clock,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, signIn } = useAuth();
   const { showToast } = useNotification();
-  const [activeTab, setActiveTab] = useState<"overview" | "products" | "orders" | "resellers" | "qr" | "luck">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "products" | "orders" | "coupons" | "events" | "resellers" | "qr" | "luck"
+  >("overview");
 
   // Dynamic Store & Catalogue State
   const [productList, setProductList] = useState<Product[]>([]);
@@ -85,16 +115,36 @@ export default function AdminDashboardPage() {
     date: string;
   }>>([]);
 
-  // Load real orders, products, certificates, and reseller sales on client mount
+  // Coupons & QR State
+  const [couponsList, setCouponsList] = useState<PromoCode[]>([]);
+  const [isCreateCouponModalOpen, setIsCreateCouponModalOpen] = useState(false);
+  const [selectedCouponForPrint, setSelectedCouponForPrint] = useState<PromoCode | null>(null);
+  const [isPrintVoucherModalOpen, setIsPrintVoucherModalOpen] = useState(false);
+  const [couponSearch, setCouponSearch] = useState("");
+  const [couponFilter, setCouponFilter] = useState<"all" | "active" | "expired">("all");
+  const [copiedCouponCode, setCopiedCouponCode] = useState<string | null>(null);
+
+  // Events & Visual Themes State
+  const [eventsList, setEventsList] = useState<SeasonalEvent[]>([]);
+  const [editingEvent, setEditingEvent] = useState<SeasonalEvent | null>(null);
+  const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false);
+
+  // Load real orders, products, certificates, coupons, events, and reseller sales on client mount
   React.useEffect(() => {
     setProductList(getAllProducts());
     setAllCertificates(getAllCertificates());
+    setCouponsList(getAllCoupons());
+    setEventsList(getAllEvents());
 
     const handleProductsUpdated = () => setProductList(getAllProducts());
     const handleCertsUpdated = () => setAllCertificates(getAllCertificates());
+    const handleCouponsUpdated = () => setCouponsList(getAllCoupons());
+    const handleEventsUpdated = () => setEventsList(getAllEvents());
 
     window.addEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
     window.addEventListener(CERTIFICATES_UPDATED_EVENT, handleCertsUpdated);
+    window.addEventListener(COUPONS_UPDATED_EVENT, handleCouponsUpdated);
+    window.addEventListener(EVENTS_UPDATED_EVENT, handleEventsUpdated);
 
     try {
       const storedOrders = localStorage.getItem("levania_orders");
@@ -118,6 +168,8 @@ export default function AdminDashboardPage() {
     return () => {
       window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
       window.removeEventListener(CERTIFICATES_UPDATED_EVENT, handleCertsUpdated);
+      window.removeEventListener(COUPONS_UPDATED_EVENT, handleCouponsUpdated);
+      window.removeEventListener(EVENTS_UPDATED_EVENT, handleEventsUpdated);
     };
   }, []);
 
@@ -314,6 +366,72 @@ export default function AdminDashboardPage() {
     showToast("Vente Rejetée", "Statut mis à jour", "info");
   };
 
+  // Coupons & QR Handlers
+  const handleToggleCouponActive = (id: string) => {
+    const updated = toggleCouponActive(id);
+    setCouponsList(getAllCoupons());
+    if (updated) {
+      showToast(
+        updated.isActive ? "Code Promo Activé" : "Code Promo Désactivé",
+        `Le code ${updated.code} est désormais ${updated.isActive ? "utilisable" : "mis en pause"}.`,
+        "info"
+      );
+    }
+  };
+
+  const handleDeleteCoupon = (id: string, code: string) => {
+    if (window.confirm(`Confirmer la suppression définitive du code promo ${code} ?`)) {
+      deleteCoupon(id);
+      setCouponsList(getAllCoupons());
+      showToast("Code Promo Supprimé", `Le code ${code} a été retiré.`, "info");
+    }
+  };
+
+  const handleCopyCouponLink = (code: string) => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://levania-parfums.com";
+    const link = `${origin}/?coupon=${encodeURIComponent(code)}&autoApply=true`;
+    navigator.clipboard.writeText(link);
+    setCopiedCouponCode(code);
+    showToast("Lien QR Copié", `Lien de scan direct pour ${code}`, "success");
+    setTimeout(() => setCopiedCouponCode(null), 2500);
+  };
+
+  const handleOpenPrintCoupon = (coupon: PromoCode) => {
+    setSelectedCouponForPrint(coupon);
+    setIsPrintVoucherModalOpen(true);
+  };
+
+  // Seasonal Events Handlers
+  const handleToggleEventActive = (id: string) => {
+    const updated = toggleEventActive(id);
+    setEventsList(getAllEvents());
+    if (updated) {
+      showToast(
+        updated.isActive ? "Campagne Événementielle Activée" : "Événement Mis en Pause",
+        `L'événement « ${updated.title} » avec effet « ${updated.visualEffect} » est ${updated.isActive ? "en direct sur le site" : "désactivé"}.`,
+        "luxury"
+      );
+    }
+  };
+
+  const handleDeleteEvent = (id: string, title: string) => {
+    if (window.confirm(`Confirmer la suppression de la campagne « ${title} » ?`)) {
+      deleteEvent(id);
+      setEventsList(getAllEvents());
+      showToast("Campagne Supprimée", `L'événement ${title} a été supprimé.`, "info");
+    }
+  };
+
+  const handleOpenEditEvent = (ev: SeasonalEvent) => {
+    setEditingEvent(ev);
+    setIsEditEventModalOpen(true);
+  };
+
+  const handleOpenCreateEvent = () => {
+    setEditingEvent(null);
+    setIsEditEventModalOpen(true);
+  };
+
   // Real-time computed metrics from active orders and catalogue
   const totalRevenueTND = orders.reduce((sum, o) => sum + (Number(o.totalTND) || 0), 0);
   const totalOrdersCount = orders.length;
@@ -344,6 +462,35 @@ export default function AdminDashboardPage() {
     return true;
   });
 
+  const filteredCoupons = couponsList.filter((coupon) => {
+    const q = couponSearch.trim().toLowerCase();
+    const matchesSearch =
+      !q ||
+      coupon.code.toLowerCase().includes(q) ||
+      coupon.description.toLowerCase().includes(q) ||
+      (coupon.targetEventTitle && coupon.targetEventTitle.toLowerCase().includes(q));
+
+    if (!matchesSearch) return false;
+
+    const isExpired =
+      (coupon.expiresAt && new Date(coupon.expiresAt).getTime() < Date.now()) ||
+      (coupon.maxUses !== null && coupon.usedCount >= coupon.maxUses);
+
+    if (couponFilter === "active") return coupon.isActive && !isExpired;
+    if (couponFilter === "expired") return isExpired || !coupon.isActive;
+    return true;
+  });
+
+  const activeCouponsCount = couponsList.filter((c) => {
+    const isExpired =
+      (c.expiresAt && new Date(c.expiresAt).getTime() < Date.now()) ||
+      (c.maxUses !== null && c.usedCount >= c.maxUses);
+    return c.isActive && !isExpired;
+  }).length;
+
+  const totalCouponUses = couponsList.reduce((acc, c) => acc + (c.usedCount || 0), 0);
+  const activeSeasonalEvent = eventsList.find((e) => e.isActive) || null;
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2] dark:bg-[#0E0709]">
@@ -360,29 +507,43 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2]">
         <Navbar />
         <main className="flex-1 flex items-center justify-center px-4 py-28">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-[#541B28]/20 p-8 text-center shadow-xl">
-            <div className="w-16 h-16 rounded-2xl bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mx-auto mb-4 border border-[#541B28]/20">
-              <ShieldCheck className="w-8 h-8 text-[#541B28]" />
+          <div className="max-w-md w-full bg-white dark:bg-[#160D10] rounded-3xl border border-[#541B28]/20 dark:border-[#C7A66A]/30 p-8 text-center shadow-xl">
+            <div className="w-16 h-16 rounded-2xl bg-[#541B28]/10 dark:bg-[#C7A66A]/15 text-[#541B28] dark:text-[#C7A66A] flex items-center justify-center mx-auto mb-4 border border-[#541B28]/20 dark:border-[#C7A66A]/30">
+              <ShieldCheck className="w-8 h-8 text-[#541B28] dark:text-[#C7A66A]" />
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block mb-1">
+            <span className="text-[10px] uppercase tracking-widest text-[#541B28] dark:text-[#C7A66A] font-bold block mb-1">
               Zone Sécurisée
             </span>
-            <h1 className="font-serif text-2xl text-burgundy-gradient font-light mb-3">
+            <h1 className="font-serif text-2xl text-burgundy-gradient dark:text-[#FAF7F2] font-semibold mb-3">
               Accès Administration Réservé
             </h1>
-            <p className="text-xs text-[#5A4B4E] leading-relaxed mb-6">
+            <p className="text-xs text-[#5A4B4E] dark:text-[#C5A48A] leading-relaxed mb-6">
               Cet espace est strictement réservé à la direction générale et aux administrateurs autorisés de la maison LÉVANIA PARFUMS.
             </p>
             <div className="space-y-3">
+              <button
+                type="button"
+                onClick={async () => {
+                  const res = await signIn(DEFAULT_ACCOUNTS.admin.email, DEFAULT_ACCOUNTS.admin.password);
+                  if (res.success) {
+                    showToast("Bienvenue Direction Générale", "Accréditation administrateur validée.", "luxury");
+                  }
+                }}
+                className="w-full inline-flex justify-center items-center gap-2 py-3 px-6 rounded-full bg-gradient-to-r from-[#C7A66A] via-[#DFBA73] to-[#C7A66A] text-[#23181A] text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:brightness-105 active:scale-98"
+              >
+                <Sparkles className="w-4 h-4 text-[#541B28]" />
+                <span>Connexion Immédiate Démo Admin</span>
+              </button>
+
               <Link
                 href="/login?redirect=/admin"
                 className="w-full inline-flex justify-center items-center gap-2 py-3 px-6 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-lg"
               >
-                <span>S&apos;identifier avec un Compte Admin</span>
+                <span>S&apos;identifier manuellement</span>
               </Link>
               <Link
                 href="/"
-                className="block text-xs text-[#756B6D] hover:text-[#541B28] transition-colors"
+                className="block text-xs text-[#756B6D] dark:text-[#A8989C] hover:text-[#541B28] dark:hover:text-[#C7A66A] transition-colors"
               >
                 Retourner à la boutique publique
               </Link>
@@ -422,6 +583,8 @@ export default function AdminDashboardPage() {
               { id: "overview", label: "Vue Générale", icon: TrendingUp },
               { id: "products", label: "Produits & Podium", icon: Package },
               { id: "orders", label: "Commandes & Expéditions", icon: ShoppingBag },
+              { id: "coupons", label: "Codes Promo & QR", icon: Tag },
+              { id: "events", label: "Événements & Neige", icon: Snowflake },
               { id: "resellers", label: "Réseau Revendeurs", icon: Users },
               { id: "luck", label: "Roue & Paliers Luck", icon: Flame },
               { id: "qr", label: "Générateur QR Flacons", icon: QrCode },
@@ -744,6 +907,515 @@ export default function AdminDashboardPage() {
                   </table>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* TAB: PROMO CODES & QR CODES */}
+          {activeTab === "coupons" && (
+            <div className="space-y-6 animate-in fade-in">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-serif text-2xl text-[#23181A] dark:text-[#FAF7F2] font-semibold">
+                    Codes Promotionnels &amp; QR Codes Privilèges
+                  </h3>
+                  <p className="text-xs text-[#756B6D] dark:text-[#C5A48A] mt-0.5">
+                    Générez des remises sur-mesure ou aléatoires avec QR Codes scannables, expirations (1H, 1J, 7J...) et quotas d&apos;utilisations.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsCreateCouponModalOpen(true)}
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#541B28] to-[#6E2435] hover:brightness-110 text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-98"
+                >
+                  <Plus className="w-4 h-4 text-[#DFC68B]" />
+                  <span>Nouveau Code Promo &amp; QR</span>
+                </button>
+              </div>
+
+              {/* Stats badges */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#C5A48A] font-bold block">
+                    Total Codes Promo
+                  </span>
+                  <span className="font-serif text-2xl text-[#541B28] dark:text-[#C7A66A] font-bold">
+                    {couponsList.length}
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#C5A48A] font-bold block">
+                    Codes Actifs &amp; Valides
+                  </span>
+                  <span className="font-serif text-2xl text-emerald-600 dark:text-emerald-400 font-bold">
+                    {activeCouponsCount}
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#C5A48A] font-bold block">
+                    Utilisations Enregistrées
+                  </span>
+                  <span className="font-serif text-2xl text-[#23181A] dark:text-[#FAF7F2] font-bold">
+                    {totalCouponUses} fois
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 shadow-xs">
+                  <span className="text-[10px] uppercase tracking-wider text-[#756B6D] dark:text-[#C5A48A] font-bold block">
+                    Codes Expirés / Épuisés
+                  </span>
+                  <span className="font-serif text-2xl text-amber-600 dark:text-amber-400 font-bold">
+                    {couponsList.length - activeCouponsCount}
+                  </span>
+                </div>
+              </div>
+
+              {/* Search & Filter Bar */}
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs">
+                <div className="relative w-full md:w-80">
+                  <Search className="w-4 h-4 text-[#756B6D] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher par code (ex: NOEL2026, LEV-...) ou événement..."
+                    value={couponSearch}
+                    onChange={(e) => setCouponSearch(e.target.value)}
+                    className="w-full bg-[#FAF7F2] dark:bg-[#201216] border border-[#541B28]/20 dark:border-[#C7A66A]/30 rounded-xl pl-9 pr-3 py-2 text-xs text-[#23181A] dark:text-[#FAF7F2] focus:outline-none focus:border-[#C7A66A]"
+                  />
+                </div>
+
+                <div className="flex gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+                  {[
+                    { id: "all", label: `Tous (${couponsList.length})` },
+                    { id: "active", label: `Actifs (${activeCouponsCount})` },
+                    { id: "expired", label: `Expirés (${couponsList.length - activeCouponsCount})` },
+                  ].map((filterTab) => (
+                    <button
+                      key={filterTab.id}
+                      onClick={() => setCouponFilter(filterTab.id as any)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                        couponFilter === filterTab.id
+                          ? "bg-[#541B28] text-[#FAF7F2] shadow-xs"
+                          : "bg-[#FAF7F2] dark:bg-[#201216] text-[#5A4B4E] dark:text-[#D8CCD0] hover:text-[#541B28] border border-[#541B28]/15 dark:border-[#C7A66A]/20"
+                      }`}
+                    >
+                      {filterTab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Coupons Table */}
+              {couponsList.length === 0 ? (
+                <div className="rounded-3xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-12 text-center shadow-sm">
+                  <Tag className="w-12 h-12 text-[#541B28]/40 mx-auto mb-3" />
+                  <h4 className="font-serif text-lg text-[#23181A] dark:text-[#FAF7F2] font-semibold mb-1">
+                    Aucun code promo créé
+                  </h4>
+                  <p className="text-xs text-[#756B6D] dark:text-[#C5A48A] max-w-md mx-auto mb-6">
+                    Créez votre premier code promotionnel avec QR code pour booster vos ventes festives et fidéliser vos clients.
+                  </p>
+                  <button
+                    onClick={() => setIsCreateCouponModalOpen(true)}
+                    className="px-6 py-2.5 rounded-full bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-md inline-flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4 text-[#DFC68B]" />
+                    <span>Créer le Premier Code Promo</span>
+                  </button>
+                </div>
+              ) : filteredCoupons.length === 0 ? (
+                <div className="rounded-3xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-10 text-center shadow-sm">
+                  <p className="text-xs text-[#756B6D] dark:text-[#C5A48A]">
+                    Aucun code promo ne correspond au filtre &ldquo;{couponSearch}&rdquo;.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setCouponSearch("");
+                      setCouponFilter("all");
+                    }}
+                    className="mt-3 text-xs text-[#541B28] dark:text-[#C7A66A] font-bold hover:underline"
+                  >
+                    Réinitialiser les filtres
+                  </button>
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 p-6 shadow-sm overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="text-[#756B6D] dark:text-[#C5A48A] uppercase tracking-wider border-b border-[#541B28]/10 dark:border-[#C7A66A]/20 pb-2 font-bold">
+                        <th className="pb-3">QR Scan</th>
+                        <th className="pb-3">Code &amp; Intitulé</th>
+                        <th className="pb-3">Remise Accordée</th>
+                        <th className="pb-3">Validité Temporelle</th>
+                        <th className="pb-3">Quota Utilisations</th>
+                        <th className="pb-3">Statut</th>
+                        <th className="pb-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#541B28]/5 dark:divide-white/5">
+                      {filteredCoupons.map((coupon) => {
+                        const remaining = getRemainingTimeLabel(coupon);
+                        const isExpired =
+                          (coupon.expiresAt && new Date(coupon.expiresAt).getTime() < Date.now()) ||
+                          (coupon.maxUses !== null && coupon.usedCount >= coupon.maxUses);
+
+                        const usagePercent =
+                          coupon.maxUses === null ? 0 : Math.min(100, (coupon.usedCount / coupon.maxUses) * 100);
+
+                        return (
+                          <tr key={coupon.id} className="hover:bg-[#FAF7F2] dark:hover:bg-[#201216]/60 transition-colors">
+                            {/* QR Thumbnail */}
+                            <td className="py-3">
+                              <button
+                                onClick={() => handleOpenPrintCoupon(coupon)}
+                                title="Cliquer pour voir et imprimer le bon cadeau"
+                                className="w-12 h-12 rounded-lg overflow-hidden border border-[#541B28]/20 dark:border-[#C7A66A]/30 bg-white p-1 relative shrink-0 hover:scale-105 transition-transform"
+                              >
+                                {coupon.qrDataUrl ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    src={coupon.qrDataUrl}
+                                    alt={`QR ${coupon.code}`}
+                                    className="w-full h-full object-contain"
+                                  />
+                                ) : (
+                                  <QrCode className="w-full h-full text-stone-300" />
+                                )}
+                              </button>
+                            </td>
+
+                            {/* Code & Title */}
+                            <td className="py-3">
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono text-sm font-black text-[#541B28] dark:text-[#C7A66A] tracking-wider">
+                                  {coupon.code}
+                                </span>
+                                {coupon.targetEventTitle && (
+                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#541B28]/10 text-[#541B28] dark:bg-[#C7A66A]/15 dark:text-[#C7A66A] border border-[#541B28]/20 dark:border-[#C7A66A]/30">
+                                    {coupon.targetEventTitle}
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[11px] text-[#756B6D] dark:text-[#C5A48A] block truncate max-w-xs mt-0.5">
+                                {coupon.description}
+                              </span>
+                            </td>
+
+                            {/* Remise */}
+                            <td className="py-3">
+                              <span className="inline-block px-2.5 py-1 rounded-lg text-xs font-bold bg-[#541B28] text-white">
+                                {coupon.discountType === "percent"
+                                  ? `-${coupon.discountValue}%`
+                                  : `-${coupon.discountValue.toFixed(3)} TND`}
+                              </span>
+                              {coupon.minSpendTND > 0 && (
+                                <span className="text-[10px] text-[#756B6D] dark:text-[#C5A48A] block mt-1">
+                                  Dès {coupon.minSpendTND} TND
+                                </span>
+                              )}
+                            </td>
+
+                            {/* Temporal validity */}
+                            <td className="py-3">
+                              <span
+                                className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                                  isExpired
+                                    ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                                    : remaining.includes("heure") || remaining.includes("jour")
+                                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold"
+                                    : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                }`}
+                              >
+                                <Clock className="w-3 h-3" />
+                                {remaining}
+                              </span>
+                              {coupon.expiresAt && (
+                                <span className="text-[10px] text-stone-400 block mt-1">
+                                  Jusqu&apos;au {new Date(coupon.expiresAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                                </span>
+                              )}
+                            </td>
+
+                            {/* Usage Quota */}
+                            <td className="py-3">
+                              <div className="space-y-1">
+                                <div className="flex items-center justify-between text-[11px]">
+                                  <span className="font-semibold text-[#23181A] dark:text-[#FAF7F2]">
+                                    {coupon.usedCount}
+                                  </span>
+                                  <span className="text-stone-400">
+                                    / {coupon.maxUses === null ? "Illimité" : `${coupon.maxUses} max`}
+                                  </span>
+                                </div>
+                                {coupon.maxUses !== null && (
+                                  <div className="w-24 h-1.5 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
+                                    <div
+                                      className={`h-full rounded-full transition-all ${
+                                        usagePercent >= 100
+                                          ? "bg-rose-500"
+                                          : usagePercent >= 75
+                                          ? "bg-amber-500"
+                                          : "bg-emerald-500"
+                                      }`}
+                                      style={{ width: `${usagePercent}%` }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* Status */}
+                            <td className="py-3">
+                              <span
+                                className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                  !coupon.isActive
+                                    ? "bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-400"
+                                    : isExpired
+                                    ? "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300"
+                                    : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                }`}
+                              >
+                                {!coupon.isActive ? "En pause" : isExpired ? "Expiré" : "Actif"}
+                              </span>
+                            </td>
+
+                            {/* Actions */}
+                            <td className="py-3 text-right">
+                              <div className="inline-flex items-center gap-1.5">
+                                <button
+                                  onClick={() => handleCopyCouponLink(coupon.code)}
+                                  className="p-1.5 rounded-lg bg-[#FAF7F2] dark:bg-[#201216] hover:bg-[#541B28] text-[#541B28] hover:text-white dark:text-[#FAF7F2] transition-colors border border-[#541B28]/20 dark:border-[#C7A66A]/30"
+                                  title="Copier le lien direct avec QR"
+                                >
+                                  {copiedCouponCode === coupon.code ? (
+                                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                  ) : (
+                                    <Copy className="w-3.5 h-3.5" />
+                                  )}
+                                </button>
+                                <button
+                                  onClick={() => handleOpenPrintCoupon(coupon)}
+                                  className="p-1.5 rounded-lg bg-[#FAF7F2] dark:bg-[#201216] hover:bg-[#541B28] text-[#541B28] hover:text-white dark:text-[#FAF7F2] transition-colors border border-[#541B28]/20 dark:border-[#C7A66A]/30"
+                                  title="Imprimer le bon cadeau privilège"
+                                >
+                                  <Printer className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleToggleCouponActive(coupon.id)}
+                                  className={`p-1.5 rounded-lg transition-colors border ${
+                                    coupon.isActive
+                                      ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 hover:bg-amber-100 border-emerald-300"
+                                      : "bg-stone-100 dark:bg-stone-800 text-stone-500 hover:bg-emerald-100 border-stone-300"
+                                  }`}
+                                  title={coupon.isActive ? "Mettre en pause" : "Activer"}
+                                >
+                                  <Power className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteCoupon(coupon.id, coupon.code)}
+                                  className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/30 hover:bg-rose-700 text-rose-700 hover:text-white transition-colors border border-rose-200 dark:border-rose-900"
+                                  title="Supprimer ce code promo"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB: SEASONAL EVENTS & VISUAL EFFECTS */}
+          {activeTab === "events" && (
+            <div className="space-y-6 animate-in fade-in">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-serif text-2xl text-[#23181A] dark:text-[#FAF7F2] font-semibold">
+                    Campagnes Événementielles &amp; Ambiance Féerique
+                  </h3>
+                  <p className="text-xs text-[#756B6D] dark:text-[#C5A48A] mt-0.5">
+                    Pilotez les célébrations de l&apos;année (Fin d&apos;Année, Printemps, Nuits d&apos;Orient...) avec chute de neige givrée, pétales ou étoiles sur l&apos;ensemble du site.
+                  </p>
+                </div>
+                <button
+                  onClick={handleOpenCreateEvent}
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#541B28] to-[#6E2435] hover:brightness-110 text-[#FAF7F2] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-98"
+                >
+                  <Plus className="w-4 h-4 text-[#DFC68B]" />
+                  <span>Nouvel Événement Saisonnier</span>
+                </button>
+              </div>
+
+              {/* Active Event Spotlight Hero Card */}
+              {activeSeasonalEvent ? (
+                <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#3B111A] via-[#541B28] to-[#250910] text-white border-2 border-[#C7A66A]/40 shadow-2xl relative overflow-hidden">
+                  <div className="absolute right-0 top-0 w-96 h-96 bg-[#C7A66A]/10 rounded-full blur-3xl pointer-events-none" />
+
+                  <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                    <div className="space-y-3 max-w-2xl">
+                      <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#C7A66A] text-[#23181A] shadow-md flex items-center gap-1.5">
+                          {activeSeasonalEvent.visualEffect === "snow" && <span>❄️ Effet Chute de Neige Actif</span>}
+                          {activeSeasonalEvent.visualEffect === "petals" && <span>🌸 Effet Pétales Actif</span>}
+                          {activeSeasonalEvent.visualEffect === "stardust" && <span>✨ Effet Étoiles Actif</span>}
+                          {activeSeasonalEvent.visualEffect === "none" && <span>Bannière Active</span>}
+                        </span>
+                        <span className="text-xs text-[#DFC68B] font-mono">
+                          • Intensité {activeSeasonalEvent.effectIntensity.toUpperCase()}
+                        </span>
+                      </div>
+
+                      <h2 className="font-serif text-3xl sm:text-4xl font-extrabold tracking-wide text-white">
+                        {activeSeasonalEvent.title}
+                      </h2>
+                      <p className="text-xs sm:text-sm text-[#FAF7F2]/85 leading-relaxed">
+                        {activeSeasonalEvent.description}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-3 pt-2">
+                        {activeSeasonalEvent.promoCode && (
+                          <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-[#C7A66A]/50 text-xs font-mono">
+                            Code lié: <strong className="text-[#C7A66A] tracking-wider">{activeSeasonalEvent.promoCode}</strong>
+                          </div>
+                        )}
+                        {activeSeasonalEvent.discountHighlight && (
+                          <span className="text-xs text-[#DFC68B] font-semibold">
+                            {activeSeasonalEvent.discountHighlight}
+                          </span>
+                        )}
+                        {activeSeasonalEvent.showTopBanner && (
+                          <span className="text-[11px] text-emerald-300 bg-emerald-900/40 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                            Bandeau festif affiché
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Actions on Active Event */}
+                    <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto">
+                      <button
+                        onClick={() => handleToggleEventActive(activeSeasonalEvent.id)}
+                        className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Power className="w-4 h-4 text-emerald-400" />
+                        <span>Mettre en Pause l&apos;Événement</span>
+                      </button>
+                      <button
+                        onClick={() => handleOpenEditEvent(activeSeasonalEvent)}
+                        className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#C7A66A] to-[#DFBA73] text-[#23181A] text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:brightness-105 flex items-center justify-center gap-2"
+                      >
+                        <Pencil className="w-4 h-4" />
+                        <span>Modifier la Campagne</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-8 rounded-3xl bg-white dark:bg-[#160D10] border border-[#541B28]/15 dark:border-[#C7A66A]/20 text-center space-y-3">
+                  <Snowflake className="w-12 h-12 text-[#541B28]/40 mx-auto" />
+                  <h4 className="font-serif text-lg font-semibold text-[#23181A] dark:text-[#FAF7F2]">
+                    Aucune campagne événementielle active
+                  </h4>
+                  <p className="text-xs text-[#756B6D] dark:text-[#C5A48A] max-w-md mx-auto">
+                    Activez ci-dessous une campagne pour habiller immédiatement la boutique de neige givrée, pétales ou étoiles.
+                  </p>
+                </div>
+              )}
+
+              {/* All Events Catalog Grid */}
+              <div className="space-y-4">
+                <h4 className="font-serif text-lg font-semibold text-[#23181A] dark:text-[#FAF7F2]">
+                  Catalogue des Thèmes Saisonnier ({eventsList.length})
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {eventsList.map((ev) => {
+                    return (
+                      <div
+                        key={ev.id}
+                        className={`p-6 rounded-3xl border transition-all ${
+                          ev.isActive
+                            ? "bg-white dark:bg-[#1C1014] border-[#C7A66A] shadow-lg ring-1 ring-[#C7A66A]"
+                            : "bg-white dark:bg-[#160D10] border-[#541B28]/15 dark:border-[#C7A66A]/20 opacity-85 hover:opacity-100"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <span
+                            className="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5"
+                            style={{
+                              backgroundColor: `${ev.themeColor}20`,
+                              color: ev.themeColor,
+                              border: `1px solid ${ev.themeColor}50`,
+                            }}
+                          >
+                            {ev.visualEffect === "snow" && <span>❄️ Neige</span>}
+                            {ev.visualEffect === "petals" && <span>🌸 Pétales</span>}
+                            {ev.visualEffect === "stardust" && <span>✨ Étoiles</span>}
+                            {ev.visualEffect === "none" && <span>🚫 Standard</span>}
+                            <span>• {ev.badgeText}</span>
+                          </span>
+
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              ev.isActive
+                                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
+                                : "bg-stone-500/10 text-stone-500"
+                            }`}
+                          >
+                            {ev.isActive ? "Actif sur le site" : "Inactif"}
+                          </span>
+                        </div>
+
+                        <h4 className="font-serif text-lg font-bold text-[#23181A] dark:text-[#FAF7F2] mb-1">
+                          {ev.title}
+                        </h4>
+                        <p className="text-xs text-[#756B6D] dark:text-[#C5A48A] mb-4 line-clamp-2">
+                          {ev.description}
+                        </p>
+
+                        {ev.promoCode && (
+                          <div className="mb-4 p-2 rounded-xl bg-[#FAF7F2] dark:bg-[#201216] border border-[#541B28]/10 dark:border-[#C7A66A]/20 text-[11px] flex items-center justify-between">
+                            <span className="text-[#756B6D] dark:text-[#C5A48A]">Code promo associé :</span>
+                            <span className="font-mono font-bold text-[#541B28] dark:text-[#C7A66A]">
+                              {ev.promoCode}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-black/5 dark:border-white/5">
+                          <button
+                            onClick={() => handleToggleEventActive(ev.id)}
+                            className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all ${
+                              ev.isActive
+                                ? "bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300"
+                                : "bg-[#541B28] hover:bg-[#66182C] text-[#FAF7F2] shadow-sm"
+                            }`}
+                          >
+                            {ev.isActive ? "Désactiver" : "Activer sur le site"}
+                          </button>
+                          <button
+                            onClick={() => handleOpenEditEvent(ev)}
+                            className="p-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[#541B28] dark:text-[#FAF7F2]"
+                            title="Modifier"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          {ev.id.startsWith("event-custom-") && (
+                            <button
+                              onClick={() => handleDeleteEvent(ev.id, ev.title)}
+                              className="p-2 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50"
+                              title="Supprimer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           )}
 
@@ -1100,6 +1772,45 @@ export default function AdminDashboardPage() {
         onClose={() => setIsOrderBottlesModalOpen(false)}
         order={selectedOrderForBottles}
         onCertificatesUpdated={() => setAllCertificates(getAllCertificates())}
+      />
+
+      <CreateCouponModal
+        isOpen={isCreateCouponModalOpen}
+        onClose={() => setIsCreateCouponModalOpen(false)}
+        onCouponCreated={(newCoupon) => {
+          setCouponsList(getAllCoupons());
+          showToast(
+            "Code Promo & QR Créé avec Succès",
+            `Le code ${newCoupon.code} est immédiatement fonctionnel en boutique.`,
+            "luxury"
+          );
+        }}
+      />
+
+      <PrintCouponVoucherModal
+        coupon={selectedCouponForPrint}
+        isOpen={isPrintVoucherModalOpen}
+        onClose={() => {
+          setIsPrintVoucherModalOpen(false);
+          setSelectedCouponForPrint(null);
+        }}
+      />
+
+      <EditEventModal
+        event={editingEvent}
+        isOpen={isEditEventModalOpen}
+        onClose={() => {
+          setIsEditEventModalOpen(false);
+          setEditingEvent(null);
+        }}
+        onSaved={(savedEv) => {
+          setEventsList(getAllEvents());
+          showToast(
+            "Campagne Enregistrée",
+            `L'événement "${savedEv.title}" a été mis à jour.`,
+            "luxury"
+          );
+        }}
       />
 
       <Footer />

@@ -37,7 +37,7 @@ const GOVERNORATES = [
 ];
 
 export default function CheckoutPage() {
-  const { items, subtotalTND, discountTND, deliveryFeeTND, totalTND, totalMillimes, projectedLuck, clearCart } =
+  const { items, subtotalTND, discountTND, deliveryFeeTND, totalTND, totalMillimes, projectedLuck, clearCart, recordCouponUsed } =
     useCart();
   const { awardLuck, awardLoyaltyPoints } = useLoyalty();
   const { showToast } = useNotification();
@@ -166,6 +166,7 @@ export default function CheckoutPage() {
         certificates,
       });
 
+      recordCouponUsed();
       clearCart();
 
       showToast(

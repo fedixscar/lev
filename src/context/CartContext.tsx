@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CartItem, AppliedCoupon } from "@/types";
 import { calculateLuckFromTND } from "@/lib/utils";
+import { validateCoupon, incrementCouponUsage, COUPONS_UPDATED_EVENT } from "@/lib/coupons";
 
 interface CartContextType {
   items: CartItem[];
@@ -13,8 +14,9 @@ interface CartContextType {
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
   appliedCoupon: AppliedCoupon | null;
-  applyCoupon: (code: string) => { success: boolean; message: string };
+  applyCoupon: (code: string) => { success: boolean; valid: boolean; message: string };
   removeCoupon: () => void;
+  recordCouponUsed: () => void;
   subtotalTND: number;
   discountTND: number;
   deliveryFeeTND: number;
@@ -25,12 +27,6 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | null>(null);
-
-const VALID_COUPONS: Record<string, AppliedCoupon> = {
-  LEVANIA10: { code: "LEVANIA10", discountType: "percent", discountValue: 10, minSpendTND: 100 },
-  WAVE20: { code: "WAVE20", discountType: "percent", discountValue: 20, minSpendTND: 250 },
-  ROYAL50: { code: "ROYAL50", discountType: "fixed", discountValue: 50, minSpendTND: 300 },
-};
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -116,29 +112,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setAppliedCoupon(null);
   };
 
-  const applyCoupon = (code: string): { success: boolean; message: string } => {
-    const cleanCode = code.trim().toUpperCase();
-    const coupon = VALID_COUPONS[cleanCode];
-
-    if (!coupon) {
-      return { success: false, message: "Code promotionnel invalide ou expiré." };
-    }
-
-    if (coupon.minSpendTND && subtotalTND < coupon.minSpendTND) {
-      return {
-        success: false,
-        message: `Ce code nécessite un panier minimum de ${coupon.minSpendTND.toFixed(3)} TND.`,
-      };
-    }
-
-    setAppliedCoupon(coupon);
-    return { success: true, message: `Code ${coupon.code} appliqué avec succès!` };
-  };
-
-  const removeCoupon = () => {
-    setAppliedCoupon(null);
-  };
-
   // Calculations
   const subtotalTND = items.reduce(
     (acc, item) => acc + item.unitPriceTND * item.quantity,
@@ -166,6 +139,66 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const totalItemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
+  const applyCoupon = (code: string): { success: boolean; valid: boolean; message: string } => {
+    const cleanCode = code.trim().toUpperCase();
+    const result = validateCoupon(cleanCode, subtotalTND);
+
+    if (!result.valid || !result.appliedCoupon) {
+      return {
+        success: false,
+        valid: false,
+        message: result.error || "Code promotionnel invalide ou expiré.",
+      };
+    }
+
+    setAppliedCoupon(result.appliedCoupon);
+    return {
+      success: true,
+      valid: true,
+      message: `Privilège « ${result.appliedCoupon.code} » appliqué (${result.appliedCoupon.discountType === "percent" ? `-${result.appliedCoupon.discountValue}%` : `-${result.appliedCoupon.discountValue.toFixed(3)} TND`}) !`,
+    };
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+  };
+
+  const recordCouponUsed = () => {
+    if (appliedCoupon?.code) {
+      incrementCouponUsage(appliedCoupon.code);
+    }
+  };
+
+  // Auto-apply promo code from QR code scan or URL query parameter (?coupon=CODE)
+  useEffect(() => {
+    if (!isInitialized || typeof window === "undefined") return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const couponParam = params.get("coupon");
+      if (couponParam && (!appliedCoupon || appliedCoupon.code !== couponParam.toUpperCase())) {
+        const res = applyCoupon(couponParam);
+        if (res.valid && params.get("autoApply") === "true") {
+          setIsCartOpen(true);
+        }
+      }
+    } catch {
+      // Ignore URL param parsing errors
+    }
+  }, [isInitialized]);
+
+  // Revalidate coupon if coupons list is updated or cart subtotal changes
+  useEffect(() => {
+    if (!appliedCoupon) return;
+    const handleCouponsUpdate = () => {
+      const check = validateCoupon(appliedCoupon.code, subtotalTND);
+      if (!check.valid) {
+        setAppliedCoupon(null);
+      }
+    };
+    window.addEventListener(COUPONS_UPDATED_EVENT, handleCouponsUpdate);
+    return () => window.removeEventListener(COUPONS_UPDATED_EVENT, handleCouponsUpdate);
+  }, [appliedCoupon, subtotalTND]);
+
   return (
     <CartContext.Provider
       value={{
@@ -179,6 +212,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         appliedCoupon,
         applyCoupon,
         removeCoupon,
+        recordCouponUsed,
         subtotalTND,
         discountTND,
         deliveryFeeTND,
