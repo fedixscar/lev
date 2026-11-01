@@ -160,10 +160,13 @@ export function ProductFormModal({
       setTopNotes((initialProduct.topNotes || []).join(", "));
       setHeartNotes((initialProduct.heartNotes || []).join(", "));
       setBaseNotes((initialProduct.baseNotes || []).join(", "));
-      setPrice50(initialProduct.formats[0]?.priceTND ?? 195);
-      setStock50(initialProduct.formats[0]?.stock ?? 40);
-      setPrice100(initialProduct.formats[1]?.priceTND ?? 295);
-      setStock100(initialProduct.formats[1]?.stock ?? 25);
+      const format50 = initialProduct.formats?.find((f) => f.size === "50ml") || initialProduct.formats?.[0];
+      const format100 = initialProduct.formats?.find((f) => f.size === "100ml") || initialProduct.formats?.[1];
+
+      setPrice50(format50?.priceTND ?? 195);
+      setStock50(format50?.stock ?? 40);
+      setPrice100(format100?.priceTND ?? 295);
+      setStock100(format100?.stock ?? 25);
       setMainImage(initialProduct.images?.main || "/brand/bottle-and-cylinder.jpg");
       setPackagingImage(initialProduct.images?.packaging || "/brand/cylinders-dual.jpg");
       setGalleryImages(Array.isArray(initialProduct.images?.gallery) ? initialProduct.images.gallery : []);
@@ -498,14 +501,14 @@ export function ProductFormModal({
             priceTND: Number(price50) || 195,
             priceMillimes: Math.round((Number(price50) || 195) * 1000),
             stock: Number(stock50) || 0,
-            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-50`,
+            sku: `LEV-${slug.replace(/[^a-zA-Z0-9]/g, "").slice(0, 5).toUpperCase()}-${id.replace(/[^a-zA-Z0-9]/g, "").slice(-4).toUpperCase()}-50`,
           },
           {
             size: "100ml",
             priceTND: Number(price100) || 295,
             priceMillimes: Math.round((Number(price100) || 295) * 1000),
             stock: Number(stock100) || 0,
-            sku: `LEV-${slug.slice(0, 4).toUpperCase()}-100`,
+            sku: `LEV-${slug.replace(/[^a-zA-Z0-9]/g, "").slice(0, 5).toUpperCase()}-${id.replace(/[^a-zA-Z0-9]/g, "").slice(-4).toUpperCase()}-100`,
           },
         ],
         isFeatured,

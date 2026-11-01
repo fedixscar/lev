@@ -22,7 +22,7 @@ import { GoldStarLozenge, LuxuryDrop } from "@/components/ui/LuxuryIcons";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
-import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
+import { PRODUCTS, getAllProducts, PRODUCTS_UPDATED_EVENT } from "@/lib/catalogue";
 import { Product, PerfumeAtmosphere } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
@@ -71,19 +71,47 @@ export function ProductDetailClient({
   const pyramidSectionRef = useRef<HTMLDivElement>(null);
   const atmosphereSectionRef = useRef<HTMLDivElement>(null);
 
-  // If directly rendered without full props, hydrate from catalogue
+  // Live hydration from local catalogue and remote database
   useEffect(() => {
-    if (!baseProduct && slug) {
-      const all = getAllProducts();
-      const found = all.find((p) => p.slug === slug || p.id === slug);
-      if (found) {
-        setBaseProduct(found);
-      }
+    const targetSlug = slug || initialProduct?.slug || directProduct?.slug;
+    if (!targetSlug) {
       setIsLoaded(true);
-    } else {
-      setIsLoaded(true);
+      return;
     }
-  }, [slug, baseProduct]);
+
+    // 1. Instant check from local store / cached catalogue
+    const all = getAllProducts();
+    const found = all.find((p) => p.slug === targetSlug || p.id === targetSlug);
+    if (found) {
+      setBaseProduct(found);
+    }
+    setIsLoaded(true);
+
+    // 2. Fetch fresh live product from remote database
+    fetch(`/api/products?slug=${targetSlug}`, { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((data) => {
+        if (data?.product) {
+          setBaseProduct(data.product);
+        }
+      })
+      .catch(() => {});
+
+    // 3. Listen for live updates (e.g. from admin modifications)
+    const handleProductsUpdated = () => {
+      const freshAll = getAllProducts();
+      const freshFound = freshAll.find((p) => p.slug === targetSlug || p.id === targetSlug);
+      if (freshFound) {
+        setBaseProduct(freshFound);
+      }
+    };
+
+    window.addEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+    return () => window.removeEventListener(PRODUCTS_UPDATED_EVENT, handleProductsUpdated);
+  }, [slug, initialProduct?.slug, directProduct?.slug]);
 
   const router = useRouter();
   const { t, locale } = useLanguage();

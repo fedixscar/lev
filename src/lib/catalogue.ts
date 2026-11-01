@@ -378,7 +378,17 @@ export async function fetchRemoteProducts(): Promise<Product[]> {
       try {
         localStorage.setItem("levania_custom_products", JSON.stringify(data.products));
       } catch (storageErr) {
-        console.warn("Storage quota reached, cached in-memory:", storageErr);
+        console.warn("Storage quota reached, caching streamlined in localStorage:", storageErr);
+        try {
+          const streamlined = data.products.map((p: any) => ({
+            ...p,
+            images: {
+              main: p.images?.main?.startsWith("data:") ? "/brand/bottle-and-cylinder.jpg" : p.images?.main,
+              packaging: p.images?.packaging?.startsWith("data:") ? "/brand/cylinders-dual.jpg" : p.images?.packaging,
+            },
+          }));
+          localStorage.setItem("levania_custom_products", JSON.stringify(streamlined));
+        } catch {}
       }
       window.dispatchEvent(new Event(PRODUCTS_UPDATED_EVENT));
       return data.products;
@@ -460,7 +470,17 @@ export async function saveProductAsync(product: Product): Promise<Product[]> {
     try {
       localStorage.setItem("levania_custom_products", JSON.stringify(updated));
     } catch (storageErr) {
-      console.warn("Storage quota reached, cached in-memory:", storageErr);
+      console.warn("Storage quota reached, caching streamlined in localStorage:", storageErr);
+      try {
+        const streamlined = updated.map((p) => ({
+          ...p,
+          images: {
+            main: p.images.main?.startsWith("data:") ? "/brand/bottle-and-cylinder.jpg" : p.images.main,
+            packaging: p.images.packaging?.startsWith("data:") ? "/brand/cylinders-dual.jpg" : p.images.packaging,
+          },
+        }));
+        localStorage.setItem("levania_custom_products", JSON.stringify(streamlined));
+      } catch {}
     }
 
     try {

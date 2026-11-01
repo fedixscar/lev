@@ -3,6 +3,13 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { PRODUCTS } from "@/lib/catalogue";
 import { Product } from "@/types";
 
+export function generateUniqueSku(slug: string, id: string, size: string): string {
+  const clean = (slug || "perf").replace(/[^a-zA-Z0-9]/g, "").slice(0, 5).toUpperCase();
+  const idPart = (id || "0000").replace(/[^a-zA-Z0-9]/g, "").slice(-4).toUpperCase();
+  const sizeClean = (size || "50").replace(/[^a-zA-Z0-9]/g, "");
+  return `LEV-${clean}-${idPart}-${sizeClean}`;
+}
+
 function productToRow(p: Product) {
   const extra = {
     frenchName: p.frenchName || p.name,
@@ -30,6 +37,7 @@ function productToRow(p: Product) {
       displayMode: "cover",
       positioning: "center",
     },
+    formats: p.formats || [],
   };
 
   return {
@@ -61,31 +69,44 @@ export function rowToProduct(row: any, variants: any[] = []): Product {
     // ignore
   }
 
-  const formats =
-    variants && variants.length > 0
-      ? variants.map((v) => ({
-          size: v.size as "50ml" | "100ml",
-          priceTND: v.price_millimes / 1000,
-          priceMillimes: v.price_millimes,
-          stock: v.stock_quantity,
-          sku: v.sku,
-        }))
-      : [
-          {
-            size: "50ml" as const,
-            priceTND: 195,
-            priceMillimes: 195000,
-            stock: 40,
-            sku: `LEV-${row.slug}-50`,
-          },
-          {
-            size: "100ml" as const,
-            priceTND: 295,
-            priceMillimes: 295000,
-            stock: 25,
-            sku: `LEV-${row.slug}-100`,
-          },
-        ];
+  // 1. Prioritize variants table, always sorted 50ml then 100ml
+  let formats: any[] | null = null;
+  if (variants && variants.length > 0) {
+    formats = [...variants]
+      .sort((a, b) => (a.size === "50ml" ? -1 : b.size === "50ml" ? 1 : 0))
+      .map((v) => ({
+        size: v.size as "50ml" | "100ml",
+        priceTND: v.price_millimes / 1000,
+        priceMillimes: v.price_millimes,
+        stock: v.stock_quantity,
+        sku: v.sku,
+      }));
+  }
+
+  // 2. Fallback to extra.formats from sensory_profile
+  if ((!formats || formats.length === 0) && extra.formats && Array.isArray(extra.formats) && extra.formats.length > 0) {
+    formats = extra.formats;
+  }
+
+  // 3. Fallback to default
+  if (!formats || formats.length === 0) {
+    formats = [
+      {
+        size: "50ml" as const,
+        priceTND: 195,
+        priceMillimes: 195000,
+        stock: 40,
+        sku: generateUniqueSku(row.slug, row.id, "50"),
+      },
+      {
+        size: "100ml" as const,
+        priceTND: 295,
+        priceMillimes: 295000,
+        stock: 25,
+        sku: generateUniqueSku(row.slug, row.id, "100"),
+      },
+    ];
+  }
 
   return {
     id: row.id,
@@ -166,9 +187,11 @@ export async function GET(req: NextRequest) {
             .select("*")
             .eq("product_id", row.id);
 
-          return NextResponse.json({
+          const res = NextResponse.json({
             product: rowToProduct(row, variants || []),
           });
+          res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+          return res;
         }
 
         return NextResponse.json({ product: null }, { status: 404 });
@@ -192,7 +215,9 @@ export async function GET(req: NextRequest) {
           return rowToProduct(r, vars);
         });
 
-        return NextResponse.json({ products, source: "database" });
+        const res = NextResponse.json({ products, source: "database" });
+        res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+        return res;
       }
     }
 
@@ -346,11 +371,14 @@ export async function POST(req: NextRequest) {
       const varRows = product.formats.map((f: any) => ({
         product_id: productId,
         size: f.size,
-        price_millimes: f.priceMillimes || Math.round((f.priceTND || 195) * 1000),
+        price_millimes: f.priceMillimes || Math.round((Number(f.priceTND) || 195) * 1000),
         stock_quantity: f.stock ?? 0,
-        sku: f.sku || `LEV-${product.slug.slice(0, 4).toUpperCase()}-${f.size}`,
+        sku: generateUniqueSku(product.slug, productId, f.size),
       }));
-      await supabase.from("product_variants").insert(varRows);
+      const { error: insVarErr } = await supabase.from("product_variants").insert(varRows);
+      if (insVarErr) {
+        console.error("Variants insert error:", insVarErr);
+      }
     }
 
     const returnedProduct: Product = {
