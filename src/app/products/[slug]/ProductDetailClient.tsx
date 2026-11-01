@@ -16,6 +16,7 @@ import {
   Heart,
   Sparkles,
   Film,
+  Share2,
 } from "lucide-react";
 import { GoldStarLozenge, LuxuryDrop } from "@/components/ui/LuxuryIcons";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -26,11 +27,13 @@ import { Product, PerfumeAtmosphere } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { AtomizerSpray } from "@/components/brand/AtomizerSpray";
 import { NoteAccordModal } from "@/components/discovery/NoteAccordModal";
 import { AuthenticityCertificateModal } from "@/components/products/AuthenticityCertificateModal";
+import { BottleViewerModal } from "@/components/products/BottleViewerModal";
 import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocalizedProduct, getLocalizedProducts } from "@/lib/i18n/catalogueLocale";
@@ -103,6 +106,41 @@ export function ProductDetailClient({
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [selectedLayer, setSelectedLayer] = useState<"tête" | "cœur" | "fond" | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+
+  // Wishlist & Share integration
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const isWishlisted = product ? (isInWishlist(product.id) || isInWishlist(product.slug)) : false;
+
+  const handleShare = async () => {
+    if (!product) return;
+    const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: `LÉVANIA PARFUMS — ${product.name}`,
+          text: `${product.name} — ${product.subtitle}. Une création olfactive d'exception par la Maison Lévania.`,
+          url: shareUrl,
+        });
+        return;
+      } catch (err) {
+        // Fall back to clipboard if aborted or failed
+      }
+    }
+    // Clipboard fallback
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast(
+          "Lien de Haute Parfumerie Copié",
+          "L'adresse de cette création a été copiée dans votre presse-papier avec succès.",
+          "luxury"
+        );
+      }
+    } catch {
+      showToast("Lien du Flacon", shareUrl, "info");
+    }
+  };
 
   // Resolve Atmosphere
   const atmosphere: PerfumeAtmosphere = (product?.atmosphere as PerfumeAtmosphere) || "LUXE";
@@ -386,6 +424,18 @@ export function ProductDetailClient({
                   </span>
                 </div>
 
+                {/* Interactive Studio 360 & HD Loupe Trigger */}
+                <div className="absolute bottom-5 left-5 z-20">
+                  <button
+                    type="button"
+                    onClick={() => setIsViewerOpen(true)}
+                    className="px-3.5 py-1.5 rounded-full bg-black/75 hover:bg-black border border-white/20 hover:border-[#DFC68B] text-white text-[10px] font-cinzel font-bold uppercase tracking-luxury flex items-center gap-1.5 backdrop-blur-md transition-all shadow-md cursor-pointer hover:scale-105"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[#DFC68B]" />
+                    <span>Studio 360° & Loupe</span>
+                  </button>
+                </div>
+
                 {/* Interactive Atomizer Vaporizer Action */}
                 <div className="absolute bottom-5 right-5 z-20">
                   <AtomizerSpray productName={product.name} />
@@ -534,6 +584,33 @@ export function ProductDetailClient({
                   >
                     <span>{t("product.buy_now", "Acheter Immédiatement")}</span>
                     <ArrowRight className="w-4 h-4 text-black rtl:rotate-180" />
+                  </button>
+                </div>
+
+                {/* Secondary Actions: Wishlist & Share */}
+                <div className="flex items-center gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleWishlist(product.id, product.name)}
+                    className={cn(
+                      "flex-1 py-3 px-4 rounded-2xl border text-xs font-cinzel uppercase tracking-luxury font-bold flex items-center justify-center gap-2 backdrop-blur-md transition-all cursor-pointer shadow-sm hover:scale-[1.01]",
+                      isWishlisted
+                        ? "bg-rose-500/20 border-rose-500/50 text-rose-200"
+                        : "bg-black/40 border-white/15 text-white/80 hover:bg-black/60 hover:text-white"
+                    )}
+                  >
+                    <Heart className={cn("w-4 h-4", isWishlisted && "fill-current text-rose-500")} />
+                    <span>{isWishlisted ? "Dans vos Favoris" : "Ajouter aux Favoris"}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="py-3 px-5 rounded-2xl bg-black/40 hover:bg-black/60 border border-white/15 text-white/80 hover:text-white text-xs font-cinzel uppercase tracking-luxury font-bold flex items-center justify-center gap-2 backdrop-blur-md transition-all cursor-pointer shadow-sm hover:scale-[1.01]"
+                    title="Partager ce flacon"
+                  >
+                    <Share2 className="w-4 h-4 text-[#DFC68B]" />
+                    <span>Partager</span>
                   </button>
                 </div>
               </div>
@@ -853,6 +930,12 @@ export function ProductDetailClient({
         note={selectedNote}
         layer={selectedLayer}
         onClose={() => setSelectedNote(null)}
+      />
+
+      <BottleViewerModal
+        product={product}
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
       />
 
       <AuthenticityCertificateModal

@@ -8,6 +8,7 @@ import { LoyaltyProvider } from "./LoyaltyContext";
 import { NotificationProvider } from "./NotificationContext";
 import { ThemeProvider } from "./ThemeContext";
 import { LanguageProvider } from "./LanguageContext";
+import { WishlistProvider } from "./WishlistContext";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +18,9 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           <AuthProvider>
             <CartProvider>
               <LoyaltyProvider>
-                <NotificationProvider>{children}</NotificationProvider>
+                <NotificationProvider>
+                  <WishlistProvider>{children}</WishlistProvider>
+                </NotificationProvider>
               </LoyaltyProvider>
             </CartProvider>
           </AuthProvider>

@@ -819,6 +819,103 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
+              {/* Atmospheric Intelligence Overview */}
+              <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#541B28]/10">
+                  <div className="flex items-center gap-2.5">
+                    <Film className="w-5 h-5 text-[#541B28]" />
+                    <h3 className="font-serif text-xl text-[#23181A] font-semibold">
+                      Répartition des Univers Cinématographiques & Atmosphères
+                    </h3>
+                  </div>
+                  <span className="text-xs text-[#756B6D] font-mono">
+                    {productList.length} flacons au catalogue actif
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* CLASS */}
+                  <div className="p-4 rounded-2xl bg-slate-900 text-white border border-slate-700/60 flex flex-col justify-between shadow-xs">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-slate-300">
+                          CLASS
+                        </span>
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-200">
+                          {productList.filter((p) => p.atmosphere === "CLASS").length} flacons
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-lg font-light text-slate-100 mt-1">
+                        Élégance & Intemporel
+                      </h4>
+                      <p className="text-[11px] text-slate-400 mt-1">
+                        Lignes architecturales et clarté souveraine
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* LUXE */}
+                  <div className="p-4 rounded-2xl bg-[#0F0C08] text-white border border-[#DFC68B]/40 flex flex-col justify-between shadow-xs">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-[#DFC68B]">
+                          LUXE
+                        </span>
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-[#DFC68B]/20 text-[#DFC68B]">
+                          {productList.filter((p) => p.atmosphere === "LUXE" || !p.atmosphere).length} flacons
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-lg font-light text-amber-100 mt-1">
+                        Royal & Exclusif
+                      </h4>
+                      <p className="text-[11px] text-[#DFC68B]/70 mt-1">
+                        Poussière d&apos;or, ambre chaud et majesté
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* SAUVAGE */}
+                  <div className="p-4 rounded-2xl bg-[#040810] text-white border border-sky-800/60 flex flex-col justify-between shadow-xs">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-sky-400">
+                          SAUVAGE
+                        </span>
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800/40">
+                          {productList.filter((p) => p.atmosphere === "SAUVAGE").length} flacons
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-lg font-light text-sky-100 mt-1">
+                        Puissance & Tempête
+                      </h4>
+                      <p className="text-[11px] text-sky-400/70 mt-1">
+                        Océan déchaîné, éclairs et bois ténébreux
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* FÉMININE & SEXY */}
+                  <div className="p-4 rounded-2xl bg-[#14060C] text-white border border-rose-800/50 flex flex-col justify-between shadow-xs">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-rose-300">
+                          FÉMININE & SEXY
+                        </span>
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800/40">
+                          {productList.filter((p) => p.atmosphere === "FÉMININE & SEXY").length} flacons
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-lg font-light text-rose-100 mt-1">
+                        Sensualité & Séduction
+                      </h4>
+                      <p className="text-[11px] text-rose-300/70 mt-1">
+                        Pétales envoûtants et volupté magnétique
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Recent Orders quick table */}
               <div className="rounded-3xl bg-white border border-[#541B28]/15 p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#541B28]/10">

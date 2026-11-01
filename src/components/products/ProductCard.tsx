@@ -9,6 +9,7 @@ import { Product } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { Card3DTilt } from "@/components/ui/Card3DTilt";
 import { useLanguage } from "@/context/LanguageContext";
@@ -25,9 +26,10 @@ export function ProductCard({ product: rawProduct, className, priority = false }
   const product = getLocalizedProduct(rawProduct, locale);
   const { addItem } = useCart();
   const { showToast } = useNotification();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const [selectedFormat, setSelectedFormat] = useState<"50ml" | "100ml">("50ml");
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = isInWishlist(product.id) || isInWishlist(product.slug);
 
   const activeFormat = (product.formats && product.formats.length > 0)
     ? (product.formats.find((f) => f.size === selectedFormat) || product.formats[0])
@@ -94,12 +96,7 @@ export function ProductCard({ product: rawProduct, className, priority = false }
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setIsWishlisted(!isWishlisted);
-              showToast(
-                isWishlisted ? t("toast.removed_wishlist", "Retiré de vos favoris") : t("toast.added_wishlist", "Ajouté à vos favoris"),
-                product.name,
-                "info"
-              );
+              toggleWishlist(product.id, product.name);
             }}
             className={cn(
               "p-2 rounded-full backdrop-blur-md border transition-all pointer-events-auto shadow-sm cursor-pointer",

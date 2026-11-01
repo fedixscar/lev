@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, RefreshCw, ShoppingBag, Check } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
-import { PRODUCTS } from "@/lib/catalogue";
-import { Product } from "@/types";
+import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
+import { Product, PerfumeAtmosphere } from "@/types";
 import { formatTND } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
@@ -14,6 +14,8 @@ import { SignatureWave } from "@/components/brand/SignatureWave";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocalizedProduct } from "@/lib/i18n/catalogueLocale";
+import { getAtmosphereConfig } from "@/lib/atmosphere";
+import { Zap, Crown, Gem, Heart, Sparkles } from "lucide-react";
 
 interface QuestionStep {
   id: string;
@@ -56,6 +58,17 @@ const QUESTIONS_BY_LOCALE: Record<"fr" | "ar" | "en", QuestionStep[]> = {
         { label: "Soirées & Événements", value: "gala", desc: "Mariages, dîners, réceptions et fêtes" },
         { label: "Rendez-vous Romantiques", value: "romance", desc: "Sensuel, séduisant et captivant" },
         { label: "À Offrir en Cadeau", value: "gift", desc: "Un cadeau d'exception avec écrin offert" },
+      ],
+    },
+    {
+      id: "atmosphere",
+      question: "Quelle atmosphère ou tempérament recherchez-vous ?",
+      subtitle: "L'émotion cinématographique dominante de votre flacon.",
+      options: [
+        { label: "CLASS — Élégant & Intemporel", value: "CLASS", desc: "Sophistication sobre, distinction aristocratique et harmonie pure" },
+        { label: "LUXE — Royal & Exclusif", value: "LUXE", desc: "Or solaire, ambre somptueux, prestige et opulence digne d'un palais" },
+        { label: "SAUVAGE — Puissant & Mystérieux", value: "SAUVAGE", desc: "Tempête marine, orage minéral, cuir ténébreux et force brute" },
+        { label: "FÉMININE & SEXY — Sensuel & Séducteur", value: "FÉMININE & SEXY", desc: "Fleurs nocturnes, vanille magnétique, volupté et sillage captivant" },
       ],
     },
     {
@@ -107,6 +120,17 @@ const QUESTIONS_BY_LOCALE: Record<"fr" | "ar" | "en", QuestionStep[]> = {
       ],
     },
     {
+      id: "atmosphere",
+      question: "ما هو الطابع والهالة التي تبحث عنها لعطرك؟",
+      subtitle: "الشعور السينمائي الطاغي الذي يمثلك ويعكس هيبتك وحضورك.",
+      options: [
+        { label: "CLASS — كلاس وأناقة خالدة", value: "CLASS", desc: "رقي أرستقراطي هادئ، توازن فاخر وتناسق لا تشوبه شائبة" },
+        { label: "LUXE — لوكس وفخامة ملكية", value: "LUXE", desc: "بريق الذهب والعنبر، هيبة الأمراء وثرى القصور العريقة" },
+        { label: "SAUVAGE — سوفاج وقوة عاصفة", value: "SAUVAGE", desc: "أمواج البحر الهادرة، رعود الليل وجاذبية الأخشاب الداكنة" },
+        { label: "FÉMININE & SEXY — أنثوي ومثير", value: "FÉMININE & SEXY", desc: "بتلات مخملية، فانيليا آسرة وأنوثة تأسر القلوب والأنفاس" },
+      ],
+    },
+    {
       id: "preferredNote",
       question: "هل لديك مكون أو نوتة عطرية مفضلة؟",
       subtitle: "الرائحة التي تأسر حواسك من اللحظة الأولى.",
@@ -152,6 +176,17 @@ const QUESTIONS_BY_LOCALE: Record<"fr" | "ar" | "en", QuestionStep[]> = {
         { label: "Evening & Events", value: "gala", desc: "Weddings, dinners, galas and celebrations" },
         { label: "Romantic Encounters", value: "romance", desc: "Sensual, alluring and captivating" },
         { label: "As an Exceptional Gift", value: "gift", desc: "Prestige gift with complimentary presentation box" },
+      ],
+    },
+    {
+      id: "atmosphere",
+      question: "Which atmosphere or persona are you seeking?",
+      subtitle: "The dominant cinematic aura of your signature fragrance.",
+      options: [
+        { label: "CLASS — Elegant & Timeless", value: "CLASS", desc: "Refined sophistication, aristocratic restraint and pristine harmony" },
+        { label: "LUXE — Royal & Exclusive", value: "LUXE", desc: "Solar gold, opulent amber, palatial prestige and majesty" },
+        { label: "SAUVAGE — Wild & Powerful", value: "SAUVAGE", desc: "Stormy seas, thunderstorm lightning, dark woods and raw magnetism" },
+        { label: "FÉMININE & SEXY — Sensual & Seductive", value: "FÉMININE & SEXY", desc: "Nocturnal flowers, hypnotic vanilla, voluptuous allure and magnetic sillage" },
       ],
     },
     {
@@ -212,58 +247,47 @@ export function PerfumeFinder() {
 
     // Simulate AI synthesis with Soft Wave animation
     setTimeout(() => {
+      const allAvailableProducts = getAllProducts();
       // Score products deterministically against user answers
-      const scored = PRODUCTS.map((prod) => {
-        let score = 75; // base score
+      const scored = allAvailableProducts.map((prod) => {
+        let score = 70; // base score
 
-        if (currentAnswers.family && prod.fragranceFamily === currentAnswers.family) {
+        // 1. Atmosphere match (highest emotional weight: +20)
+        const prodAtm = prod.atmosphere || "LUXE";
+        if (currentAnswers.atmosphere && prodAtm === currentAnswers.atmosphere) {
+          score += 20;
+        }
+
+        // 2. Olfactory Family match (+15)
+        if (currentAnswers.family && prod.fragranceFamily.toLowerCase() === currentAnswers.family.toLowerCase()) {
           score += 15;
         }
+
+        // 3. Intensity match (+10)
         if (currentAnswers.intensity && prod.intensity === currentAnswers.intensity) {
           score += 10;
         }
 
-        // Notes matching
-        if (currentAnswers.preferredNote === "safran" && prod.topNotes.some((n) => n.includes("Safran"))) {
-          score += 15;
+        // 4. Notes matching (+12)
+        const noteStr = `${prod.topNotes.join(" ")} ${prod.heartNotes.join(" ")} ${prod.baseNotes.join(" ")}`.toLowerCase();
+        if (currentAnswers.preferredNote === "safran" && noteStr.includes("safran")) {
+          score += 12;
         }
-        if (currentAnswers.preferredNote === "olive" && prod.heartNotes.some((n) => n.includes("Olivier"))) {
-          score += 15;
+        if (currentAnswers.preferredNote === "olive" && noteStr.includes("olivi")) {
+          score += 12;
         }
-        if (currentAnswers.preferredNote === "neroli" && (prod.topNotes.some((n) => n.includes("Oranger")) || prod.name.includes("Néroli"))) {
-          score += 15;
+        if (currentAnswers.preferredNote === "neroli" && (noteStr.includes("neroli") || noteStr.includes("néroli") || noteStr.includes("orange"))) {
+          score += 12;
         }
-        if (currentAnswers.preferredNote === "oud" && prod.heartNotes.some((n) => n.includes("Oud"))) {
-          score += 15;
+        if (currentAnswers.preferredNote === "oud" && noteStr.includes("oud")) {
+          score += 12;
         }
 
-        let reason = `Correspondance parfaite avec vos affinités pour les accords ${prod.fragranceFamily.toLowerCase()}s et une intensité ${prod.intensity.toLowerCase()}.`;
+        let reason = `Correspondance avec vos affinités pour l'atmosphère ${prodAtm} et la famille ${prod.fragranceFamily}.`;
         if (locale === "ar") {
-          reason = `توافق مثالي مع تفضيلاتكم لنفحات العائلة العطرية ودرجة الفوحان المختارة.`;
-          if (prod.bestsellerRank === 1) {
-            reason = "عطرنا الأكثر طلبًا وتألقًا: توليفة عنبرية ملكية تمنحك هيبة وحضورًا فائق التميز.";
-          } else if (prod.slug === "sillage-d-olivier") {
-            reason = "تناغم نبيل بين دفء أخشاب الزيتون المتوسطية وأصالة التراث التونسي الرفيع.";
-          } else if (prod.slug === "neroli-flottant") {
-            reason = "لمسة نيرولي منعشة وزهور بيضاء متفتحة، إشراقة نقية مشبعة بنسيم نابل.";
-          }
+          reason = `توافق مميز مع هالة ${prodAtm} وعائلة ${prod.fragranceFamily} مع ثبات استثنائي.`;
         } else if (locale === "en") {
-          reason = `Perfect match with your affinity for ${prod.fragranceFamily.toLowerCase()} accords and ${prod.intensity.toLowerCase()} intensity.`;
-          if (prod.bestsellerRank === 1) {
-            reason = "Our Absolute #1: a majestic amber accord elevating every moment of prestige.";
-          } else if (prod.slug === "sillage-d-olivier") {
-            reason = "Noble alliance of Mediterranean olive wood and aristocratic serenity.";
-          } else if (prod.slug === "neroli-flottant") {
-            reason = "A caress of solar neroli and white blossoms, airy and radiant.";
-          }
-        } else {
-          if (prod.bestsellerRank === 1) {
-            reason = "Notre N°1 Absolu: un accord ambré majestueux qui sublime chaque instant de prestige.";
-          } else if (prod.slug === "sillage-d-olivier") {
-            reason = "Alliance noble d'arômes boisés méditerranéens et de sérénité aristocratique.";
-          } else if (prod.slug === "neroli-flottant") {
-            reason = "Une caresse de néroli solaire et de fleurs blanches, aérienne et lumineuse.";
-          }
+          reason = `Harmonious match with your affinity for the ${prodAtm} universe and ${prod.fragranceFamily} notes.`;
         }
 
         return {
@@ -279,7 +303,7 @@ export function PerfumeFinder() {
 
       setRecommendations(top4);
       setIsAnalyzing(false);
-    }, 1800);
+    }, 1400);
   };
 
   const resetFinder = () => {
@@ -375,6 +399,25 @@ export function PerfumeFinder() {
                         {product.name}
                       </h3>
                       <p className="text-xs text-[#756B6D] dark:text-[#A8989C] italic mt-0.5">{product.subtitle}</p>
+
+                      {/* Atmosphere Universe Chip */}
+                      {(() => {
+                        const atm = (product.atmosphere as PerfumeAtmosphere) || "LUXE";
+                        const atmCfg = getAtmosphereConfig(atm);
+                        return (
+                          <div
+                            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[9px] font-cinzel uppercase font-bold tracking-luxury mt-1.5 shadow-xs"
+                            style={{
+                              backgroundColor: `${atmCfg.palette.cardBg}`,
+                              borderColor: `${atmCfg.palette.primary}50`,
+                              color: atmCfg.palette.primary,
+                            }}
+                          >
+                            <span>Atmosphère : {atmCfg.name}</span>
+                          </div>
+                        );
+                      })()}
+
                       <div className="font-cinzel text-xs text-[#541B28] dark:text-[#DFC68B] font-bold tracking-luxury mt-2.5">
                         {t("quiz.from_price", "Dès")} {formatTND(product.formats[0].priceTND)}
                       </div>
