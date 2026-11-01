@@ -12,6 +12,17 @@ export type FragranceFamily =
 
 export type FragranceIntensity = "Subtle" | "Balanced" | "Intense" | "Monumental";
 
+export type PerfumeAtmosphere = "CLASS" | "LUXE" | "SAUVAGE" | "FÉMININE & SEXY";
+
+export interface ProductVideoConfig {
+  videoUrl?: string;
+  useCategoryDefault?: boolean;
+  overlayDarkness?: number; // 0 to 1
+  opacity?: number; // 0 to 1
+  displayMode?: "cover" | "contain" | "parallax";
+  positioning?: "center" | "top" | "bottom";
+}
+
 export type ProductFormat = {
   size: "50ml" | "100ml";
   priceTND: number;
@@ -44,6 +55,9 @@ export interface Product {
     gallery?: string[];
   };
   formats: ProductFormat[];
+  atmosphere?: PerfumeAtmosphere;
+  videoUrl?: string;
+  videoConfig?: ProductVideoConfig;
   gender?: "Unisexe" | "Pour Elle" | "Pour Lui" | string;
   waveExpression?: "signature" | "soft" | "intense" | "crest" | "swirl" | "mist" | "flow" | string;
   wavePalette?: "burgundy" | "gold" | "rose" | "sand" | "night" | "emerald" | string;

@@ -20,6 +20,16 @@ function productToRow(p: Product) {
     galleryImages: p.images?.gallery || [],
     lifestyleImage: p.images?.lifestyle,
     bottleOnlyImage: p.images?.bottleOnly,
+    atmosphere: p.atmosphere || "LUXE",
+    videoUrl: p.videoUrl || p.videoConfig?.videoUrl || "",
+    videoConfig: p.videoConfig || {
+      videoUrl: p.videoUrl || "",
+      useCategoryDefault: !p.videoUrl,
+      overlayDarkness: 0.55,
+      opacity: 1,
+      displayMode: "cover",
+      positioning: "center",
+    },
   };
 
   return {
@@ -101,6 +111,24 @@ export function rowToProduct(row: any, variants: any[] = []): Product {
       gallery: Array.isArray(extra.galleryImages) ? extra.galleryImages : [],
     },
     formats,
+    atmosphere:
+      extra.atmosphere ||
+      (row.fragrance_family === "Woody" || row.fragrance_family === "Spicy"
+        ? "SAUVAGE"
+        : row.fragrance_family === "Floral"
+        ? "FÉMININE & SEXY"
+        : row.fragrance_family === "Citrus" || row.fragrance_family === "Fresh"
+        ? "CLASS"
+        : "LUXE"),
+    videoUrl: extra.videoUrl || row.video_url || "",
+    videoConfig: extra.videoConfig || {
+      videoUrl: extra.videoUrl || row.video_url || "",
+      useCategoryDefault: !extra.videoUrl,
+      overlayDarkness: 0.55,
+      opacity: 1,
+      displayMode: "cover",
+      positioning: "center",
+    },
     gender: extra.gender || "Unisexe",
     waveExpression: extra.waveExpression || "signature",
     wavePalette: extra.wavePalette || "gold",

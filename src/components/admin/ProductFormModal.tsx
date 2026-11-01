@@ -18,9 +18,14 @@ import {
   Wand2,
   Plus,
   Trash2,
+  Film,
+  Video,
+  Sliders,
+  Play,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
-import { Product, FragranceFamily, FragranceIntensity } from "@/types";
+import { Product, FragranceFamily, FragranceIntensity, PerfumeAtmosphere, ProductVideoConfig } from "@/types";
+import { ATMOSPHERES, getAtmosphereConfig } from "@/lib/atmosphere";
 
 interface ProductFormModalProps {
   isOpen: boolean;
@@ -93,6 +98,16 @@ export function ProductFormModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const packagingFileInputRef = useRef<HTMLInputElement>(null);
   const galleryFileInputRef = useRef<HTMLInputElement>(null);
+  const videoFileInputRef = useRef<HTMLInputElement>(null);
+
+  const [atmosphere, setAtmosphere] = useState<PerfumeAtmosphere>("LUXE");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [useCategoryDefaultVideo, setUseCategoryDefaultVideo] = useState(true);
+  const [overlayDarkness, setOverlayDarkness] = useState(0.55);
+  const [videoOpacity, setVideoOpacity] = useState(1.0);
+  const [displayMode, setDisplayMode] = useState<"cover" | "contain">("cover");
+  const [videoUploadLoading, setVideoUploadLoading] = useState(false);
+  const [videoUploadError, setVideoUploadError] = useState<string | null>(null);
 
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("Extrait de Parfum Absolu");
@@ -152,6 +167,15 @@ export function ProductFormModal({
       setMainImage(initialProduct.images?.main || "/brand/bottle-and-cylinder.jpg");
       setPackagingImage(initialProduct.images?.packaging || "/brand/cylinders-dual.jpg");
       setGalleryImages(Array.isArray(initialProduct.images?.gallery) ? initialProduct.images.gallery : []);
+      setAtmosphere(initialProduct.atmosphere || "LUXE");
+      const vUrl = initialProduct.videoUrl || initialProduct.videoConfig?.videoUrl || "";
+      setVideoUrl(vUrl);
+      setUseCategoryDefaultVideo(
+        initialProduct.videoConfig?.useCategoryDefault ?? !vUrl
+      );
+      setOverlayDarkness(initialProduct.videoConfig?.overlayDarkness ?? 0.55);
+      setVideoOpacity(initialProduct.videoConfig?.opacity ?? 1.0);
+      setDisplayMode((initialProduct.videoConfig?.displayMode as any) || "cover");
       setIsFeatured(initialProduct.isFeatured || false);
       setIsBestseller(initialProduct.isBestseller || false);
       setBestsellerRank(initialProduct.bestsellerRank || 1);
@@ -161,6 +185,12 @@ export function ProductFormModal({
       setCollection("La Collection Signature");
       setCollectionSlug("signature");
       setGender("Unisexe");
+      setAtmosphere("LUXE");
+      setVideoUrl("");
+      setUseCategoryDefaultVideo(true);
+      setOverlayDarkness(0.55);
+      setVideoOpacity(1.0);
+      setDisplayMode("cover");
       setWaveExpression("signature");
       setWavePalette("gold");
       setFragranceFamily("Amber");
@@ -348,6 +378,41 @@ export function ProductFormModal({
     }
   };
 
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setVideoUploadLoading(true);
+    setVideoUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.append("video", file);
+      formData.append("slug", name ? name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "perfume");
+
+      const res = await fetch("/api/admin/upload-video", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Échec du téléversement de la vidéo.");
+      }
+
+      setVideoUrl(data.videoUrl);
+      setUseCategoryDefaultVideo(false);
+    } catch (err: any) {
+      console.error("Erreur upload video:", err);
+      setVideoUploadError(err.message || "Erreur de téléversement");
+      alert(err.message || "Impossible de téléverser la vidéo.");
+    } finally {
+      setVideoUploadLoading(false);
+      if (videoFileInputRef.current) {
+        videoFileInputRef.current.value = "";
+      }
+    }
+  };
+
   const handleCollectionChange = (collName: string) => {
     setCollection(collName);
     const found = COLLECTIONS.find((c) => c.name === collName);
@@ -398,6 +463,16 @@ export function ProductFormModal({
         collection,
         collectionSlug,
         gender,
+        atmosphere,
+        videoUrl: useCategoryDefaultVideo ? "" : videoUrl.trim(),
+        videoConfig: {
+          videoUrl: useCategoryDefaultVideo ? "" : videoUrl.trim(),
+          useCategoryDefault: useCategoryDefaultVideo,
+          overlayDarkness,
+          opacity: videoOpacity,
+          displayMode,
+          positioning: "center",
+        },
         waveExpression,
         wavePalette,
         fragranceFamily,
@@ -610,6 +685,61 @@ export function ProductFormModal({
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            {/* ATMOSPHÈRE DU PARFUM — CHAMP OBLIGATOIRE */}
+            <div className="pt-3 border-t border-[#541B28]/10 space-y-2">
+              <label className="text-[11px] text-[#541B28] uppercase tracking-wider block font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span>Atmosphère & Collection du Parfum * (Champ Obligatoire)</span>
+                <span className="text-[10px] text-[#756B6D] font-normal lowercase first-letter:uppercase">
+                  Définit l&apos;ambiance cinématographique, le fond vidéo et les palettes du flacon
+                </span>
+              </label>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+                {(["CLASS", "LUXE", "SAUVAGE", "FÉMININE & SEXY"] as PerfumeAtmosphere[]).map((atmKey) => {
+                  const atm = ATMOSPHERES[atmKey];
+                  const isSelected = atmosphere === atmKey;
+                  return (
+                    <button
+                      type="button"
+                      key={atmKey}
+                      onClick={() => setAtmosphere(atmKey)}
+                      className={`p-3.5 rounded-2xl text-left border-2 transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between ${
+                        isSelected
+                          ? "border-[#541B28] bg-white shadow-md ring-2 ring-[#541B28]/20"
+                          : "border-[#541B28]/15 bg-[#FAF7F2] hover:border-[#541B28]/40 hover:bg-white"
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span
+                            className="font-cinzel text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md text-white"
+                            style={{ backgroundColor: atm.palette.primary }}
+                          >
+                            {atm.name}
+                          </span>
+                          {isSelected && (
+                            <div className="w-5 h-5 rounded-full bg-[#541B28] text-white flex items-center justify-center shrink-0">
+                              <Check className="w-3 h-3" />
+                            </div>
+                          )}
+                        </div>
+                        <p className="font-serif text-xs font-semibold text-[#23181A] mb-1 leading-snug">
+                          {atm.tagline}
+                        </p>
+                        <p className="text-[10px] text-[#756B6D] line-clamp-2 leading-relaxed">
+                          {atm.description}
+                        </p>
+                      </div>
+                      <div className="mt-2.5 pt-2 border-t border-[#541B28]/10 flex items-center justify-between text-[9px] text-[#756B6D] font-mono">
+                        <span>Palette :</span>
+                        <span className="font-semibold text-[#23181A]">{atm.palette.name}</span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -1140,11 +1270,235 @@ export function ProductFormModal({
             </div>
           </div>
 
-          {/* SECTION 6: PODIUM & VEDETTE */}
+          {/* SECTION 6: EXPÉRIENCE VIDÉO CINÉMATIQUE & ARRIÈRE-PLAN */}
+          <div className="bg-white rounded-2xl p-6 border border-[#541B28]/15 shadow-sm space-y-6">
+            <div className="flex items-center gap-2 pb-2 border-b border-[#541B28]/10">
+              <Film className="w-5 h-5 text-[#C7A66A]" />
+              <div>
+                <h3 className="font-serif text-lg text-[#23181A] font-semibold">
+                  6. Expérience Vidéo Cinématique & Arrière-plan
+                </h3>
+                <p className="text-[11px] text-[#756B6D]">
+                  Contrôlez l&apos;arrière-plan vidéo immersif de la fiche produit. Choisissez la vidéo par défaut de l&apos;atmosphère ou téléversez une vidéo MP4/WebM sur-mesure.
+                </p>
+              </div>
+            </div>
+
+            {/* Video Source Choice */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setUseCategoryDefaultVideo(true)}
+                className={`p-4 rounded-xl text-left border-2 transition-all cursor-pointer ${
+                  useCategoryDefaultVideo
+                    ? "border-[#541B28] bg-[#FAF7F2] shadow-xs"
+                    : "border-[#541B28]/15 bg-white hover:border-[#541B28]/40"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-cinzel text-xs font-bold text-[#541B28] uppercase">
+                    1. Vidéo Automatique selon l&apos;Atmosphère
+                  </span>
+                  {useCategoryDefaultVideo && <Check className="w-4 h-4 text-[#541B28]" />}
+                </div>
+                <p className="text-[10px] text-[#756B6D]">
+                  Utilise automatiquement la vidéo cinématique liée à l&apos;atmosphère sélectionnée (
+                  <strong>{atmosphere}</strong>).
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setUseCategoryDefaultVideo(false)}
+                className={`p-4 rounded-xl text-left border-2 transition-all cursor-pointer ${
+                  !useCategoryDefaultVideo
+                    ? "border-[#541B28] bg-[#FAF7F2] shadow-xs"
+                    : "border-[#541B28]/15 bg-white hover:border-[#541B28]/40"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-cinzel text-xs font-bold text-[#541B28] uppercase">
+                    2. Vidéo Personnalisée pour ce Flacon
+                  </span>
+                  {!useCategoryDefaultVideo && <Check className="w-4 h-4 text-[#541B28]" />}
+                </div>
+                <p className="text-[10px] text-[#756B6D]">
+                  Téléversez un fichier vidéo MP4/WebM dédié ou renseignez une URL directe de vidéo.
+                </p>
+              </button>
+            </div>
+
+            {/* Custom Video Controls (if selected) */}
+            {!useCategoryDefaultVideo && (
+              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4 animate-in fade-in">
+                <div>
+                  <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                    Téléverser un fichier vidéo (MP4, WebM jusqu&apos;à 50 Mo)
+                  </span>
+                  <input
+                    ref={videoFileInputRef}
+                    type="file"
+                    accept="video/mp4,video/webm"
+                    onChange={handleVideoUpload}
+                    className="hidden"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => videoFileInputRef.current?.click()}
+                      disabled={videoUploadLoading}
+                      className="flex-1 py-2.5 px-4 rounded-xl border-2 border-dashed border-[#541B28]/30 hover:border-[#541B28] bg-white text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                    >
+                      {videoUploadLoading ? (
+                        <>
+                          <span className="w-4 h-4 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin" />
+                          <span>Téléversement en cours...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Video className="w-4 h-4 text-[#C7A66A]" />
+                          <span>{videoUrl ? "Remplacer la vidéo MP4/WebM" : "Choisir un fichier vidéo"}</span>
+                        </>
+                      )}
+                    </button>
+
+                    {videoUrl && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setVideoUrl("");
+                          setUseCategoryDefaultVideo(true);
+                        }}
+                        className="p-2.5 text-rose-600 hover:text-white hover:bg-rose-600 rounded-xl border border-rose-200 transition-colors cursor-pointer"
+                        title="Supprimer la vidéo personnalisée"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                    Ou renseigner une URL de vidéo externe (MP4 / WebM direct)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="https://.../video.mp4 ou /videos/mon-flacon.mp4"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    className="w-full bg-white border border-[#541B28]/20 rounded-xl px-3 py-2 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Video Live Preview */}
+            <div className="p-4 bg-black rounded-2xl overflow-hidden border border-[#541B28]/20 space-y-3">
+              <div className="flex items-center justify-between text-white/80">
+                <span className="font-cinzel text-[11px] uppercase tracking-wider font-bold flex items-center gap-2">
+                  <Play className="w-3.5 h-3.5 text-[#DFC68B]" />
+                  Aperçu en Direct du Fond Vidéo ({useCategoryDefaultVideo ? `Par défaut : ${atmosphere}` : "Personnalisée"})
+                </span>
+                <span className="text-[10px] text-[#DFC68B] font-mono">
+                  Opacité : {Math.round(videoOpacity * 100)}% • Obscurité : {Math.round(overlayDarkness * 100)}%
+                </span>
+              </div>
+
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-[#0A0A0A] border border-white/10">
+                <video
+                  key={useCategoryDefaultVideo ? ATMOSPHERES[atmosphere]?.defaultVideoUrl : videoUrl}
+                  src={
+                    useCategoryDefaultVideo
+                      ? ATMOSPHERES[atmosphere]?.defaultVideoUrl
+                      : videoUrl || ATMOSPHERES[atmosphere]?.defaultVideoUrl
+                  }
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                  className={`w-full h-full object-${displayMode}`}
+                  style={{
+                    opacity: videoOpacity,
+                  }}
+                />
+                {/* Simulated Overlay on top of preview */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    backgroundColor: `rgba(0, 0, 0, ${overlayDarkness})`,
+                  }}
+                />
+                <div className="absolute bottom-3 left-3 pointer-events-none z-10 px-3 py-1 rounded-full bg-black/60 border border-white/20 text-white text-[10px] font-cinzel">
+                  {name || "Nom du Flacon"} • {atmosphere}
+                </div>
+              </div>
+            </div>
+
+            {/* Sliders for Darkness, Opacity & Display Mode */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[10px] text-[#756B6D] uppercase tracking-wider font-bold">
+                    Obscurité du voile (Contraste texte)
+                  </label>
+                  <span className="text-[10px] font-mono font-bold text-[#541B28]">
+                    {Math.round(overlayDarkness * 100)}%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="0.9"
+                  step="0.05"
+                  value={overlayDarkness}
+                  onChange={(e) => setOverlayDarkness(parseFloat(e.target.value))}
+                  className="w-full accent-[#541B28] cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[10px] text-[#756B6D] uppercase tracking-wider font-bold">
+                    Opacité de la Vidéo
+                  </label>
+                  <span className="text-[10px] font-mono font-bold text-[#541B28]">
+                    {Math.round(videoOpacity * 100)}%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0.2"
+                  max="1.0"
+                  step="0.05"
+                  value={videoOpacity}
+                  onChange={(e) => setVideoOpacity(parseFloat(e.target.value))}
+                  className="w-full accent-[#541B28] cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                  Mode d&apos;Affichage
+                </label>
+                <select
+                  value={displayMode}
+                  onChange={(e) => setDisplayMode(e.target.value as any)}
+                  className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-3 py-2 text-xs text-[#23181A] font-medium focus:outline-none focus:border-[#541B28]"
+                >
+                  <option value="cover">Plein écran immersif (Cover)</option>
+                  <option value="contain">Conserver les proportions (Contain)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION 7: PODIUM & VEDETTE */}
           <div className="bg-white rounded-2xl p-6 border border-[#541B28]/15 shadow-sm space-y-4">
             <div className="flex items-center gap-2 pb-2 border-b border-[#541B28]/10">
               <Award className="w-4 h-4 text-[#C7A66A]" />
-              <h3 className="font-serif text-lg text-[#23181A] font-semibold">6. Visibilité & Podium Bestsellers</h3>
+              <h3 className="font-serif text-lg text-[#23181A] font-semibold">7. Visibilité & Podium Bestsellers</h3>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">

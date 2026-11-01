@@ -1038,7 +1038,17 @@ export default function AdminDashboardPage() {
                             <span className="font-serif text-sm text-[#23181A] font-semibold block">
                               {prod.name}
                             </span>
-                            <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
+                            <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                              <span className="text-[10px] text-[#541B28] font-bold">{prod.collection}</span>
+                              <span className="text-[9px] px-1.5 py-0.5 rounded font-cinzel font-bold bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28]">
+                                {prod.atmosphere || "LUXE"}
+                              </span>
+                              {prod.videoUrl && (
+                                <span className="text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                  Vidéo Dédiée
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="py-3">
                             <span className="text-[#23181A] font-medium block">{prod.gender || "Unisexe"}</span>

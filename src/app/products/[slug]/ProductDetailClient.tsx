@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,25 +10,38 @@ import {
   Truck,
   QrCode,
   ArrowRight,
+  Zap,
+  Crown,
+  Gem,
+  Heart,
+  Sparkles,
+  Film,
 } from "lucide-react";
 import { GoldStarLozenge, LuxuryDrop } from "@/components/ui/LuxuryIcons";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { PRODUCTS, getAllProducts } from "@/lib/catalogue";
-import { Product } from "@/types";
+import { Product, PerfumeAtmosphere } from "@/types";
 import { formatTND, cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useNotification } from "@/context/NotificationContext";
 import { WaveCanvas } from "@/components/brand/WaveCanvas";
 import { WaveMonogram } from "@/components/brand/WaveMonogram";
-import { AmbientWaveBackdrop } from "@/components/brand/AmbientWaveBackdrop";
 import { AtomizerSpray } from "@/components/brand/AtomizerSpray";
 import { NoteAccordModal } from "@/components/discovery/NoteAccordModal";
 import { AuthenticityCertificateModal } from "@/components/products/AuthenticityCertificateModal";
 import { StickyPurchaseBar } from "@/components/products/StickyPurchaseBar";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocalizedProduct, getLocalizedProducts } from "@/lib/i18n/catalogueLocale";
+import { CinematicAtmosphereBackground } from "@/components/products/CinematicAtmosphereBackground";
+import { getAtmosphereConfig } from "@/lib/atmosphere";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface ProductDetailClientProps {
   product?: Product;
@@ -41,34 +54,33 @@ export function ProductDetailClient({
   initialProduct,
   slug,
 }: ProductDetailClientProps) {
-  const [baseProduct, setBaseProduct] = useState<Product | null>(directProduct || initialProduct || null);
+  const [baseProduct, setBaseProduct] = useState<Product | null>(
+    directProduct || initialProduct || null
+  );
   const [isLoaded, setIsLoaded] = useState(false);
 
-  React.useEffect(() => {
-    if (!slug) return;
-    const local = getAllProducts();
-    const foundLocal = local.find((p) => p.slug === slug);
-    if (foundLocal) {
-      setBaseProduct(foundLocal);
-      setSelectedImage(foundLocal.images.main);
+  // GSAP animation refs
+  const pageContainerRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const bottleWrapperRef = useRef<HTMLDivElement>(null);
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const pricingCardRef = useRef<HTMLDivElement>(null);
+  const pyramidSectionRef = useRef<HTMLDivElement>(null);
+  const atmosphereSectionRef = useRef<HTMLDivElement>(null);
+
+  // If directly rendered without full props, hydrate from catalogue
+  useEffect(() => {
+    if (!baseProduct && slug) {
+      const all = getAllProducts();
+      const found = all.find((p) => p.slug === slug || p.id === slug);
+      if (found) {
+        setBaseProduct(found);
+      }
       setIsLoaded(true);
     } else {
-      fetch(`/api/products?slug=${encodeURIComponent(slug)}`)
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data) => {
-          if (data?.product) {
-            setBaseProduct(data.product);
-            setSelectedImage(data.product.images.main);
-          } else {
-            setBaseProduct(null);
-          }
-          setIsLoaded(true);
-        })
-        .catch(() => {
-          setIsLoaded(true);
-        });
+      setIsLoaded(true);
     }
-  }, [slug]);
+  }, [slug, baseProduct]);
 
   const router = useRouter();
   const { t, locale } = useLanguage();
@@ -86,30 +98,122 @@ export function ProductDetailClient({
       setSelectedImage(product.images.main);
     }
   }, [product?.id, product?.images?.main]);
+
   const [quantity] = useState(1);
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [selectedLayer, setSelectedLayer] = useState<"tête" | "cœur" | "fond" | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
 
+  // Resolve Atmosphere
+  const atmosphere: PerfumeAtmosphere = (product?.atmosphere as PerfumeAtmosphere) || "LUXE";
+  const atmConfig = getAtmosphereConfig(atmosphere);
+
+  // GSAP ScrollTrigger & Entrance Animation
+  useEffect(() => {
+    if (!product) return;
+
+    // Check reduced motion preference
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Initial Hero Entrance Animation
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      if (bottleWrapperRef.current) {
+        tl.fromTo(
+          bottleWrapperRef.current,
+          { scale: 0.84, y: 70, opacity: 0, rotationY: -8 },
+          { scale: 1, y: 0, opacity: 1, rotationY: 0, duration: 1.5 }
+        );
+      }
+
+      if (heroTextRef.current) {
+        tl.fromTo(
+          heroTextRef.current.children,
+          { y: 35, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.12, duration: 1 },
+          "-=1.1"
+        );
+      }
+
+      // 2. Parallax Bottle Movement on Scroll
+      if (bottleWrapperRef.current && heroSectionRef.current) {
+        gsap.to(bottleWrapperRef.current, {
+          scrollTrigger: {
+            trigger: heroSectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2,
+          },
+          y: 75,
+          scale: 0.95,
+          rotation: 2,
+        });
+      }
+
+      // 3. Progressive Scroll Reveal for Atmosphere Section
+      if (atmosphereSectionRef.current) {
+        gsap.fromTo(
+          atmosphereSectionRef.current,
+          { y: 50, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: atmosphereSectionRef.current,
+              start: "top 85%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      // 4. Progressive Scroll Reveal for Fragrance Pyramid
+      if (pyramidSectionRef.current) {
+        gsap.fromTo(
+          pyramidSectionRef.current.querySelectorAll(".pyramid-card"),
+          { y: 50, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: pyramidSectionRef.current,
+              start: "top 80%",
+            },
+            y: 0,
+            opacity: 1,
+            stagger: 0.2,
+            duration: 1.1,
+            ease: "power2.out",
+          }
+        );
+      }
+    });
+
+    return () => ctx.revert();
+  }, [product?.id]);
+
   if (!product) {
     if (!isLoaded) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-[#23181A]">
-          <div className="w-10 h-10 border-2 border-[#541B28] border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28]">Chargement du flacon...</p>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#080604] text-[#FAF7F2]">
+          <div className="w-10 h-10 border-2 border-[#DFC68B] border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="font-cinzel text-xs uppercase tracking-luxury text-[#DFC68B]">
+            Chargement de l&apos;atmosphère du flacon...
+          </p>
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#23181A]">
+      <div className="min-h-screen flex flex-col bg-[#0A0B0E] text-[#FAF7F2]">
         <Navbar />
         <main className="flex-1 flex flex-col items-center justify-center p-6 text-center pt-32 pb-24">
-          <div className="w-16 h-16 rounded-full bg-[#541B28]/10 text-[#541B28] flex items-center justify-center mb-4">
-            <GoldStarLozenge size={24} className="text-[#C7A66A]" />
+          <div className="w-16 h-16 rounded-full bg-[#541B28]/20 text-[#DFC68B] flex items-center justify-center mb-4 border border-[#DFC68B]/30">
+            <GoldStarLozenge size={24} className="text-[#DFC68B]" />
           </div>
-          <h1 className="font-serif text-3xl text-[#541B28] mb-2">Flacon Non Référencé</h1>
-          <p className="text-sm text-[#756B6D] max-w-md mb-6">
+          <h1 className="font-serif text-3xl text-[#DFC68B] mb-2">Flacon Non Référencé</h1>
+          <p className="text-sm text-[#A8989C] max-w-md mb-6">
             Ce parfum n&apos;est plus disponible dans le catalogue actuel de la Maison Lévania.
           </p>
           <Link
@@ -143,8 +247,7 @@ export function ProductDetailClient({
     product.images.bottleOnly,
   ];
   const galleryImages = rawGallery.filter(
-    (img, index, self): img is string =>
-      Boolean(img) && self.indexOf(img) === index
+    (img, index, self): img is string => Boolean(img) && self.indexOf(img) === index
   );
 
   const handleAddToCart = () => {
@@ -158,9 +261,10 @@ export function ProductDetailClient({
       unitPriceMillimes: activeFormat.priceMillimes,
       quantity,
     });
+    setIsCartOpen(true);
     showToast(
-      t("toast.added_to_cart", "Flacon ajouté à votre panier"),
-      `${product.name} (${selectedSize}) x${quantity} — ${formatTND(activeFormat.priceTND * quantity)}`,
+      "Flacon Ajouté au Panier",
+      `${product.name} (${selectedSize}) a été déposé dans votre panier avec soin.`,
       "luxury"
     );
   };
@@ -181,50 +285,84 @@ export function ProductDetailClient({
   };
 
   const relatedProducts = getLocalizedProducts(
-    getAllProducts().filter(
-      (p) => p.id !== product.id && p.collectionSlug === product.collectionSlug
-    ).slice(0, 3),
+    getAllProducts()
+      .filter((p) => p.id !== product.id && p.collectionSlug === product.collectionSlug)
+      .slice(0, 3),
     locale
   );
 
+  const getAtmosphereIcon = () => {
+    switch (atmosphere) {
+      case "SAUVAGE":
+        return <Zap className="w-3.5 h-3.5 text-[#38BDF8]" />;
+      case "LUXE":
+        return <Crown className="w-3.5 h-3.5 text-[#DFC68B]" />;
+      case "CLASS":
+        return <Gem className="w-3.5 h-3.5 text-[#E2E8F0]" />;
+      case "FÉMININE & SEXY":
+        return <Heart className="w-3.5 h-3.5 text-[#FB7185]" />;
+      default:
+        return <Sparkles className="w-3.5 h-3.5 text-[#DFC68B]" />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] dark:bg-[#0E0709] text-[#23181A] dark:text-[#FAF7F2] selection:bg-[#541B28] selection:text-[#FAF7F2] relative">
-      {/* Specific Transparent Fluid Wave flowing in the background */}
-      <AmbientWaveBackdrop expression={waveExpression} opacity={0.32} />
+    <div
+      ref={pageContainerRef}
+      className="min-h-screen flex flex-col text-[#FAF7F2] relative selection:bg-[#541B28] selection:text-[#FAF7F2] overflow-x-hidden"
+      style={{ backgroundColor: atmConfig.palette.background }}
+    >
+      {/* 1. CINEMATIC FULL-VIEWPORT VIDEO BACKGROUND */}
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0">
+        <CinematicAtmosphereBackground
+          atmosphere={atmosphere}
+          videoUrl={product.videoUrl}
+          videoConfig={product.videoConfig}
+          posterImage={product.images.main}
+          productName={product.name}
+        />
+      </div>
 
       <Navbar />
 
-      <main className="flex-1 pt-36 sm:pt-44 pb-28 sm:pb-36 relative z-10">
+      <main className="flex-1 pt-32 sm:pt-40 pb-28 sm:pb-36 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumbs & Active Transparent Wave Indicator */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
-            <nav className="font-cinzel text-[11px] tracking-luxury text-[#756B6D] dark:text-[#A8989C] flex items-center gap-2 uppercase font-medium">
-              <Link href="/" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">{t("nav.home", "Accueil")}</Link>
+          {/* Breadcrumbs & Active Atmospheric Pill */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
+            <nav className="font-cinzel text-[11px] tracking-luxury text-white/70 flex items-center gap-2 uppercase font-medium">
+              <Link href="/" className="hover:text-white transition-colors">
+                {t("nav.home", "Accueil")}
+              </Link>
               <span>/</span>
-              <Link href="/shop" className="hover:text-[#541B28] dark:hover:text-[#DFC68B]">{t("nav.shop", "Boutique")}</Link>
+              <Link href="/shop" className="hover:text-white transition-colors">
+                {t("nav.shop", "Boutique")}
+              </Link>
               <span>/</span>
-              <span className="text-[#541B28] dark:text-[#DFC68B] font-bold">{product.name}</span>
+              <span className="text-white font-bold" style={{ color: atmConfig.palette.primary }}>
+                {product.name}
+              </span>
             </nav>
 
-            <div className="luxury-pill inline-flex items-center gap-2.5 self-start sm:self-auto">
-              <WaveMonogram size="xs" variant={waveExpression === "soft" ? "burgundy" : "gold"} />
-              <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
-                {t("product.wave_bg_label", "Onde en Fond :")}{" "}
-                <span className="text-[#C7A66A]">
-                  {waveExpression === "soft"
-                    ? t("product.wave_soyeuse", "Onde Soyeuse Diaphane")
-                    : waveExpression === "intense"
-                    ? t("product.wave_sombre", "Onde Sombre & Boisée")
-                    : t("product.wave_signature", "Vague Signature Solaire")}
-                </span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-white/20 backdrop-blur-md shadow-lg self-start sm:self-auto">
+              {getAtmosphereIcon()}
+              <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-white/90">
+                Atmosphère :{" "}
+                <span style={{ color: atmConfig.palette.primary }}>{atmConfig.name}</span>
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-24">
-            {/* Left: Product Images Gallery */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white dark:bg-[#180B10] border border-[#541B28]/20 dark:border-[#C7A66A]/30 shadow-2xl">
+          {/* HERO GRID: Bottle Left, Luxury Details Right */}
+          <div
+            ref={heroSectionRef}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-20 sm:mb-28 items-start"
+          >
+            {/* Left: Product Images Gallery with GSAP 3D entrance */}
+            <div ref={bottleWrapperRef} className="lg:col-span-7 space-y-4">
+              <div
+                className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-black/40 backdrop-blur-md border shadow-2xl transition-all"
+                style={{ borderColor: atmConfig.palette.border }}
+              >
                 <Image
                   src={selectedImage}
                   alt={product.name}
@@ -233,11 +371,20 @@ export function ProductDetailClient({
                   unoptimized={selectedImage.startsWith("data:")}
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#23181A]/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
 
-                <span className="absolute top-5 left-5 font-cinzel text-[10px] uppercase tracking-luxury font-bold px-4 py-1.5 rounded-full bg-white/95 dark:bg-[#180B10]/95 border border-[#541B28]/25 dark:border-[#C7A66A]/30 text-[#541B28] dark:text-[#DFC68B] shadow-sm backdrop-blur-md">
-                  {product.collection}
-                </span>
+                {/* Collection & Atmosphere pill */}
+                <div className="absolute top-5 left-5 flex items-center gap-2">
+                  <span className="font-cinzel text-[10px] uppercase tracking-luxury font-bold px-3.5 py-1.5 rounded-full bg-black/75 border border-white/20 text-white shadow-md backdrop-blur-md">
+                    {product.collection}
+                  </span>
+                  <span
+                    className="font-cinzel text-[9px] uppercase tracking-luxury font-bold px-3 py-1 rounded-full text-black shadow-md backdrop-blur-md"
+                    style={{ backgroundColor: atmConfig.palette.primary }}
+                  >
+                    {atmosphere}
+                  </span>
+                </div>
 
                 {/* Interactive Atomizer Vaporizer Action */}
                 <div className="absolute bottom-5 right-5 z-20">
@@ -246,21 +393,26 @@ export function ProductDetailClient({
               </div>
 
               {/* Thumbnails */}
-              <div className="flex gap-4">
+              <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                 {galleryImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(img)}
                     className={cn(
-                      "relative w-20 h-24 rounded-2xl overflow-hidden border transition-all cursor-pointer bg-white shadow-sm",
+                      "relative w-20 h-24 rounded-2xl overflow-hidden border transition-all cursor-pointer bg-black/40 backdrop-blur-md shrink-0 shadow-sm",
                       selectedImage === img
-                        ? "border-[#541B28] ring-2 ring-[#541B28]/30 scale-105"
-                        : "border-[#541B28]/15 opacity-70 hover:opacity-100"
+                        ? "scale-105 ring-2"
+                        : "opacity-70 hover:opacity-100 border-white/15"
                     )}
+                    style={{
+                      borderColor: selectedImage === img ? atmConfig.palette.primary : undefined,
+                      boxShadow:
+                        selectedImage === img ? `0 0 15px ${atmConfig.palette.glow}` : undefined,
+                    }}
                   >
                     <Image
                       src={img}
-                      alt={`Aperçu ${i}`}
+                      alt={`Aperçu ${i + 1}`}
                       fill
                       unoptimized={img.startsWith("data:")}
                       className="object-cover"
@@ -271,47 +423,65 @@ export function ProductDetailClient({
             </div>
 
             {/* Right: Product Details & Purchase Controls */}
-            <div className="lg:col-span-5 space-y-6">
+            <div ref={heroTextRef} className="lg:col-span-5 space-y-6">
               <div>
-                <span className="font-cinzel text-[11px] uppercase tracking-grand text-[#541B28] dark:text-[#DFC68B] font-bold block mb-1">
+                <span
+                  className="font-cinzel text-[11px] uppercase tracking-grand font-bold block mb-1"
+                  style={{ color: atmConfig.palette.primary }}
+                >
                   {product.subtitle}
                 </span>
-                <h1 className="font-serif text-fluid-section text-burgundy-gradient font-light mt-1 mb-3">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight">
                   {product.name}
                 </h1>
-                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-[#180B10]/80 border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-xs">
-                  <GoldStarLozenge size={12} className="text-[#C7A66A]" />
-                  <span className="font-cinzel text-[10px] tracking-wider uppercase text-[#541B28] dark:text-[#DFC68B] font-bold">
+                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 shadow-xs mt-3">
+                  <GoldStarLozenge size={12} className="text-[#DFC68B]" />
+                  <span className="font-cinzel text-[10px] tracking-wider uppercase text-white/90 font-bold">
                     {t("product.certified_badge", "Haute Parfumerie Artisanale • Flacon Scellé & Traçable")}
                   </span>
                 </div>
               </div>
 
-              {/* Price & Stock */}
-              <div className="p-5 rounded-2xl bg-white/90 dark:bg-[#180B10]/90 backdrop-blur-md border border-[#541B28]/15 dark:border-[#C7A66A]/25 shadow-sm flex items-center justify-between">
+              {/* Price & Stock Card */}
+              <div
+                ref={pricingCardRef}
+                className="p-5 rounded-2xl bg-black/55 backdrop-blur-xl border shadow-xl flex items-center justify-between"
+                style={{ borderColor: atmConfig.palette.border }}
+              >
                 <div>
-                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-[#756B6D] dark:text-[#A8989C] block">{t("product.price_label", "Prix Flacon")}</span>
-                  <span className="font-serif text-2xl sm:text-3xl text-[#541B28] dark:text-[#DFC68B] font-medium">
+                  <span className="font-cinzel text-[10px] tracking-luxury uppercase text-white/60 block">
+                    {t("product.price_label", "Prix Flacon")}
+                  </span>
+                  <span
+                    className="font-serif text-2xl sm:text-3xl font-medium block mt-0.5"
+                    style={{ color: atmConfig.palette.primary }}
+                  >
                     {formatTND(activeFormat.priceTND)}
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="font-cinzel text-xs text-[#434B36] dark:text-[#C7A66A] flex items-center gap-1.5 font-bold uppercase tracking-luxury">
-                    <Check className="w-4 h-4 text-[#434B36] dark:text-[#C7A66A]" />
-                    {t("product.in_stock", "En stock")} ({activeFormat.stock} {t("product.available", "disponibles")})
+                  <span className="font-cinzel text-xs text-emerald-400 flex items-center gap-1.5 font-bold uppercase tracking-luxury">
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    {t("product.in_stock", "En stock")} ({activeFormat.stock}{" "}
+                    {t("product.available", "disponibles")})
                   </span>
-                  <span className="font-mono text-[10px] text-[#756B6D] dark:text-[#A8989C] mt-0.5 block">SKU: {activeFormat.sku}</span>
+                  <span className="font-mono text-[10px] text-white/60 mt-0.5 block">
+                    SKU: {activeFormat.sku}
+                  </span>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-sm text-[#5A4B4E] dark:text-[#D8CCD0] leading-relaxed font-light">
+              <p className="text-sm text-white/80 leading-relaxed font-light">
                 {product.description}
               </p>
 
               {/* Format Selection (50ml / 100ml) */}
               <div className="space-y-2.5">
-                <span className="font-cinzel text-xs uppercase tracking-luxury text-[#541B28] dark:text-[#DFC68B] font-bold block">
+                <span
+                  className="font-cinzel text-xs uppercase tracking-luxury font-bold block"
+                  style={{ color: atmConfig.palette.primary }}
+                >
                   {t("product.size_label", "Contenance du Flacon")}
                 </span>
                 <div className="grid grid-cols-2 gap-3.5">
@@ -320,73 +490,165 @@ export function ProductDetailClient({
                       key={fmt.size}
                       onClick={() => setSelectedSize(fmt.size)}
                       className={cn(
-                        "p-4 rounded-2xl border text-center transition-all cursor-pointer",
+                        "p-4 rounded-2xl border text-center transition-all cursor-pointer backdrop-blur-md",
                         selectedSize === fmt.size
-                          ? "bg-[#541B28]/10 dark:bg-[#C7A66A]/15 border-[#541B28] dark:border-[#DFC68B] text-[#23181A] dark:text-[#FAF7F2] shadow-md ring-1 ring-[#541B28]/30 dark:ring-[#DFC68B]/30 backdrop-blur-sm"
-                          : "bg-white/80 dark:bg-[#180B10]/80 backdrop-blur-sm border-[#541B28]/15 dark:border-[#C7A66A]/20 text-[#5A4B4E] dark:text-[#D8CCD0] hover:border-[#541B28] dark:hover:border-[#DFC68B] hover:bg-white dark:hover:bg-[#1C0D15]"
+                          ? "bg-white/15 text-white shadow-lg ring-1"
+                          : "bg-black/35 border-white/15 text-white/70 hover:border-white/40 hover:bg-black/50"
                       )}
+                      style={{
+                        borderColor: selectedSize === fmt.size ? atmConfig.palette.primary : undefined,
+                      }}
                     >
-                      <span className="font-cinzel text-sm font-bold tracking-luxury block">{fmt.size}</span>
-                      <span className="font-serif text-sm text-[#541B28] dark:text-[#DFC68B] font-bold mt-1 block">{formatTND(fmt.priceTND)}</span>
+                      <span className="font-cinzel text-sm font-bold tracking-luxury block">
+                        {fmt.size}
+                      </span>
+                      <span
+                        className="font-serif text-sm font-bold mt-1 block"
+                        style={{ color: atmConfig.palette.primary }}
+                      >
+                        {formatTND(fmt.priceTND)}
+                      </span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* CTAs: Add to cart & Buy Now */}
-              <div className="space-y-3 pt-3">
+              <div className="space-y-3 pt-2">
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-secondary flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-cinzel text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-lg"
                   >
-                    <ShoppingBag className="w-4 h-4 text-[#C7A66A]" />
+                    <ShoppingBag className="w-4 h-4 text-[#DFC68B]" />
                     <span>{t("nav.cart", "Ajouter au Panier")}</span>
                   </button>
 
                   <button
                     onClick={handleBuyNow}
-                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl luxury-btn-primary flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:flex-1 py-4 px-4 sm:px-6 rounded-2xl text-black font-cinzel text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-2xl"
+                    style={{
+                      backgroundColor: atmConfig.palette.primary,
+                      boxShadow: `0 0 25px ${atmConfig.palette.glow}`,
+                    }}
                   >
                     <span>{t("product.buy_now", "Acheter Immédiatement")}</span>
-                    <ArrowRight className="w-4 h-4 text-[#DFC68B] rtl:rotate-180" />
+                    <ArrowRight className="w-4 h-4 text-black rtl:rotate-180" />
                   </button>
                 </div>
               </div>
 
               {/* Trust Badges */}
-              <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-[#541B28]/15 space-y-2.5 text-xs text-[#5A4B4E] shadow-sm">
-                <div className="flex items-center gap-2 text-[#23181A]">
-                  <Truck className="w-4 h-4 text-[#541B28] shrink-0" />
-                  <span>{t("product.free_delivery_notice", "Livraison express en Tunisie sous 24h • 48h (Offerte dès 200 TND)")}</span>
+              <div
+                className="p-4 rounded-2xl bg-black/55 backdrop-blur-xl border space-y-2.5 text-xs text-white/80 shadow-lg"
+                style={{ borderColor: atmConfig.palette.border }}
+              >
+                <div className="flex items-center gap-2 text-white/90">
+                  <Truck className="w-4 h-4 shrink-0 text-[#DFC68B]" />
+                  <span>
+                    {t(
+                      "product.free_delivery_notice",
+                      "Livraison express en Tunisie sous 24h • 48h (Offerte dès 200 TND)"
+                    )}
+                  </span>
                 </div>
-                
+
                 {/* Interactive Certificate Trigger */}
                 <button
                   type="button"
                   onClick={() => setIsCertOpen(true)}
-                  className="w-full flex items-center justify-between text-left rtl:text-right p-1.5 -mx-1.5 rounded-xl hover:bg-[#541B28]/5 dark:hover:bg-[#C7A66A]/10 transition-colors cursor-pointer group"
+                  className="w-full flex items-center justify-between text-left rtl:text-right p-1.5 -mx-1.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
                 >
-                  <div className="flex items-center gap-2 text-[#23181A]">
-                    <QrCode className="w-4 h-4 text-[#541B28] shrink-0" />
-                    <span>{t("product.certified_notice", "Flacon certifié avec QR Code de traçabilité officiel Lévania")}</span>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <QrCode className="w-4 h-4 text-[#DFC68B] shrink-0" />
+                    <span>
+                      {t(
+                        "product.certified_notice",
+                        "Flacon certifié avec QR Code de traçabilité officiel Lévania"
+                      )}
+                    </span>
                   </div>
-                  <span className="text-[11px] font-bold text-[#541B28] underline underline-offset-2 group-hover:text-[#66182C] shrink-0">
+                  <span
+                    className="text-[11px] font-bold underline underline-offset-2 shrink-0"
+                    style={{ color: atmConfig.palette.primary }}
+                  >
                     {t("product.consult", "Consulter")}
                   </span>
                 </button>
 
-                <div className="flex items-center gap-2.5 text-[#23181A]">
-                  <GoldStarLozenge size={13} className="text-[#C7A66A] shrink-0" />
-                  <span>{t("product.luck_points_prefix", "Rapporte")} +{Math.floor(activeFormat.priceTND / 10)} {t("product.luck_points_suffix", "Luck pour la Roue du Destin")}</span>
+                <div className="flex items-center gap-2.5 text-white/90">
+                  <GoldStarLozenge size={13} className="text-[#DFC68B] shrink-0" />
+                  <span>
+                    {t("product.luck_points_prefix", "Rapporte")} +
+                    {Math.floor(activeFormat.priceTND / 10)}{" "}
+                    {t("product.luck_points_suffix", "Luck pour la Roue du Destin")}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Wave Olfactory Diffusion Section */}
-          <div className="rounded-3xl bg-white border border-[#541B28]/20 p-6 sm:p-8 mb-16 shadow-lg relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-[#541B28]/10">
+          {/* 2. ATMOSPHERE CINEMATIC SHOWCASE BANNER */}
+          <div
+            ref={atmosphereSectionRef}
+            className="rounded-3xl p-6 sm:p-10 mb-16 shadow-2xl relative overflow-hidden backdrop-blur-xl border"
+            style={{
+              backgroundColor: atmConfig.palette.cardBg,
+              borderColor: atmConfig.palette.border,
+            }}
+          >
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="space-y-2 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-white/15">
+                  <Film className="w-3.5 h-3.5 text-[#DFC68B]" />
+                  <span className="font-cinzel text-[10px] tracking-luxury uppercase font-bold text-white">
+                    Univers Cinématographique • {atmConfig.name}
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl sm:text-3xl text-white font-light">
+                  {atmConfig.tagline}
+                </h3>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-light">
+                  {atmConfig.description}
+                </p>
+                <div className="pt-2 flex flex-wrap gap-2 text-[10px]">
+                  {atmConfig.keywords.map((kw, i) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-white/80 uppercase font-mono"
+                    >
+                      #{kw}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="shrink-0 p-4 rounded-2xl bg-black/40 border border-white/15 text-center space-y-1">
+                <span className="font-cinzel text-[10px] uppercase text-white/60 block">
+                  Identité Visuelle
+                </span>
+                <span
+                  className="font-serif text-lg font-bold block"
+                  style={{ color: atmConfig.palette.primary }}
+                >
+                  {atmConfig.palette.name}
+                </span>
+                <span className="text-[10px] text-white/60 font-mono block">
+                  Expérience Immersive 4K
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. WAVE OLFACTORY DIFFUSION SECTION */}
+          <div
+            className="rounded-3xl p-6 sm:p-8 mb-16 shadow-xl relative overflow-hidden backdrop-blur-xl border"
+            style={{
+              backgroundColor: atmConfig.palette.cardBg,
+              borderColor: atmConfig.palette.border,
+            }}
+          >
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-white/15">
               <div className="flex items-center gap-3">
                 <WaveMonogram
                   size="sm"
@@ -394,10 +656,13 @@ export function ProductDetailClient({
                   withSeal
                 />
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-[#541B28] font-bold block">
+                  <span
+                    className="text-[10px] uppercase tracking-widest font-bold block"
+                    style={{ color: atmConfig.palette.primary }}
+                  >
                     {t("product.wave_signature_title", "Signature Ondulatoire du Flacon")}
                   </span>
-                  <h3 className="font-serif text-xl sm:text-2xl text-[#23181A] font-semibold">
+                  <h3 className="font-serif text-xl sm:text-2xl text-white font-semibold">
                     {waveExpression === "soft"
                       ? t("product.wave_soyeuse_full", "Onde Soyeuse Diaphane • Voile Intime")
                       : waveExpression === "intense"
@@ -408,14 +673,14 @@ export function ProductDetailClient({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[11px] px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#541B28]/20 text-[#541B28] font-bold shadow-sm">
+                <span className="text-[11px] px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white font-bold shadow-sm">
                   {t("product.diffusion_spec", "Diffusion 14h • Rayonnement 2.5m")}
                 </span>
               </div>
             </div>
 
             {/* Interactive Wave Canvas for this fragrance */}
-            <div className="h-32 sm:h-44 rounded-2xl overflow-hidden bg-gradient-to-r from-[#FAF7F2] via-white to-[#FAF7F2] border border-[#541B28]/10 relative">
+            <div className="h-32 sm:h-44 rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative">
               <WaveCanvas
                 expression={waveExpression}
                 interactive={true}
@@ -423,35 +688,60 @@ export function ProductDetailClient({
                 className="w-full h-full"
               />
               <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-auto pointer-events-none">
-                <span className="inline-block max-w-full text-[9px] uppercase tracking-widest text-[#756B6D] font-mono bg-white/90 px-2.5 py-1 rounded-full backdrop-blur-sm border border-[#541B28]/15 shadow-sm leading-relaxed">
-                  <span className="sm:hidden">{t("pavilion.tap_diffuse_mobile", "~ Touchez pour diffuser")}</span>
-                  <span className="hidden sm:inline">{t("pavilion.tap_diffuse_desktop", "~ Touchez ou survolez pour diffuser l'onde olfactive")}</span>
+                <span className="inline-block max-w-full text-[9px] uppercase tracking-widest text-white/80 font-mono bg-black/70 px-2.5 py-1 rounded-full backdrop-blur-sm border border-white/20 shadow-sm leading-relaxed">
+                  <span className="sm:hidden">
+                    {t("pavilion.tap_diffuse_mobile", "~ Touchez pour diffuser")}
+                  </span>
+                  <span className="hidden sm:inline">
+                    {t(
+                      "pavilion.tap_diffuse_desktop",
+                      "~ Touchez ou survolez pour diffuser l'onde olfactive"
+                    )}
+                  </span>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Fragrance Pyramid Section */}
-          <div className="rounded-3xl bg-white border border-[#541B28]/20 p-8 sm:p-12 mb-20 shadow-xl">
+          {/* 4. FRAGRANCE PYRAMID SECTION */}
+          <div
+            ref={pyramidSectionRef}
+            className="rounded-3xl p-8 sm:p-12 mb-20 shadow-2xl backdrop-blur-xl border"
+            style={{
+              backgroundColor: atmConfig.palette.cardBg,
+              borderColor: atmConfig.palette.border,
+            }}
+          >
             <div className="text-center max-w-xl mx-auto mb-8">
-              <span className="text-[10px] uppercase tracking-[0.25em] text-[#541B28] font-bold block mb-1">
+              <span
+                className="text-[10px] uppercase tracking-[0.25em] font-bold block mb-1"
+                style={{ color: atmConfig.palette.primary }}
+              >
                 {t("product.harmonic_arch", "Architecture Harmonique")}
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-burgundy-gradient font-light">
+              <h3 className="font-serif text-2xl sm:text-3xl text-white font-light">
                 {t("product.interactive_pyramid", "La Pyramide Olfactive")}
               </h3>
-              <p className="text-xs text-[#756B6D] mt-2">
-                {t("product.click_note", "Touchez ou cliquez sur une note pour révéler son terroir d'origine, sa méthode de distillation et son rayonnement.")}
+              <p className="text-xs text-white/70 mt-2">
+                {t(
+                  "product.click_note",
+                  "Touchez ou cliquez sur une note pour révéler son terroir d'origine, sa méthode de distillation et son rayonnement."
+                )}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Top Notes */}
-              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
-                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
+              <div className="pyramid-card p-6 rounded-2xl bg-black/45 border border-white/15 text-center backdrop-blur-md">
+                <span
+                  className="font-cinzel text-[10px] uppercase tracking-luxury font-bold"
+                  style={{ color: atmConfig.palette.primary }}
+                >
                   {t("product.head_notes", "Notes de Tête (Première Impression)")}
                 </span>
-                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">{t("product.layer_awakening", "L'Éveil")}</h4>
+                <h4 className="font-serif text-xl text-white mt-2 mb-4 font-semibold">
+                  {t("product.layer_awakening", "L'Éveil")}
+                </h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.topNotes.map((n, i) => (
                     <button
@@ -461,22 +751,30 @@ export function ProductDetailClient({
                         setSelectedNote(n);
                         setSelectedLayer("tête");
                       }}
-                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/20 text-white transition-all cursor-pointer shadow-sm hover:scale-105"
                       title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
-                      <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop
+                        size={12}
+                        className="text-[#DFC68B] opacity-70 group-hover/tag:opacity-100 transition-opacity"
+                      />
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Heart Notes */}
-              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/20 text-center">
-                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
+              <div className="pyramid-card p-6 rounded-2xl bg-black/45 border border-white/20 text-center backdrop-blur-md">
+                <span
+                  className="font-cinzel text-[10px] uppercase tracking-luxury font-bold"
+                  style={{ color: atmConfig.palette.primary }}
+                >
                   {t("product.heart_notes", "Notes de Cœur (Signature Centrale)")}
                 </span>
-                <h4 className="font-serif text-xl text-burgundy-gradient mt-2 mb-4 font-semibold">{t("product.layer_soul", "L'Âme du Sillage")}</h4>
+                <h4 className="font-serif text-xl text-white mt-2 mb-4 font-semibold">
+                  {t("product.layer_soul", "L'Âme du Sillage")}
+                </h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.heartNotes.map((n, i) => (
                     <button
@@ -486,22 +784,30 @@ export function ProductDetailClient({
                         setSelectedNote(n);
                         setSelectedLayer("cœur");
                       }}
-                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/25 text-[#541B28] font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white/15 hover:bg-white hover:text-black border border-white/30 text-white font-bold transition-all cursor-pointer shadow-sm hover:scale-105"
                       title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
-                      <LuxuryDrop size={12} className="text-[#DFC68B] opacity-80 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop
+                        size={12}
+                        className="text-[#DFC68B] opacity-80 group-hover/tag:opacity-100 transition-opacity"
+                      />
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Base Notes */}
-              <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 text-center">
-                <span className="font-cinzel text-[10px] uppercase tracking-luxury text-[#541B28] font-bold">
+              <div className="pyramid-card p-6 rounded-2xl bg-black/45 border border-white/15 text-center backdrop-blur-md">
+                <span
+                  className="font-cinzel text-[10px] uppercase tracking-luxury font-bold"
+                  style={{ color: atmConfig.palette.primary }}
+                >
                   {t("product.base_notes", "Notes de Fond (Tenue Inoubliable)")}
                 </span>
-                <h4 className="font-serif text-xl text-[#23181A] mt-2 mb-4 font-semibold">{t("product.layer_imprint", "L'Empreinte")}</h4>
+                <h4 className="font-serif text-xl text-white mt-2 mb-4 font-semibold">
+                  {t("product.layer_imprint", "L'Empreinte")}
+                </h4>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.baseNotes.map((n, i) => (
                     <button
@@ -511,11 +817,14 @@ export function ProductDetailClient({
                         setSelectedNote(n);
                         setSelectedLayer("fond");
                       }}
-                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white hover:bg-[#541B28] hover:text-[#FAF7F2] border border-[#541B28]/15 text-[#23181A] transition-all cursor-pointer shadow-sm hover:scale-105"
+                      className="group/tag inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/20 text-white transition-all cursor-pointer shadow-sm hover:scale-105"
                       title={t("product.consult", "Découvrir l'accord")}
                     >
                       <span>{n}</span>
-                      <LuxuryDrop size={12} className="text-[#C7A66A] opacity-70 group-hover/tag:opacity-100 transition-opacity" />
+                      <LuxuryDrop
+                        size={12}
+                        className="text-[#DFC68B] opacity-70 group-hover/tag:opacity-100 transition-opacity"
+                      />
                     </button>
                   ))}
                 </div>
@@ -523,10 +832,10 @@ export function ProductDetailClient({
             </div>
           </div>
 
-          {/* Related Fragrances */}
+          {/* 5. RELATED FRAGRANCES */}
           {relatedProducts.length > 0 && (
             <div>
-              <h3 className="font-serif text-2xl text-[#23181A] font-semibold mb-6">
+              <h3 className="font-serif text-2xl text-white font-semibold mb-6">
                 {t("product.related_title", "Dans la Même Collection")}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
