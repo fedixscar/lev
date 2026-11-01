@@ -41,6 +41,7 @@ export interface Product {
     packaging: string;
     lifestyle?: string;
     bottleOnly?: string;
+    gallery?: string[];
   };
   formats: ProductFormat[];
   gender?: "Unisexe" | "Pour Elle" | "Pour Lui" | string;

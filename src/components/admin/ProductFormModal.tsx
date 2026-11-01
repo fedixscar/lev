@@ -16,6 +16,8 @@ import {
   Heart,
   Droplets,
   Wand2,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { Product, FragranceFamily, FragranceIntensity } from "@/types";
@@ -89,6 +91,8 @@ export function ProductFormModal({
   mode = "create",
 }: ProductFormModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const packagingFileInputRef = useRef<HTMLInputElement>(null);
+  const galleryFileInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("Extrait de Parfum Absolu");
@@ -109,10 +113,14 @@ export function ProductFormModal({
   const [price100, setPrice100] = useState<number>(295);
   const [stock100, setStock100] = useState<number>(25);
   const [mainImage, setMainImage] = useState("/brand/bottle-and-cylinder.jpg");
+  const [packagingImage, setPackagingImage] = useState("/brand/cylinders-dual.jpg");
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isBestseller, setIsBestseller] = useState(false);
   const [bestsellerRank, setBestsellerRank] = useState<number>(1);
   const [imageUploadLoading, setImageUploadLoading] = useState(false);
+  const [packagingUploadLoading, setPackagingUploadLoading] = useState(false);
+  const [galleryUploadLoading, setGalleryUploadLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Fragrantica AI Auto-fill state
@@ -142,6 +150,8 @@ export function ProductFormModal({
       setPrice100(initialProduct.formats[1]?.priceTND ?? 295);
       setStock100(initialProduct.formats[1]?.stock ?? 25);
       setMainImage(initialProduct.images?.main || "/brand/bottle-and-cylinder.jpg");
+      setPackagingImage(initialProduct.images?.packaging || "/brand/cylinders-dual.jpg");
+      setGalleryImages(Array.isArray(initialProduct.images?.gallery) ? initialProduct.images.gallery : []);
       setIsFeatured(initialProduct.isFeatured || false);
       setIsBestseller(initialProduct.isBestseller || false);
       setBestsellerRank(initialProduct.bestsellerRank || 1);
@@ -165,6 +175,8 @@ export function ProductFormModal({
       setPrice100(295);
       setStock100(25);
       setMainImage("/brand/bottle-and-cylinder.jpg");
+      setPackagingImage("/brand/cylinders-dual.jpg");
+      setGalleryImages([]);
       setIsFeatured(false);
       setIsBestseller(false);
       setBestsellerRank(1);
@@ -283,6 +295,59 @@ export function ProductFormModal({
     }
   };
 
+  const handlePackagingUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPackagingUploadLoading(true);
+    try {
+      const compressedDataUrl = await compressImageFile(file, 600, 750, 0.75);
+      setPackagingImage(compressedDataUrl);
+    } catch {
+      alert("Erreur lors de la compression de la photo d'écrin/packaging.");
+    } finally {
+      setPackagingUploadLoading(false);
+    }
+  };
+
+  const handleAddGalleryImage = (url = "") => {
+    setGalleryImages((prev) => [...prev, url]);
+  };
+
+  const handleUpdateGalleryImage = (index: number, url: string) => {
+    setGalleryImages((prev) => {
+      const copy = [...prev];
+      copy[index] = url;
+      return copy;
+    });
+  };
+
+  const handleRemoveGalleryImage = (index: number) => {
+    setGalleryImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>, targetIndex?: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setGalleryUploadLoading(true);
+    try {
+      const compressedDataUrl = await compressImageFile(file, 600, 750, 0.75);
+      if (typeof targetIndex === "number") {
+        handleUpdateGalleryImage(targetIndex, compressedDataUrl);
+      } else {
+        handleAddGalleryImage(compressedDataUrl);
+      }
+    } catch {
+      alert("Erreur lors de la compression de la photo de galerie.");
+    } finally {
+      setGalleryUploadLoading(false);
+      if (galleryFileInputRef.current) {
+        galleryFileInputRef.current.value = "";
+      }
+    }
+  };
+
   const handleCollectionChange = (collName: string) => {
     setCollection(collName);
     const found = COLLECTIONS.find((c) => c.name === collName);
@@ -347,9 +412,10 @@ export function ProductFormModal({
         occasions: ["Signature Personnelle", "Moments d'Exception"],
         images: {
           main: mainImage,
-          packaging: "/brand/cylinders-dual.jpg",
+          packaging: packagingImage || "/brand/cylinders-dual.jpg",
           lifestyle: mainImage,
           bottleOnly: "/brand/logo-emblem.jpg",
+          gallery: galleryImages.filter(Boolean),
         },
         formats: [
           {
@@ -783,91 +849,294 @@ export function ProductFormModal({
             </div>
           </div>
 
-          {/* SECTION 5: IMAGE & UPLOAD */}
-          <div className="bg-white rounded-2xl p-6 border border-[#541B28]/15 shadow-sm space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-[#541B28]/10">
-              <ImageIcon className="w-4 h-4 text-[#C7A66A]" />
-              <h3 className="font-serif text-lg text-[#23181A] font-semibold">5. Visuel & Photo du Flacon</h3>
+          {/* SECTION 5: IMAGES & GALERIE DU PARFUM */}
+          <div className="bg-white rounded-2xl p-6 border border-[#541B28]/15 shadow-sm space-y-8">
+            <div className="flex items-center justify-between pb-3 border-b border-[#541B28]/10">
+              <div className="flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-[#C7A66A]" />
+                <div>
+                  <h3 className="font-serif text-lg text-[#23181A] font-semibold">
+                    5. Visuels & Galerie Photos du Parfum
+                  </h3>
+                  <p className="text-[11px] text-[#756B6D]">
+                    Gérez la photo principale du flacon, la photo de l&apos;écrin packaging, et ajoutez autant de photos de galerie que vous souhaitez.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-              {/* Preview */}
-              <div className="sm:col-span-4 flex flex-col items-center text-center">
-                <div className="relative w-36 h-48 rounded-2xl overflow-hidden bg-[#FAF7F2] border-2 border-[#541B28]/20 shadow-md mb-2">
-                  <Image
-                    src={mainImage}
-                    alt="Aperçu flacon"
-                    fill
-                    className="object-cover"
-                    unoptimized={mainImage.startsWith("data:")}
-                  />
-                  {imageUploadLoading && (
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <div className="w-6 h-6 border-2 border-[#FAF7F2] border-t-transparent rounded-full animate-spin" />
-                    </div>
-                  )}
-                </div>
-                <span className="text-[10px] text-[#756B6D] font-mono">Aperçu en direct</span>
+            {/* 5.1 PHOTO 1 : FLACON PRINCIPAL */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-[#541B28] text-white text-[10px] flex items-center justify-center font-bold">1</span>
+                  Photo Principale : Le Flacon (Visuel Boutique)
+                </span>
+                <span className="text-[10px] text-[#756B6D] font-mono">Affichage principal catalogue</span>
               </div>
 
-              {/* Upload Controls */}
-              <div className="sm:col-span-8 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                {/* Preview */}
+                <div className="sm:col-span-3 flex flex-col items-center text-center">
+                  <div className="relative w-32 h-40 rounded-2xl overflow-hidden bg-white border-2 border-[#541B28]/25 shadow-md">
+                    <Image
+                      src={mainImage || "/brand/bottle-and-cylinder.jpg"}
+                      alt="Aperçu flacon"
+                      fill
+                      className="object-cover"
+                      unoptimized={mainImage.startsWith("data:")}
+                    />
+                    {imageUploadLoading && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-[#FAF7F2] border-t-transparent rounded-full animate-spin" />
+                      </div>
+                    )}
+                  </div>
+                  <span className="text-[9px] text-[#756B6D] mt-1 font-medium">Aperçu Flacon</span>
+                </div>
+
+                {/* Upload & Select */}
+                <div className="sm:col-span-9 space-y-3">
+                  <div>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-[#541B28]/30 hover:border-[#541B28] bg-white hover:bg-white/80 text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+                    >
+                      <Upload className="w-4 h-4 text-[#C7A66A]" />
+                      <span>Uploader la photo du flacon (JPG, PNG, WEBP)</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                      Ou choisir parmi les presets studio :
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      {PRESET_IMAGES.map((preset) => (
+                        <button
+                          type="button"
+                          key={preset.url}
+                          onClick={() => setMainImage(preset.url)}
+                          className={`p-2 rounded-xl text-left text-xs border transition-all cursor-pointer ${
+                            mainImage === preset.url
+                              ? "bg-[#541B28] text-[#FAF7F2] border-[#541B28] shadow-xs"
+                              : "bg-white text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]"
+                          }`}
+                        >
+                          <span className="font-medium text-[10px] block truncate">{preset.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Ou collez une URL : https://.../flacon.jpg"
+                      value={mainImage}
+                      onChange={(e) => setMainImage(e.target.value)}
+                      className="w-full bg-white border border-[#541B28]/20 rounded-xl px-3 py-1.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5.2 PHOTO 2 : ÉCRIN CYLINDRIQUE & PACKAGING */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-[#C7A66A] text-white text-[10px] flex items-center justify-center font-bold">2</span>
+                  Photo Secondaire : L&apos;Écrin Cylindrique & Packaging
+                </span>
+                <span className="text-[10px] text-[#756B6D] font-mono">2ème photo de présentation</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                {/* Preview */}
+                <div className="sm:col-span-3 flex flex-col items-center text-center">
+                  <div className="relative w-32 h-40 rounded-2xl overflow-hidden bg-white border-2 border-[#541B28]/25 shadow-md">
+                    <Image
+                      src={packagingImage || "/brand/cylinders-dual.jpg"}
+                      alt="Aperçu packaging"
+                      fill
+                      className="object-cover"
+                      unoptimized={packagingImage.startsWith("data:")}
+                    />
+                    {packagingUploadLoading && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-[#FAF7F2] border-t-transparent rounded-full animate-spin" />
+                      </div>
+                    )}
+                  </div>
+                  <span className="text-[9px] text-[#756B6D] mt-1 font-medium">Aperçu Packaging</span>
+                </div>
+
+                {/* Upload & Select */}
+                <div className="sm:col-span-9 space-y-3">
+                  <div>
+                    <input
+                      ref={packagingFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePackagingUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => packagingFileInputRef.current?.click()}
+                      className="w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-[#541B28]/30 hover:border-[#541B28] bg-white hover:bg-white/80 text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+                    >
+                      <Upload className="w-4 h-4 text-[#C7A66A]" />
+                      <span>Uploader la 2ème photo (Écrin / Boîte / Cylindre)</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
+                      Ou choisir parmi les visuels d&apos;écrin :
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      {PRESET_IMAGES.map((preset) => (
+                        <button
+                          type="button"
+                          key={preset.url}
+                          onClick={() => setPackagingImage(preset.url)}
+                          className={`p-2 rounded-xl text-left text-xs border transition-all cursor-pointer ${
+                            packagingImage === preset.url
+                              ? "bg-[#541B28] text-[#FAF7F2] border-[#541B28] shadow-xs"
+                              : "bg-white text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]"
+                          }`}
+                        >
+                          <span className="font-medium text-[10px] block truncate">{preset.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Ou collez une URL : https://.../packaging.jpg"
+                      value={packagingImage}
+                      onChange={(e) => setPackagingImage(e.target.value)}
+                      className="w-full bg-white border border-[#541B28]/20 rounded-xl px-3 py-1.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5.3 PHOTOS ADDITIONNELLES & GALERIE (NOMBRE ILLIMITÉ) */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#541B28]/15 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
-                    1. Uploader une photo depuis votre ordinateur / téléphone
+                  <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-[#541B28] flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-[#756B6D] text-white text-[10px] flex items-center justify-center font-bold">3+</span>
+                    Photos Additionnelles & Galerie ({galleryImages.length} photo{galleryImages.length > 1 ? "s" : ""})
                   </span>
+                  <p className="text-[11px] text-[#756B6D] mt-0.5">
+                    Modifiez le nombre de photos affichées sur la fiche produit en ajoutant ou supprimant des visuels.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
                   <input
-                    ref={fileInputRef}
+                    ref={galleryFileInputRef}
                     type="file"
                     accept="image/*"
-                    onChange={handleFileUpload}
+                    onChange={(e) => handleGalleryUpload(e)}
                     className="hidden"
                   />
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-[#541B28]/30 hover:border-[#541B28] bg-[#FAF7F2] hover:bg-[#FAF7F2]/80 text-[#541B28] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs"
+                    onClick={() => galleryFileInputRef.current?.click()}
+                    disabled={galleryUploadLoading}
+                    className="px-3 py-2 rounded-xl bg-white border border-[#541B28]/25 text-[#541B28] text-xs font-bold hover:bg-[#FAF7F2] flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
                   >
-                    <Upload className="w-4 h-4 text-[#C7A66A]" />
-                    <span>Choisir une image locale (JPG, PNG, WEBP)</span>
+                    <Upload className="w-3.5 h-3.5 text-[#C7A66A]" />
+                    <span>Uploader une photo</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAddGalleryImage("")}
+                    className="px-3 py-2 rounded-xl bg-[#541B28] text-white text-xs font-bold hover:bg-[#66182C] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-[#DFC68B]" />
+                    <span>+ Ajouter un visuel</span>
                   </button>
                 </div>
+              </div>
 
-                <div>
-                  <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
-                    2. Ou choisir parmi les visuels studio Lévania
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {PRESET_IMAGES.map((preset) => (
+              {galleryImages.length === 0 ? (
+                <div className="text-center py-6 px-4 bg-white rounded-xl border border-dashed border-[#541B28]/20">
+                  <ImageIcon className="w-8 h-8 mx-auto text-[#C7A66A]/60 mb-1" />
+                  <p className="text-xs text-[#756B6D] font-medium">
+                    Aucune photo additionnelle pour le moment.
+                  </p>
+                  <p className="text-[10px] text-[#756B6D]/80">
+                    Cliquez sur &quot;+ Ajouter un visuel&quot; ou &quot;Uploader une photo&quot; pour enrichir la galerie du flacon.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {galleryImages.map((imgUrl, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 bg-white rounded-xl border border-[#541B28]/15 flex items-center gap-4 shadow-xs"
+                    >
+                      {/* Thumbnail */}
+                      <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-[#FAF7F2] border border-[#541B28]/20 shrink-0">
+                        {imgUrl ? (
+                          <Image
+                            src={imgUrl}
+                            alt={`Photo galerie ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                            unoptimized={imgUrl.startsWith("data:")}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[10px] text-[#756B6D] font-mono">
+                            Vide
+                          </div>
+                        )}
+                      </div>
+
+                      {/* URL input */}
+                      <div className="flex-1 space-y-1">
+                        <label className="text-[10px] text-[#756B6D] uppercase tracking-wider block font-bold">
+                          Photo #{idx + 3} de la fiche produit
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="https://... ou collez une image / data:image"
+                          value={imgUrl}
+                          onChange={(e) => handleUpdateGalleryImage(idx, e.target.value)}
+                          className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-lg px-3 py-1.5 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
+                        />
+                      </div>
+
+                      {/* Remove button */}
                       <button
                         type="button"
-                        key={preset.url}
-                        onClick={() => setMainImage(preset.url)}
-                        className={`p-2 rounded-xl text-left text-xs border transition-all ${
-                          mainImage === preset.url
-                            ? "bg-[#541B28] text-[#FAF7F2] border-[#541B28] shadow-xs"
-                            : "bg-[#FAF7F2] text-[#23181A] border-[#541B28]/15 hover:border-[#541B28]"
-                        }`}
+                        onClick={() => handleRemoveGalleryImage(idx)}
+                        className="p-2 text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition-colors cursor-pointer shrink-0"
+                        title="Supprimer cette photo"
                       >
-                        <span className="font-medium text-[11px] block truncate">{preset.label}</span>
+                        <Trash2 className="w-4 h-4" />
                       </button>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-
-                <div>
-                  <span className="text-[10px] text-[#756B6D] uppercase tracking-wider block mb-1 font-bold">
-                    3. Ou coller une URL d&apos;image externe
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="https://.../photo-flacon.jpg"
-                    value={mainImage}
-                    onChange={(e) => setMainImage(e.target.value)}
-                    className="w-full bg-[#FAF7F2] border border-[#541B28]/20 rounded-xl px-4 py-2 text-xs text-[#23181A] focus:outline-none focus:border-[#541B28]"
-                  />
-                </div>
-              </div>
+              )}
             </div>
           </div>
 

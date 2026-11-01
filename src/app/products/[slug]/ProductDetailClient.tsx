@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -80,6 +80,12 @@ export function ProductDetailClient({
   const [selectedImage, setSelectedImage] = useState<string>(
     directProduct?.images.main || initialProduct?.images.main || "/brand/bottle-and-cylinder.jpg"
   );
+
+  useEffect(() => {
+    if (product?.images?.main) {
+      setSelectedImage(product.images.main);
+    }
+  }, [product?.id, product?.images?.main]);
   const [quantity] = useState(1);
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [selectedLayer, setSelectedLayer] = useState<"tête" | "cœur" | "fond" | null>(null);
@@ -129,11 +135,17 @@ export function ProductDetailClient({
       ? "intense"
       : "signature");
 
-  const galleryImages = [
+  const rawGallery = [
     product.images.main,
     product.images.packaging,
-    product.images.bottleOnly || "/brand/logo-emblem.jpg",
-  ].filter(Boolean) as string[];
+    ...(Array.isArray(product.images.gallery) ? product.images.gallery : []),
+    product.images.lifestyle,
+    product.images.bottleOnly,
+  ];
+  const galleryImages = rawGallery.filter(
+    (img, index, self): img is string =>
+      Boolean(img) && self.indexOf(img) === index
+  );
 
   const handleAddToCart = () => {
     addItem({

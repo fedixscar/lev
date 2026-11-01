@@ -1,45 +1,9 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { PRODUCTS } from "@/lib/catalogue";
-
-const VALID_SLUGS = new Set([
-  ...PRODUCTS.map((p) => p.slug),
-  "compose-box",
-]);
-
-const SYSTEM_INSTRUCTION = `Vous êtes le Concierge Olfactif Privé et Maître Parfumeur de la prestigieuse Maison Lévania Parfums (Haute Parfumerie artisanale).
-Votre mission est de guider les clients avec un ton luxueux, raffiné, bienveillant, poétique et hautement expert.
-
-À PROPOS DE LA MAISON LÉVANIA:
-- Maison de haute parfumerie artisanale alliant le patrimoine noble méditerranéen (Tunisie, Grasse) et des essences rares mondiales.
-- Flacons d'exception présentés dans de somptueux écrins cylindriques scellés de rubans de satin et ornés du sceau monogrammé bordeaux et or.
-- Chaque flacon est certifié authentique avec un QR code infalsifiable.
-
-CATALOGUE DES CRÉATIONS LÉVANIA (Slugs & Notes):
-${PRODUCTS.map(
-  (p) => `- "${p.name}" (Slug: ${p.slug}): ${p.subtitle}. Famille: ${p.fragranceFamily}, Intensité: ${p.intensity}.
-    Notes de tête: ${p.topNotes.join(", ")}.
-    Notes de cœur: ${p.heartNotes.join(", ")}.
-    Notes de fond: ${p.baseNotes.join(", ")}.
-    Occasions idéales: ${p.occasions.join(", ")}.
-    Prix: 50ml à ${p.formats[0]?.priceTND} TND, 100ml à ${p.formats[1]?.priceTND} TND.
-    Description: ${p.description}`
-).join("\n")}
-
-SERVICES & EXPÉRIENCES EXCLUSIVES:
-1. "Composer Mon Coffret" (Slug: compose-box): Service sur mesure permettant de composer un coffret cylindrique de prestige de 2 ou 3 flacons (50ml ou 100ml) avec rubans en satin personnalisés et une dédicace calligraphiée à la main offerte.
-2. "La Roue du Destin / Wheel of Chance": Programme de fidélité ludique. Chaque 10 TND d'achat rapporte 1 point de Luck. Les lancers permettent de remporter des réductions immédiates, des sets découvertes d'échantillons ou des flacons offerts.
-3. "Livraison & Expédition": Livraison express en 24h à 48h partout en Tunisie via nos transporteurs partenaires. Offerte dès 200 TND d'achat (sinon 7.000 TND).
-4. "Réseau Revendeurs": Programme officiel pour partenaires avec 6 rangs prestigieux (Iron, Bronze, Gold, Platinum, Diamond, Master) et commissions attractives.
-
-CONSIGNES DE RÉPONSE:
-1. Adoptez un langage élégant, digne des plus grands salons de haute parfumerie.
-2. Répondez toujours dans la langue de l'utilisateur (Français, Arabe ou Anglais). En arabe, utilisez un arabe soigné et chaleureux adapté à la clientèle du luxe.
-3. Si votre réponse met en valeur ou recommande un parfum spécifique ou le service coffret, terminez TOUJOURS votre message par une ligne contenant uniquement:
-[RECOMMEND:slug]
-(où slug est l'un des slugs officiels: onde-d-or, sillage-d-olivier, neroli-flottant, oud-imperial, rose-bourguignonne, ambre-mediterraneen, vetiver-nocturne, fleur-de-soie, cuir-d-orient, jardin-d-agrumes, compose-box).
-Ne mettez cette balise que si une recommandation claire d'une création spécifique est faite.
-4. Restez concis, captivant et accueillant (2 à 3 paragraphes maximum).`;
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { rowToProduct } from "@/app/api/products/route";
+import { Product } from "@/types";
 
 export async function POST(req: Request) {
   try {
@@ -52,6 +16,91 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // 1. Fetch live catalogue from database to ensure AI knows all real products
+    let catalogueProducts: Product[] = [];
+    if (isSupabaseConfigured()) {
+      try {
+        const { data: rows, error: rowsErr } = await supabase.from("products").select("*");
+        if (rows && rows.length > 0 && !rowsErr) {
+          const { data: variants } = await supabase.from("product_variants").select("*");
+          catalogueProducts = rows.map((r) => {
+            const pVariants = variants ? variants.filter((v) => v.product_id === r.id) : [];
+            return rowToProduct(r, pVariants);
+          });
+        }
+      } catch (dbErr) {
+        console.warn("Supabase fetch failed in chat, fallback to local catalogue:", dbErr);
+      }
+    }
+
+    if (!catalogueProducts || catalogueProducts.length === 0) {
+      catalogueProducts = PRODUCTS;
+    }
+
+    const validSlugs = new Set([
+      ...catalogueProducts.map((p) => p.slug),
+      "compose-box",
+    ]);
+
+    // Build dynamic catalog representation for AI prompt
+    const productsListText = catalogueProducts
+      .map(
+        (p) => `- "${p.name}" (Slug: ${p.slug})
+  Sous-titre: ${p.subtitle || "Haute Parfumerie Lévania"}
+  Famille Olfactive: ${p.fragranceFamily}, Intensité: ${p.intensity}, Genre: ${p.gender || "Unisexe"}
+  Notes de tête: ${(p.topNotes || []).join(", ") || "Notes hespéridées"}
+  Notes de cœur: ${(p.heartNotes || []).join(", ") || "Notes florales et épicées"}
+  Notes de fond: ${(p.baseNotes || []).join(", ") || "Ambre et muscs nobles"}
+  Profil sensoriel: ${p.sensoryProfile || p.description}
+  Tarifs: 50ml à ${p.formats[0]?.priceTND ?? 195} TND • 100ml à ${p.formats[1]?.priceTND ?? 295} TND`
+      )
+      .join("\n\n");
+
+    const systemInstruction = `Vous êtes le Concierge Olfactif Privé et Maître Parfumeur de la prestigieuse Maison Lévania Parfums (Haute Parfumerie artisanale).
+Votre rôle est de conseiller et guider les clients avec un ton luxueux, chaleureux, poétique, raffiné et hautement expert.
+
+À PROPOS DE LA MAISON LÉVANIA:
+- Maison de haute parfumerie alliant le patrimoine noble méditerranéen et des essences précieuses de Grasse et d'Orient.
+- Flacons d'exception présentés dans de somptueux écrins cylindriques scellés de rubans de satin et ornés du sceau monogrammé bordeaux et or.
+- Chaque flacon est certifié authentique avec un QR code infalsifiable.
+
+CATALOGUE OFFICIEL ACTIF DES PARFUMS DISPONIBLES SUR LE SITE LÉVANIA :
+${productsListText}
+
+SERVICES & EXPÉRIENCES EXCLUSIVES :
+1. "Composer Mon Coffret" (Slug: compose-box) : Coffret cylindrique de prestige de 2 ou 3 flacons sur mesure avec rubans satin et calligraphie offerte.
+2. "La Roue Cadeau / Wheel of Chance" : Chaque 10 TND rapporte 1 point de chance pour tenter de remporter des réductions ou des flacons offerts.
+3. "Livraison & Expédition" : Livraison express 24h-48h partout en Tunisie, offerte dès 200 TND d'achat (sinon 7 TND).
+
+RÈGLES D'ORIENTATION OLFACTIVE CRUCIALES :
+1. PARFUMS SUCRÉS / GOURMANDS / VANILLÉS :
+   Si le client recherche un parfum sucré ("parfum sucré", "sucré", "gourmand", "vanille", "doux", "fruité doux", "sucrée"), vous DEVEZ OBLIGATOIREMENT lui recommander l'une de nos créations sucrées du site parmi :
+   - "1 Million Elixir (Rabanne)" (slug: 1-million-elixir-rabanne) : Un chef-d'œuvre sucré et opulent dominé par une sublime absolue de vanille, pomme croquante, fève tonka et davana liquoreux.
+   - "Ultra Male (Jean Paul Gaultier)" (slug: ultra-male-jean-paul-gaultier) : Gourmandise fruitée irrésistible avec sa poire sucrée juteuse, sa gousse de vanille noire intense et une touche de cannelle.
+   - "Tobacco Vanille (Tom Ford)" (slug: tobacco-vanille-tom-ford) : Richesse somptueuse de vanille bourbon crémeuse, cacao doux, fève tonka et fruits secs miellés.
+   - "Black XS (Rabanne)" (slug: black-xs-rabanne) : Accord chocolaté et gourmand avec sa praline sucrée fondante, cannelle et baume ambré chaud.
+   - "Emporio Armani Stronger With You (Giorgio Armani)" (slug: emporio-armani-stronger-with-you-giorgio-armani) : Délicieuse note de châtaigne confite glacée, vanille veloutée et épices douces.
+   - "Erba Pura (Xerjoff)" (slug: erba-pura-xerjoff) : Explosion joyeuse et sucrée de fruits méditerranéens veloutés drapés de vanille de Madagascar.
+   - "Scandal Pour Homme (Jean Paul Gaultier)" (slug: scandal-pour-homme-jean-paul-gaultier) : Caramel brun gourmand, fève tonka et sauge raffinée.
+
+2. PARFUMS FRAIS / HESPÉRIDÉS / MARINS :
+   Recommander "Imagination (Louis Vuitton)" (slug: imagination-louis-vuitton) ou "Allure Homme Sport (Chanel)" (slug: allure-homme-sport-chanel).
+
+3. PARFUMS BOISÉS / CUIRÉS / ORIENTAUX :
+   Recommander "Bleu de Chanel Parfum (Chanel)" (slug: bleu-de-chanel-parfum-chanel), "Black Afgano (Nasomatto)" (slug: black-afgano-nasomatto), "Ombré Leather Parfum (Tom Ford)" (slug: ombre-leather-parfum-tom-ford), "Sauvage (Dior)" (slug: sauvage-dior), "The Most Wanted Parfum (Azzaro)" (slug: the-most-wanted-parfum-azzaro) ou "Aventus (Creed)" (slug: aventus-creed).
+
+4. RÈGLE STRICTE SUR LE CATALOGUE :
+   Ne suggérez QUE des parfums existant dans le catalogue ci-dessus ! Ne mentionnez aucun parfum extérieur non référencé.
+
+5. FORMAT DE RECOMMANDATION OBLIGATOIRE :
+   Lorsque vous recommandez un parfum ou le service coffret au client, terminez TOUJOURS impérativement votre réponse par une ligne distincte contenant :
+   [RECOMMEND:slug]
+   Exemple : [RECOMMEND:1-million-elixir-rabanne] ou [RECOMMEND:ultra-male-jean-paul-gaultier].
+   N'utilisez qu'un slug valide existant dans la liste.
+
+6. STYLE & TON :
+   Répondez dans la langue de l'utilisateur (Français, Arabe ou Anglais). Soyez élégant, passionné, concis (2 à 3 paragraphes), et invitez délicatement le client à découvrir la création.`;
 
     let apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -122,7 +171,7 @@ export async function POST(req: Request) {
         model: primaryModel,
         contents: formattedContents,
         config: {
-          systemInstruction: SYSTEM_INSTRUCTION,
+          systemInstruction: systemInstruction,
           temperature: 0.7,
         },
       });
@@ -133,7 +182,7 @@ export async function POST(req: Request) {
         model: fallbackModel,
         contents: formattedContents,
         config: {
-          systemInstruction: SYSTEM_INSTRUCTION,
+          systemInstruction: systemInstruction,
           temperature: 0.7,
         },
       });
@@ -145,10 +194,10 @@ export async function POST(req: Request) {
     const match = rawText.match(/\[RECOMMEND:([a-z0-9-]+)\]/i);
     if (match) {
       const extracted = match[1].toLowerCase().trim();
-      if (VALID_SLUGS.has(extracted)) {
+      if (validSlugs.has(extracted)) {
         recommendedSlug = extracted;
       } else {
-        const found = Array.from(VALID_SLUGS).find(
+        const found = Array.from(validSlugs).find(
           (s) => s.includes(extracted) || extracted.includes(s)
         );
         if (found) recommendedSlug = found;
@@ -156,10 +205,27 @@ export async function POST(req: Request) {
       rawText = rawText.replace(/\[RECOMMEND:[a-z0-9-]+\]/gi, "").trim();
     }
 
+    let recommendedProduct: any = undefined;
+    if (recommendedSlug && recommendedSlug !== "compose-box") {
+      const matched = catalogueProducts.find((p) => p.slug === recommendedSlug);
+      if (matched) {
+        recommendedProduct = {
+          id: matched.id,
+          name: matched.name,
+          slug: matched.slug,
+          image: matched.images?.main || "/brand/bottle-and-cylinder.jpg",
+          priceTND: matched.formats?.[0]?.priceTND || 195,
+          fragranceFamily: matched.fragranceFamily,
+          subtitle: matched.subtitle,
+        };
+      }
+    }
+
     return NextResponse.json({
       success: true,
       reply: rawText,
       recommendedSlug,
+      recommendedProduct,
     });
   } catch (error: any) {
     console.error("Erreur API Chat Gemini:", error);

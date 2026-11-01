@@ -8,11 +8,22 @@ import { GoldStarLozenge } from "@/components/ui/LuxuryIcons";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 
+interface RecommendedProductInfo {
+  id?: string;
+  name: string;
+  slug: string;
+  image?: string;
+  priceTND?: number;
+  fragranceFamily?: string;
+  subtitle?: string;
+}
+
 interface Message {
   id: string;
   sender: "ai" | "user";
   text: string;
   recommendedSlug?: string;
+  recommendedProduct?: RecommendedProductInfo;
   timestamp: string;
 }
 
@@ -100,6 +111,7 @@ export function AiConciergeModal() {
           sender: "ai",
           text: aiReply,
           recommendedSlug: data.recommendedSlug,
+          recommendedProduct: data.recommendedProduct,
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
@@ -202,7 +214,42 @@ export function AiConciergeModal() {
                   )}
                 >
                   <p className="whitespace-pre-line">{m.text}</p>
-                  {m.recommendedSlug && (
+
+                  {/* Luxury Product Recommendation Card */}
+                  {m.recommendedProduct ? (
+                    <div className="mt-2.5 p-2 rounded-xl bg-[#FAF7F2] dark:bg-[#14080D] border border-[#541B28]/20 dark:border-[#C7A66A]/30 flex items-center gap-2.5 shadow-xs">
+                      <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-white shrink-0 border border-[#541B28]/15">
+                        <Image
+                          src={m.recommendedProduct.image || "/brand/bottle-and-cylinder.jpg"}
+                          alt={m.recommendedProduct.name}
+                          fill
+                          className="object-cover"
+                          unoptimized={(m.recommendedProduct.image || "").startsWith("data:")}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-serif text-[11px] font-bold text-[#23181A] dark:text-[#FAF7F2] truncate">
+                          {m.recommendedProduct.name}
+                        </h5>
+                        <p className="text-[9px] text-[#756B6D] dark:text-[#A8989C] truncate">
+                          {m.recommendedProduct.subtitle || m.recommendedProduct.fragranceFamily}
+                        </p>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="font-cinzel text-[10px] font-bold text-[#541B28] dark:text-[#DFC68B]">
+                            {m.recommendedProduct.priceTND} TND
+                          </span>
+                          <Link
+                            href={`/products/${m.recommendedProduct.slug}`}
+                            onClick={() => setIsOpen(false)}
+                            className="inline-flex items-center gap-1 text-[9px] uppercase font-bold text-[#541B28] dark:text-[#DFC68B] hover:underline"
+                          >
+                            <span>Découvrir</span>
+                            <ArrowRight className="w-3 h-3 text-[#C7A66A] rtl:rotate-180" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ) : m.recommendedSlug ? (
                     <Link
                       href={m.recommendedSlug === "compose-box" ? "/compose-box" : `/products/${m.recommendedSlug}`}
                       onClick={() => setIsOpen(false)}
@@ -211,7 +258,8 @@ export function AiConciergeModal() {
                       <span>{t("concierge.discover_creation", "Découvrir la création")}</span>
                       <ArrowRight className="w-3 h-3 text-[#C7A66A] rtl:rotate-180" />
                     </Link>
-                  )}
+                  ) : null}
+
                   <span className="block text-[9px] opacity-60 text-right rtl:text-left mt-1">{m.timestamp}</span>
                 </div>
               </div>
@@ -235,15 +283,43 @@ export function AiConciergeModal() {
               onClick={() =>
                 sendMessage(
                   locale === "ar"
-                    ? "حدثني عن عطر أوند دور"
+                    ? "أبحث عن عطر سكري أو حلو، ماذا تقترح؟"
                     : locale === "en"
-                    ? "Tell me about #1 Onde d'Or"
-                    : "Parlez-moi de votre N°1 Onde d'Or"
+                    ? "I am looking for a sweet perfume, what do you recommend?"
+                    : "Je cherche un parfum sucré et gourmand, que me conseillez-vous ?"
                 )
               }
               className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
             >
-              {t("concierge.q_onde_dor", "N°1 Onde d'Or")}
+              Parfum Sucré
+            </button>
+            <button
+              onClick={() =>
+                sendMessage(
+                  locale === "ar"
+                    ? "أبحث عن عطر منعش وصيفي"
+                    : locale === "en"
+                    ? "I am looking for a fresh perfume"
+                    : "Avez-vous un parfum frais et hespéridé ?"
+                )
+              }
+              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
+            >
+              Parfum Frais
+            </button>
+            <button
+              onClick={() =>
+                sendMessage(
+                  locale === "ar"
+                    ? "أبحث عن عطر خشبي دافئ وقوي"
+                    : locale === "en"
+                    ? "I am looking for a woody intense perfume"
+                    : "Quel parfum boisé ou cuiré intense me recommandez-vous ?"
+                )
+              }
+              className="px-2.5 py-1 rounded-full bg-[#FAF7F2] dark:bg-[#1E0D15] text-[#541B28] dark:text-[#DFC68B] font-bold border border-[#541B28]/15 dark:border-[#C7A66A]/25 whitespace-nowrap hover:border-[#541B28] cursor-pointer"
+            >
+              Parfum Boisé
             </button>
             <button
               onClick={() =>

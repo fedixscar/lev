@@ -338,10 +338,14 @@ export default function AdminDashboardPage() {
         `${prod.name} est maintenant synchronisé et disponible sur la boutique.`,
         "luxury"
       );
-    } catch {
-      const updated = saveProduct(prod);
-      setProductList(updated);
-      setIsProductModalOpen(false);
+    } catch (err: any) {
+      console.error("Save product error:", err);
+      showToast(
+        "Erreur de Synchronisation",
+        err.message || "Impossible d'enregistrer le flacon dans la base de données.",
+        "error"
+      );
+      throw err;
     }
   };
 

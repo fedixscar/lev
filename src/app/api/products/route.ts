@@ -17,6 +17,9 @@ function productToRow(p: Product) {
     wavePalette: p.wavePalette || "gold",
     sensoryText: p.sensoryProfile || "",
     packagingImage: p.images?.packaging || p.images?.main,
+    galleryImages: p.images?.gallery || [],
+    lifestyleImage: p.images?.lifestyle,
+    bottleOnlyImage: p.images?.bottleOnly,
   };
 
   return {
@@ -28,7 +31,7 @@ function productToRow(p: Product) {
     description: p.description || "",
     sensory_profile: JSON.stringify(extra),
     main_image: p.images?.main || "/brand/bottle-and-cylinder.jpg",
-    packaging_image: p.images?.packaging || null,
+    packaging_image: p.images?.packaging || extra.packagingImage || null,
     is_featured: !!p.isFeatured,
     is_bestseller: !!p.isBestseller,
     bestseller_rank: p.bestsellerRank || null,
@@ -38,7 +41,7 @@ function productToRow(p: Product) {
   };
 }
 
-function rowToProduct(row: any, variants: any[] = []): Product {
+export function rowToProduct(row: any, variants: any[] = []): Product {
   let extra: any = {};
   try {
     if (row.sensory_profile && row.sensory_profile.startsWith("{")) {
@@ -91,10 +94,11 @@ function rowToProduct(row: any, variants: any[] = []): Product {
     description: row.description || "",
     sensoryProfile: extra.sensoryText || row.sensory_profile || "",
     images: {
-      main: row.main_image,
-      packaging: row.packaging_image || extra.packagingImage || row.main_image,
-      lifestyle: row.main_image,
-      bottleOnly: row.main_image,
+      main: row.main_image || "/brand/bottle-and-cylinder.jpg",
+      packaging: row.packaging_image || extra.packagingImage || "/brand/cylinders-dual.jpg",
+      lifestyle: extra.lifestyleImage || row.main_image,
+      bottleOnly: extra.bottleOnlyImage || row.main_image,
+      gallery: Array.isArray(extra.galleryImages) ? extra.galleryImages : [],
     },
     formats,
     gender: extra.gender || "Unisexe",
@@ -259,18 +263,42 @@ export async function POST(req: NextRequest) {
 
     const row = productToRow(product);
 
-    // Check if exists by slug
-    const { data: existing } = await supabase
-      .from("products")
-      .select("id")
-      .eq("slug", product.slug)
-      .maybeSingle();
+    // Look for existing product by ID first (if valid UUID), then by slug
+    let existing: { id: string; slug?: string } | null = null;
+    if (product.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(product.id)) {
+      const { data: byId } = await supabase
+        .from("products")
+        .select("id, slug")
+        .eq("id", product.id)
+        .maybeSingle();
+      if (byId) existing = byId;
+    }
+    if (!existing && product.slug) {
+      const { data: bySlug } = await supabase
+        .from("products")
+        .select("id, slug")
+        .eq("slug", product.slug)
+        .maybeSingle();
+      if (bySlug) existing = bySlug;
+    }
 
     let productId = existing?.id;
 
     if (existing) {
-      await supabase.from("products").update(row).eq("id", existing.id);
-      // Clean variants
+      const { data: updatedRow, error: updErr } = await supabase
+        .from("products")
+        .update(row)
+        .eq("id", existing.id)
+        .select()
+        .single();
+
+      if (updErr) {
+        console.error("Supabase update error:", updErr);
+        throw updErr;
+      }
+      productId = updatedRow?.id || existing.id;
+
+      // Clean variants and reinsert
       await supabase.from("product_variants").delete().eq("product_id", existing.id);
     } else {
       const { data: inserted, error: insErr } = await supabase
@@ -287,17 +315,27 @@ export async function POST(req: NextRequest) {
     }
 
     if (productId && product.formats) {
-      const varRows = product.formats.map((f) => ({
+      const varRows = product.formats.map((f: any) => ({
         product_id: productId,
         size: f.size,
-        price_millimes: f.priceMillimes || f.priceTND * 1000,
-        stock_quantity: f.stock,
+        price_millimes: f.priceMillimes || Math.round((f.priceTND || 195) * 1000),
+        stock_quantity: f.stock ?? 0,
         sku: f.sku || `LEV-${product.slug.slice(0, 4).toUpperCase()}-${f.size}`,
       }));
       await supabase.from("product_variants").insert(varRows);
     }
 
-    return NextResponse.json({ success: true, productId, slug: product.slug });
+    const returnedProduct: Product = {
+      ...product,
+      id: productId || product.id || `lev-${Date.now()}`,
+    };
+
+    return NextResponse.json({
+      success: true,
+      productId,
+      slug: product.slug,
+      product: returnedProduct,
+    });
   } catch (err: any) {
     console.error("POST /api/products error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -321,27 +359,47 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: true, cleared: true });
     }
 
-    if (id) {
-      await supabase.from("product_variants").delete().eq("product_id", id);
-      await supabase.from("products").delete().eq("id", id);
-      return NextResponse.json({ success: true, deletedId: id });
-    }
+    const isUuid = (val: string) =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(val);
 
-    if (slug) {
+    let targetRowId: string | null = null;
+    let targetSlug: string | null = slug || null;
+
+    if (id && isUuid(id)) {
+      targetRowId = id;
+    } else if (id && !isUuid(id)) {
+      // id might be a slug or custom string like 'lev-123'
       const { data: row } = await supabase
         .from("products")
-        .select("id")
-        .eq("slug", slug)
+        .select("id, slug")
+        .eq("slug", id)
         .maybeSingle();
-
       if (row) {
-        await supabase.from("product_variants").delete().eq("product_id", row.id);
-        await supabase.from("products").delete().eq("id", row.id);
+        targetRowId = row.id;
+        targetSlug = row.slug;
       }
-      return NextResponse.json({ success: true, deletedSlug: slug });
     }
 
-    return NextResponse.json({ error: "Missing id or slug" }, { status: 400 });
+    if (!targetRowId && slug) {
+      const { data: row } = await supabase
+        .from("products")
+        .select("id, slug")
+        .eq("slug", slug)
+        .maybeSingle();
+      if (row) {
+        targetRowId = row.id;
+        targetSlug = row.slug;
+      }
+    }
+
+    if (targetRowId) {
+      await supabase.from("product_variants").delete().eq("product_id", targetRowId);
+      await supabase.from("products").delete().eq("id", targetRowId);
+      return NextResponse.json({ success: true, deletedId: targetRowId, slug: targetSlug });
+    }
+
+    // If no row found by id/slug, return success false or not found
+    return NextResponse.json({ success: true, message: "No matching record to delete" });
   } catch (err: any) {
     console.error("DELETE /api/products error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
